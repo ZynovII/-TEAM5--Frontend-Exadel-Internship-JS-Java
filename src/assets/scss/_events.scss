@@ -1,7 +1,9 @@
 $subtitle-color: #6a6a6a;
 $title_size: 1.75rem;
-$subtitle_size: 1rem;
 $differnce: 2.4;
+@mixin subtitle_size($multiply) {
+  font-size: $title_size / $differnce * $multiply;
+}
 
 .events {
   display: flex;
@@ -13,17 +15,17 @@ $differnce: 2.4;
       font-size: $title_size * 1.5;
     }
     @include media-min-width(60rem) {
-      font-size: $title_size * 1.75;
+      font-size: $title_size * 1.6;
     }
   }
   &__subtitle {
-    font-size: $title_size/$differnce;
     color: $subtitle-color;
+    @include subtitle_size(1);
     @include media-min-width(40rem) {
-      font-size: $title_size/$differnce * 1.5;
+      @include subtitle_size(1.5);
     }
     @include media-min-width(60rem) {
-      font-size: $title_size/$differnce * 1.75;
+      @include subtitle_size(1.6);
     }
   }
 }
