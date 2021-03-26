@@ -17,11 +17,17 @@
   "scripts": {
     "build": "yarn run clean-dist && webpack --config=configs/webpack/prod.js",
     "clean-dist": "rimraf dist/*",
-    "lint": "eslint './src/**/*.{js,ts,tsx}' --quiet",
+    "lint": "tslint -t codeFrame -p ./tsconfig.json",
     "start": "yarn run start-dev",
     "start-dev": "webpack serve --config=configs/webpack/dev.js",
     "start-prod": "yarn run build && node express.js",
     "test": "jest --coverage --watchAll --config=configs/jest.json"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "yarn run lint && pretty-quick --staged",
+      "post-commit": "git update-index -g"
+    }
   },
   "devDependencies": {
     "@babel/cli": "^7.13.10",
@@ -36,6 +42,10 @@
     "@types/react-dom": "^17.0.2",
     "@typescript-eslint/eslint-plugin": "^4.17.0",
     "@typescript-eslint/parser": "^4.17.0",
+    "tslint": "^5.13.1",
+    "tslint-config-airbnb": "^5.11.1",
+    "tslint-config-prettier": "^1.18.0",
+    "tslint-react": "^3.6.0",
     "babel-loader": "^8.2.2",
     "css-loader": "^5.1.2",
     "eslint": "^7.22.0",
