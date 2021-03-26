@@ -3,6 +3,7 @@ import * as React from "react";
 
 const reactLogo = require("./../assets/img/react_logo.svg");
 import "./../assets/scss/App.scss";
+import Event from './Pages/events';
 
 
 import { Nav, INavLink, INavStyles, INavLinkGroup } from '@fluentui/react/lib/Nav';
@@ -82,16 +83,14 @@ const App = () => {
   return (
     <React.Fragment>
       <header>header</header>
-      <Nav
+      {/* <Nav
         selectedKey="key3"
         ariaLabel="Nav basic example"
         styles={navStyles}
         groups={navLinkGroups}
-      />
+      /> */}
       <main>
-        <h1>Hello World!</h1>
-        <p>Foo to the barz</p>
-        <img src={reactLogo.default} height="480" />
+        <Event />
       </main>
       <footer>footer</footer>
     </React.Fragment>
