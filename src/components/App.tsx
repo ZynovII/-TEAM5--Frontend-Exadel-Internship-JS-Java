@@ -1,9 +1,15 @@
 import { hot } from "react-hot-loader/root";
 import * as React from "react";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Link
+} from "react-router-dom";
 
-const reactLogo = require("./../assets/img/react_logo.svg");
 import "./../assets/scss/App.scss";
-import Event from './Pages/events';
+
+import Events from './Pages/events';
 
 
 import { Nav, INavLink, INavStyles, INavLinkGroup } from '@fluentui/react/lib/Nav';
@@ -81,7 +87,7 @@ const navLinkGroups: INavLinkGroup[] = [
 
 const App = () => {
   return (
-    <React.Fragment>
+    <Router>
       <header>header</header>
       {/* <Nav
         selectedKey="key3"
@@ -90,10 +96,17 @@ const App = () => {
         groups={navLinkGroups}
       /> */}
       <main>
-        <Event />
+        <Switch>
+          <Route path='/events'>
+            <Events />
+          </Route>
+          <Route path='/'>
+            <h2>Main Page</h2>
+          </Route>
+        </Switch>
       </main>
       <footer>footer</footer>
-    </React.Fragment>
+    </Router>
   );
 };
 

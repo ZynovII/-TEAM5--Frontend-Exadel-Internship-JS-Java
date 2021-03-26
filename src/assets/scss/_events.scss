@@ -1,12 +1,14 @@
 $subtitle-color: #6a6a6a;
 $title_size: 1.75rem;
 $subtitle_size: 1rem;
+$differnce: 2.4;
 
 .events {
   display: flex;
   justify-content: center;
   &__title {
     font-size: $title_size;
+    margin: 1rem 0;
     @include media-min-width(40rem) {
       font-size: $title_size * 1.5;
     }
@@ -15,13 +17,13 @@ $subtitle_size: 1rem;
     }
   }
   &__subtitle {
-    font-size: $subtitle_size;
+    font-size: $title_size/$differnce;
     color: $subtitle-color;
     @include media-min-width(40rem) {
-      font-size: $subtitle_size * 1.5;
+      font-size: $title_size/$differnce * 1.5;
     }
     @include media-min-width(60rem) {
-      font-size: $subtitle_size * 1.75;
+      font-size: $title_size/$differnce * 1.75;
     }
   }
 }
