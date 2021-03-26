@@ -11,13 +11,14 @@ body > #root {
     "footer";
   padding-top: 0;
   height: 100%;
-}
-header {
-  grid-area: header;
-}
-main {
-  grid-area: main;
-}
-footer {
-  grid-area: footer;
+
+  & > header {
+    grid-area: header;
+  }
+  & > main {
+    grid-area: main;
+  }
+  & > footer {
+    grid-area: footer;
+  }
 }
