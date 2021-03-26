@@ -89,8 +89,6 @@ const App = () => {
         groups={navLinkGroups}
       />
       <main>
-        <h1>Hello World!</h1>
-        <p>Foo to the barz</p>
         <img src={reactLogo.default} height="480" />
       </main>
       <footer>footer</footer>
