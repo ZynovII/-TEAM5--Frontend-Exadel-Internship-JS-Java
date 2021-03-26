@@ -91,7 +91,6 @@ const App = () => {
       <main>
         <img src={reactLogo.default} height="480" />
       </main>
-      <footer>footer</footer>
     </React.Fragment>
   );
 };
