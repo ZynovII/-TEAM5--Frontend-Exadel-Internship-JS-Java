@@ -1,5 +1,7 @@
 import { hot } from "react-hot-loader/root";
 import * as React from "react";
+import 'office-ui-fabric-core/dist/css/fabric.css'; 
+
 
 const reactLogo = require("./../assets/img/react_logo.svg");
 import "./../assets/scss/App.scss";
@@ -81,7 +83,7 @@ const navLinkGroups: INavLinkGroup[] = [
 const App = () => {
   return (
     <React.Fragment>
-      <header>header</header>
+      <header>header</header> 
       <Nav
         selectedKey="key3"
         ariaLabel="Nav basic example"
