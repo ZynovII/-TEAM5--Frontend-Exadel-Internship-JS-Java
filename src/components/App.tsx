@@ -82,21 +82,21 @@ const navLinkGroups: INavLinkGroup[] = [
 const App = () => {
   return (
     <Store>
-    <React.Fragment>
-      <header>header</header>
-      <Nav
-        selectedKey="key3"
-        ariaLabel="Nav basic example"
-        styles={navStyles}
-        groups={navLinkGroups}
-      />
-      <main>
-        <h1>Hello World!</h1>
-        <p>Foo to the barz</p>
-        <img src={reactLogo.default} height="480" />
-      </main>
-      <footer>footer</footer>
-    </React.Fragment>
+      <React.Fragment>
+        <header>header</header>
+        <Nav
+          selectedKey="key3"
+          ariaLabel="Nav basic example"
+          styles={navStyles}
+          groups={navLinkGroups}
+        />
+        <main>
+          <h1>Hello World!</h1>
+          <p>Foo to the barz</p>
+          <img src={reactLogo.default} height="480" />
+        </main>
+        <footer>footer</footer>
+      </React.Fragment>
     </Store>
   );
 };
