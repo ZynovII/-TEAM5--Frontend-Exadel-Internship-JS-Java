@@ -6,6 +6,7 @@ import "./../assets/scss/App.scss";
 
 
 import { Nav, INavLink, INavStyles, INavLinkGroup } from '@fluentui/react/lib/Nav';
+import { Store } from "../context/Store";
 
 const navStyles: Partial<INavStyles> = {
   root: {
@@ -80,6 +81,7 @@ const navLinkGroups: INavLinkGroup[] = [
 
 const App = () => {
   return (
+    <Store>
     <React.Fragment>
       <header>header</header>
       <Nav
@@ -95,6 +97,7 @@ const App = () => {
       </main>
       <footer>footer</footer>
     </React.Fragment>
+    </Store>
   );
 };
 
