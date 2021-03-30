@@ -98,7 +98,7 @@ const App = () => {
       <main>
         <Switch>
           <Route path='/events'>
-            <Events />
+            <Events title='Internship JS & Java' date='01.03.2021 - 15.04.2021, Belarus' />
           </Route>
           <Route path='/'>
             <h2>Main Page</h2>

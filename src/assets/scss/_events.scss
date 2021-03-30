@@ -1,7 +1,7 @@
-$subtitle-color: #6a6a6a;
+$date-color: #6a6a6a;
 $title_size: 1.75rem;
 $differnce: 2.4;
-@mixin subtitle_size($multiply) {
+@mixin date_size($multiply) {
   font-size: $title_size / $differnce * $multiply;
 }
 
@@ -18,14 +18,14 @@ $differnce: 2.4;
       font-size: $title_size * 1.6;
     }
   }
-  &__subtitle {
-    color: $subtitle-color;
-    @include subtitle_size(1);
+  &__date {
+    color: $date-color;
+    @include date_size(1);
     @include media-min-width(40rem) {
-      @include subtitle_size(1.5);
+      @include date_size(1.5);
     }
     @include media-min-width(60rem) {
-      @include subtitle_size(1.6);
+      @include date_size(1.6);
     }
   }
 }
