@@ -3,6 +3,7 @@ import { IEvent } from "../IEvent";
 
 export interface IStore {
     isAuthenticated: boolean;
-    events: IEvent[];
-    applicants: IApplicant[];
+    currentUserID: number;
+    events: { [eventId: string]: IEvent };
+    applicants: { [aplicantId: string]: IApplicant };
 }
