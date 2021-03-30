@@ -85,29 +85,32 @@ const navLinkGroups: INavLinkGroup[] = [
   },
 ];
 
-const App = () => {
-  return (
-    <Router>
-      <header>header</header>
-      {/* <Nav
-        selectedKey="key3"
-        ariaLabel="Nav basic example"
-        styles={navStyles}
-        groups={navLinkGroups}
-      /> */}
-      <main>
-        <Switch>
-          <Route path='/events'>
-            <Events title='Internship JS & Java' date='01.03.2021 - 15.04.2021, Belarus' />
-          </Route>
-          <Route path='/'>
-            <h2>Main Page</h2>
-          </Route>
-        </Switch>
-      </main>
-      <footer>footer</footer>
-    </Router>
-  );
-};
+class App extends React.Component {
+  render() {
+    return (
+      <Router>
+        <header>header</header>
+        {/* <Nav
+          selectedKey="key3"
+          ariaLabel="Nav basic example"
+          styles={navStyles}
+          groups={navLinkGroups}
+        /> */}
+        <main>
+          <Switch>
+            <Route path='/events'>
+              <Events title='Internship JS & Java' date='01.03.2021 - 15.04.2021, Belarus' />
+            </Route>
+            <Route path='/'>
+              <h2>Main Page</h2>
+            </Route>
+          </Switch>
+        </main>
+        <footer>footer</footer>
+      </Router >
+    );
+  }
+}
+
 
 export default hot(App);
