@@ -1,5 +1,7 @@
 import { hot } from "react-hot-loader/root";
 import * as React from "react";
+import 'office-ui-fabric-core/dist/css/fabric.css'; 
+
 
 import "./../assets/scss/App.scss";
 import { BrowserRouter, Route, Switch } from "react-router-dom";

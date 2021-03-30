@@ -85,6 +85,8 @@
     ]
   },
   "dependencies": {
-    "@fluentui/react": "^8.6.1"
+    "@fluentui/react": "^8.6.1",
+    "@microsoft/sp-office-ui-fabric-core": "^1.11.0",
+    "office-ui-fabric-core": "^11.0.0"
   }
 }
