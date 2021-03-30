@@ -1,6 +1,6 @@
 import React from "react";
 
-const reactLogo = require("./../assets/img/react_logo.svg");
+import Header from "../components/header/Header";
 
 import {
     Nav,
@@ -83,7 +83,7 @@ const navLinkGroups: INavLinkGroup[] = [
 export const MainPage = () => {
     return (
         <React.Fragment>
-            <header>header</header>
+            <Header />
             <Nav
                 selectedKey="key3"
                 ariaLabel="Nav basic example"
@@ -93,7 +93,6 @@ export const MainPage = () => {
             <main>
                 <h1>Hello World!</h1>
                 <p>Foo to the barz</p>
-                <img src={reactLogo.default} height="480" />
             </main>
             <footer>footer</footer>
         </React.Fragment>

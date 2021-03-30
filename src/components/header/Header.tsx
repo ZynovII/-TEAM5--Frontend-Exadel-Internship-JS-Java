@@ -3,7 +3,7 @@ import { FC } from "react";
 import { Stack } from '@fluentui/react/lib';
 
 import HeaderNav from './Header_nav'
-import ButtonLog from './Header_login'
+import ButtonLog from './Button_log'
 
 const logo = require("./../../assets/img/logo.svg");
 
