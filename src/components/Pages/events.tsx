@@ -1,19 +1,16 @@
-import React, { Component } from 'react';
+import React from 'react';
 
-class Events extends Component {
-  render() {
-    return (
-      <section className='events'>
-        <div className="wrapper">
-          <div className="events__title-wrapper">
-            <h1 className='events__title'>{this.props.title}</h1>
-            <p className='events__date'>{this.props.date}</p>
-          </div>
+const events = (props) => {
+  return (
+    <section className='events'>
+      <div className="wrapper">
+        <div className="events__title-wrapper">
+          <h1 className='events__title'>{props.title}</h1>
+          <p className='events__date'>{props.date}</p>
         </div>
-      </section>
-    )
-  }
+      </div>
+    </section>
+  )
 }
 
-
-export default Events;
+export default events;
