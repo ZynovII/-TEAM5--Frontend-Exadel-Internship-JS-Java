@@ -1,6 +1,6 @@
 import React from 'react';
 
-const events = (props) => {
+const events = (props: {title: 'string', date: 'string'}) => {
   return (
     <section className='events'>
       <div className="wrapper">

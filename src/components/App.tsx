@@ -85,32 +85,39 @@ const navLinkGroups: INavLinkGroup[] = [
   },
 ];
 
-class App extends React.Component {
-  render() {
-    return (
-      <Router>
-        <header>header</header>
-        {/* <Nav
+const app = () => {
+  const [eventState] = React.useState({
+    events: {
+      '1': {
+        title: "Internship JS & Java",
+        date: "01.03.2021 - 15.04.2021, Belarus"
+      }
+    }
+  })
+return (
+  <Router>
+    <header>header</header>
+    {/* <Nav
           selectedKey="key3"
           ariaLabel="Nav basic example"
           styles={navStyles}
           groups={navLinkGroups}
         /> */}
-        <main>
-          <Switch>
-            <Route path='/events'>
-              <Events title='Internship JS & Java' date='01.03.2021 - 15.04.2021, Belarus' />
-            </Route>
-            <Route path='/'>
-              <h2>Main Page</h2>
-            </Route>
-          </Switch>
-        </main>
-        <footer>footer</footer>
-      </Router >
-    );
-  }
+    <main>
+      <Switch>
+        <Route path='/events'>
+          <Events title={eventState.events['1'].title} date={eventState.events[1].date} />
+        </Route>
+        <Route path='/'>
+          <h2>Main Page</h2>
+        </Route>
+      </Switch>
+    </main>
+    <footer>footer</footer>
+  </Router >
+);
+
 }
 
 
-export default hot(App);
+export default hot(app);
