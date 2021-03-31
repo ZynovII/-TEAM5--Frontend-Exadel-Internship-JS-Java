@@ -9,12 +9,18 @@ import { MainPage } from "../pages/MainPage";
 import EventPage from '../pages/EventPage'
 
 const App = () => {
+  const [eventState] = React.useState({
+    1: {
+      title: 'Internship JS & Java',
+      date: '01.03.2021 - 15.04.2021, Belarus'
+    }
+  })
   return (
     <BrowserRouter>
       <Switch>
         <Route path="/" exact component={MainPage} />
-        <Route>
-          <EventPage title='Internship JS & Java' date='01.03.2021 - 15.04.2021, Belarus'></EventPage>
+        <Route path='/eventPage'>
+          <EventPage title={eventState[1].title} date={eventState[1].date}></EventPage>
         </Route>
       </Switch>
     </BrowserRouter>
