@@ -8,8 +8,6 @@ import { Route, Switch, useHistory } from "react-router";
 export const AdminPage = () => {
     const history = useHistory();
 
-    const toMainPage = () => history.push("/");
-
     return (
         <div className="admin-page ms-Grid" dir="ltr">
             <div className="ms-Grid-row">
@@ -18,7 +16,7 @@ export const AdminPage = () => {
                 </div>
                 <div className="ms-Grid-col ms-sm10 ms-xl10 main-element">
                     <div className="ms-Grid-row">
-                        <div className="dashboard__title" onClick={toMainPage}>
+                        <div className="dashboard__title">
                             <h3 style={{ marginBottom: 0 }}>Welcome, User!</h3>
                             <span className="ms-fontSize-16">
                                 HR specialist
