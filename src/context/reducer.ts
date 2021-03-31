@@ -5,10 +5,12 @@ import { ActionTypes } from "./actionTypes";
 export const reducer = (state: IStore, action: IAction): IStore => {
     const { type, payload, id } = action;
     switch (type) {
+        case ActionTypes.SHOW_LOADER:
+            return { ...state, loading: true };
         case ActionTypes.SIGN_IN:
-            return { ...state, isAuthenticated: true };
+            return { ...state, isAuthenticated: true, loading: false };
         case ActionTypes.SIGN_OUT:
-            return { ...state, isAuthenticated: false };
+            return { ...state, isAuthenticated: false, loading: false };
         case ActionTypes.CREATE_EVENT:
             return { ...state, events: { ...state.events, [id]: payload } };
         case ActionTypes.UPDATE_EVENT:
@@ -25,6 +27,18 @@ export const reducer = (state: IStore, action: IAction): IStore => {
             return {
                 ...state,
                 applicants: { ...state.applicants, [id]: payload },
+            };
+        case ActionTypes.FETCH_APPLICANTS:
+            return {
+                ...state,
+                applicants: payload,
+                loading: false,
+            };
+        case ActionTypes.FETCH_EVENTS:
+            return {
+                ...state,
+                events: payload,
+                loading: false,
             };
         default:
             return state;
