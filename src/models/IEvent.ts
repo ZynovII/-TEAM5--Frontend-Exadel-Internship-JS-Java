@@ -2,7 +2,7 @@ export interface IEvent {
     id: number;
     date: Date;
     description: string;
-    technology: string[];   // that should be tags?
+    technology: string[]; // tags
     photoURL: string;
     type: string;
     location: string;

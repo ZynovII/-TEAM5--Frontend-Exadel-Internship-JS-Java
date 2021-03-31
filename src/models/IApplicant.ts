@@ -1,5 +1,3 @@
-import { IEvent } from "./IEvent";
-
 export enum AcceptStatus {
     Accepted = "Accepted",
     Rejected = "Rejected",
@@ -19,13 +17,13 @@ export interface IApplicant {
     phoneNumber?: string;
     skype: string;
     resumeLink?: string;
-    technology: string[]; // that should be tags?
-    events: { [eventId: string]: IEvent };
+    technology: string[]; // tags
+    events: number[]; // event id
     summary: string;
     country: string;
     city: string;
-    acceptanceStatus: AcceptStatus; // ???
-    interviewStatus: InterviewStatus; // ???
+    acceptanceStatus: AcceptStatus;
+    interviewStatus: InterviewStatus;
     assignedHRID: number;
     assignedTSID: number;
     HRFeedback: string;
