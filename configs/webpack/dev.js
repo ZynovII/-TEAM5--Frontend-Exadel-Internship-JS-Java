@@ -13,13 +13,14 @@ module.exports = merge(commonConfig, {
   ],
   devServer: {
     hot: true, // enable HMR on the server
+    historyApiFallback: true,
   },
   devtool: "cheap-module-source-map",
   plugins: [
     new webpack.HotModuleReplacementPlugin(), // enable HMR globally
   ],
   devServer: {
-    contentBase: './dist',
+    contentBase: "./dist",
     hot: true,
-  }
+  },
 });

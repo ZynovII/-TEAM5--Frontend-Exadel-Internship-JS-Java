@@ -1,13 +1,9 @@
-$bg-color: yellow;
-$border-color: red;
+@import "./variables";
+@import "./mixins";
+@import "./reset";
+// @import "./beautyFooter";
+@import "./events";
 
 body {
   font-family: helvetica, arial, sans-serif;
-  padding: 2em;
-  border: 5px solid $border-color;
-
-  p {
-    background-color: $bg-color;
-  }
 }
-
