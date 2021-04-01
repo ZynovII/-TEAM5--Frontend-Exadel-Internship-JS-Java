@@ -3,6 +3,8 @@ interface IEventPage {
   date: string;
   descrition: string;
   photoURL: string;
+  technology: string[];
+  location: string[];
 }
 
 export default IEventPage;

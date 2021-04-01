@@ -1,5 +1,5 @@
-@import './variables'; 
-@import './mixins'; 
+@import "./variables";
+@import "./mixins";
 $date-color: #6a6a6a;
 $title_size: 1.75rem;
 $differnce: 2.4;
@@ -10,9 +10,18 @@ $differnce: 2.4;
 .events {
   display: flex;
   justify-content: center;
+  & .wrapper {
+    max-width: 1170px;
+    margin: 0 auto;
+  }
   &__title {
     font-size: $title_size;
     margin: 1rem 0;
+    &-wrapper {
+      text-align: left;
+      display: flex;
+      justify-content: center;
+    }
     @include media-min-width(40rem) {
       font-size: $title_size * 1.5;
     }
@@ -28,6 +37,45 @@ $differnce: 2.4;
     }
     @include media-min-width(60rem) {
       @include date_size(1.6);
+    }
+  }
+  &__descrtiption {
+    @include media-min-width(40rem) {
+      width: 50%;
+      padding: .5rem;
+    }
+    &-image {
+      width: 100%;
+      max-width: 510px;
+      display: inline-block;
+      &-wrapper {
+        padding: 2rem 0;
+        // max-width: 510px;
+      }
+    }
+    &-wrapper {
+      text-align: center;
+      @include media-min-width(40rem) {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        text-align: left;
+      }
+    }
+  }
+  &__form {
+    &-title {
+      font-weight: 400;
+      padding: 1rem 0;
+    }
+    &-inputs {
+      @include media-min-width(40rem) {
+        display: flex;
+        justify-content: space-between;
+        & input {
+          display: block;
+        }
+      }
     }
   }
 }
