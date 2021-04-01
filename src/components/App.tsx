@@ -5,6 +5,7 @@ import 'office-ui-fabric-core/dist/css/fabric.css';
 
 import "./../assets/scss/App.scss";
 import { MainPage } from "../pages/MainPage";
+import { AdminPage } from "../pages/AdminPage";
 import { Store } from "../context/Store";
 
 const App = () => {
@@ -13,6 +14,7 @@ const App = () => {
         <BrowserRouter>
             <Switch>
                 <Route path="/" exact component={MainPage} />
+                <Route path="/admin" component={AdminPage} />
             </Switch>
         </BrowserRouter>
       </Store>
