@@ -1,6 +1,8 @@
 import React from "react";
 
-import Header from "../components/header/Header";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
+
 
 import {
     Nav,
@@ -94,7 +96,7 @@ export const MainPage = () => {
                 <h1>Hello World!</h1>
                 <p>Foo to the barz</p>
             </main>
-            <footer>footer</footer>
+            <Footer />
         </React.Fragment>
     );
 };

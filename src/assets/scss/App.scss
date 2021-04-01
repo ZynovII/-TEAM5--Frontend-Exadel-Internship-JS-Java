@@ -1,13 +1,32 @@
 $bg-color: yellow;
 $border-color: red;
 
+ul {
+  list-style-type: none;
+}
+
 body {
   font-family: helvetica, arial, sans-serif;
-  padding: 2em;
-  border: 5px solid $border-color;
+  margin: 0;
 
   p {
     background-color: $bg-color;
+  }
+
+  .footer {
+    background-color: #F2F2F2;
+    padding: 0 2em 2em;
+
+    &__link {
+      margin-bottom: '10px';
+      color: #525252;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    &__link:hover {
+      color: #0082ca;
+    }
   }
 }
 
