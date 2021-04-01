@@ -23,7 +23,7 @@ const events = (props: IEventPage) => {
         </div>
         <div className='events__form'>
           <h2 className="events__form-title">Apply for {props.title}</h2>
-          <div className = 'events__form-inputs'>
+          <div className='events__form-inputs'>
             <div className="">
               <TextField />
               <TextField />
@@ -35,6 +35,7 @@ const events = (props: IEventPage) => {
               <TextField />
             </div>
           </div>
+          <textarea name=""></textarea>
         </div>
       </div>
     </section>

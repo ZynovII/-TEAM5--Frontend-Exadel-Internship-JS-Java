@@ -42,7 +42,7 @@ $differnce: 2.4;
   &__descrtiption {
     @include media-min-width(40rem) {
       width: 50%;
-      padding: .5rem;
+      padding-left: 3rem;
     }
     &-image {
       width: 100%;
@@ -57,7 +57,6 @@ $differnce: 2.4;
       text-align: center;
       @include media-min-width(40rem) {
         display: flex;
-        justify-content: space-between;
         align-items: center;
         text-align: left;
       }
