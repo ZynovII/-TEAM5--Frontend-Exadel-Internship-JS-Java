@@ -20,7 +20,7 @@ export interface ICardItemInfo{
     title: string;
     date: string;
     location: string,
-    description
+    description: string,
 }
 export interface ICardItemProps {
     cardItem: ICardItemInfo;
