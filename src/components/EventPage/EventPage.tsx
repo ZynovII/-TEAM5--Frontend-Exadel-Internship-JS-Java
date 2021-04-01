@@ -2,10 +2,17 @@ import React from 'react';
 import './EventPage.scss';
 import IEventPage from '../../models/IEventPage';
 import { TextField } from '@fluentui/react/lib/TextField';
+import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
+
 
 // import { mergeStyleSets } from '@fluentui/react/lib';
 
 const events = (props: IEventPage) => {
+
+  // const options: IDropdownOption[] = (type) => {
+  //   return type;
+  // }
+
   return (
     <section className='events'>
       <div className="wrapper">
@@ -25,14 +32,14 @@ const events = (props: IEventPage) => {
           <h2 className="events__form-title">Apply for {props.title}</h2>
           <div className='events__form-inputs'>
             <div className="">
-              <TextField />
-              <TextField />
-              <TextField />
+              <TextField placeholder= 'First and Last name *' type = 'text' />
+              <TextField placeholder= 'Phone' type = 'text' />
+              <Dropdown placeholder = 'City' options = {props.location} />
             </div>
             <div className="">
-              <TextField />
-              <TextField />
-              <TextField />
+              <TextField placeholder= 'Email *' type = 'email' />
+              <Dropdown placeholder = 'Country' options = {props.location} />
+              <Dropdown placeholder='Technology' options = {props.technology)/>
             </div>
           </div>
           <textarea name=""></textarea>

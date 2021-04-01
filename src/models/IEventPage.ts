@@ -4,7 +4,7 @@ interface IEventPage {
   descrition: string;
   photoURL: string;
   technology: string[];
-  location: string[];
+  location: object[];
 }
 
 export default IEventPage;

@@ -4,8 +4,28 @@ const data = {
   description: 'Exadel will provide you with new knowledge and invaluable development experience.Exadel will provide you with new knowledge and invaluable development experience.Exadel will provide you with new knowledge and invaluable development experience.Exadel will provide you with new knowledge and invaluable development experience.You need to have basic knowledge about web- development.',
   photoURL: 'https://via.placeholder.com/520x410',
   // photoURL: 'https://placekitten.com/520/410',
-  technology: ['JS', 'Java', 'Others'],
-  location: ['Russia', 'China', 'USA']
+  technology: [
+    {
+      key: 'JS', text: 'JS'
+    },
+    {
+      key: 'Java', text: 'Java'
+    },
+    {
+      key: 'Others', text: 'Others'
+    },
+  ],
+  location: [
+    {
+      key: 'Russia', text: 'Russia'
+    },
+    {
+      key: 'China', text: 'China'
+    },
+    {
+      key: 'USA', text: 'USA'
+    },
+  ]
 }
 
 export default data;

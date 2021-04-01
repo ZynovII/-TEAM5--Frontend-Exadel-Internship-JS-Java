@@ -20,7 +20,10 @@ const App = () => {
               title={dummyData.title}
               date={dummyData.date}
               descrition={dummyData.description}
-              photoURL={dummyData.photoURL} />
+              photoURL={dummyData.photoURL}
+              technology = {dummyData.technology}
+              location = {dummyData.location}
+               />
           </Route>
         </Switch>
       </BrowserRouter>
