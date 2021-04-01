@@ -1,0 +1,33 @@
+@import './variables'; 
+@import './mixins'; 
+$date-color: #6a6a6a;
+$title_size: 1.75rem;
+$differnce: 2.4;
+@mixin date_size($multiply) {
+  font-size: $title_size / $differnce * $multiply;
+}
+
+.events {
+  display: flex;
+  justify-content: center;
+  &__title {
+    font-size: $title_size;
+    margin: 1rem 0;
+    @include media-min-width(40rem) {
+      font-size: $title_size * 1.5;
+    }
+    @include media-min-width(60rem) {
+      font-size: $title_size * 1.6;
+    }
+  }
+  &__date {
+    color: $date-color;
+    @include date_size(1);
+    @include media-min-width(40rem) {
+      @include date_size(1.5);
+    }
+    @include media-min-width(60rem) {
+      @include date_size(1.6);
+    }
+  }
+}
