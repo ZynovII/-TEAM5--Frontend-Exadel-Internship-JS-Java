@@ -1,14 +1,7 @@
 import React from "react";
+import { Nav, INavStyles, INavLinkGroup } from "@fluentui/react/lib/Nav";
 
 import Header from "../components/header/Header";
-
-import {
-    Nav,
-    INavLink,
-    INavStyles,
-    INavLinkGroup,
-} from "@fluentui/react/lib/Nav";
-import { NavLink } from "react-router-dom";
 
 const navStyles: Partial<INavStyles> = {
     root: {
@@ -54,7 +47,7 @@ const navLinkGroups: INavLinkGroup[] = [
             },
             {
                 name: "Pages",
-                url: "http://msn.com",
+                url: "/admin",
                 key: "key4",
                 target: "_blank",
             },
@@ -84,7 +77,6 @@ const navLinkGroups: INavLinkGroup[] = [
 export const MainPage = () => {
     return (
         <React.Fragment>
-            <NavLink to="/admin">Admin</NavLink>
             <Header />
             <Nav
                 selectedKey="key3"

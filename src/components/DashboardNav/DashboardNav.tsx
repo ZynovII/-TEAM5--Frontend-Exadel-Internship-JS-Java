@@ -1,9 +1,9 @@
 import React from "react";
-import { Depths, initializeIcons, Nav } from "@fluentui/react";
+import { Depths, Nav } from "@fluentui/react";
 
-import Logo from "../../assets/img/exadel-logo-dash.png";
 import { useHistory, withRouter } from "react-router";
-import { NavLink } from "react-router-dom";
+
+const Logo = require("../../assets/img/exadel-logo-dash.png");
 
 const Links = [
     {
@@ -96,14 +96,18 @@ const headStyle = {
     justifyContent: "space-around",
 };
 
-const DashboardNavStub = () => {
-    initializeIcons();
+export const DashboardNav = () => {
     const history = useHistory();
     const clickHadler = () => history.push("/");
     return (
         <div className="dash-nav">
             <div style={headStyle} onClick={clickHadler}>
-                <img src={Logo} alt="logo" width="50" style={logoStyle} />
+                <img
+                    src={Logo.default}
+                    alt="logo"
+                    width="50"
+                    style={logoStyle}
+                />
                 <h4 className="ms-hiddenLgDown ms-fontColor-themePrimary">
                     RecruitStyle
                 </h4>
@@ -119,4 +123,3 @@ const DashboardNavStub = () => {
         </div>
     );
 };
-export const DashboardNav = withRouter(DashboardNavStub);

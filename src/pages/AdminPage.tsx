@@ -1,13 +1,11 @@
 import React from "react";
+import { Route, Switch } from "react-router";
 
 import { DashboardNav } from "../components/DashboardNav/DashboardNav";
 
 import "./AdminPage.scss";
-import { Route, Switch, useHistory } from "react-router";
 
 export const AdminPage = () => {
-    const history = useHistory();
-
     return (
         <div className="admin-page ms-Grid" dir="ltr">
             <div className="ms-Grid-row">
