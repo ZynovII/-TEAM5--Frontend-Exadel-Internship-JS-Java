@@ -1,7 +1,9 @@
 import React from "react";
 import { Nav, INavStyles, INavLinkGroup } from "@fluentui/react/lib/Nav";
 
-import Header from "../components/header/Header";
+import Header from "../components/Header/Header";
+import Footer from "../components/Footer/Footer";
+
 
 const navStyles: Partial<INavStyles> = {
     root: {
@@ -88,7 +90,7 @@ export const MainPage = () => {
                 <h1>Hello World!</h1>
                 <p>Foo to the barz</p>
             </main>
-            <footer>footer</footer>
+            <Footer />
         </React.Fragment>
     );
 };
