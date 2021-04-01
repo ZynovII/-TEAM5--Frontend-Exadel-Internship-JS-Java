@@ -9,9 +9,10 @@ import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 
 const events = (props: IEventPage) => {
 
-  // const options: IDropdownOption[] = (type) => {
-  //   return type;
-  // }
+  const option = (type) => {
+    const options: IDropdownOption[] = type;
+    return options; 
+  }
 
   return (
     <section className='events'>
@@ -34,12 +35,12 @@ const events = (props: IEventPage) => {
             <div className="">
               <TextField placeholder= 'First and Last name *' type = 'text' />
               <TextField placeholder= 'Phone' type = 'text' />
-              <Dropdown placeholder = 'City' options = {props.location} />
+              <Dropdown placeholder='City' options={option(props.location)} />
             </div>
             <div className="">
               <TextField placeholder= 'Email *' type = 'email' />
-              <Dropdown placeholder = 'Country' options = {props.location} />
-              <Dropdown placeholder='Technology' options = {props.technology)/>
+              <Dropdown placeholder='Country' options={option(props.location)} />
+              <Dropdown placeholder='Technology' options={option(props.technology)} />
             </div>
           </div>
           <textarea name=""></textarea>

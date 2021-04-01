@@ -3,7 +3,7 @@ interface IEventPage {
   date: string;
   descrition: string;
   photoURL: string;
-  technology: string[];
+  technology: object[];
   location: object[];
 }
 
