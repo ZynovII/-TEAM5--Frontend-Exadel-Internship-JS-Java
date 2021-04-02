@@ -17,9 +17,10 @@ const App = () => {
           <Route path="/" exact component={MainPage} />
           <Route path='/events'>
             <EventPage
+              id={dummyData.id}
               title={dummyData.title}
               date={dummyData.date}
-              descrition={dummyData.description}
+              description={dummyData.description}
               photoURL={dummyData.photoURL}
               technology = {dummyData.technology}
               location = {dummyData.location}
