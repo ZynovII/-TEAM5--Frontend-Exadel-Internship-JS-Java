@@ -7,6 +7,8 @@ import "./../assets/scss/App.scss";
 import { MainPage } from "../pages/MainPage";
 import { AdminPage } from "../pages/AdminPage";
 import { Store } from "../context/Store";
+import EventSubmit from '../components/EventSubmit/EventSubmit'
+import dummyData from '../components/EventSubmit/_dummyData';
 
 const App = () => {
   return (
@@ -15,6 +17,12 @@ const App = () => {
         <Switch>
           <Route path="/" exact component={MainPage} />
           <Route path="/admin" component={AdminPage} />
+          <Route path="/EventSubmit">
+            <EventSubmit 
+            country={dummyData.country} 
+            city={dummyData.city} 
+            technology={dummyData.technology} />
+          </Route>
         </Switch>
       </BrowserRouter>
     </Store>
