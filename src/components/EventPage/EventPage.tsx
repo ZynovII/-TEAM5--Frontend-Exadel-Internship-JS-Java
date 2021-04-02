@@ -7,7 +7,7 @@ import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
 
 // import { mergeStyleSets } from '@fluentui/react/lib';
 
-const events = (props: IEventPage) => {
+const eventPage = (props: IEventPage) => {
 
   const option = (type) => {
     const options: IDropdownOption[] = type;
@@ -27,7 +27,7 @@ const events = (props: IEventPage) => {
           <div className="events__descrtiption-image-wrapper">
             <img className='events__descrtiption-image' src={props.photoURL} alt="#" />
           </div>
-          <p className="events__descrtiption">{props.descrition}</p>
+          <p className="events__description">{props.description}</p>
         </div>
         <div className='events__form'>
           <h2 className="events__form-title">Apply for {props.title}</h2>
@@ -52,4 +52,4 @@ const events = (props: IEventPage) => {
 
 // const styles = mergeStyleSets({})
 
-export default events;
+export default eventPage;

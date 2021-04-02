@@ -1,4 +1,7 @@
-const data = {
+import IEventPage from '../../models/IEventPage'
+
+const data: IEventPage = {
+  id: 'veryAwesomeID',
   title: 'Internship JS & Java',
   date: '01.03.2021 - 15.04.2021, Belarus',
   description: 'Exadel will provide you with new knowledge and invaluable development experience.Exadel will provide you with new knowledge and invaluable development experience.Exadel will provide you with new knowledge and invaluable development experience.Exadel will provide you with new knowledge and invaluable development experience.You need to have basic knowledge about web- development.',

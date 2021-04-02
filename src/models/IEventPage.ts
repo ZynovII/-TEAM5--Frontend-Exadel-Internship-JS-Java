@@ -1,7 +1,8 @@
 interface IEventPage {
+  id: any,
   title: string;
   date: string;
-  descrition: string;
+  description: string;
   photoURL: string;
   technology: object[];
   location: object[];
