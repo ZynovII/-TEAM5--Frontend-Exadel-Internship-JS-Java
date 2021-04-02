@@ -15,7 +15,7 @@ const App = () => {
       <BrowserRouter>
         <Switch>
           <Route path="/" exact component={MainPage} />
-          <Route path='/events'>
+          <Route path='/eventPage'>
             <EventPage
               id={dummyData.id}
               title={dummyData.title}
