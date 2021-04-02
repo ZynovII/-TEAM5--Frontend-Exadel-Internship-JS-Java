@@ -1,5 +1,5 @@
 import * as React from 'react';
-import './styles/eventSubmit.scss';
+import './styles/EventSubmit.scss';
 import { TextField } from '@fluentui/react/lib/TextField';
 import { Dropdown, IDropdownOption, IDropdownStyles } from '@fluentui/react/lib/Dropdown';
 import { DatePicker, DayOfWeek, IDatePickerStrings, mergeStyleSets } from '@fluentui/react';
