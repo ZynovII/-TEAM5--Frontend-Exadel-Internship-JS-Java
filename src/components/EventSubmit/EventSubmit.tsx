@@ -111,7 +111,7 @@ const eventSubmit = (props: IEventSubmit) => {
                 </div>
               </div>
               <div className='event-submit__description'>
-                <textarea></textarea>
+                <textarea placeholder='Description'></textarea>
               </div>
               <div className='event-submit__button'>
                 <button>Submit</button>
