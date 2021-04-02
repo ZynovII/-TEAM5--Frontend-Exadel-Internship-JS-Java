@@ -3,8 +3,8 @@ import { Nav, INavStyles, INavLinkGroup } from "@fluentui/react/lib/Nav";
 
 import Header from "../components/Header/Header";
 import Footer from "../components/Footer/Footer";
-import { NotFoundPage } from "./NotFoundPage";
-import { Route, Switch } from "react-router";
+import { NotFound } from "../components/NotFound";
+import { Route, Switch, useHistory } from "react-router";
 
 const navStyles: Partial<INavStyles> = {
 	root: {
@@ -52,7 +52,6 @@ const navLinkGroups: INavLinkGroup[] = [
 				name: "Pages",
 				url: "/admin",
 				key: "key4",
-				target: "_blank",
 			},
 			{
 				name: "Notebook",
@@ -68,7 +67,7 @@ const navLinkGroups: INavLinkGroup[] = [
 			},
 			{
 				name: "News",
-				url: "http://cnn.com",
+				url: "/events/cnn",
 				icon: "News",
 				key: "key7",
 				target: "_blank",
@@ -78,24 +77,31 @@ const navLinkGroups: INavLinkGroup[] = [
 ];
 
 export const MainPage = () => {
+	const history = useHistory();
 	return (
 		<React.Fragment>
 			<Header />
-			<Switch>
-				<Route path="/" exact>
-					<Nav
-						selectedKey="key3"
-						ariaLabel="Nav basic example"
-						styles={navStyles}
-						groups={navLinkGroups}
-					/>
-					<main>
-						<h1>Hello World!</h1>
-						<p>Foo to the barz</p>
-					</main>
-				</Route>
-				<Route path="/ff" component={NotFoundPage} />
-			</Switch>
+			<main className="main">
+				<Switch>
+					<Route path="/events" exact>
+						<Nav
+							selectedKey="key3"
+							ariaLabel="Nav basic example"
+							styles={navStyles}
+							groups={navLinkGroups}
+							onLinkClick={(eo, elem) => {
+								eo.preventDefault();
+								history.push(elem.url);
+							}}
+						/>
+						<main>
+							<h1>Hello World!</h1>
+							<p>Foo to the barz</p>
+						</main>
+					</Route>
+					<Route component={NotFound} />
+				</Switch>
+			</main>
 			<Footer />
 		</React.Fragment>
 	);
