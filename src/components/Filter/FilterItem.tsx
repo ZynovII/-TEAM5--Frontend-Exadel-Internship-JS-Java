@@ -43,6 +43,6 @@ export const FilterItem: React.FC<IFilterItemProps> = (props) => (
     label={props.filterItem.label}
     option={props.filterItem.options}
     
-</Dropdown>
+</Dropdown> 
 
 );

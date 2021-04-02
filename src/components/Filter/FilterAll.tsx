@@ -40,7 +40,7 @@ const filterPadding = {
 export const AllFilters : React.FC = ()=> {
     return (
         <section style={filterDisplay}>
-            {filters.map((obj: IFilterItem)=><div style={filterPadding}><DropdownControlledExample key={obj.id} filterItem={obj}/></div>)}
+            {filters.map((obj: IFilterItem)=><div style={filterPadding}><DropdownControlledExample key={obj.id } filterItem={obj}/></div>)}
          </section>
         
     );
