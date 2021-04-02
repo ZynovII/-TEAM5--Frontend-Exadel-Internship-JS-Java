@@ -7,7 +7,6 @@ import "./../assets/scss/App.scss";
 import { MainPage } from "../pages/MainPage";
 import { AdminPage } from "../pages/AdminPage";
 import { Store } from "../context/Store";
-import { NotFoundPage } from "../pages/NotFoundPage";
 
 const App = () => {
 	return (
