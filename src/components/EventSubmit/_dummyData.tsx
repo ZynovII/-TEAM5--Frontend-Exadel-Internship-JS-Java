@@ -1,4 +1,6 @@
-const data = {
+import IEventSubmit from './IEventSubmit';
+
+const data: IEventSubmit = {
   country: [
     { key: 'USA', text: 'USA' },
     { key: 'Russia', text: 'Russia' },

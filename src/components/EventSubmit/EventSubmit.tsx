@@ -1,9 +1,12 @@
 import * as React from 'react';
+import './styles/eventSubmit.scss';
 import { TextField } from '@fluentui/react/lib/TextField';
-import { Dropdown, IDropdownOption } from '@fluentui/react/lib/Dropdown';
+import { Dropdown, IDropdownOption, IDropdownStyles } from '@fluentui/react/lib/Dropdown';
 import { DatePicker, DayOfWeek, IDatePickerStrings, mergeStyleSets } from '@fluentui/react';
 
 import IEventSubmit from './IEventSubmit';
+
+const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { background: '#C4C4C4' } };
 
 const DayPickerStrings: IDatePickerStrings = {
   months: [
@@ -56,38 +59,66 @@ const eventSubmit = (props: IEventSubmit) => {
     return options;
   }
 
+  const [openedState, setOpenedState] = React.useState({
+    openedEvent: false
+  })
+
+  const style = {
+    display: 'none'
+  }
+
+  if (openedState.openedEvent) {
+    style.display = 'block';
+  }
+
+  const closeEvent = () => {
+    setOpenedState({
+      openedEvent: false
+    })
+  }
+
+  const submitForm = (event) => {
+    event.preventDefault();
+    closeEvent();
+  }
+
   return (
-    <div className='event-submit'>
-      <div className="event-submit__wrapper">
-        <header className='event-submit__title-wrapper'>
-          <h2>New Event</h2>
-        </header>
-        <form className='event-submit__form'>
-          <div className='event-submit__body'>
-            <div className='event-submit__inputs'>
-              <TextField placeholder='Name' />
-              <DatePicker
-                firstDayOfWeek={firstDayOfWeek}
-                strings={DayPickerStrings}
-                placeholder="Date"
-                ariaLabel="Date"
-              />
-              <Dropdown placeholder='Country' options={option(props.country)} />
-              <Dropdown placeholder='City' options={option(props.city)} />
-              <Dropdown placeholder='Technologies ' options={option(props.technology)} selectedKeys={selectedKeys} onChange={onChange} multiSelect />
+    <div>
+      <div id='backdrop' onClick={closeEvent} style={style}></div>
+      <div className="center-block">
+        <div className='event-submit' style={style}>
+          <div className="event-submit__wrapper">
+            <header className='event-submit__title-wrapper'>
+              <h2>New Event</h2>
+            </header>
+            <form className='event-submit__form' onSubmit={submitForm}>
+              <div className='event-submit__body'>
+                <div className='event-submit__image'>
+                  <img src="https://via.placeholder.com/259x259" alt="#" />
+                </div>
+                <div className='event-submit__inputs'>
+                  <TextField placeholder='Name' />
+                  <DatePicker
+                    firstDayOfWeek={firstDayOfWeek}
+                    strings={DayPickerStrings}
+                    placeholder="Date"
+                    ariaLabel="Date"
+                  />
+                  <Dropdown styles={dropdownStyles} placeholder='Country' options={option(props.country)} />
+                  <Dropdown placeholder='City' options={option(props.city)} />
+                  <Dropdown placeholder='Technologies ' options={option(props.technology)} selectedKeys={selectedKeys} onChange={onChange} multiSelect />
 
-            </div>
-            <div className='event-submit__image-wrapper'>
-
-            </div>
+                </div>
+              </div>
+              <div className='event-submit__description'>
+                <textarea></textarea>
+              </div>
+              <div className='event-submit__button'>
+                <button>Submit</button>
+              </div>
+            </form>
           </div>
-          <div className='evnet-submit__description'>
-            <textarea></textarea>
-          </div>
-          <div>
-            <button>Submit</button>
-          </div>
-        </form>
+        </div>
       </div>
     </div>
   )
