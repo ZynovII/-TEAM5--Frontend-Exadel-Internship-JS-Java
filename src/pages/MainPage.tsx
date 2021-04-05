@@ -6,7 +6,6 @@ import Footer from "../components/Footer/Footer";
 import MainComponent from "../components/MainComponent"
 import Event from "../components/Event"
 
-
 export const MainPage = () => {
   return (
     <React.Fragment>

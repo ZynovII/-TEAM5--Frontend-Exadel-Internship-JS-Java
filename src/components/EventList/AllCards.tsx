@@ -3,8 +3,6 @@ import { CardItem, ICardItemInfo } from "./EventCard";
 import { PrimaryButton } from "@fluentui/react"
 import "./AllCards.scss";
 
-
-
 const events = [
   {
     id: 1,
@@ -17,6 +15,7 @@ const events = [
     title: "Java&JavaScript",
     date: "01.03.2021-31.05.2021",
     location: "Belarus2",
+
   },
   {
     id: 3,
