@@ -2,7 +2,7 @@ import React, { useState }  from "react"
 import { 
   TextField,
   Stack, Text,
-  DefaultButton,
+  PrimaryButton,
   ITextFieldStyleProps,
   ITextFieldStyles,
   mergeStyleSets,
@@ -188,7 +188,7 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
       />
       </div>
       
-      <DefaultButton className={contentStyles.submitButton} text='Submit'  allowDisabledFocus disabled={false} checked={false} />
+      <PrimaryButton className="button margin2em button_center" text='Submit'  allowDisabledFocus disabled={false} checked={false} />
   </div>
   )
 }
@@ -201,7 +201,8 @@ const contentStyles = mergeStyleSets({
   },
 
   container:{
-    maxWidth:'1170px',
+    width: '73%', 
+    margin:'2em auto'
   },
 
   checkboxes:{

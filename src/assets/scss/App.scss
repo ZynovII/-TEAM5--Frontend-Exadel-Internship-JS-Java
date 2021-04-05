@@ -9,22 +9,28 @@ body {
   font-family: helvetica, arial, sans-serif;
   margin: 0;
   padding: 0;
-  p {
-      background-color: $bg-color;
+  color: #525252;
+  
+  .button {
+    background-color: rgb(3, 144, 222);
+    border-radius: 15px;
   }
-  .footer {
-    background-color: #f2f2f2;
-    padding: 0 2em 2em;
 
-    &__link {
-      margin-bottom: "10px";
-      color: #525252;
-      text-decoration: none;
-      cursor: pointer;
-    }
-
-    &__link:hover {
-      color: #0082ca;
-    }
+  .button_center{
+    display: flex;
+    justify-content: center;
   }
+  
+  .margin2em {
+    margin: 2em auto;
+  }
+
+  .title {
+    width: 73%; 
+    margin: 2em auto;
+  }
+}
+.css-32{
+  overflow-y:scroll!important;
+  position : fixed
 }

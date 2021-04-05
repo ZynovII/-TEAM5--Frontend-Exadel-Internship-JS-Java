@@ -2,6 +2,7 @@ import React from "react";
 import FooterList from "./Footer_list";
 
 import { Text } from "@fluentui/react";
+import "./Footer.scss";
 
 const logo = require("./../../assets/img/logo.svg");
 

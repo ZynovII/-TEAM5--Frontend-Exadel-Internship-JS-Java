@@ -4,7 +4,7 @@ import {
   getTheme,
   mergeStyleSets,
   FontWeights,
-  DefaultButton,
+  PrimaryButton,
   Modal,
   IconButton,
   IIconProps,
@@ -22,7 +22,7 @@ const ButtonLog: FC = () => {
 
   return (
     <div>
-      <DefaultButton onClick={showModal} text="Log In" />
+      <PrimaryButton onClick={showModal} text="Log In" className="button" />
       <Modal
         titleAriaId={titleId}
         isOpen={isModalOpen}
@@ -47,7 +47,7 @@ const ButtonLog: FC = () => {
             canRevealPassword
             className={contentStyles.item}
           />
-          <DefaultButton onClick={() => console.log("send")} text="Send" />
+          <PrimaryButton onClick={() => console.log("send")} text="Send" className="button" />
         </div>
       </Modal>
     </div>
