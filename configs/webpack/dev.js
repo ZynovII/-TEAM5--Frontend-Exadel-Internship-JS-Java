@@ -19,7 +19,8 @@ module.exports = merge(commonConfig, {
     new webpack.HotModuleReplacementPlugin(), // enable HMR globally
   ],
   devServer: {
-    contentBase: './dist',
+    contentBase: "./dist",
     hot: true,
-  }
+    historyApiFallback: true,
+  },
 });

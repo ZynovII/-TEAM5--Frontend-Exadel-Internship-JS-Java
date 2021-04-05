@@ -1,5 +1,5 @@
-import { FC } from 'react';
-import { useId, useBoolean } from '@fluentui/react-hooks';
+import { FC } from "react";
+import { useId, useBoolean } from "@fluentui/react-hooks";
 import {
   getTheme,
   mergeStyleSets,
@@ -9,14 +9,16 @@ import {
   IconButton,
   IIconProps,
   TextField,
-} from '@fluentui/react/lib';
+} from "@fluentui/react/lib";
 
-const cancelIcon: IIconProps = { iconName: 'Cancel' };
+const cancelIcon: IIconProps = { iconName: "Cancel" };
 
 const ButtonLog: FC = () => {
-  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
+    false
+  );
 
-  const titleId = useId('title');
+  const titleId = useId("title");
 
   return (
     <div>
@@ -38,13 +40,14 @@ const ButtonLog: FC = () => {
           />
         </div>
         <div className={contentStyles.body}>
-            <TextField placeholder="Login" className={contentStyles.item}/>
-            <TextField placeholder="Password" 
-              type="password" 
-              canRevealPassword 
-              className={contentStyles.item}
-            />
-            <DefaultButton onClick={() => console.log('send')} text="Send" />
+          <TextField placeholder="Login" className={contentStyles.item} />
+          <TextField
+            placeholder="Password"
+            type="password"
+            canRevealPassword
+            className={contentStyles.item}
+          />
+          <DefaultButton onClick={() => console.log("send")} text="Send" />
         </div>
       </Modal>
     </div>
@@ -54,45 +57,43 @@ const ButtonLog: FC = () => {
 const theme = getTheme();
 const contentStyles = mergeStyleSets({
   container: {
-    display: 'flex',
-    flexFlow: 'column nowrap',
-    alignItems: 'stretch',
+    display: "flex",
+    flexFlow: "column nowrap",
+    alignItems: "stretch",
   },
   header: [
-
     theme.fonts.xLargePlus,
-    
+
     {
-      flex: '1 1 auto',
+      flex: "1 1 auto",
       borderTop: `4px solid ${theme.palette.themePrimary}`,
       color: theme.palette.neutralPrimary,
-      display: 'flex',
-      alignItems: 'center',
+      display: "flex",
+      alignItems: "center",
       fontWeight: FontWeights.semibold,
-      padding: '12px 12px 14px 24px',
+      padding: "12px 12px 14px 24px",
     },
   ],
   body: {
-    flex: '4 4 auto',
-    padding: '0 24px 24px 24px',
-    overflowY: 'hidden',
-    textAlign: 'center'
+    flex: "4 4 auto",
+    padding: "0 24px 24px 24px",
+    overflowY: "hidden",
+    textAlign: "center",
   },
   item: {
-    marginBottom: '10px'
+    marginBottom: "10px",
   },
 });
 const iconButtonStyles = {
   root: {
     color: theme.palette.neutralPrimary,
-    marginLeft: 'auto',
-    marginTop: '4px',
-    marginRight: '2px',
+    marginLeft: "auto",
+    marginTop: "4px",
+    marginRight: "2px",
   },
   rootHovered: {
     color: theme.palette.neutralDark,
   },
 };
 
-
-export default ButtonLog
+export default ButtonLog;

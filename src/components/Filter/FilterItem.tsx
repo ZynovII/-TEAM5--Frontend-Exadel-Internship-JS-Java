@@ -1,5 +1,10 @@
-import React from 'react'
-import { Dropdown, IDropdownOption, IDropdownStyles } from '@fluentui/react/lib';
+import React from "react";
+import {
+  Dropdown,
+  IDropdownOption,
+  IDropdownStyles,
+} from "@fluentui/react/lib";
+
 
 const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 300,} };
 
@@ -8,11 +13,10 @@ export interface IFilterItem{
     placeholder: string;
     label: string;
     options: object[];
-    
 }
 
 export interface IFilterItemProps {
-    filterItem: IFilterItem;
+  filterItem: IFilterItem;
 }
 
 export const DropdownControlledExample: React.FC<IFilterItemProps> = (props) => {
@@ -35,14 +39,3 @@ export const DropdownControlledExample: React.FC<IFilterItemProps> = (props) => 
       />
     );
   };
-  
-
-export const FilterItem: React.FC<IFilterItemProps> = (props) => (
-<Dropdown>
-    placeholder={props.filterItem.placeholder}
-    label={props.filterItem.label}
-    option={props.filterItem.options}
-    
-</Dropdown> 
-
-);

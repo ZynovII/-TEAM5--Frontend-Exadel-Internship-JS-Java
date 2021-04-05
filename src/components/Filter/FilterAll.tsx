@@ -1,9 +1,8 @@
-import React from 'react'
-import { IFilterItem, DropdownControlledExample} from './FilterItem'
+import React from "react";
+import { IFilterItem, DropdownControlledExample } from "./FilterItem";
 
-
-
-const filters = [{
+const filters = [
+  {
     id: 1,
     placeholder: 'All',
     label: 'Event type',

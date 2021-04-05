@@ -1,13 +1,30 @@
 $bg-color: yellow;
 $border-color: red;
 
-body {
-  font-family: helvetica, arial, sans-serif;
-  padding: 2em;
-  border: 5px solid $border-color;
-
-  p {
-    background-color: $bg-color;
-  }
+ul {
+  list-style-type: none;
 }
 
+body {
+  font-family: helvetica, arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  p {
+      background-color: $bg-color;
+  }
+  .footer {
+    background-color: #f2f2f2;
+    padding: 0 2em 2em;
+
+    &__link {
+      margin-bottom: "10px";
+      color: #525252;
+      text-decoration: none;
+      cursor: pointer;
+    }
+
+    &__link:hover {
+      color: #0082ca;
+    }
+  }
+}
