@@ -14,6 +14,7 @@ html,
 body {
 	font-family: helvetica, arial, sans-serif;
 	height: 100%;
+  color: #525252;
 	#root {
 		height: 100%;
 		display: flex;
@@ -39,5 +40,27 @@ body {
 		&__link:hover {
 			color: #0082ca;
 		}
-	}
+    .button {
+      background-color: rgb(3, 144, 222);
+      border-radius: 15px;
+    }
+
+    .button_center{
+      display: flex;
+      justify-content: center;
+    }
+
+    .margin2em {
+      margin: 2em auto;
+    }
+
+    .title {
+      width: 73%; 
+      margin: 2em auto;
+    }
+  }
+}
+.css-32{
+  overflow-y:scroll!important;
+  position : fixed
 }

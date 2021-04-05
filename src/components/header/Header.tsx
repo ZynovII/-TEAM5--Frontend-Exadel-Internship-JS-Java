@@ -5,6 +5,8 @@ import { Stack } from "@fluentui/react/lib";
 import HeaderNav from "./Header_nav";
 import ButtonLog from "./Button_log";
 
+import "./Header.scss";
+
 const logo = require("./../../assets/img/logo.svg");
 
 const Header: FC = () => {
@@ -20,3 +22,4 @@ const Header: FC = () => {
 };
 
 export default Header;
+

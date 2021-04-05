@@ -78,7 +78,7 @@ const FooterList: React.FC = () => {
 
 const styles = {
   container: {
-    maxWidth: "940px",
+    width: "73%",
     margin: "0 auto",
   },
   text: {
