@@ -28,7 +28,7 @@ export interface ICardItemProps {
 const eventImg = require("./../../assets/img/event_img.jpg");
 export const DescriptionEventPage: React.FC<ICardItemProps> = (props) =>{
     return (
-        <div className="ms-Grid d-flex" style={{ boxShadow: theme.effects.elevation64, width: '73%', margin:'0 auto' }}>
+        <div className="ms-Grid d-flex" style={{ boxShadow: theme.effects.elevation64, width: '73%', margin:'2em auto' }}>
             <div className="ms-Grid-row">
                 <div className="ms-Grid-col ms-sm4 ms-md6 ms-lg6">
                     <img style={styles.img} src={eventImg.default} alt="event"/>
