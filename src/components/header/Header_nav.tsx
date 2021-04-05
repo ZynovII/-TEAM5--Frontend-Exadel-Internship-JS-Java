@@ -26,7 +26,7 @@ const Navigation: FC = () => {
     },
   ];
   
-  return <CommandBar items={_items} className="ms-hiddenMdDown" />;
+  return <CommandBar items={_items} className="ms-hiddenMdDown" style={{minWidth:'500px' }}/>;
 };
 
 export default Navigation;
