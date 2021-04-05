@@ -2,9 +2,12 @@ import React from "react";
 import {
   DocumentCard,
   DocumentCardTitle,
-} from "@fluentui/react/lib/components/DocumentCard";
-import { ImageFit } from "@fluentui/react/lib/components/Image";
-import { Image, imgProperties, Text } from "@fluentui/react";
+  Image,
+  ImageFit,
+  Text,
+} from "@fluentui/react";
+
+import { useHistory } from "react-router";
 
 const cardImage = require("./../../assets/img/card_img.jpg");
 
@@ -12,7 +15,6 @@ const styles = {
   styleCard: {
     root: {
       paddingBottom: "10px",
-      width: "30%",
       marginBottom: "20px",
     },
   },
@@ -35,28 +37,32 @@ const styles = {
     marginBottom: "10px",
   },
 };
+
 export interface ICardItemInfo {
+  id: number;
   title: string;
   date: string;
-  id: number;
   location: string;
 }
 
 export interface ICardItemProps {
   cardItem: ICardItemInfo;
 }
-export const CardItem: React.FC<ICardItemProps> = (props) => (
-  <DocumentCard styles={styles.styleCard}>
-    <Image height={150} imageFit={ImageFit.cover} src={cardImage.default} />
-    <DocumentCardTitle
-      styles={styles.mainTytle}
-      title={props.cardItem.location}
-    />
-    <DocumentCardTitle
-      title={props.cardItem.date}
-      showAsSecondaryTitle
-      styles={styles.title}
-    />
-    <Text style={styles.text}>{props.cardItem.location}</Text>
-  </DocumentCard>
-);
+
+export const CardItem: React.FC<ICardItemProps> = (props) => {
+  const history = useHistory();
+
+ return ( 
+    <DocumentCard styles={styles.styleCard} onClick={() => history.push(`/events/${props.cardItem.id}`)}>
+      <Image height={150} imageFit={ImageFit.cover} src={cardImage.default} />
+      <DocumentCardTitle styles={styles.mainTytle} title={props.cardItem.title} />
+      <DocumentCardTitle
+        title={props.cardItem.date}
+        showAsSecondaryTitle
+        styles={styles.title}
+      />
+      <Text style={styles.text}>{props.cardItem.location}</Text>
+    </DocumentCard>
+  )
+};
+
