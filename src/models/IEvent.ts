@@ -1,10 +1,11 @@
 export interface IEvent {
   id: number;
   name: string;
-  date: Date;
+  date: string;
   description: string;
-  technology: string[]; // tags
+  technology: string; // tags
   photoURL: string;
   type: string;
-  location: string;
+  country: string;
+  city: string;
 }
