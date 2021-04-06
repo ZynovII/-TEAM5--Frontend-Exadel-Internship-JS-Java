@@ -12,6 +12,9 @@ import {
   IDropdownOption, } from '@fluentui/react/lib';
   import {IRegistartionProps,IApplicant} from './models'
 
+import { useBoolean } from "@fluentui/react-hooks";
+import ModalWindow from "../ModalWindow"
+
 const textFieldStyles = (props: ITextFieldStyleProps): Partial<ITextFieldStyles> => ({
   ...( {
     errorMessage: {
@@ -39,6 +42,7 @@ const exampleOptionsOfCities: IDropdownOption[] = [
         ></Registration> */}
         
 export const Registration: React.FC<IRegistartionProps> = (props) => {
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
 
   const [registrationData, setRegistrationData] = useState<IApplicant>({
     id:'',
@@ -95,7 +99,13 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
     return {key:item.toLowerCase(), text:item}
   })
 
+  const modalText = `Your application has been successfully sent.
+  Our specialist will connect with you soon.`
+
+
   return (
+    <>
+      <ModalWindow open={isModalOpen} text={modalText} hideModal={hideModal}/>
       <div className={contentStyles.container} >
         <h2 >{props.name}</h2>
         <Stack className={contentStyles.formWrapper} 
@@ -188,8 +198,9 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
       />
       </div>
       
-      <PrimaryButton className="button margin2em button_center" text='Submit'  allowDisabledFocus disabled={false} checked={false} />
-  </div>
+      <PrimaryButton className="button margin2em button_center" text='Submit' onClick={showModal}/>
+    </div>
+  </ >
   )
 }
 
