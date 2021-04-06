@@ -14,7 +14,7 @@ export const MainPage = () => {
       <Header />
             <Switch>
                 <Route path="/events"  exact component={MainComponent} />
-                <Route path="/events/:id" component={Event} />  
+                <Route path="/events/:name" component={Event} />  
 					      <Route component={NotFound} />    
             </Switch>
       <Footer />
