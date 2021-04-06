@@ -1,7 +1,8 @@
 import React from "react";
 import { CardItem, ICardItemInfo } from "./EventCard";
-import { PrimaryButton } from "@fluentui/react"
+import { PrimaryButton } from "@fluentui/react";
 import "./AllCards.scss";
+import { IEvent } from "../../models/IEvent";
 
 const events = [
   {
@@ -15,7 +16,6 @@ const events = [
     title: "Java&JavaScript",
     date: "01.03.2021-31.05.2021",
     location: "Belarus2",
-
   },
   {
     id: 3,
@@ -42,17 +42,21 @@ const events = [
     location: "Belarus6",
   },
 ];
+interface IAllCardsProps {
+  data: IEvent[];
+}
 
-export const AllCards: React.FC = () => {
+export const AllCards: React.FC<IAllCardsProps> = (props) => {
+  const events = props.data;
   return (
     <React.Fragment>
       <section className="all-cards__wrapper">
-        {events.map((obj: ICardItemInfo) => (
-            <CardItem  cardItem={obj}  key={obj.id}/>
+        {events.map((obj) => (
+          <CardItem cardItem={obj} key={obj.id} />
         ))}
       </section>
       <div className="margin2em button_center">
-        <PrimaryButton text="Load More"  className="button" />
+        <PrimaryButton text="Load More" className="button" />
       </div>
     </React.Fragment>
   );
