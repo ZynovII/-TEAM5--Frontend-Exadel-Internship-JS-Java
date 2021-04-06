@@ -1,9 +1,14 @@
 import React from "react";
+import Footer from "../components/Footer/Footer";
+import Header from "../components/Header/Header";
+import { NotFound } from "../components/NotFound";
 
 export const NotFoundPage = () => (
-	<div>
-		<span className="ms-fontSize-68">404</span>
-		<br />
-		<span>... Page not found</span>
-	</div>
+  <>
+    <Header />
+    <main className="main">
+      <NotFound />
+    </main>
+    <Footer />
+  </>
 );

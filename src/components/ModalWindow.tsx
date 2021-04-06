@@ -16,7 +16,7 @@ const ModalWindow = (props) => {
     <Modal
     isOpen={props.open}
     onDismiss={props.hideModal}
-    isBlocking={true}
+    isBlocking={false}
     containerClassName={contentStyles.container}
   >
     <div className={contentStyles.header}>
