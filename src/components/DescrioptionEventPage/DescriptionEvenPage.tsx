@@ -28,10 +28,10 @@ export interface ICardItemProps {
   cardItem: ICardItemInfo;
 }
 const eventImg = require("./../../assets/img/event_img.jpg");
+
 export const DescriptionEventPage: React.FC<ICardItemProps> = (props) => {
   return (
     <div
-      // className="ms-Grid d-flex"
       style={{
         boxShadow: theme.effects.elevation64,
         width: "73%",

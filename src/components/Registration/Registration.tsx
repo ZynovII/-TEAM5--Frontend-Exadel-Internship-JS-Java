@@ -8,7 +8,6 @@ import {
   mergeStyleSets,
   Checkbox,
   Dropdown,
-  IDropdownStyles,
   IDropdownOption, } from '@fluentui/react/lib';
   import {IRegistartionProps,IApplicant} from './models'
 
@@ -27,9 +26,6 @@ const exampleOptionsOfCities: IDropdownOption[] = [
   { key: 'grodno', text: 'Grodno' },
   { key: 'gomel', text: 'Gomel', disabled: true },
 ];
-
-
-
 
 {/* <Registration
         id='1' 
@@ -57,6 +53,8 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
   const [countryStatus,setCountryStatus] = useState({
     disable:true
   })
+
+  const [fileName, setFileName] = useState<string>('')
 
   const handleFieldChange = (event : any) => {
     const name = event.target.dataset.type
@@ -95,9 +93,13 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
     return {key:item.toLowerCase(), text:item}
   })
 
+  const uploadFile = (event) => {
+    setFileName(event.target.files[0].name)
+  }
+  
   return (
       <div className={contentStyles.container} >
-        <h2 >{props.name}</h2>
+        <h2 style={{margin:'2em 0 1em'}}>{props.name}</h2>
         <Stack className={contentStyles.formWrapper} 
         horizontal tokens={{ childrenGap: '40px' }}  
         onSubmit={handleSubmit}>
@@ -178,7 +180,9 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
       className={contentStyles.lab} 
       multiline resizable={false} />
       <Text className={contentStyles.lab} nowrap block>* Fields marked with * are required</Text>
-      <input  className='fileInput' type='file' />
+      <input type='file' id="files" className="input-file__input" onChange={uploadFile}/>
+      <label htmlFor="files" className="input-file__label">Загрузить файл</label>
+      <span>{fileName}</span>
       <div className={contentStyles.checkboxes}>
       <Checkbox
         label='By applying for this position, I submit my personal data to the Exadel and give my consent for the processing of personal data for job recruitment purpose'
@@ -187,7 +191,6 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
         label='I understand and accept that for purpose of evaluation of my application, professional skills and experience my personal data may be accessible to the intra-group companies of Exadel'
       />
       </div>
-      
       <PrimaryButton className="button margin2em button_center" text='Submit'  allowDisabledFocus disabled={false} checked={false} />
   </div>
   )

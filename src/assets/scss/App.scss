@@ -64,3 +64,28 @@ body {
   overflow-y:scroll!important;
   position : fixed
 }
+
+.input-file {
+  position: relative;
+  margin: 10px;
+  
+  &__input {
+    overflow: hidden;
+    position: absolute;
+    clip: rect(0 0 0 0);
+    opacity: 0;
+  }
+
+  &__label {
+    cursor: pointer;
+    display: inline-block;
+    border: 1px solid rgb(138, 136, 134);
+    padding: 10px;
+    margin: 0 10px 10px 0;
+    transition: background-color 0.2s;
+    
+    .form-item__input:focus + &, &:hover {
+      background-color: #f2f2f2;
+    }
+  }
+}
