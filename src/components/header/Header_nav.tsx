@@ -10,7 +10,7 @@ const Navigation: FC = () => {
       key: "candidates",
       text: "Candidates",
       style: { fontSize: "18px" },
-      onClick: () => history.push(`admin/candidates`),
+      onClick: () => history.push('admin/candidates'),
     },
     {
       key: "events",

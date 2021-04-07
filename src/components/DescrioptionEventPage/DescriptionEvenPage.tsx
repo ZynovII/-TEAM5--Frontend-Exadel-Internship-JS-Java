@@ -51,7 +51,5 @@ export const DescriptionEventPage: React.FC<ICardItemProps> = (props) =>{
                 </div>
             </div>
         </div>
-      </div>
-    </div>
   );
 };
