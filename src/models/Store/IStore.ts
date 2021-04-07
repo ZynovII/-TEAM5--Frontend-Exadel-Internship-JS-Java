@@ -5,6 +5,6 @@ export interface IStore {
   loading: boolean;
   isAuthenticated: boolean;
   currentUserID: number;
-  events: { [eventId: string]: IEvent };
+  events: IEvent[]; // { [eventId: string]: IEvent };
   applicants: { [aplicantId: string]: IApplicant };
 }

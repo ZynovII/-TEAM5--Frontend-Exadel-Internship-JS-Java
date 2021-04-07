@@ -1,63 +1,39 @@
-import React from "react";
-import { CardItem, ICardItemInfo } from "./EventCard";
-import { PrimaryButton } from "@fluentui/react";
+import React, { useEffect } from "react";
+import { CardItem } from "./EventCard";
+import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
+
 import "./AllCards.scss";
-import { IEvent } from "../../models/IEvent";
 
-const events = [
-  {
-    id: 1,
-    title: "Java&JavaScript",
-    date: "01.03.2021-31.05.2021",
-    location: "Belarus1",
-  },
-  {
-    id: 2,
-    title: "Java&JavaScript",
-    date: "01.03.2021-31.05.2021",
-    location: "Belarus2",
-  },
-  {
-    id: 3,
-    title: "Java&JavaScript",
-    date: "01.03.2021-31.05.2021",
-    location: "Belarus3",
-  },
-  {
-    id: 4,
-    title: "Java&JavaScript",
-    date: "01.03.2021-31.05.2021",
-    location: "Belarus4",
-  },
-  {
-    id: 5,
-    title: "Java&JavaScript",
-    date: "01.03.2021-31.05.2021",
-    location: "Belarus5",
-  },
-  {
-    id: 6,
-    title: "Java&JavaScript",
-    date: "01.03.2021-31.05.2021",
-    location: "Belarus6",
-  },
-];
-interface IAllCardsProps {
-  data: IEvent[];
-}
+import { useStore } from "../../context/context";
+import { ActionTypes } from "../../context/actionTypes";
+import { fakeRequestEvents } from "../../fakeDB/fakeRequest";
 
-export const AllCards: React.FC<IAllCardsProps> = (props) => {
-  const events = props.data;
-  return (
-    <React.Fragment>
+export const AllCards: React.FC = () => {
+  const { state, dispatch } = useStore();
+
+  useEffect(() => {
+    dispatch({
+      type: ActionTypes.SHOW_LOADER,
+    });
+    fakeRequestEvents.then((res) => {
+      dispatch({
+        type: ActionTypes.FETCH_EVENTS,
+        payload: JSON.parse(res),
+      });
+    });
+  }, []);
+  return state.loading ? (
+    <Spinner size={SpinnerSize.large} className="margin2em" />
+  ) : (
+    <>
       <section className="all-cards__wrapper">
-        {events.map((obj) => (
+        {state.events.map((obj) => (
           <CardItem cardItem={obj} key={obj.id} />
         ))}
       </section>
       <div className="margin2em button_center">
         <PrimaryButton text="Load More" className="button" />
       </div>
-    </React.Fragment>
+    </>
   );
 };
