@@ -56,7 +56,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   return (
     <DocumentCard
       styles={styles.styleCard}
-      onClick={() => history.push(`/events/${props.cardItem.id}`)}
+      onClick={() => history.push(`/events/${props.cardItem.name}`)}
     >
       <Image height={150} imageFit={ImageFit.cover} src={cardImage.default} />
       <DocumentCardTitle

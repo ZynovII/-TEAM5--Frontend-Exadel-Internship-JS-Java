@@ -10,6 +10,7 @@ import { fakeRequestEvents } from "../../fakeDB/fakeRequest";
 
 export const AllCards: React.FC = () => {
   const { state, dispatch } = useStore();
+  const [length, setLength] = useState(6);
 
   useEffect(() => {
     dispatch({
@@ -27,12 +28,12 @@ export const AllCards: React.FC = () => {
   ) : (
     <>
       <section className="all-cards__wrapper">
-        {state.events.map((obj) => (
+        {events.slice(0, length).map((obj) => (
           <CardItem cardItem={obj} key={obj.id} />
         ))}
       </section>
       <div className="margin2em button_center">
-        <PrimaryButton text="Load More" className="button" />
+        <PrimaryButton text="Load More" className="button" onClick={() => setLength(length+6)}/>
       </div>
     </>
   );

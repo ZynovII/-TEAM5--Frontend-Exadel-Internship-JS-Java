@@ -10,7 +10,11 @@ ul {
 	padding: 0;
 }
 
-html,
+html {
+  margin-right: calc(-1* (100vw - 100%));
+  overflow-x: hidden;
+}
+
 body {
 	font-family: helvetica, arial, sans-serif;
 	height: 100%;
@@ -40,27 +44,53 @@ body {
 		&__link:hover {
 			color: #0082ca;
 		}
-    .button {
-      background-color: rgb(3, 144, 222);
-      border-radius: 15px;
-    }
-
-    .button_center{
-      display: flex;
-      justify-content: center;
-    }
-
-    .margin2em {
-      margin: 2em auto;
-    }
-
     .title {
       width: 73%; 
       margin: 2em auto;
     }
   }
 }
-.css-32{
-  overflow-y:scroll!important;
-  position : fixed
+
+.input-file {
+  position: relative;
+  margin: 10px;
+  
+  &__input {
+    overflow: hidden;
+    position: absolute;
+    clip: rect(0 0 0 0);
+    opacity: 0;
+  }
+
+  &__label {
+    cursor: pointer;
+    display: inline-block;
+    border: 1px solid rgb(138, 136, 134);
+    padding: 10px;
+    margin: 0 10px 10px 0;
+    transition: background-color 0.2s;
+    
+    .form-item__input:focus + &, &:hover {
+      background-color: #f2f2f2;
+    }
+  }
 }
+
+.button {
+  background-color: rgb(3, 144, 222);
+  border-radius: 15px;
+}
+
+.button:hover {
+  background-color: rgb(2, 118, 180);
+}
+
+.button_center{
+  display: flex;
+  justify-content: center;
+}
+
+.margin2em {
+  margin: 2em auto;
+}
+
