@@ -1,0 +1,93 @@
+@import "../styles/mixins";
+@import "../styles/variables";
+
+.center-block {
+  display: flex;
+  justify-content: center;
+}
+.event-submit {
+  font-family: "Roboto", sans-serif;
+  position: fixed;
+  max-width: 868px;
+  max-height: 641px;
+  width: 100%;
+  z-index: 100;
+  background-color: #fff;
+  border-radius: 25px;
+  top: 5vh;
+  overflow-y: scroll;
+  @include media-min-width(700px) {
+    overflow-y: auto;
+  }
+
+  &__wrapper {
+    padding: 2rem 2.5rem;
+  }
+  .ms-Dropdown-title {
+    background-color: $firstColor;
+    color: #000;
+  }
+  & input,
+  textarea {
+    background-color: $firstColor;
+    color: #000;
+  }
+  &__body {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 20px;
+    flex-direction: column;
+    align-items: center;
+    @include media-min-width(700px) {
+      flex-direction: row;
+    }
+  }
+  &__inputs {
+    max-width: 303px;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    // padding-right: 1rem;
+    & > div {
+      margin-bottom: 1rem;
+      @include media-min-width(700px) {
+        margin-bottom: 0;
+        margin: 0.5rem 0;
+      }
+    }
+  }
+  &__description {
+    & > textarea {
+      width: 100%;
+      min-height: 108px;
+      resize: none;
+      &:focus {
+        outline: none;
+      }
+    }
+  }
+  &__image {
+    margin-bottom: 2rem;
+    @include media-min-width(700px) {
+      order: 1;
+      margin-bottom: 0;
+    }
+    & img {
+      max-width: 259px;
+      width: 100%;
+    }
+  }
+  &__button {
+    text-align: center;
+    & button {
+      border: 0;
+      display: inline-block;
+      background-color: $firstColor;
+      border-radius: 25px;
+      padding: 0.75rem 3.5rem;
+      margin-top: 1.5rem;
+      cursor: pointer;
+    }
+  }
+}

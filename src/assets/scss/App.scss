@@ -44,8 +44,6 @@ body {
 		&__link:hover {
 			color: #0082ca;
 		}
-    
-
     .title {
       width: 73%; 
       margin: 2em auto;
@@ -69,7 +67,7 @@ body {
     display: inline-block;
     border: 1px solid rgb(138, 136, 134);
     padding: 10px;
-    margin-bottom: 10px;
+    margin: 0 10px 10px 0;
     transition: background-color 0.2s;
     
     .form-item__input:focus + &, &:hover {
@@ -77,7 +75,6 @@ body {
     }
   }
 }
-
 
 .button {
   background-color: rgb(3, 144, 222);
@@ -96,3 +93,4 @@ body {
 .margin2em {
   margin: 2em auto;
 }
+

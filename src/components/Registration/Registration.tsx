@@ -58,6 +58,8 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
     disable:true
   })
 
+  const [fileName, setFileName] = useState<string>('')
+
   const handleFieldChange = (event : any) => {
     const name = event.target.dataset.type
     const value = event.target.value
@@ -98,7 +100,10 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
   const modalText = `Your application has been successfully sent.
   Our specialist will connect with you soon.`
 
-
+  const uploadFile = (event) => {
+    setFileName(event.target.files[0].name)
+  }
+  
   return (
     <>
       <ModalWindow open={isModalOpen} text={modalText} hideModal={hideModal}/>
@@ -184,8 +189,9 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
       className={contentStyles.lab} 
       multiline resizable={false} />
       <Text className={contentStyles.lab} nowrap block>* Fields marked with * are required</Text>
-      <input type='file' id="files" className="input-file__input"/>
+      <input type='file' id="files" className="input-file__input" onChange={uploadFile}/>
       <label htmlFor="files" className="input-file__label">Загрузить файл</label>
+      <span>{fileName}</span>
       <div className={contentStyles.checkboxes}>
       <Checkbox
         label='By applying for this position, I submit my personal data to the Exadel and give my consent for the processing of personal data for job recruitment purpose'
