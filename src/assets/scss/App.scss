@@ -10,7 +10,11 @@ ul {
 	padding: 0;
 }
 
-html,
+html {
+  margin-right: calc(-1* (100vw - 100%));
+  overflow-x: hidden;
+}
+
 body {
 	font-family: helvetica, arial, sans-serif;
 	height: 100%;
@@ -46,10 +50,6 @@ body {
     }
   }
 }
-.css-32{
-  overflow-y:scroll!important;
-  position : fixed
-}
 
 .input-file {
   position: relative;
@@ -81,6 +81,10 @@ body {
   border-radius: 15px;
 }
 
+.button:hover {
+  background-color: rgb(2, 118, 180);
+}
+
 .button_center{
   display: flex;
   justify-content: center;
@@ -89,3 +93,4 @@ body {
 .margin2em {
   margin: 2em auto;
 }
+

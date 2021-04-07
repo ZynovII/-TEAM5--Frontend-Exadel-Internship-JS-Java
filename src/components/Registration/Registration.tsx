@@ -11,6 +11,9 @@ import {
   IDropdownOption, } from '@fluentui/react/lib';
   import {IRegistartionProps,IApplicant} from './models'
 
+import { useBoolean } from "@fluentui/react-hooks";
+import ModalWindow from "../ModalWindow"
+
 const textFieldStyles = (props: ITextFieldStyleProps): Partial<ITextFieldStyles> => ({
   ...( {
     errorMessage: {
@@ -35,6 +38,7 @@ const exampleOptionsOfCities: IDropdownOption[] = [
         ></Registration> */}
         
 export const Registration: React.FC<IRegistartionProps> = (props) => {
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
 
   const [registrationData, setRegistrationData] = useState<IApplicant>({
     id:'',
@@ -93,11 +97,16 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
     return {key:item.toLowerCase(), text:item}
   })
 
+  const modalText = `Your application has been successfully sent.
+  Our specialist will connect with you soon.`
+
   const uploadFile = (event) => {
     setFileName(event.target.files[0].name)
   }
   
   return (
+    <>
+      <ModalWindow open={isModalOpen} text={modalText} hideModal={hideModal}/>
       <div className={contentStyles.container} >
         <h2 style={{margin:'2em 0 1em'}}>{props.name}</h2>
         <Stack className={contentStyles.formWrapper} 
@@ -191,8 +200,9 @@ export const Registration: React.FC<IRegistartionProps> = (props) => {
         label='I understand and accept that for purpose of evaluation of my application, professional skills and experience my personal data may be accessible to the intra-group companies of Exadel'
       />
       </div>
-      <PrimaryButton className="button margin2em button_center" text='Submit'  allowDisabledFocus disabled={false} checked={false} />
-  </div>
+      <PrimaryButton className="button margin2em button_center" text='Submit' onClick={showModal}/>
+    </div>
+  </ >
   )
 }
 
