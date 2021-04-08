@@ -6,7 +6,6 @@ import styles from './styles/Submit.module.scss';
 const Submit = () => {
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(false);
   const modalText = 'Do you want to save changes?';
-  console.log(styles);
 
   return (
     <React.Fragment>
