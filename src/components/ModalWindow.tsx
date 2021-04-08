@@ -9,9 +9,14 @@ import { getTheme,
   IIconProps,
 } from '@fluentui/react'
 
-const cancelIcon: IIconProps = { iconName: "Cancel" };
-const ModalWindow = (props) => {
+interface IModalProps {
+  open: boolean;
+  hideModal(): void;
+  text: string;
+}
 
+const cancelIcon: IIconProps = { iconName: "Cancel" };
+const ModalWindow: React.FC<IModalProps> = (props) => {
   return (
     <Modal
     isOpen={props.open}
