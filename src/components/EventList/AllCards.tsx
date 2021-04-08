@@ -3,31 +3,17 @@ import { CardItem } from "./EventCard";
 import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
 
 import "./AllCards.scss";
-
-import { useStore } from "../../context/context";
-import { ActionTypes } from "../../context/actionTypes";
-import { fakeRequestEvents } from "../../fakeDB/fakeRequest";
+import { useEvents } from "../../hooks/hooks";
 
 export const AllCards: React.FC = () => {
-  const { state, dispatch } = useStore();
+  const { events, loading } = useEvents();
 
-  useEffect(() => {
-    dispatch({
-      type: ActionTypes.SHOW_LOADER,
-    });
-    fakeRequestEvents.then((res) => {
-      dispatch({
-        type: ActionTypes.FETCH_EVENTS,
-        payload: JSON.parse(res),
-      });
-    });
-  }, []);
-  return state.loading ? (
+  return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <>
       <section className="all-cards__wrapper">
-        {state.events.map((obj) => (
+        {events.map((obj) => (
           <CardItem cardItem={obj} key={obj.id} />
         ))}
       </section>

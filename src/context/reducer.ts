@@ -40,6 +40,16 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         events: payload,
         loading: false,
       };
+    case ActionTypes.FETCH_MORE_EVENTS:
+      return {
+        ...state,
+        events: { ...state.events, ...payload },
+      };
+    case ActionTypes.FETCH_MORE_APPLICANTS:
+      return {
+        ...state,
+        applicants: { ...state.applicants, ...payload },
+      };
     default:
       return state;
   }

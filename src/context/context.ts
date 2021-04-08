@@ -14,5 +14,3 @@ export const Context = createContext<{
   state: IStore;
   dispatch: React.Dispatch<IAction>;
 }>({ state: initialState, dispatch: () => {} });
-
-export const useStore = () => useContext(Context);
