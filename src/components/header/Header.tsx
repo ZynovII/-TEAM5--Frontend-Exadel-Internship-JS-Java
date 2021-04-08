@@ -1,4 +1,4 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 
 import { Stack } from "@fluentui/react/lib";
 
@@ -10,6 +10,12 @@ import "./Header.scss";
 const logo = require("./../../assets/img/logo.svg");
 
 const Header: FC = () => {
+	const [status, setStatus] = useState({
+		isLoggedIn: true
+	})
+	const logOut = () => {
+		setStatus({isLoggedIn: false})
+	}
 	return (
 		<header className="header">
 			<Stack horizontal horizontalAlign="space-between">
@@ -17,7 +23,7 @@ const Header: FC = () => {
           <img src={logo.default} height="24" width="150" alt="exadel" />
           <HeaderNav />
         </div>
-				<ButtonLog />
+				<ButtonLog isLoggedIn={status.isLoggedIn} userName = {'Admin'} logout={logOut} />
 			</Stack>
 		</header>
 	);
