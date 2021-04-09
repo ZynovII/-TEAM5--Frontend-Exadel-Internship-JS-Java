@@ -16,4 +16,5 @@ export interface IApplicant{
   summary: string;
   country: string;
   city: string;
+  time: string;
 }
