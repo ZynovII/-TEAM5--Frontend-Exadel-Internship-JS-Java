@@ -8,12 +8,7 @@ const Event: React.FC = (props) => {
 		<main className="main">
 			<h1 style={{ textAlign: "center", marginBottom:"1em" }}>Internship JS & Java</h1>
 			<DescriptionEventPage />
-			<Registration
-				// id="1"
-				name="Apply for Internship JS & Java"
-				country={["Russia", "Belarus"]}
-				// technology={["js", "java"]}
-			></Registration>
+			<Registration />
 		</main>
 	);
 };

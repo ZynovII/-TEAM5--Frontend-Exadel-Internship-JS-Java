@@ -38,7 +38,7 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps  > = (
       render={({field:{ onChange }}) => (
         <Dropdown
         {...props}
-        onChanged={ onChange }
+        onChanged= { onChange }
         />
       )}
     />

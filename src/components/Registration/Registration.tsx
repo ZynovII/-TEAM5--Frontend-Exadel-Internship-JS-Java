@@ -1,5 +1,5 @@
-import React, { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import React, { useEffect, useState, useMemo } from "react";
+import { useForm,  } from "react-hook-form";
 import { ControlledTextField, ControlledDropdown } from "../../hook-form/ControlledTextField";
 import {
   Stack,
@@ -42,37 +42,42 @@ export const Registration = (props) => {
     mode: "all",
   });
 
-  const optionsOfCountries: IDropdownOption[] = props.country.map((item) => {
-    return { key: item.toLowerCase(), text: item };
-  });
+  const optionsOfCountries: IDropdownOption[] = useMemo( () => {
+    return [
+      { key: "belarus", text: "Belarus" },
+      { key: "russia",  text: "Russia" },
+      { key: "ukraine", text: "Ukraine", disabled: true },
+    ];
+  }, [])
 
-  const exampleOptionsOfCities: IDropdownOption[] = [
-    { key: "minsk", text: "Minsk" },
-    { key: "grodno", text: "Grodno" },
-    { key: "gomel", text: "Gomel", disabled: true },
-  ];
+  const exampleOptionsOfCities: IDropdownOption[] = useMemo( () => {
+    return [
+      { key: "minsk", text: "Minsk" },
+      { key: "grodno", text: "Grodno" },
+      { key: "gomel", text: "Gomel", disabled: true },
+    ];
+  }, []) 
 
-  const exampleTime: IDropdownOption[] = [
-    { key: "first", text: "10.00 - 12.00" },
-    { key: "second", text: "12.00 - 14.00" },
-    { key: "third", text: "14.00 - 16.00" },
-    { key: "fourth", text: "16.00 - 18.00" },
-  ];
+  const exampleTime: IDropdownOption[] = useMemo( () => {
+    return [
+      { key: "first", text: "10.00 - 12.00" },
+      { key: "second", text: "12.00 - 14.00" },
+      { key: "third", text: "14.00 - 16.00" },
+      { key: "fourth", text: "16.00 - 18.00" },
+    ];
+  }, []) 
 
   const [countryStatus, setCountryStatus] = useState<boolean>(true);
   const [privacy, { setTrue: setPrivacyTrue, setFalse: setPrivacyFalse }] = useBoolean( false );
   const [personalData, { setTrue: setPersonalDataTrue, setFalse: setPersonalDataFalse }] = useBoolean( false );
   const [disabledButton, { setTrue: setDisabledButtonTrue, setFalse: setDisabledButtonFalse }] = useBoolean( true );
 
-
   const checkPrivacy = (event) => {
     event.target.checked ? setPrivacyTrue() : setPrivacyFalse()
-
   }
   
   const checkPersonalData = (event) => {
     event.target.checked ? setPersonalDataTrue() : setPersonalDataFalse()
-
   }
 
   useEffect(() => {
@@ -83,11 +88,16 @@ export const Registration = (props) => {
   // const uploadFile = (event) => {
   //       setFileName(event.target.files[0].name)
   //     }
-
-  const onSave = () => {
+  const transform = onSubmitFunc => data => {
+    let transformData = data;
+    console.log("transform your data here", data);
+    onSubmitFunc(transformData); // and return this the onsubmit
+  };
+  const onSave = (data) => {
     handleSubmit(
       (data) => {
-        console.log(data);
+        const dataSubmit = {...data, city: data.city['key'], country: data.country['key'], time: data.time['key'] }
+        console.log(dataSubmit);
         showModal();
       },
       (err) => {
@@ -96,6 +106,7 @@ export const Registration = (props) => {
       }
     )();
   };
+
 
   return (
     <>
@@ -118,7 +129,12 @@ export const Registration = (props) => {
                 control={control}
                 name={"fullName"}
                 errors={errors}
-                rules={{ required: "This field is requiredq" }}
+                rules={{ required: "This field is required",
+                        //  pattern: /[A-Za-z]{3}/,
+                         validate: {
+                           only: (v) => v.length > 3
+                         },
+                        }} 
                 styles={textFieldStyles}
               />
             </div>
@@ -175,6 +191,7 @@ export const Registration = (props) => {
               options={optionsOfCountries}
               onChange={() => setCountryStatus(false)}
             />
+             
             <ControlledDropdown
               control={control}
               name={"city"}
