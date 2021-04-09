@@ -37,6 +37,7 @@ const filters = [
 
 const filterDisplay = {
 	display: "flex",
+  flexWrap: "wrap",
 	width: "73%",
 	margin: "2em auto",
 	justifyContent: "space-between",

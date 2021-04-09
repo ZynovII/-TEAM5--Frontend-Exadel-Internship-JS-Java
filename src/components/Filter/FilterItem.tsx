@@ -6,13 +6,13 @@ import {
 } from "@fluentui/react/lib";
 
 
-const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 300,} };
+const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 300,margin:"0 10px"} };
 
 export interface IFilterItem{
     id: number;
     placeholder: string;
     label: string;
-    options: object[];
+    options: IDropdownOption[];
 }
 
 export interface IFilterItemProps {
