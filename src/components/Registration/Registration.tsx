@@ -88,11 +88,7 @@ export const Registration = (props) => {
   // const uploadFile = (event) => {
   //       setFileName(event.target.files[0].name)
   //     }
-  const transform = onSubmitFunc => data => {
-    let transformData = data;
-    console.log("transform your data here", data);
-    onSubmitFunc(transformData); // and return this the onsubmit
-  };
+ 
   const onSave = (data) => {
     handleSubmit(
       (data) => {
