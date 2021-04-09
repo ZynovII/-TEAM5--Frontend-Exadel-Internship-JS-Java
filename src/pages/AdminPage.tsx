@@ -5,13 +5,6 @@ import { DashboardNav } from "../components/DashboardNav/DashboardNav";
 
 import "./AdminPage.scss";
 import { NotFound } from "../components/NotFound";
-import { ApplicantList } from "../components/applicant-list/ApplicantList";
-import { InterviewList } from "../components/InterviewsList/InterviewsList";
-import { AllCards } from "../components/EventList/AllCards";
-import { AllCardsWithData } from "../components/MainComponent";
-import { ApplicantListFilter } from "../components/applicant-list/ApplicantListFilter";
-import { AllApplicantFilter } from "../components/applicant-list/AllApplicantListFilter";
-import { InterviewListFilter } from "../components/InterviewsList/InterviwListFilter";
 
 export const AdminPage = () => {
   return (
@@ -28,29 +21,14 @@ export const AdminPage = () => {
             </div>
           </div>
           <div className="ms-Grid-row">
+            //Your components//
             <Switch>
               <Route path="/admin" exact component={() => <h1>Main</h1>} />
-              <Route path="/admin/events" component={AllCardsWithData} />
+              <Route path="/admin/events" component={() => <h1>Events</h1>} />
               <Route
                 path="/admin/candidates"
-                component={() => (
-                  <>
-                    <AllApplicantFilter />
-                    <ApplicantList />
-                  </>
-                )}
+                component={() => <h1>Candidates</h1>}
               />
-              <Route
-                path="/admin/interviews"
-                component={() => (
-                  <>
-                    <InterviewListFilter />
-                    <InterviewList />
-                  </>
-                )}
-              />
-              <Route path="/admin/archive" component={() => <h1>Archive</h1>} />
-              <Route path="/admin/signout" component={() => <h1>SignOut</h1>} />
               <Route component={NotFound} />
             </Switch>
           </div>

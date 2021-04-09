@@ -15,57 +15,58 @@ import { InterviewStatus, IApplicant } from "../../models/IApplicant";
 //     interviewTime: any
 //    }
 export interface IInterview {
-  interviewDate: string;
-  interviewTime: any;
-  fullName: string;
-  events: string;
-  interviewStatus: InterviewStatus.Registered;
+  interviewDate: string,
+  interviewTime: any,
+  fullName: string,
+  events: string,
+  interviewStatus: InterviewStatus.Registered
 }
 const calloutProps = { gapSpace: 0 };
 
-const hostStyles: Partial<ITooltipHostStyles> = {
-  root: { display: "inline-block" },
-};
+const hostStyles: Partial<ITooltipHostStyles> = { root: { display: 'inline-block' } };
 const applicants: IInterview[] = [
   {
     interviewDate: "2017-05-24",
     interviewTime: "18:00",
     fullName: "Vova Ivanov",
     events: "Internship JS & Java",
-    interviewStatus: InterviewStatus.Registered,
+    interviewStatus: InterviewStatus.Registered
   },
   {
     interviewDate: "2017-05-24",
     interviewTime: "15:00",
     fullName: "Petr Krasnow",
     events: "C++ interview",
-    interviewStatus: InterviewStatus.Registered,
+    interviewStatus: InterviewStatus.Registered
   },
-  {
+  { 
     interviewDate: "2017-05-24",
     interviewTime: "10:00",
     fullName: "Nike Petrov",
     events: "Internship JS & Java",
-    interviewStatus: InterviewStatus.Registered,
+    interviewStatus: InterviewStatus.Registered
   },
-  {
+  { 
     interviewDate: "2017-05-24",
     interviewTime: "16:00",
     fullName: "Sonya Volina",
     events: "Business Analysis Meet UP",
-    interviewStatus: InterviewStatus.Registered,
-  },
+    interviewStatus: InterviewStatus.Registered
+  }
 ];
+
 
 const classNames = mergeStyleSets({
   table: {
     margin: "auto",
     maxWidth: "73%",
-    maxHeight: 680,
+    maxHeight: 680
   },
-  column: {
-    ":hover": {},
-  },
+  column:{
+    ':hover':{
+
+    }
+  }
 });
 
 export interface IInterviewList {
@@ -73,7 +74,7 @@ export interface IInterviewList {
   items: IInterview[];
 }
 export const InterviewList: React.FC = () => {
-  const tooltipId = useId("tooltip");
+  const tooltipId = useId('tooltip');
   const columns: IColumn[] = [
     {
       key: "column1",
@@ -81,7 +82,7 @@ export const InterviewList: React.FC = () => {
       fieldName: "interviewDate",
       minWidth: 70,
       maxWidth: 100,
-      isResizable: true,
+      isResizable: true
     },
     {
       key: "column2",
@@ -89,7 +90,7 @@ export const InterviewList: React.FC = () => {
       fieldName: "interviewTime",
       minWidth: 70,
       maxWidth: 100,
-      isResizable: true,
+      isResizable: true
     },
     {
       key: "column3",
@@ -97,7 +98,7 @@ export const InterviewList: React.FC = () => {
       fieldName: "fullName",
       minWidth: 100,
       maxWidth: 250,
-      isResizable: true,
+      isResizable: true
     },
     {
       key: "column4",
@@ -105,7 +106,7 @@ export const InterviewList: React.FC = () => {
       fieldName: "events",
       minWidth: 100,
       maxWidth: 250,
-      isResizable: true,
+      isResizable: true
     },
     {
       key: "column5",
@@ -116,7 +117,7 @@ export const InterviewList: React.FC = () => {
       isResizable: false,
     },
     {
-      key: "column6",
+      key: "column5",
       name: "More",
       isIconOnly: true,
       fieldName: "",
@@ -124,18 +125,18 @@ export const InterviewList: React.FC = () => {
       maxWidth: 50,
       isResizable: false,
       onRender: () => (
-        <TooltipHost
-          content="Show more information"
-          id={tooltipId}
-          calloutProps={calloutProps}
-          styles={hostStyles}
-        >
+        <TooltipHost 
+        content="Show more information"
+        id={tooltipId}
+        calloutProps={calloutProps}
+        styles={hostStyles}>
+          
           <a href="#" aria-describedby={tooltipId}>
             <i className={`ms-Icon ms-Icon--More`} />
           </a>
         </TooltipHost>
-      ),
-    },
+      )
+    }
   ];
   return (
     <div data-is-scrollable={true}>

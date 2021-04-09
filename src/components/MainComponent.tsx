@@ -4,7 +4,7 @@ import { AllCards } from "./EventList/AllCards";
 import { withRequest } from "./HOCs/withRequstHOC";
 import { fakeRequestEvents } from "../fakeDB/fakeRequest";
 
-export const AllCardsWithData = withRequest(AllCards, fakeRequestEvents);
+const AllCardsWithData = withRequest(AllCards, fakeRequestEvents);
 
 const MainComponent: React.FC = () => {
   return (

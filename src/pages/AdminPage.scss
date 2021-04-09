@@ -1,20 +1,21 @@
 .admin-page {
-  background-color: rgba(225, 223, 221, 0.2);
-  padding: 0;
-  .dash-nav {
-    background-color: white;
-    height: 100vh;
-    border: 1px solid #eee;
-  }
-  .ms-Grid-row {
-    margin: 0;
-  }
-  .ms-Grid-col.ms-sm2 {
-    padding: 0;
-  }
-  .dashboard {
-    &__title {
-      margin: 1.5em 2em;
-    }
-  }
+	background-color: rgba(225, 223, 221, 0.2);
+	padding: 0;
+	.dash-nav {
+		background-color: white;
+		height: 100vh;
+		border: 1px solid #eee;
+	}
+	.ms-Grid-row {
+		margin: 0;
+	}
+	.ms-Grid-col.ms-sm2 {
+		padding: 0;
+	}
+	.dashboard {
+		&__title {
+			margin-left: 2em;
+			margin-bottom: 2em;
+		}
+	}
 }
