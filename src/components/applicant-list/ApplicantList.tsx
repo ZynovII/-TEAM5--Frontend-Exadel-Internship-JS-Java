@@ -4,7 +4,7 @@ import {
   mergeStyleSets,
   SelectionMode,
   IColumn,
-  TooltipHost
+  TooltipHost,
 } from "@fluentui/react";
 import { InterviewStatus } from "../../models/IApplicant";
 
@@ -13,26 +13,26 @@ const applicants: IApplicant[] = [
     name: "Vova Ivanov",
     event: "Internship JS & Java",
     skill: "Java",
-    interviewStatus: InterviewStatus.Registered
+    interviewStatus: InterviewStatus.Registered,
   },
   {
     name: "Petr Krasnow",
     event: "C++ interview",
     skill: "C++",
-    interviewStatus: InterviewStatus.Registered
+    interviewStatus: InterviewStatus.Registered,
   },
   {
     name: "Nike Petrov",
     event: "Internship JS & Java",
     skill: "JavaScript",
-    interviewStatus: InterviewStatus.Registered
+    interviewStatus: InterviewStatus.Registered,
   },
   {
     name: "Sonya Volina",
     event: "Business Analysis Meet UP",
     skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered
-  }
+    interviewStatus: InterviewStatus.Registered,
+  },
 ];
 const columns: IColumn[] = [
   {
@@ -41,7 +41,7 @@ const columns: IColumn[] = [
     fieldName: "name",
     minWidth: 100,
     maxWidth: 300,
-    isResizable: true
+    isResizable: true,
   },
   {
     key: "column2",
@@ -49,7 +49,7 @@ const columns: IColumn[] = [
     fieldName: "event",
     minWidth: 100,
     maxWidth: 300,
-    isResizable: true
+    isResizable: true,
   },
   {
     key: "column3",
@@ -57,7 +57,7 @@ const columns: IColumn[] = [
     fieldName: "skill",
     minWidth: 100,
     maxWidth: 300,
-    isResizable: true
+    isResizable: true,
   },
   {
     key: "column4",
@@ -65,7 +65,7 @@ const columns: IColumn[] = [
     fieldName: "interviewStatus",
     minWidth: 100,
     maxWidth: 300,
-    isResizable: true
+    isResizable: true,
   },
   {
     key: "column5",
@@ -81,19 +81,20 @@ const columns: IColumn[] = [
           <i className={`ms-Icon ms-Icon--More`} />
         </a>
       </TooltipHost>
-    )
-  }
+    ),
+  },
 ];
 
 const classNames = mergeStyleSets({
   table: {
     margin: "auto",
     maxWidth: "73%",
-    maxHeight: 680
-  }
+    maxHeight: 680,
+  },
 });
 
 export interface IApplicant {
+  // revriting existed interface
   name: string;
   event: string;
   skill: string;

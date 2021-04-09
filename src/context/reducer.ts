@@ -1,6 +1,8 @@
 import { IStore } from "../models/Store/IStore";
 import { IAction } from "../models/Store/IAction";
 import { ActionTypes } from "./actionTypes";
+import { IEvent } from "../models/IEvent";
+import { IApplicant } from "../models/IApplicant";
 
 export const reducer = (state: IStore, action: IAction): IStore => {
   const { type, payload, id } = action;
@@ -29,26 +31,31 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         applicants: { ...state.applicants, [id]: payload },
       };
     case ActionTypes.FETCH_APPLICANTS:
+      const newApplicants: {
+        [aplicantId: string]: IApplicant;
+      } = (payload as IApplicant[]).reduce(
+        (acc, item) => ({ ...acc, [item.id]: item }),
+        {}
+      );
       return {
         ...state,
-        applicants: payload,
+        applicants: { ...state.applicants, ...newApplicants },
         loading: false,
       };
     case ActionTypes.FETCH_EVENTS:
+      const newEvents: {
+        [eventId: string]: IEvent;
+      } = (payload as IEvent[]).reduce(
+        (acc, item) => ({
+          ...acc,
+          [item.id]: item,
+        }),
+        {}
+      );
       return {
         ...state,
-        events: payload,
+        events: { ...state.events, ...newEvents },
         loading: false,
-      };
-    case ActionTypes.FETCH_MORE_EVENTS:
-      return {
-        ...state,
-        events: { ...state.events, ...payload },
-      };
-    case ActionTypes.FETCH_MORE_APPLICANTS:
-      return {
-        ...state,
-        applicants: { ...state.applicants, ...payload },
       };
     default:
       return state;
