@@ -3,10 +3,10 @@ import { Dropdown, IDropdownStyles } from "@fluentui/react";
 
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: {
-    width: "200px",
-    marginRight: 15
+    width: 200,
+    marginRight: 30
   },
-  dropdownItemSelected: { backgroundColor: "blue" }
+  dropdownItemSelected: { backgroundColor: "lightblue" }
 };
 
 export interface IFilterList {

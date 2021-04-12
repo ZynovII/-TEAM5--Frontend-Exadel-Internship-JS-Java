@@ -7,9 +7,16 @@ import {
   IColumn,
   TooltipHost,
   ITooltipHostStyles,
+  ScrollablePane,
+  ScrollbarVisibility,
+  Sticky,
+  StickyPositionType,
 } from "@fluentui/react";
+import { getTheme } from "@fluentui/react";
+import {InterviewListFilter} from "./InterviwListFilter"
 import { InterviewStatus, IApplicant } from "../../models/IApplicant";
 
+const theme = getTheme();
 // export interface IInterview extends IApplicant {
 //     interviewDate: Date,
 //     interviewTime: any
@@ -55,18 +62,12 @@ const applicants: IInterview[] = [
   }
 ];
 
-
 const classNames = mergeStyleSets({
   table: {
     margin: "auto",
-    maxWidth: "73%",
+    maxWidth: "97%",
     maxHeight: 680
   },
-  column:{
-    ':hover':{
-
-    }
-  }
 });
 
 export interface IInterviewList {
@@ -139,8 +140,15 @@ export const InterviewList: React.FC = () => {
     }
   ];
   return (
-    <div data-is-scrollable={true}>
-      <div className={` ${classNames.table}`}>
+    <div style={{ height: "80vh", position: "relative" }}>
+      <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
+        <Sticky
+          stickyPosition={StickyPositionType.Header}
+          isScrollSynced={true}
+        >
+      <InterviewListFilter></InterviewListFilter>
+      </Sticky>
+      <div className={` ${classNames.table}`} style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}>
         <DetailsList
           items={applicants}
           columns={columns}
@@ -148,6 +156,7 @@ export const InterviewList: React.FC = () => {
           isHeaderVisible={false}
         />
       </div>
+      </ScrollablePane>
     </div>
   );
 };
