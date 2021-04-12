@@ -33,12 +33,12 @@ const filters = [
 
 const styles = {
   section: {
-    right: 0,
-    maxWidth: "73%",
     display: "flex",
     justifyContent: "flex-end",
-    margin: "0 auto",
-    paddingRight: 100
+    flexWrap: "wrap",
+    paddingRight: 50,
+    paddingBottom: 30,
+    backgroundColor: "#f9f9f8"
   }
 };
 export const AllApplicantFilter: React.FC = () => {
