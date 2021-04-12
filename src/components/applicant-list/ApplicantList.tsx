@@ -1,6 +1,7 @@
-import React from "react";
-import { DetailsList } from "@fluentui/react";
+import React, { useEffect } from "react";
 import {
+  DetailsList,
+  getTheme,
   mergeStyleSets,
   SelectionMode,
   IColumn,
@@ -10,111 +11,15 @@ import {
   ScrollbarVisibility,
   Sticky,
   StickyPositionType,
+  Spinner,
+  SpinnerSize,
 } from "@fluentui/react";
 import { useId } from "@fluentui/react-hooks";
-import { getTheme } from "@fluentui/react";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
-import { InterviewStatus } from "../../models/IApplicant";
+import { IApplicant } from "../../models/IApplicant";
+import { useApplicants } from "../../hooks/hooks";
 
 const theme = getTheme();
-const applicants: IApplicant[] = [
-  {
-    name: "Vova Ivanov",
-    event: "Internship JS & Java",
-    skill: "Java",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Petr Krasnow",
-    event: "C++ interview",
-    skill: "C++",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Nike Petrov",
-    event: "Internship JS & Java",
-    skill: "JavaScript",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Vova Ivanov",
-    event: "Internship JS & Java",
-    skill: "Java",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Petr Krasnow",
-    event: "C++ interview",
-    skill: "C++",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Nike Petrov",
-    event: "Internship JS & Java",
-    skill: "JavaScript",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Vova Ivanov",
-    event: "Internship JS & Java",
-    skill: "Java",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Petr Krasnow",
-    event: "C++ interview",
-    skill: "C++",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Nike Petrov",
-    event: "Internship JS & Java",
-    skill: "JavaScript",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Vova Ivanov",
-    event: "Internship JS & Java",
-    skill: "Java",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Petr Krasnow",
-    event: "C++ interview",
-    skill: "C++",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Nike Petrov",
-    event: "Internship JS & Java",
-    skill: "JavaScript",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-];
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
   root: { display: "inline-block" },
@@ -128,18 +33,24 @@ const classNames = mergeStyleSets({
   },
 });
 
-export interface IApplicant {
-  // revriting existed interface
-  name: string;
-  event: string;
-  skill: string;
-  interviewStatus: InterviewStatus;
-}
 export interface IApplicantList {
   columns: IColumn[];
   items: IApplicant[];
 }
 export const ApplicantList: React.FC = () => {
+  const { applicants, loading, fechApplicants } = useApplicants();
+  useEffect(() => {
+    fechApplicants();
+  }, []);
+  const applicantsList = Object.keys(applicants).map((idx) => {
+    return {
+      name: applicants[idx].fullName,
+      event: applicants[idx].event,
+      skill: applicants[idx].technology,
+      interviewStatus: applicants[idx].interviewStatus,
+    };
+  });
+
   const tooltipId = useId("tooltip");
   const columns: IColumn[] = [
     {
@@ -196,23 +107,25 @@ export const ApplicantList: React.FC = () => {
       ),
     },
   ];
-  return (
+  return loading ? (
+    <Spinner size={SpinnerSize.large} className="margin2em" />
+  ) : (
     <div style={{ height: "80vh", position: "relative" }}>
       <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
         <Sticky
           stickyPosition={StickyPositionType.Header}
           isScrollSynced={true}
         >
-          <AllApplicantFilter></AllApplicantFilter>
+          <AllApplicantFilter />
         </Sticky>
         <div
-          className={` ${classNames.table}`}
+          className={`${classNames.table}`}
           style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
         >
           <DetailsList
-            items={applicants}
+            items={applicantsList}
             columns={columns}
-            isHeaderVisible={false}
+            isHeaderVisible={true}
             selectionMode={SelectionMode.multiple}
           />
         </div>
