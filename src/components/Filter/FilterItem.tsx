@@ -4,22 +4,19 @@ import {
   IDropdownOption,
   IDropdownStyles,
 } from "@fluentui/react/lib";
+import {IFilterDropdownItem,IFilterDropdownItemProps} from "./Models"
 
 
-const dropdownStyles: Partial<IDropdownStyles> = { dropdown: { width: 300,} };
+const dropdownStyles: Partial<IDropdownStyles> = { 
+  dropdown: {
+    width: 300
+  },
+  root:{
+    margin:"0 2px"
+  }
+};
 
-export interface IFilterItem{
-    id: number;
-    placeholder: string;
-    label: string;
-    options: object[];
-}
-
-export interface IFilterItemProps {
-  filterItem: IFilterItem;
-}
-
-export const DropdownControlledExample: React.FC<IFilterItemProps> = (props) => {
+export const DropdownControlledExample: React.FC<IFilterDropdownItemProps> = (props) => {
   const [selectedItem, setSelectedItem] = React.useState<IDropdownOption>();
 
   const onChange = (event: React.FormEvent<HTMLDivElement>, item: IDropdownOption): void => {
