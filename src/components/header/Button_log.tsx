@@ -1,5 +1,6 @@
 import { FC } from "react";
 import { useId, useBoolean } from "@fluentui/react-hooks";
+import AuthBtn from './AuthBtn/AuthBtn';
 import {
   getTheme,
   mergeStyleSets,
@@ -13,7 +14,7 @@ import {
 
 const cancelIcon: IIconProps = { iconName: "Cancel" };
 
-const ButtonLog: FC = () => {
+const ButtonLog = (props: { isLoggedIn: boolean, logout: any, userName: string}) => {
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
   );
@@ -22,7 +23,7 @@ const ButtonLog: FC = () => {
 
   return (
     <div>
-      <PrimaryButton onClick={showModal} text="Log In" className="button" />
+      <AuthBtn isLoggedIn = {props.isLoggedIn} userName = {props.userName} logout = {props.logout} showModal = {showModal} />
       <Modal
         titleAriaId={titleId}
         isOpen={isModalOpen}

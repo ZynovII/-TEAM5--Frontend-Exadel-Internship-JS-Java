@@ -44,12 +44,12 @@ const filters = [
 
 const styles = {
   section: {
-    right: 0,
-    maxWidth: "73%",
     display: "flex",
-    justifyContent: "spase-around",
-    margin: "2rem auto",
-
+    justifyContent: "space-around",
+    flexWrap: "wrap",
+    paddingRight: 50,
+    paddingBottom: 30,
+    backgroundColor: "#f9f9f8"
   },
 };
 export const InterviewListFilter: React.FC = () => {
