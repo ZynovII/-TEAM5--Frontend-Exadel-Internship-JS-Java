@@ -35,10 +35,13 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps  > = (
       name={props.name}
       control={props.control}
       rules={props.rules}
-      render={({field:{ onChange }}) => (
+      render={({field:{ onChange, name:fieldName }}) => (
         <Dropdown
         {...props}
         onChanged= { onChange }
+        errorMessage={
+          props.errors[fieldName] && props.errors[fieldName].message
+        }
         />
       )}
     />

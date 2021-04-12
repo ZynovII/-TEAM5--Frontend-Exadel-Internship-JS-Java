@@ -9,6 +9,8 @@ import {
   ITextFieldStyles,
   mergeStyleSets,
   IDropdownOption,
+  IDropdownStyleProps,
+  IDropdownStyles,
   Checkbox,
 } from "@fluentui/react/lib";
 import { IApplicant } from "./models";
@@ -17,8 +19,8 @@ import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
 
 const textFieldStyles = (
-  props: ITextFieldStyleProps
-): Partial<ITextFieldStyles> => ({
+  props: ITextFieldStyleProps | IDropdownStyleProps
+): Partial<ITextFieldStyles | IDropdownStyles > => ({
   ...{
     errorMessage: {
       backgroundColor: "transparent",
@@ -28,7 +30,7 @@ const textFieldStyles = (
   },
 });
 
-export const Registration = (props) => {
+export const Registration:React.FC<{name: string}> = (props) => {
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean( false );
   const modalText =
     "Your application has been successfully sent. Our specialist will connect with you soon.";
@@ -67,6 +69,14 @@ export const Registration = (props) => {
     ];
   }, []) 
 
+  const registrationPattern:{name: RegExp, email: RegExp, phoneNumber: RegExp} = useMemo( () => {
+    return {
+      name: /^[a-z]+ [a-z]+$|^[а-яА-Я]+ [а-яА-Я]+$/i,
+      email: /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@([a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i,
+      phoneNumber: /^(8|\+375) ?([(]\d+[)])? ?\d+/i
+    }
+  }, []) 
+
   const [countryStatus, setCountryStatus] = useState<boolean>(true);
   const [privacy, { setTrue: setPrivacyTrue, setFalse: setPrivacyFalse }] = useBoolean( false );
   const [personalData, { setTrue: setPersonalDataTrue, setFalse: setPersonalDataFalse }] = useBoolean( false );
@@ -89,7 +99,7 @@ export const Registration = (props) => {
   //       setFileName(event.target.files[0].name)
   //     }
  
-  const onSave = (data) => {
+  const onSave = () => {
     handleSubmit(
       (data) => {
         const dataSubmit = {...data, city: data.city['key'], country: data.country['key'], time: data.time['key'] }
@@ -126,11 +136,12 @@ export const Registration = (props) => {
                 name={"fullName"}
                 errors={errors}
                 rules={{ required: "This field is required",
-                        //  pattern: /[A-Za-z]{3}/,
-                         validate: {
-                           only: (v) => v.length > 3
+                         pattern: {
+                          value: registrationPattern.name,
+                          message: "Invalid name"
                          },
                         }} 
+                     
                 styles={textFieldStyles}
               />
             </div>
@@ -141,7 +152,12 @@ export const Registration = (props) => {
                 control={control}
                 name={"email"}
                 errors={errors}
-                rules={{ required: "This field is required" }}
+                rules={{ required: "This field is required",
+                         pattern: {
+                          value: registrationPattern.email,
+                          message: "Invalid email"
+                         },
+                        }} 
                 styles={textFieldStyles}
               />
             </div>
@@ -151,7 +167,12 @@ export const Registration = (props) => {
                 control={control}
                 name={"phone"}
                 errors={errors}
-                // rules={{ required: "This field is required" }}
+                rules={{ 
+                  pattern: {
+                  value: registrationPattern.phoneNumber,
+                  message: "Invalid phone number"
+                  },
+               }} 
                 styles={textFieldStyles}
               />
             </div>
@@ -176,32 +197,39 @@ export const Registration = (props) => {
               control={control}
               name={"cv"}
               errors={errors}
-              // rules={{ required: "This field is required" }}
               styles={textFieldStyles}
             />
             <ControlledDropdown
+              required
               control={control}
               name={"country"}
               errors={errors}
               placeholder="Country"
+              rules={{ required: "This field is required" }}
               options={optionsOfCountries}
               onChange={() => setCountryStatus(false)}
+              styles={textFieldStyles}
             />
-             
             <ControlledDropdown
+              required
               control={control}
               name={"city"}
               errors={errors}
               placeholder="City"
+              rules={{ required: "This field is required" }}
               options={exampleOptionsOfCities}
               disabled={countryStatus}
+              styles={textFieldStyles}
             />
             <ControlledDropdown
+              required
               control={control}
               name={"time"}
               errors={errors}
               placeholder="Choose time"
+              rules={{ required: "This field is required" }}
               options={exampleTime}
+              styles={textFieldStyles}
             />
           </Stack>
         </Stack>
@@ -210,7 +238,6 @@ export const Registration = (props) => {
           control={control}
           name={"summary"}
           errors={errors}
-          // rules={{ required: "This field is required" }}
           className={contentStyles.lab}
           multiline
           resizable={false}
@@ -269,5 +296,11 @@ const contentStyles = mergeStyleSets({
   submitButton: {
     margin: "0 auto",
     display: "flex",
+  },
+  
+  errorMessage: {
+    backgroundColor: "transparent",
+    position: "absolute",
+    paddingTop: "0px",
   },
 });
