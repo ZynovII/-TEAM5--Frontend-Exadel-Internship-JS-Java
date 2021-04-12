@@ -17,7 +17,7 @@ export interface IApplicant {
   phoneNumber?: string;
   skype: string;
   resumeLink?: string;
-  technology: string[]; // tags
+  technology: string; // tags
   events: number[]; // event id
   summary: string;
   country: string;

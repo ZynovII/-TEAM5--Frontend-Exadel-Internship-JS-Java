@@ -11,10 +11,12 @@ import {
   ScrollbarVisibility,
   Sticky,
   StickyPositionType,
+  ActionButton,
 } from "@fluentui/react";
 import { getTheme } from "@fluentui/react";
 import { InterviewListFilter } from "./InterviwListFilter";
 import { InterviewStatus, IApplicant } from "../../models/IApplicant";
+import { useHistory } from "react-router-dom";
 
 const theme = getTheme();
 // export interface IInterview extends IApplicant {
@@ -78,6 +80,7 @@ export interface IInterviewList {
 }
 export const InterviewList: React.FC = () => {
   const tooltipId = useId("tooltip");
+  const history = useHistory();
   const columns: IColumn[] = [
     {
       key: "column1",
@@ -134,9 +137,13 @@ export const InterviewList: React.FC = () => {
           calloutProps={calloutProps}
           styles={hostStyles}
         >
-          <a href="#" aria-describedby={tooltipId}>
-            <i className={`ms-Icon ms-Icon--More`} />
-          </a>
+          <ActionButton
+            iconProps={{ iconName: "D365TalentHRCore" }}
+            onClick={() =>
+              history.push(`/admin/interviews/${applicants[0].fullName}`)
+            }
+            aria-describedby={tooltipId}
+          ></ActionButton>
         </TooltipHost>
       ),
     },
@@ -148,7 +155,7 @@ export const InterviewList: React.FC = () => {
           stickyPosition={StickyPositionType.Header}
           isScrollSynced={true}
         >
-          <InterviewListFilter></InterviewListFilter>
+          <InterviewListFilter />
         </Sticky>
         <div
           className={` ${classNames.table}`}
@@ -158,7 +165,15 @@ export const InterviewList: React.FC = () => {
             items={applicants}
             columns={columns}
             selectionMode={SelectionMode.multiple}
-            isHeaderVisible={false}
+            isHeaderVisible={true}
+            styles={{
+              contentWrapper: {
+                fontSize: 18,
+              },
+              focusZone: {
+                fontSize: 18,
+              },
+            }}
           />
         </div>
       </ScrollablePane>

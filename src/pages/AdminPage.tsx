@@ -12,6 +12,8 @@ import { AllCardsWithData } from "../components/MainComponent";
 import { ApplicantListFilter } from "../components/applicant-list/ApplicantListFilter";
 import { AllApplicantFilter } from "../components/applicant-list/AllApplicantListFilter";
 import { InterviewListFilter } from "../components/InterviewsList/InterviwListFilter";
+import { CandidatePage } from "../components/CandidatePage/CandidatePage";
+import CandidatInfo from "../components/CandidatePage/CandidateInfo";
 
 export const AdminPage = () => {
   return (
@@ -40,15 +42,8 @@ export const AdminPage = () => {
                   </>
                 )}
               />
-              <Route
-                path="/admin/interviews"
-                component={() => (
-                  <>
-                    <InterviewListFilter />
-                    <InterviewList />
-                  </>
-                )}
-              />
+              <Route path="/admin/interviews" exact component={InterviewList} />
+              <Route path="/admin/interviews/:name" component={CandidatInfo} />
               <Route path="/admin/archive" component={() => <h1>Archive</h1>} />
               <Route path="/admin/signout" component={() => <h1>SignOut</h1>} />
               <Route component={NotFound} />
