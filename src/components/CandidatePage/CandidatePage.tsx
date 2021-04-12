@@ -5,24 +5,13 @@ import {
     mergeStyleSets,
     Dropdown,
     IDropdownOption,
-    Calendar, 
     ProgressIndicator, DatePicker
    } from '@fluentui/react/lib';
    
-   
-export interface ICandidat{
-    id: number;
-    fullName: string;
-    email: string;
-    telephone: number;
-    country: string;
-    town: string;
-    skils: object[];
-    info: string;
-}
+   import { IApplicant } from "../../models/IApplicant";
 
 export interface ICandidatProps {
-    candidat: ICandidat;
+    candidat: IApplicant;
 }
 
 const options: object[] = [
@@ -114,7 +103,7 @@ export const CandidatePage: React.FC<ICandidatProps> = (props) => {
                 <h1>Internship JS&amp;Java</h1>
                 <Stack className={contentStyles.formWrapper} horizontal tokens={{ childrenGap: '40px' }}>
                     <Stack tokens= { {childrenGap: '10px'}} styles = {{root:{width:'220px'}}}  >
-                        <TextField value="Pending"/>
+                        <TextField value={props.candidat.acceptanceStatus}/>
                     </Stack>
                     <Stack tokens= { {childrenGap: '0px'}} styles = {{root:{width:'520px',}}}  >
                         <div style={filterDisplay}>
@@ -133,12 +122,12 @@ export const CandidatePage: React.FC<ICandidatProps> = (props) => {
                     <Stack tokens= { {childrenGap: '20px'}} styles = {{root:{width:'450px',}}}  >
                         <TextField label="First name and last name" value={props.candidat.fullName} />
                         <TextField label="Email" value={props.candidat.email}/>
-                        <TextField label="Telephone" value={props.candidat.telephone} />                    
+                        <TextField label="Telephone" value={props.candidat.phoneNumber} />                    
                     </Stack>
                     <Stack tokens= { {childrenGap: '20px'}} styles = {{root:{width:'450px',}}}  >
-                        <TextField label="Skils" value="Java" />
+                        <TextField label="Skils" value={props.candidat.technology} />
                         <TextField label="Country" value={props.candidat.country} />
-                        <TextField label="Town" value={props.candidat.town} />
+                        <TextField label="Town" value={props.candidat.city} />
                     </Stack>                  
                 </Stack>
                 <Stack className={contentStyles.formWrapper} horizontal tokens={{ childrenGap: '70px' }} >
@@ -162,6 +151,7 @@ export const CandidatePage: React.FC<ICandidatProps> = (props) => {
                     </Stack>
                     <Stack tokens= { {childrenGap: '20px'}} styles = {{root:{width:'520px',}}}  >
                         <Dropdown label="Chosen tine " placeholder="Select an option" options={time} />
+
                     </Stack>                  
                 </Stack>
             </div>
