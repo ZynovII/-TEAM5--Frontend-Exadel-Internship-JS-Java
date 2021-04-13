@@ -166,14 +166,14 @@ export const InterviewList: React.FC = () => {
             columns={columns}
             selectionMode={SelectionMode.multiple}
             isHeaderVisible={true}
-            styles={{
-              contentWrapper: {
-                fontSize: 18,
-              },
-              focusZone: {
-                fontSize: 18,
-              },
-            }}
+            onRenderRow={(props, defaultRender) => (
+              <div className="red">
+                {defaultRender({
+                  ...props,
+                  styles: { root: { fontSize: 18 } },
+                })}
+              </div>
+            )}
           />
         </div>
       </ScrollablePane>
