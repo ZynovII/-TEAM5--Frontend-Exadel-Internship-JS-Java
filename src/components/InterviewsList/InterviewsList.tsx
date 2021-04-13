@@ -167,7 +167,7 @@ export const InterviewList: React.FC = () => {
             selectionMode={SelectionMode.multiple}
             isHeaderVisible={true}
             onRenderRow={(props, defaultRender) => (
-              <div className="red">
+              <div>
                 {defaultRender({
                   ...props,
                   styles: { root: { fontSize: 18 } },
