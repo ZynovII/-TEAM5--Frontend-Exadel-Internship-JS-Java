@@ -91,6 +91,36 @@ const applicants: IApplicant[] = [
     interviewStatus: InterviewStatus.Registered,
   },
   {
+    name: "Sonya Volina",
+    event: "Business Analysis Meet UP",
+    skill: "Business Analysis",
+    interviewStatus: InterviewStatus.Registered,
+  },
+  {
+    name: "Sonya Volina",
+    event: "Business Analysis Meet UP",
+    skill: "Business Analysis",
+    interviewStatus: InterviewStatus.Registered,
+  },
+  {
+    name: "Sonya Volina",
+    event: "Business Analysis Meet UP",
+    skill: "Business Analysis",
+    interviewStatus: InterviewStatus.Registered,
+  },
+  {
+    name: "Sonya Volina",
+    event: "Business Analysis Meet UP",
+    skill: "Business Analysis",
+    interviewStatus: InterviewStatus.Registered,
+  },
+  {
+    name: "Sonya Volina",
+    event: "Business Analysis Meet UP",
+    skill: "Business Analysis",
+    interviewStatus: InterviewStatus.Registered,
+  },
+  {
     name: "Vova Ivanov",
     event: "Internship JS & Java",
     skill: "Java",
@@ -198,13 +228,13 @@ export const ApplicantList: React.FC = () => {
   ];
   return (
     <div style={{ height: "80vh", position: "relative" }}>
+      <Sticky
+        stickyPosition={StickyPositionType.Header}
+        isScrollSynced={true}
+      >
+        <AllApplicantFilter></AllApplicantFilter>
+      </Sticky>
       <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-        <Sticky
-          stickyPosition={StickyPositionType.Header}
-          isScrollSynced={true}
-        >
-          <AllApplicantFilter></AllApplicantFilter>
-        </Sticky>
         <div
           className={` ${classNames.table}`}
           style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
