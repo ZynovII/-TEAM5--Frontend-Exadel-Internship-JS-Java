@@ -5,7 +5,7 @@ import {
   Image,
   ImageFit,
   Text,
-  DocumentCardActions
+  DocumentCardActions,
 } from "@fluentui/react";
 
 import { useHistory } from "react-router";
@@ -19,7 +19,6 @@ const styles = {
     root: {
       paddingBottom: "10px",
       marginBottom: "20px",
-      
     },
   },
   mainTytle: {
@@ -44,23 +43,17 @@ const styles = {
 
 const documentCardActions = [
   {
-    iconProps: { iconName: 'Edit' },
-    // onClick: 
-    ariaLabel: 'delete event',
+    iconProps: { iconName: "Edit" },
+    // onClick:
+    ariaLabel: "delete event",
   },
   {
-    iconProps: { iconName: 'Delete' },
-    // onClick: 
-    ariaLabel: 'edit event',
+    iconProps: { iconName: "Delete" },
+    // onClick:
+    ariaLabel: "edit event",
   },
 ];
 
-export interface ICardItemInfo {
-  id: number;
-  title: string;
-  date: string;
-  location: string;
-}
 
 export interface ICardItemProps {
   cardItem: IEvent;
@@ -70,15 +63,14 @@ export interface ICardItemProps {
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const history = useHistory();
 
-
   return (
     <DocumentCard
       styles={styles.styleCard}
       onClick={() => history.push(`/events/${props.cardItem.name}`)}
     >
-      {props.isLogged &&<DocumentCardActions actions={documentCardActions} />}
-      <Image height={150} imageFit={ImageFit.cover} src={cardImage.default}/>
-       <DocumentCardTitle
+      {props.isLogged && <DocumentCardActions actions={documentCardActions} />}
+      <Image height={150} imageFit={ImageFit.cover} src={cardImage.default} />
+      <DocumentCardTitle
         styles={styles.mainTytle}
         title={props.cardItem.name}
       />
