@@ -234,19 +234,19 @@ export const ApplicantList: React.FC = () => {
       >
         <AllApplicantFilter></AllApplicantFilter>
       </Sticky>
-      <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-        <div
-          className={` ${classNames.table}`}
-          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
-        >
+      <div
+        className={` ${classNames.table}`}
+        style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
+      >
+        <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
           <DetailsList
             items={applicants}
             columns={columns}
             isHeaderVisible={false}
             selectionMode={SelectionMode.multiple}
           />
-        </div>
-      </ScrollablePane>
+        </ScrollablePane>
+      </div>
     </div>
   );
 };
