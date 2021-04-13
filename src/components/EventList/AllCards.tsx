@@ -3,9 +3,11 @@ import { CardItem, ICardItemInfo } from "./EventCard";
 import { PrimaryButton } from "@fluentui/react";
 import "./AllCards.scss";
 import { IEvent } from "../../models/IEvent";
+import {NewCardItem} from "../NewEvent/NewCardItem"
 
 interface IAllCardsProps {
   data: IEvent[];
+  isLogged: boolean;
 }
 
 export const AllCards: React.FC<IAllCardsProps> = (props) => {
@@ -15,8 +17,9 @@ export const AllCards: React.FC<IAllCardsProps> = (props) => {
   return (
     <React.Fragment>
       <section className="all-cards__wrapper">
+      {props.isLogged && <NewCardItem />}
         {events.slice(0, length).map((obj) => (
-          <CardItem cardItem={obj} key={obj.id} />
+          <CardItem cardItem={obj} key={obj.id} isLogged={props.isLogged}/>
         ))}
       </section>
       <div className="margin2em button_center">
