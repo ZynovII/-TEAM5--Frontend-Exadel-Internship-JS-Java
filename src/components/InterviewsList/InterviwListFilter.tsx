@@ -42,7 +42,7 @@ const filters = [
   },
 ];
 
-const styles = {
+const styles: { section: React.CSSProperties } = {
   section: {
     display: "flex",
     justifyContent: "space-around",

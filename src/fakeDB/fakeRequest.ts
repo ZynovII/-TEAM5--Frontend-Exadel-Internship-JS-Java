@@ -7,8 +7,8 @@ const events = JSON.stringify(Object.assign([], eventsData));
 const users = JSON.stringify(Object.assign([], usersData));
 
 export const fakeRequest = (data) => {
-  return new Promise((resolve, reject) => {
-    resolve(data);
+  return new Promise<string>((resolve, reject) => {
+    setTimeout(() => resolve(data), 3000);
   });
 };
 
