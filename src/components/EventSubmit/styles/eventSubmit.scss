@@ -2,10 +2,6 @@
 @import "./variables";
 @import "./mixins";
 
-* {
-	box-sizing: border-box;
-}
-
 #backdrop {
 	position: fixed;
 	top: 0;

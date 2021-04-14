@@ -12,6 +12,8 @@ import { useHistory } from "react-router";
 import { IEvent } from "../../models/IEvent";
 import { relative } from "node:path";
 
+import classes from './EventCard.module.scss';
+
 const cardImage = require("./../../assets/img/card_img.jpg");
 
 const styles = {
@@ -65,11 +67,12 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
 
   return (
     <DocumentCard
+      className = {classes.Card}
       styles={styles.styleCard}
       onClick={() => history.push(`/events/${props.cardItem.name}`)}
     >
       {props.isLogged && <DocumentCardActions actions={documentCardActions} />}
-      <Image height={150} imageFit={ImageFit.cover} src={cardImage.default} />
+      <Image className = {classes.Image} imageFit={ImageFit.cover} src={cardImage.default} />
       <DocumentCardTitle
         styles={styles.mainTytle}
         title={props.cardItem.name}

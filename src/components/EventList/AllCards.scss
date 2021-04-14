@@ -1,7 +1,12 @@
 .all-cards__wrapper {
-  flex-wrap: wrap;
-  margin: 2em auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
+  @media (min-width: 536px) {
+    flex-wrap: wrap;
+    margin: 2em auto;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+  }
+  @media (min-width: 980px) {
+    justify-content: space-between;
+  }
 }

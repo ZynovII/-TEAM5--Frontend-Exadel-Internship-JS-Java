@@ -1,0 +1,15 @@
+.Card {
+  max-width: 100%;
+  @media (min-width: 536px) {
+    max-width: 45%;
+  }
+  @media (min-width: 980px) {
+    max-width: 32%;
+  }
+}
+
+.Image {
+  @media (min-width: 536px) {
+    height: 150px;
+  }
+}

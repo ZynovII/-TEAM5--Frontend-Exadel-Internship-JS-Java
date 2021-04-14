@@ -2,6 +2,8 @@ import React from "react";
 
 import { Text, Stack } from "@fluentui/react";
 
+import classes from './Footer.module.scss';
+
 const instagram = require("./../../assets/img/instagram.svg");
 const twitter = require("./../../assets/img/twitter.svg");
 const faceBook = require("./../../assets/img/faceBook.png");
@@ -46,7 +48,7 @@ const FooterList: React.FC = () => {
         {Links.map((item, index) => {
           return (
             <li style={styles.social} key={index}>
-              <a href={item.href} className="footer__link">
+              <a href={item.href} className={classes['footer__link']}>
                 {item.name}
               </a>
             </li>

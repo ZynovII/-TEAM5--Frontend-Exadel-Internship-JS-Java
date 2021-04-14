@@ -9,7 +9,7 @@ import { useForm } from "react-hook-form";
 const stackStyles: IStackStyles = {
   root: {
     margin: "2em auto",
-    width: "73%",
+    // width: "73%",
   },
   inner: {
     "@media(max-width: 600px)": {
