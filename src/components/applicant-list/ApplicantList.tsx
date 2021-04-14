@@ -111,25 +111,22 @@ export const ApplicantList: React.FC = () => {
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <div style={{ height: "80vh", position: "relative" }}>
-      <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-        <Sticky
-          stickyPosition={StickyPositionType.Header}
-          isScrollSynced={true}
-        >
-          <AllApplicantFilter />
-        </Sticky>
-        <div
-          className={`${classNames.table}`}
-          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
-        >
+      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced={true}>
+        <AllApplicantFilter />
+      </Sticky>
+      <div
+        className={` ${classNames.table}`}
+        style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
+      >
+        <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
           <DetailsList
             items={applicantsList}
             columns={columns}
             isHeaderVisible={true}
             selectionMode={SelectionMode.multiple}
           />
-        </div>
-      </ScrollablePane>
+        </ScrollablePane>
+      </div>
     </div>
   );
 };

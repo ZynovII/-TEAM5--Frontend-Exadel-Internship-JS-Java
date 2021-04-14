@@ -5,10 +5,12 @@ import {
   Image,
   ImageFit,
   Text,
+  DocumentCardActions,
 } from "@fluentui/react";
 
 import { useHistory } from "react-router";
 import { IEvent } from "../../models/IEvent";
+import { relative } from "node:path";
 
 const cardImage = require("./../../assets/img/card_img.jpg");
 
@@ -39,15 +41,23 @@ const styles = {
   },
 };
 
-export interface ICardItemInfo {
-  id: number;
-  title: string;
-  date: string;
-  location: string;
-}
+const documentCardActions = [
+  {
+    iconProps: { iconName: "Edit" },
+    // onClick:
+    ariaLabel: "delete event",
+  },
+  {
+    iconProps: { iconName: "Delete" },
+    // onClick:
+    ariaLabel: "edit event",
+  },
+];
+
 
 export interface ICardItemProps {
   cardItem: IEvent;
+  isLogged: boolean;
 }
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
@@ -58,6 +68,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       styles={styles.styleCard}
       onClick={() => history.push(`/events/${props.cardItem.name}`)}
     >
+      {props.isLogged && <DocumentCardActions actions={documentCardActions} />}
       <Image height={150} imageFit={ImageFit.cover} src={cardImage.default} />
       <DocumentCardTitle
         styles={styles.mainTytle}
