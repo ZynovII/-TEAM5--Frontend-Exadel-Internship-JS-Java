@@ -5,7 +5,7 @@ import { IStore } from "../models/Store/IStore";
 export const initialState: IStore = {
   isAuthenticated: false,
   currentUserID: null,
-  events: {},
+  events: [], // {}
   loading: false,
   applicants: {},
 };
@@ -14,5 +14,3 @@ export const Context = createContext<{
   state: IStore;
   dispatch: React.Dispatch<IAction>;
 }>({ state: initialState, dispatch: () => {} });
-
-export const useStore = () => useContext(Context);

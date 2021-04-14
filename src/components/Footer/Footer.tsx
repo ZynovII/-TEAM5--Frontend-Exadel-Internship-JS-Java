@@ -23,7 +23,8 @@ const styles = {
     width: "150px",
   },
   text: {
-    marginTop: '2em',
+    marginTop: "2em",
+    marginBottom: "1.5em",
     fontSize: "12px",
     display: "flex",
     justifyContent: "center",
