@@ -1,37 +1,32 @@
-import React,{useMemo} from "react";
+import React, { useMemo } from "react";
 import { DropdownControlledExample } from "./FilterItem";
-import {Stack, PrimaryButton,IStackStyles } from "@fluentui/react";
-import {IFilterDropdownItem,IFilterData} from "./Models"
-import {
-  ITag,
-} from "@fluentui/react";
-import { useBoolean } from "@fluentui/react-hooks";
-import {TagPickerItem} from "./TagPicker"
+import { Stack, PrimaryButton, IStackStyles } from "@fluentui/react";
+import { IFilterDropdownItem, IFilterData } from "./Models";
+import { ITag } from "@fluentui/react";
+import { TagPickerItem } from "./TagPicker";
 import { useForm } from "react-hook-form";
-
-
 
 const stackStyles: IStackStyles = {
   root: {
     margin: "2em auto",
     width: "73%",
   },
+  inner: {
+    "@media(max-width: 600px)": {
+      display: "block",
+    },
+  },
 };
 
-
-
 export const AllFilters: React.FC = () => {
-
-  const {handleSubmit,control} = useForm<IFilterData>()
+  const { handleSubmit, control } = useForm<IFilterData>();
 
   const onApplyFilter = (data) => {
-    handleSubmit((data) =>{
+    handleSubmit((data) => {
       console.log(data);
-      
-    })()
-    
-  }
-  const filters:IFilterDropdownItem[] = useMemo(() => {
+    })();
+  };
+  const filters: IFilterDropdownItem[] = useMemo(() => {
     return [
       {
         id: 1,
@@ -55,37 +50,46 @@ export const AllFilters: React.FC = () => {
         ],
       },
     ];
-  },[])
+  }, []);
 
-  const eventTags: ITag[] =  useMemo(() => {
+  const eventTags: ITag[] = useMemo(() => {
     return [
-      'JavaScript',
-      'Java',
-      'Python',
-      'React',
-      'Web',
-      'Frontend',
-      'Backend',
+      "JavaScript",
+      "Java",
+      "Python",
+      "React",
+      "Web",
+      "Frontend",
+      "Backend",
       "c#",
       "Junior",
       "TypeScript",
       "Data base",
-    
-    ].map(item => ({ key: item.toLowerCase(), name: item }));
-  }, [])
+    ].map((item) => ({ key: item.toLowerCase(), name: item }));
+  }, []);
 
   return (
     <>
-      <Stack styles={stackStyles} horizontal verticalAlign="center" horizontalAlign="space-between" wrap>
+      <Stack
+        styles={stackStyles}
+        horizontal
+        verticalAlign="center"
+        horizontalAlign="space-between"
+        wrap
+      >
         {filters.map((obj: IFilterDropdownItem) => (
           <div key={obj.id}>
             <DropdownControlledExample filterItem={obj} />
           </div>
         ))}
-        <TagPickerItem label = "Tags" eventTags={eventTags}></TagPickerItem>
+        <TagPickerItem label="Tags" eventTags={eventTags}></TagPickerItem>
       </Stack>
       <div className="margin2em button_center">
-        <PrimaryButton onClick = {onApplyFilter} text="Search" className="button" />
+        <PrimaryButton
+          onClick={onApplyFilter}
+          text="Search"
+          className="button"
+        />
       </div>
     </>
   );
