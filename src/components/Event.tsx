@@ -11,7 +11,7 @@ export interface IEventProps {
 const Event: React.FC<IEventProps> = (props) => {
 	return (
 		<main className="main">
-			<div className='wrapper bigger'>
+			<div className='wrapper'>
 				<h1 style={{ textAlign: "center", marginBottom: "1em" }}>Internship JS & Java</h1>
 				<DescriptionEventPage cardItem={props.data} />
 				<Registration name="Js && Java" />

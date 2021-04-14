@@ -1,0 +1,27 @@
+.Registration {
+  &__container {
+    padding: 0 1rem;
+  }
+  &__form {
+    &-wrapper {
+      @media (min-width: 536px) {
+        display: flex;
+        justify-content: space-between;
+      }
+    }
+    &-textfield {
+      background-color: transparent;
+    }
+    &-stack {
+      @media (min-width: 536px) {
+        width: 45%;
+      }
+      & > div {
+        margin-bottom: 1rem;
+      }
+    }
+    &-checkbox {
+      margin: 2rem 0;
+    }
+  }
+}

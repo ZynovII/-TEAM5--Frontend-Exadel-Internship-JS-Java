@@ -18,6 +18,8 @@ import { IApplicant } from "./models";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
 
+import classes from './Registration.module.scss';
+
 const textFieldStyles = (
   props: ITextFieldStyleProps | IDropdownStyleProps
 ): Partial<ITextFieldStyles | IDropdownStyles > => ({
@@ -117,17 +119,10 @@ export const Registration:React.FC<{name: string}> = (props) => {
   return (
     <>
       <ModalWindow open={isModalOpen} text={modalText} hideModal={hideModal} />
-      <div className={contentStyles.container}>
+      <div className={classes.Registration__container}>
         <h2 style={{ margin: "2em 0 1em" }}>{props.name}</h2>
-        <Stack
-          className={contentStyles.formWrapper}
-          horizontal
-          tokens={{ childrenGap: "40px" }}
-        >
-          <Stack
-            tokens={{ childrenGap: "20px" }}
-            styles={{ root: { width: "520px" } }}
-          >
+        <div className={classes['Registration__form-wrapper']}>
+          <Stack className = {classes['Registration__form-stack']}>
             <div className="username">
               <ControlledTextField
                 required={true}
@@ -188,10 +183,7 @@ export const Registration:React.FC<{name: string}> = (props) => {
               />
             </div>
           </Stack>
-          <Stack
-            tokens={{ childrenGap: "20px" }}
-            styles={{ root: { width: "520px" } }}
-          >
+          <Stack className={classes['Registration__form-stack']}>
             <ControlledTextField
               placeholder="Cv link"
               control={control}
@@ -232,13 +224,13 @@ export const Registration:React.FC<{name: string}> = (props) => {
               styles={textFieldStyles}
             />
           </Stack>
-        </Stack>
+        </div>
         <ControlledTextField
           placeholder="Summary"
           control={control}
           name={"summary"}
           errors={errors}
-          className={contentStyles.lab}
+          className={classes['Registration__form-textfield']}
           multiline
           resizable={false}
         />
@@ -250,10 +242,12 @@ export const Registration:React.FC<{name: string}> = (props) => {
         <span>{fileName}</span>  */}
         <div className={contentStyles.checkboxes}>
           <Checkbox
+            className={classes['Registration__form-checkbox']}
             onChange={checkPersonalData}
             label="By applying for this position, I submit my personal data to the Exadel and give my consent for the processing of personal data for job recruitment purpose"
           />
           <Checkbox
+            className = {classes['Registration__form-checkbox']}
             onChange={checkPrivacy}
             label="I understand and accept that for purpose of evaluation of my application, professional skills and experience my personal data may be accessible to the intra-group companies of Exadel"
           />
@@ -270,11 +264,11 @@ export const Registration:React.FC<{name: string}> = (props) => {
 };
 
 const contentStyles = mergeStyleSets({
-  formWrapper: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "stretch",
-  },
+  // formWrapper: {
+  //   display: "flex",
+  //   justifyContent: "space-between",
+  //   alignItems: "stretch",
+  // },
 
   container: {
     width: "73%",
@@ -289,8 +283,8 @@ const contentStyles = mergeStyleSets({
   },
 
   lab: {
-    backgroundColor: "transparent",
-    margin: "20px 0",
+    backgroundColor: 'transparent',
+    margin: '20px 0'
   },
 
   submitButton: {

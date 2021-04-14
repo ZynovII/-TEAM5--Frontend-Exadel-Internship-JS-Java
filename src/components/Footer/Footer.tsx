@@ -9,7 +9,7 @@ const logo = require("./../../assets/img/logo.svg");
 const Footer: React.FC = () => {
   return (
     <footer className={classes.footer}>
-      <div className='wrapper bigger'>
+      <div className={`wrapper bigger ${classes.footer__wrapper}`}>
         <img src={logo.default} alt="exadel" style={styles.img} />
         <FooterList />
         <Text style={styles.text}>&copy; 2021 Exadel, Inc.</Text>

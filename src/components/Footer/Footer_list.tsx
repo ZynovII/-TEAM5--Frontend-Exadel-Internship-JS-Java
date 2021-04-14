@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Text, Stack } from "@fluentui/react";
+import { Text } from "@fluentui/react";
 
 import classes from './Footer.module.scss';
 
@@ -43,7 +43,7 @@ const social: Array<{ name: string; href: string; src: any }> = [
 
 const FooterList: React.FC = () => {
   return (
-    <Stack horizontal horizontalAlign="space-between" style={styles.container}>
+    <div className={classes.footer__list}>
       <ul>
         {Links.map((item, index) => {
           return (
@@ -59,7 +59,7 @@ const FooterList: React.FC = () => {
         Our Corporate Headquarters: 1340 Treat Blvd. Suite 375 Walnut Creek, CA
         94597 USA +1 (866) 304-7961
       </Text>
-      <ul>
+      <ul className = {classes.footer__items}>
         {social.map((item, index) => {
           return (
             <li style={styles.social} key={index}>
@@ -74,15 +74,11 @@ const FooterList: React.FC = () => {
           );
         })}
       </ul>
-    </Stack>
+    </div>
   );
 };
 
 const styles = {
-  container: {
-    width: "73%",
-    margin: "0 auto",
-  },
   text: {
     width: "20%",
   },
