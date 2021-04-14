@@ -59,10 +59,10 @@ const FooterList: React.FC = () => {
         Our Corporate Headquarters: 1340 Treat Blvd. Suite 375 Walnut Creek, CA
         94597 USA +1 (866) 304-7961
       </Text>
-      <ul className = {classes.footer__items}>
+      <ul className = {classes.footer__socials}>
         {social.map((item, index) => {
           return (
-            <li style={styles.social} key={index}>
+            <li className = {classes.footer__social} style={styles.social} key={index}>
               <a href={item.href}>
                 <img
                   src={item.src.default}

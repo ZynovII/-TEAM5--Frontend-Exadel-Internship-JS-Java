@@ -32,17 +32,23 @@
       padding-bottom: 2rem;
     }
   }
-  &__items {
+  &__socials {
     display: flex;
     justify-content: center;
     padding-top: 2rem;
-    & li {
-      margin: 0 0.5rem;
-    }
-
+    
     @media (min-width: 980px) {
       display: block;
       padding-top: 0;
     }
+  }
+
+  &__social {
+    margin: 0 0.5rem;
+    a {
+      &:hover, &:active, &:focus, &.active {
+        color: #0082ca;
+      }
+    } 
   }
 }
