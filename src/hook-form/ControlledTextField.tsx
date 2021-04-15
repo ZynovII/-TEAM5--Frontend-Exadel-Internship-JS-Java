@@ -1,6 +1,14 @@
 import React from "react";
 import { Controller } from "react-hook-form";
-import { ITextFieldProps, TextField, Dropdown, IDropdownProps } from "@fluentui/react";
+import {
+  ITextFieldProps,
+  TextField,
+  Dropdown,
+  IDropdownProps,
+  TagPicker,
+  ITagPickerProps,
+  IBasePickerSuggestionsProps,
+} from "@fluentui/react";
 import { HookFormProps } from "./HookFormProps";
 
 export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
@@ -11,7 +19,7 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
       name={props.name}
       control={props.control}
       rules={props.rules}
-      render={({field:{ onChange, onBlur, value, name:fieldName}}) => (
+      render={({ field: { onChange, onBlur, value, name: fieldName } }) => (
         <TextField
           {...props}
           onChange={onChange}
@@ -27,7 +35,7 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
   );
 };
 
-export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps  > = (
+export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
   props
 ) => {
   return (
@@ -35,16 +43,33 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps  > = (
       name={props.name}
       control={props.control}
       rules={props.rules}
-      render={({field:{ onChange, name:fieldName }}) => (
-        <Dropdown
-        {...props}
-        onChanged= { onChange }
-        errorMessage={
-          props.errors[fieldName] && props.errors[fieldName].message
-        }
-        />
+      defaultValue={{ key: null }}
+      render={({ field: { onChange } }) => (
+        <Dropdown {...props} onChanged={onChange} />
       )}
     />
   );
 };
 
+const pickerSuggestionsProps: IBasePickerSuggestionsProps = {
+  suggestionsHeaderText: "Suggested tags",
+  noResultsFoundText: "No tags found",
+};
+export const ControlledTagPicker: React.FC<HookFormProps & ITagPickerProps> = (
+  props
+) => {
+  return (
+    <Controller
+      name={props.name}
+      control={props.control}
+      render={({ field: { onChange } }) => (
+        <TagPicker
+          {...props}
+          onChange={onChange}
+          removeButtonAriaLabel="Remove"
+          pickerSuggestionsProps={pickerSuggestionsProps}
+        />
+      )}
+    />
+  );
+};
