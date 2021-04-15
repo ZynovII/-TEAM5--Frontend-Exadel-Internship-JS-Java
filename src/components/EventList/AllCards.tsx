@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { CardItem, ICardItemInfo } from "./EventCard";
+import React, { useEffect } from "react";
+import { CardItem } from "./EventCard";
 import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
 import "./AllCards.scss";
-import { IEvent } from "../../models/IEvent";
 import { useEvents, useStore } from "../../hooks/hooks";
 
-export const AllCards: React.FC= () => {
+export const AllCards: React.FC = () => {
   const { events, loading, fechEvents } = useEvents();
-  const {state} = useStore();
+  const { state } = useStore(); // useAuth()
   useEffect(() => {
     fechEvents();
   }, []);
@@ -17,7 +16,11 @@ export const AllCards: React.FC= () => {
     <>
       <section className="all-cards__wrapper">
         {Object.keys(events).map((id) => (
-          <CardItem cardItem={events[id]} key={id} isLogged={state.isAuthenticated}/>
+          <CardItem
+            cardItem={events[id]}
+            key={id}
+            isLogged={state.isAuthenticated}
+          /> // useAuth()
         ))}
       </section>
       <div className="margin2em button_center">

@@ -112,7 +112,7 @@ export const ApplicantList: React.FC = () => {
   ) : (
     <div style={{ height: "80vh", position: "relative" }}>
       <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced={true}>
-        <AllApplicantFilter></AllApplicantFilter>
+        <AllApplicantFilter />
       </Sticky>
       <div
         className={` ${classNames.table}`}
