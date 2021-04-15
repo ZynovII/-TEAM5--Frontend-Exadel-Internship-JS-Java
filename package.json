@@ -86,6 +86,7 @@
   },
   "dependencies": {
     "@fluentui/react": "^8.6.1",
+    "axios": "^0.21.1",
     "office-ui-fabric-core": "^11.0.0",
     "react-hook-form": "^7.0.4",
     "yarn": "^1.22.10"

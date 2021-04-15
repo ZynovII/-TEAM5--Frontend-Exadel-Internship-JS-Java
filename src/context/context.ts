@@ -8,6 +8,10 @@ export const initialState: IStore = {
   events: {},
   loading: false,
   applicants: {},
+  interviews: {},
+  selectedEventId: null,
+  selectedApplicantId: null,
+  selectedInterviewId: null,
 };
 
 export const Context = createContext<{

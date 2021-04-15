@@ -18,6 +18,7 @@ import { useId } from "@fluentui/react-hooks";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
 import { IApplicant } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/hooks";
+import { useHistory } from "react-router";
 
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
@@ -39,13 +40,15 @@ export interface IApplicantList {
 }
 export const ApplicantList: React.FC = () => {
   const { applicants, loading, fechApplicants } = useApplicants();
+  const history = useHistory();
   useEffect(() => {
     fechApplicants();
   }, []);
+
   const applicantsList = Object.keys(applicants).map((idx) => {
     return {
       name: applicants[idx].fullName,
-      event: applicants[idx].events,
+      event: applicants[idx].event,
       skill: applicants[idx].technology,
       interviewStatus: applicants[idx].interviewStatus,
     };
@@ -124,6 +127,9 @@ export const ApplicantList: React.FC = () => {
             columns={columns}
             isHeaderVisible={true}
             selectionMode={SelectionMode.multiple}
+            onItemInvoked={(item) =>
+              history.push(`/admin/candidates/${item.name}`)
+            }
           />
         </ScrollablePane>
       </div>
