@@ -6,8 +6,6 @@ import { ActionTypes } from "../../context/actionTypes"
 import HeaderNav from "./Header_nav";
 import ButtonLog from "./Button_log";
 
-import "./Header.scss";
-
 const logo = require("./../../assets/img/logo.svg");
 
 const Header: React.FC = () => {
@@ -17,7 +15,7 @@ const Header: React.FC = () => {
 	}
 
 	return (
-		<header className="header">
+		<header style={{padding: '2em'}}>
 			<Stack horizontal horizontalAlign="space-between">
 				<div style={{display:"flex", alignItems:'center', width:"550px"}}>
           <img src={logo.default} height="24" width="150" alt="exadel" />
