@@ -24,8 +24,9 @@ const AuthBtn = (props: {isLoggedIn: boolean, showModal: any, logout: any, userN
   }, [])
 
   return (
-    props.isLoggedIn ? <PrimaryButton split menuProps={menuProps} text={props.userName} className="button" /> :
-            <PrimaryButton onClick={props.showModal} text="Log In" className="button" />
+    props.isLoggedIn
+           ? <PrimaryButton split menuProps={menuProps} text={props.userName} className="button" />
+           : <PrimaryButton onClick={props.showModal} text="Log In" className="button" />
   )
 }
 
