@@ -1,9 +1,5 @@
 import React from "react";
-
-import {
-  mergeStyleSets
-} from '@fluentui/react'
-
+import { mergeStyleSets } from '@fluentui/react'
 import { Scrollbars } from "react-custom-scrollbars";
 
 const styles = mergeStyleSets({
