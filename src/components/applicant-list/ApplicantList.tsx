@@ -20,7 +20,6 @@ import { IApplicant } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/hooks";
 
 const theme = getTheme();
-
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
   root: { display: "inline-block" },
@@ -112,10 +111,7 @@ export const ApplicantList: React.FC = () => {
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <div style={{ height: "80vh", position: "relative" }}>
-      <Sticky
-        stickyPosition={StickyPositionType.Header}
-        isScrollSynced={true}
-      >
+      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced={true}>
         <AllApplicantFilter></AllApplicantFilter>
       </Sticky>
       <div
