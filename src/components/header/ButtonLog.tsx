@@ -1,4 +1,4 @@
-import { FC } from "react";
+import React from "react";
 import { useId, useBoolean } from "@fluentui/react-hooks";
 import AuthBtn from './AuthBtn/AuthBtn';
 import {
@@ -14,7 +14,7 @@ import {
 
 const cancelIcon: IIconProps = { iconName: "Cancel" };
 
-const ButtonLog = (props: { isLoggedIn: boolean, logout: any, userName: string}) => {
+const ButtonLog: React.FC<{ isLoggedIn: boolean, logout: any, userName: string }> = (props) => {
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
   );
