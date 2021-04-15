@@ -1,5 +1,6 @@
 import React from "react";
 import { getTheme } from "@fluentui/react";
+import { IEvent } from "../../models/IEvent";
 
 const theme = getTheme();
 const styles = {
@@ -17,15 +18,9 @@ const styles = {
     margin: "0 auto 140px",
   },
 };
-export interface ICardItemInfo {
-  id: number;
-  title: string;
-  date: string;
-  location: string;
-  description: string;
-}
+
 export interface ICardItemProps {
-  cardItem: ICardItemInfo;
+  cardItem: IEvent;
 }
 const eventImg = require("./../../assets/img/event_img.jpg");
 

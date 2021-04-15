@@ -14,10 +14,16 @@ import {
   ControlledTagPicker,
 } from "../../hook-form/ControlledTextField";
 
+
 const stackStyles: IStackStyles = {
   root: {
     margin: "2em auto",
     width: "73%",
+  },
+  inner: {
+    "@media(max-width: 600px)": {
+      display: "block",
+    },
   },
 };
 
@@ -58,6 +64,7 @@ export const AllFilters: React.FC = () => {
       };
 
       console.log(dataSubmit);
+
     })();
   };
   const filters: IFilterDropdownItem[] = useMemo(() => {
@@ -121,6 +128,7 @@ export const AllFilters: React.FC = () => {
       : [];
   };
 
+
   return (
     <>
       <Stack
@@ -142,7 +150,6 @@ export const AllFilters: React.FC = () => {
             styles={dropdownStyles}
           />
         ))}
-
         <Stack.Item
           align="center"
           styles={{

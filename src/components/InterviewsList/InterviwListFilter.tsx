@@ -2,18 +2,18 @@ import React from "react";
 import { DropDownFilter, IFilterList } from "./DropDownFilter";
 
 const filters = [
-    {
-        id: 456,
-        placeholder: "Date of interniew",
-        option: [
-          { key: "1", text: "18.03.2021" },
-          { key: "2", text: "18.03.2021" },
-          { key: "3", text: "19.03.2021" },
-          { key: "4", text: "19.03.2021" },
-        ],
-      },
-    {
+  {
     id: 456,
+    placeholder: "Date of interniew",
+    option: [
+      { key: "1", text: "18.03.2021" },
+      { key: "2", text: "18.03.2021" },
+      { key: "3", text: "19.03.2021" },
+      { key: "4", text: "19.03.2021" },
+    ],
+  },
+  {
+    id: 457,
     placeholder: "Time of interniew",
     option: [
       { key: "1", text: "18:00" },
@@ -42,14 +42,14 @@ const filters = [
   },
 ];
 
-const styles = {
+const styles: { section: React.CSSProperties } = {
   section: {
     display: "flex",
     justifyContent: "space-around",
     flexWrap: "wrap",
     paddingRight: 50,
     paddingBottom: 30,
-    backgroundColor: "#f9f9f8"
+    backgroundColor: "#f9f9f8",
   },
 };
 export const InterviewListFilter: React.FC = () => {

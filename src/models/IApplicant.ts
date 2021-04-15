@@ -11,21 +11,23 @@ export enum InterviewStatus {
 }
 
 export interface IApplicant {
-  id: number;
+  id: string;
   fullName: string;
   email: string;
   phoneNumber?: string;
   skype: string;
   resumeLink?: string;
-  technology: string[]; // tags
-  events: number[]; // event id
-  summary: string;
+  technology: string; // tags
+  event: string; // event id
+  summary?: string;
   country: string;
   city: string;
   acceptanceStatus: AcceptStatus;
   interviewStatus: InterviewStatus;
-  assignedHRID: number;
-  assignedTSID: number;
+  assignedHRID: string;
+  assignedTSID: string;
   HRFeedback: string;
   TSFeedback: string;
+  interviewDate: string; // ?
+  interviewTime: string; // ?
 }

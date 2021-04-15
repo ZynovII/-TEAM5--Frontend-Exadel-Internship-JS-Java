@@ -8,10 +8,7 @@ import { NotFound } from "../components/NotFound";
 import { ApplicantList } from "../components/applicant-list/ApplicantList";
 import { InterviewList } from "../components/InterviewsList/InterviewsList";
 import { AllCards } from "../components/EventList/AllCards";
-import { AllCardsWithData } from "../components/MainComponent";
-import { ApplicantListFilter } from "../components/applicant-list/ApplicantListFilter";
-import { AllApplicantFilter } from "../components/applicant-list/AllApplicantListFilter";
-import { InterviewListFilter } from "../components/InterviewsList/InterviwListFilter";
+import CandidatInfo from "../components/CandidatePage/CandidateInfo";
 
 export const AdminPage = () => {
   return (
@@ -30,25 +27,17 @@ export const AdminPage = () => {
           <div className="ms-Grid-row">
             <Switch>
               <Route path="/admin" exact component={() => <h1>Main</h1>} />
-              <Route path="/admin/events" component={AllCardsWithData} />
               <Route
-                path="/admin/candidates"
+                path="/admin/events"
                 component={() => (
-                  <>
-                    <AllApplicantFilter />
-                    <ApplicantList />
-                  </>
+                  <div style={{ overflowY: "auto", maxHeight: "85vh" }}>
+                    <AllCards />
+                  </div>
                 )}
               />
-              <Route
-                path="/admin/interviews"
-                component={() => (
-                  <>
-                    <InterviewListFilter />
-                    <InterviewList />
-                  </>
-                )}
-              />
+              <Route path="/admin/candidates" component={ApplicantList} />
+              <Route path="/admin/interviews" exact component={InterviewList} />
+              <Route path="/admin/interviews/:name" component={CandidatInfo} />
               <Route path="/admin/archive" component={() => <h1>Archive</h1>} />
               <Route path="/admin/signout" component={() => <h1>SignOut</h1>} />
               <Route component={NotFound} />
