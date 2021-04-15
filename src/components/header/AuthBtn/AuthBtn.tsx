@@ -1,9 +1,12 @@
+import React from "react"
 import { PrimaryButton, IContextualMenuProps} from "@fluentui/react";
 import { useMemo } from "react"
+import { useHistory } from "react-router";
 
 
-const AuthBtn = (props: {isLoggedIn: boolean, showModal: any, logout: any, userName: string }) => {
 
+const AuthBtn: React.FC<{isLoggedIn: boolean, showModal: any, logout: any, userName: string }> = (props) => {
+  const history = useHistory();
   const menuProps: IContextualMenuProps = useMemo(() => {
     return {
       items: [
@@ -11,7 +14,7 @@ const AuthBtn = (props: {isLoggedIn: boolean, showModal: any, logout: any, userN
           key: 'AdminPanel',
           text: 'Admin Panel',
           iconProps: { iconName: 'AdminALogoFill32' },
-          href: '/admin'
+          onClick: () => history.push('/admin'),
         },
         {
           key: 'LogOut',
