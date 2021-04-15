@@ -144,12 +144,6 @@ export const InterviewList: React.FC = () => {
   return (
     <div style={{ height: "80vh", position: "relative" }}>
       <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-        <Sticky
-          stickyPosition={StickyPositionType.Header}
-          isScrollSynced={true}
-        >
-      <InterviewListFilter></InterviewListFilter>
-      </Sticky>
       <div className={` ${classNames.table}`} style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}>
         <DetailsList
           items={applicants}

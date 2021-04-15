@@ -1,5 +1,13 @@
 import React from "react";
 import { ApplicantListFilter, IFilterList } from "./ApplicantListFilter";
+import {IStackStyles, Stack} from '@fluentui/react'
+
+const stackStyles: IStackStyles = {
+  root: {
+    margin: "0 auto",
+    width: "87%",
+  },
+};
 
 const filters = [
   {
@@ -21,6 +29,15 @@ const filters = [
     ]
   },
   {
+    id: 417,
+    placeholder: "Location",
+    option: [
+      { key: "4", text: "Qatar" },
+      { key: "5", text: "Cameroon" },
+      { key: "6", text: "Waiting Desicion" }
+    ]
+  },
+  {
     id: 789,
     placeholder: "Waiting status",
     option: [
@@ -31,22 +48,13 @@ const filters = [
   }
 ];
 
-const styles = {
-  section: {
-    display: "flex",
-    justifyContent: "flex-end",
-    flexWrap: "wrap",
-    paddingRight: 50,
-    paddingBottom: 30,
-    backgroundColor: "#f9f9f8"
-  }
-};
+
 export const AllApplicantFilter: React.FC = () => {
   return (
-    <section style={styles.section}>
+    <Stack styles={stackStyles} horizontal horizontalAlign="space-between" wrap>
       {filters.map((obj: IFilterList) => (
         <ApplicantListFilter key={obj.id} listFilter={obj} />
       ))}
-    </section>
+    </Stack>
   );
 };

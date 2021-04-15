@@ -199,12 +199,6 @@ export const ApplicantList: React.FC = () => {
   return (
     <div style={{ height: "80vh", position: "relative" }}>
       <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-        <Sticky
-          stickyPosition={StickyPositionType.Header}
-          isScrollSynced={true}
-        >
-          <AllApplicantFilter></AllApplicantFilter>
-        </Sticky>
         <div
           className={` ${classNames.table}`}
           style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
