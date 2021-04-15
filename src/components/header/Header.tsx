@@ -21,7 +21,7 @@ const Header: React.FC = () => {
           <img src={logo.default} height="24" width="150" alt="exadel" />
           {state.isAuthenticated && <HeaderNav />}
         </div>
-				<ButtonLog isLoggedIn={ state.isAuthenticated } userName = {'Admin'} logout={logOut} />
+				<ButtonLog isLoggedIn={ state.isAuthenticated } userName={ 'Admin' } logout={ logOut } /> //dinamic userName
 			</Stack>
 		</header>
 	);
