@@ -1,5 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useId } from "@fluentui/react-hooks";
+import { useHistory } from "react-router-dom";
 import {
   mergeStyleSets,
   DetailsList,
@@ -12,11 +13,13 @@ import {
   Sticky,
   StickyPositionType,
   ActionButton,
+  getTheme,
+  Spinner,
+  SpinnerSize,
 } from "@fluentui/react";
-import { getTheme } from "@fluentui/react";
 import { InterviewListFilter } from "./InterviwListFilter";
 import { InterviewStatus, IApplicant } from "../../models/IApplicant";
-import { useHistory } from "react-router-dom";
+import { useApplicants } from "../../hooks/hooks";
 
 const theme = getTheme();
 // export interface IInterview extends IApplicant {
@@ -35,36 +38,6 @@ const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
   root: { display: "inline-block" },
 };
-const applicants: IInterview[] = [
-  {
-    interviewDate: "2017-05-24",
-    interviewTime: "18:00",
-    fullName: "Vova Ivanov",
-    events: "Internship JS & Java",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    interviewDate: "2017-05-24",
-    interviewTime: "15:00",
-    fullName: "Petr Krasnow",
-    events: "C++ interview",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    interviewDate: "2017-05-24",
-    interviewTime: "10:00",
-    fullName: "Nike Petrov",
-    events: "Internship JS & Java",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    interviewDate: "2017-05-24",
-    interviewTime: "16:00",
-    fullName: "Sonya Volina",
-    events: "Business Analysis Meet UP",
-    interviewStatus: InterviewStatus.Registered,
-  },
-];
 
 const classNames = mergeStyleSets({
   table: {
@@ -81,6 +54,23 @@ export interface IInterviewList {
 export const InterviewList: React.FC = () => {
   const tooltipId = useId("tooltip");
   const history = useHistory();
+
+  const { applicants, loading, fechApplicants } = useApplicants();
+
+  useEffect(() => {
+    fechApplicants();
+  }, []);
+
+  const applicantsList = Object.keys(applicants).map((idx) => {
+    return {
+      fullName: applicants[idx].fullName,
+      event: applicants[idx].event,
+      skill: applicants[idx].technology,
+      interviewStatus: applicants[idx].interviewStatus,
+      interviewDate: applicants[idx].interviewDate,
+      interviewTime: applicants[idx].interviewTime,
+    };
+  });
   const columns: IColumn[] = [
     {
       key: "column1",
@@ -108,8 +98,8 @@ export const InterviewList: React.FC = () => {
     },
     {
       key: "column4",
-      name: "events",
-      fieldName: "events",
+      name: "event",
+      fieldName: "event",
       minWidth: 100,
       maxWidth: 250,
       isResizable: true,
@@ -139,16 +129,16 @@ export const InterviewList: React.FC = () => {
         >
           <ActionButton
             iconProps={{ iconName: "D365TalentHRCore" }}
-            onClick={() =>
-              history.push(`/admin/interviews/${applicants[0].fullName}`)
-            }
+            onClick={() => history.push(`/admin/interviews/${"unknow"}`)} // selected id from state
             aria-describedby={tooltipId}
           ></ActionButton>
         </TooltipHost>
       ),
     },
   ];
-  return (
+  return loading ? (
+    <Spinner size={SpinnerSize.large} className="margin2em" />
+  ) : (
     <div style={{ height: "80vh", position: "relative" }}>
       <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
         <Sticky
@@ -162,10 +152,13 @@ export const InterviewList: React.FC = () => {
           style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
         >
           <DetailsList
-            items={applicants}
+            items={applicantsList}
             columns={columns}
             selectionMode={SelectionMode.multiple}
             isHeaderVisible={true}
+            onItemInvoked={(item) =>
+              history.push(`/admin/interviews/${item.fullName}`)
+            }
             onRenderRow={(props, defaultRender) => (
               <div>
                 {defaultRender({

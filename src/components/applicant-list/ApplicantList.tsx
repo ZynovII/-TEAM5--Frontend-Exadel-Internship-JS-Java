@@ -20,136 +20,6 @@ import { IApplicant } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/hooks";
 
 const theme = getTheme();
-
-const applicants: IApplicant[] = [
-  {
-    name: "Vova Ivanov",
-    event: "Internship JS & Java",
-    skill: "Java",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Petr Krasnow",
-    event: "C++ interview",
-    skill: "C++",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Nike Petrov",
-    event: "Internship JS & Java",
-    skill: "JavaScript",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Vova Ivanov",
-    event: "Internship JS & Java",
-    skill: "Java",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Petr Krasnow",
-    event: "C++ interview",
-    skill: "C++",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Nike Petrov",
-    event: "Internship JS & Java",
-    skill: "JavaScript",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Vova Ivanov",
-    event: "Internship JS & Java",
-    skill: "Java",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Petr Krasnow",
-    event: "C++ interview",
-    skill: "C++",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Nike Petrov",
-    event: "Internship JS & Java",
-    skill: "JavaScript",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Vova Ivanov",
-    event: "Internship JS & Java",
-    skill: "Java",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Petr Krasnow",
-    event: "C++ interview",
-    skill: "C++",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Nike Petrov",
-    event: "Internship JS & Java",
-    skill: "JavaScript",
-    interviewStatus: InterviewStatus.Registered,
-  },
-  {
-    name: "Sonya Volina",
-    event: "Business Analysis Meet UP",
-    skill: "Business Analysis",
-    interviewStatus: InterviewStatus.Registered,
-  },
-];
-
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
   root: { display: "inline-block" },
@@ -241,10 +111,7 @@ export const ApplicantList: React.FC = () => {
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <div style={{ height: "80vh", position: "relative" }}>
-      <Sticky
-        stickyPosition={StickyPositionType.Header}
-        isScrollSynced={true}
-      >
+      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced={true}>
         <AllApplicantFilter></AllApplicantFilter>
       </Sticky>
       <div

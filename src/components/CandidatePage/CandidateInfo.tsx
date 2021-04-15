@@ -6,9 +6,9 @@ import {
   InterviewStatus,
 } from "../../models/IApplicant";
 
-const candidat = [
+const candidat: IApplicant[] = [
   {
-    id: 1,
+    id: "aefo78a0",
     fullName: "Ivan Ivanov",
     email: "iivanov@mail.ru",
     skype: " ",
@@ -16,18 +16,20 @@ const candidat = [
     country: "Belarus",
     city: "Minsk",
     technology: "Java",
-    events: [123, 234],
+    event: "E-learning",
     summary: " ",
     acceptanceStatus: AcceptStatus.Accepted,
     interviewStatus: InterviewStatus.AwaitingHRInterview,
-    assignedHRID: 111,
-    assignedTSID: 999,
+    interviewDate: "03.24.2021",
+    interviewTime: "11:00",
+    assignedHRID: "111",
+    assignedTSID: "999",
     HRFeedback: "",
     TSFeedback: "",
   },
 ];
 
-export const CandidatInfo: React.FC = (props) => {
+export const CandidatInfo: React.FC = () => {
   return (
     <section>
       {candidat.map((obj: IApplicant) => (
