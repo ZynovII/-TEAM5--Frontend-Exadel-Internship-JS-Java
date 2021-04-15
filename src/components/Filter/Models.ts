@@ -8,19 +8,13 @@ export interface IFilterDropdownItem{
   placeholder: string;
   label: string;
   options: IDropdownOption[];
-}
-
-export interface IFilterDropdownItemProps {
-  filterItem: IFilterDropdownItem;
-}
-
-export interface ITagPickerItemProps{
-  label: string;
-  eventTags: ITag[];
+  name: string;
 }
 
 export interface IFilterData{
   tags: ITag[];
   location: IDropdownOption;
   type:IDropdownOption;
+  eventType:IDropdownOption;
+  tagPicker: string[];
 }

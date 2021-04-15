@@ -3,7 +3,7 @@ import { IAction } from "../models/Store/IAction";
 import { IStore } from "../models/Store/IStore";
 
 export const initialState: IStore = {
-  isAuthenticated: false,
+  isAuthenticated: true,
   currentUserID: null,
   events: {},
   loading: false,

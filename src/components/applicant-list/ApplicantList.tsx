@@ -45,7 +45,7 @@ export const ApplicantList: React.FC = () => {
   const applicantsList = Object.keys(applicants).map((idx) => {
     return {
       name: applicants[idx].fullName,
-      event: applicants[idx].event,
+      event: applicants[idx].events,
       skill: applicants[idx].technology,
       interviewStatus: applicants[idx].interviewStatus,
     };
