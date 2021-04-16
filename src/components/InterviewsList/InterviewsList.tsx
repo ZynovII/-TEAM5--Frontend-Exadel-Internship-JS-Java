@@ -15,45 +15,33 @@ import {
   SpinnerSize,
 } from "@fluentui/react";
 import { InterviewListFilter } from "./InterviwListFilter";
-import { InterviewStatus } from "../../models/IApplicant";
-import { useApplicants } from "../../hooks/hooks";
+import { useInterviews } from "../../hooks/hooks";
 
 const theme = getTheme();
-export interface IInterview {
-  interviewDate: string;
-  interviewTime: any;
-  fullName: string;
-  events: string;
-  interviewStatus: InterviewStatus.Registered;
-}
 const calloutProps = { gapSpace: 0 };
 
 const hostStyles: Partial<ITooltipHostStyles> = {
   root: { display: "inline-block" },
 };
 
-export interface IInterviewList {
-  columns: IColumn[];
-  items: IInterview[];
-}
 export const InterviewList: React.FC = () => {
   const tooltipId = useId("tooltip");
   const history = useHistory();
 
-  const { applicants, loading, fechApplicants } = useApplicants();
+  const { interviews, loading, fetchInterviews } = useInterviews();
 
   useEffect(() => {
-    fechApplicants();
+    fetchInterviews();
   }, []);
 
-  const applicantsList = Object.keys(applicants).map((idx) => {
+  const applicantsList = Object.keys(interviews).map((idx) => {
     return {
-      fullName: applicants[idx].fullName,
-      event: applicants[idx].event,
-      skill: applicants[idx].technology,
-      interviewStatus: applicants[idx].interviewStatus,
-      interviewDate: applicants[idx].interviewDate,
-      interviewTime: applicants[idx].interviewTime,
+      fullName: interviews[idx].fullName,
+      event: interviews[idx].event,
+      skill: interviews[idx].technology,
+      interviewStatus: interviews[idx].interviewStatus,
+      interviewDate: interviews[idx].interviewDate,
+      interviewTime: interviews[idx].interviewTime,
     };
   });
   const columns: IColumn[] = [
@@ -143,7 +131,7 @@ export const InterviewList: React.FC = () => {
                 <div>
                   {defaultRender({
                     ...props,
-                    styles: { root: { fontSize: 18 } },
+                    styles: { root: { fontSize: 16 } },
                   })}
                 </div>
               )}
