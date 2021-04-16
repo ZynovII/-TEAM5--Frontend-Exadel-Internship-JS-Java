@@ -11,7 +11,7 @@ const styles = mergeStyleSets({
 
 const Scrollbar = props => (
   <Scrollbars
-    style={{ width: "100%", height: "100vh" }}
+    style={{ width: "100%", height: "100%" }}
     autoHide
     renderThumbVertical={(props) => (
       <div
