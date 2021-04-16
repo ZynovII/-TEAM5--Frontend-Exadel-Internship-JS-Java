@@ -18,10 +18,8 @@ const className = mergeStyles(spanClass, {
 
 export const NotFound = () => (
   <div className={className}>
-    <div className="ms-Grid-col">
-      <span style={titleStyle}>404</span>
-      <br />
-      <span className={spanClass}>Page not found...</span>
-    </div>
+    <span style={titleStyle}>404</span>
+    <br />
+    <span className={spanClass}>Page not found...</span>
   </div>
 );

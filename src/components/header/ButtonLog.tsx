@@ -1,6 +1,7 @@
-import { FC } from "react";
+import React from "react";
 import { useId, useBoolean } from "@fluentui/react-hooks";
-import AuthBtn from './AuthBtn/AuthBtn';
+import { useStore } from "../../hooks/hooks"
+import { ActionTypes } from "../../context/actionTypes"
 import {
   getTheme,
   mergeStyleSets,
@@ -12,15 +13,18 @@ import {
   TextField,
 } from "@fluentui/react/lib";
 
+import AuthBtn from './AuthBtn/AuthBtn';
+
 const cancelIcon: IIconProps = { iconName: "Cancel" };
 
-const ButtonLog = (props: { isLoggedIn: boolean, logout: any, userName: string}) => {
-  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
-    false
-  );
-
+const ButtonLog: React.FC<{ isLoggedIn: boolean, logout: any, userName: string }> = (props) => {
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean( false );
   const titleId = useId("title");
-
+  const { dispatch } = useStore()
+	const logIn = () => {
+		dispatch( {type: ActionTypes.SIGN_IN} )
+    hideModal()
+	}
   return (
     <div>
       <AuthBtn isLoggedIn = {props.isLoggedIn} userName = {props.userName} logout = {props.logout} showModal = {showModal} />
@@ -48,7 +52,7 @@ const ButtonLog = (props: { isLoggedIn: boolean, logout: any, userName: string})
             canRevealPassword
             className={contentStyles.item}
           />
-          <PrimaryButton onClick={() => console.log("send")} text="Send" className="button" />
+          <PrimaryButton onClick={() => logIn()} text="Send" className="button" />
         </div>
       </Modal>
     </div>

@@ -1,33 +1,41 @@
-import React from 'react'
-import { CandidatePage} from './CandidatePage' 
-import { IApplicant, AcceptStatus, InterviewStatus } from "../../models/IApplicant";
+import React from "react";
+import { CandidatePage } from "./CandidatePage";
+import {
+  IApplicant,
+  AcceptStatus,
+  InterviewStatus,
+} from "../../models/IApplicant";
 
-
-const candidat = [{
-    id: 1,
+const candidat: IApplicant[] = [
+  {
+    id: "aefo78a0",
     fullName: "Ivan Ivanov",
     email: "iivanov@mail.ru",
     skype: " ",
     phoneNumber: "+375294722147",
     country: "Belarus",
     city: "Minsk",
-    technology: ['Java', 'DevOps'],
-    events:[123, 234],
+    technology: "Java",
+    event: "E-learning",
     summary: " ",
     acceptanceStatus: AcceptStatus.Accepted,
     interviewStatus: InterviewStatus.AwaitingHRInterview,
-    assignedHRID: 111,
-    assignedTSID: 999,
+    interviewDate: "03.24.2021",
+    interviewTime: "11:00",
+    assignedHRID: "111",
+    assignedTSID: "999",
     HRFeedback: "",
     TSFeedback: "",
-}
-]
+  },
+];
 
-export const CandidatInfo : React.FC = (props)=> {
-    return (
-        <section >
-            {candidat.map((obj: IApplicant)=><div><CandidatePage key={obj.id} candidat={obj}/></div>)}
-         </section>
-        );
-}
-export default CandidatInfo
+export const CandidatInfo: React.FC = () => {
+  return (
+    <section>
+      {candidat.map((obj: IApplicant) => (
+        <CandidatePage key={obj.id} candidat={obj} />
+      ))}
+    </section>
+  );
+};
+export default CandidatInfo;
