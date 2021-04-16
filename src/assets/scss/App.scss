@@ -79,8 +79,23 @@ body {
 .button_center {
   display: flex;
   justify-content: center;
+  &.filter-btn {
+    margin: 1rem auto 0;
+    @media (min-width: 725px) {
+      margin: 0;
+    }
+  }
 }
 
 .margin2em {
   margin: 2em auto;
+}
+
+.ms-SelectionZone {
+  & .ms-BasePicker-text.text-89 {
+    min-width: 0;
+  }
+  & .ms-BasePicker-text.text-133 {
+    min-width: 0;
+  }
 }
