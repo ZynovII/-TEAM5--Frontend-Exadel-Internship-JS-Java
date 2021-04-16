@@ -3,6 +3,7 @@ import { useId } from "@fluentui/react-hooks";
 import { useHistory } from "react-router-dom";
 import {
   DetailsList,
+  Sticky,
   SelectionMode,
   IColumn,
   TooltipHost,
@@ -129,13 +130,19 @@ export const InterviewList: React.FC = () => {
       <div style={{ height: "70vh", position: "relative" }}>
         <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
           <div
-            style={{ boxShadow: theme.effects.elevation16}}
+            style={{ boxShadow: theme.effects.elevation16 }}
           >
             <DetailsList
               items={applicantsList}
               columns={columns}
               selectionMode={SelectionMode.multiple}
               isHeaderVisible={true}
+              onRenderDetailsHeader={
+                (detailsHeaderProps, defaultRender) => (
+                  <Sticky>
+                    {defaultRender(detailsHeaderProps)}
+                  </Sticky>
+                )}
               onItemInvoked={(item) =>
                 history.push(`/admin/interviews/${item.fullName}`)
               }

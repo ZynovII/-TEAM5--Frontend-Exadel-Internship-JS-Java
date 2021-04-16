@@ -2,24 +2,36 @@ import React, { useEffect } from "react";
 import {
   DetailsList,
   getTheme,
+  mergeStyleSets,
   SelectionMode,
   IColumn,
   TooltipHost,
   ITooltipHostStyles,
   ScrollablePane,
   ScrollbarVisibility,
+  Sticky,
+  StickyPositionType,
   Spinner,
   SpinnerSize,
 } from "@fluentui/react";
 import { useId } from "@fluentui/react-hooks";
+import { AllApplicantFilter } from "./AllApplicantListFilter";
 import { IApplicant } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/hooks";
-import { AllApplicantFilter } from "./AllApplicantListFilter"
+
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
   root: { display: "inline-block" },
 };
+
+const classNames = mergeStyleSets({
+  table: {
+    margin: "auto",
+    maxWidth: "97%",
+    maxHeight: 680,
+  },
+});
 
 export interface IApplicantList {
   columns: IColumn[];
@@ -33,7 +45,7 @@ export const ApplicantList: React.FC = () => {
   const applicantsList = Object.keys(applicants).map((idx) => {
     return {
       name: applicants[idx].fullName,
-      event: applicants[idx].event,
+      event: applicants[idx].events,
       skill: applicants[idx].technology,
       interviewStatus: applicants[idx].interviewStatus,
     };
@@ -98,20 +110,29 @@ export const ApplicantList: React.FC = () => {
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
-    <>
-    <AllApplicantFilter />
-    <div style={{ height: "70vh", position: "relative" }}>
-      <div style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }} >
+    <div style={{ height: "80vh", position: "relative" }}>
+      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced={true}>
+        <AllApplicantFilter />
+      </Sticky>
+      <div
+        className={` ${classNames.table}`}
+        style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
+      >
         <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
           <DetailsList
             items={applicantsList}
             columns={columns}
-            isHeaderVisible={false}
+            isHeaderVisible={true}
             selectionMode={SelectionMode.multiple}
+            onRenderDetailsHeader={
+              (detailsHeaderProps, defaultRender) => (
+                <Sticky>
+                  {defaultRender(detailsHeaderProps)}
+                </Sticky>
+              )}
           />
         </ScrollablePane>
       </div>
     </div>
-    </>
   );
 };
