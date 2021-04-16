@@ -14,7 +14,6 @@ import {
   ControlledTagPicker,
 } from "../../hook-form/ControlledTextField";
 
-
 const stackStyles: IStackStyles = {
   root: {
     margin: "2em auto",
@@ -30,8 +29,8 @@ const stackStyles: IStackStyles = {
 const dropdownStyles: Partial<IDropdownStyles> = {
   dropdown: {},
   root: {
-    width: "30%",
-    minWidth: "200px",
+    width: "20%",
+    minWidth: "150px",
     margin: "0 2px",
   },
 };
@@ -64,13 +63,13 @@ export const AllFilters: React.FC = () => {
       };
 
       console.log(dataSubmit);
-
     })();
   };
   const filters: IFilterDropdownItem[] = useMemo(() => {
     return [
       {
-        id: 1,
+        id: "1",
+        key: "1",
         name: "eventType",
         placeholder: "All",
         label: "Event type",
@@ -81,7 +80,8 @@ export const AllFilters: React.FC = () => {
         ],
       },
       {
-        id: 3,
+        id: "2",
+        key: "2",
         name: "location",
         placeholder: "All",
         label: "Locations",
@@ -128,32 +128,25 @@ export const AllFilters: React.FC = () => {
       : [];
   };
 
-
   return (
     <>
       <Stack
         styles={stackStyles}
         horizontal
-        verticalAlign="center"
+        verticalAlign="start"
         horizontalAlign="space-between"
         wrap
       >
-        {filters.map((obj: IFilterDropdownItem) => (
-          <ControlledDropdown
-            label={obj.label}
-            key={obj.id}
-            control={control}
-            name={obj.name}
-            placeholder={obj.placeholder}
-            options={obj.options}
-            errors={errors}
-            styles={dropdownStyles}
-          />
-        ))}
+        <ControlledDropdown
+          {...filters[0]}
+          control={control}
+          errors={errors}
+          styles={dropdownStyles}
+        />
         <Stack.Item
           align="center"
           styles={{
-            root: { margin: "0 2px", minWidth: "200px", width: "30%" },
+            root: { margin: "0 2px", minWidth: "220px", width: "55%" },
           }}
         >
           <Label>Tags</Label>
@@ -166,6 +159,12 @@ export const AllFilters: React.FC = () => {
             aria-label="Tag picker"
           />
         </Stack.Item>
+        <ControlledDropdown
+          {...filters[1]}
+          control={control}
+          errors={errors}
+          styles={dropdownStyles}
+        />
       </Stack>
       <div className="margin2em button_center">
         <PrimaryButton

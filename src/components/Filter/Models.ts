@@ -4,7 +4,8 @@ import {
 } from "@fluentui/react/lib";
 
 export interface IFilterDropdownItem{
-  id: number;
+  id: string;
+  key: string;
   placeholder: string;
   label: string;
   options: IDropdownOption[];

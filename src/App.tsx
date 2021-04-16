@@ -14,19 +14,22 @@ import { MainPage } from "./pages/MainPage";
 import { AdminPage } from "./pages/AdminPage";
 import { Store } from "./context/Store";
 import { NotFoundPage } from "./pages/NotFoundPage";
+import Scrollbar from './components/UI/Scrollbar/Scrollbar';
 
 const App = () => {
   return (
     <Store>
       <HashRouter>
-        <Switch>
-          <Route path="/" exact>
-            <Redirect to="/events" />
-          </Route>
-          <Route path="/events" component={MainPage} />
-          <Route path="/admin" component={AdminPage} />
-          <Route component={NotFoundPage} />
-        </Switch>
+        <Scrollbar>
+          <Switch>
+            <Route path="/" exact>
+              <Redirect to="/events" />
+            </Route>
+            <Route path="/events" component={MainPage} />
+            <Route path="/admin" component={AdminPage} />
+            <Route component={NotFoundPage} />
+          </Switch>
+        </Scrollbar>
       </HashRouter>
     </Store>
   );
