@@ -2,7 +2,6 @@ import React, { useEffect } from "react";
 import { useId } from "@fluentui/react-hooks";
 import { useHistory } from "react-router-dom";
 import {
-  mergeStyleSets,
   DetailsList,
   SelectionMode,
   IColumn,
@@ -10,22 +9,16 @@ import {
   ITooltipHostStyles,
   ScrollablePane,
   ScrollbarVisibility,
-  Sticky,
-  StickyPositionType,
   ActionButton,
   getTheme,
   Spinner,
   SpinnerSize,
 } from "@fluentui/react";
 import { InterviewListFilter } from "./InterviwListFilter";
-import { InterviewStatus, IApplicant } from "../../models/IApplicant";
+import { InterviewStatus } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/hooks";
 
 const theme = getTheme();
-// export interface IInterview extends IApplicant {
-//     interviewDate: Date,
-//     interviewTime: any
-//    }
 export interface IInterview {
   interviewDate: string;
   interviewTime: any;
@@ -38,14 +31,6 @@ const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
   root: { display: "inline-block" },
 };
-
-const classNames = mergeStyleSets({
-  table: {
-    margin: "auto",
-    maxWidth: "97%",
-    maxHeight: 680,
-  },
-});
 
 export interface IInterviewList {
   columns: IColumn[];
@@ -139,37 +124,33 @@ export const InterviewList: React.FC = () => {
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
-    <div style={{ height: "80vh", position: "relative" }}>
-      <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-        <Sticky
-          stickyPosition={StickyPositionType.Header}
-          isScrollSynced={true}
-        >
-          <InterviewListFilter />
-        </Sticky>
-        <div
-          className={` ${classNames.table}`}
-          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
-        >
-          <DetailsList
-            items={applicantsList}
-            columns={columns}
-            selectionMode={SelectionMode.multiple}
-            isHeaderVisible={true}
-            onItemInvoked={(item) =>
-              history.push(`/admin/interviews/${item.fullName}`)
-            }
-            onRenderRow={(props, defaultRender) => (
-              <div>
-                {defaultRender({
-                  ...props,
-                  styles: { root: { fontSize: 18 } },
-                })}
-              </div>
-            )}
-          />
-        </div>
-      </ScrollablePane>
-    </div>
+    <>
+      <InterviewListFilter />
+      <div style={{ height: "70vh", position: "relative" }}>
+        <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
+          <div
+            style={{ boxShadow: theme.effects.elevation16}}
+          >
+            <DetailsList
+              items={applicantsList}
+              columns={columns}
+              selectionMode={SelectionMode.multiple}
+              isHeaderVisible={true}
+              onItemInvoked={(item) =>
+                history.push(`/admin/interviews/${item.fullName}`)
+              }
+              onRenderRow={(props, defaultRender) => (
+                <div>
+                  {defaultRender({
+                    ...props,
+                    styles: { root: { fontSize: 18 } },
+                  })}
+                </div>
+              )}
+            />
+          </div>
+        </ScrollablePane>
+      </div>
+    </>
   );
 };

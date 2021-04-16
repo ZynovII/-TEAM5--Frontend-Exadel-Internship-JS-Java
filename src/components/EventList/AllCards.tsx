@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { CardItem } from "./EventCard";
+import { NewCardItem } from "../NewEvent/NewCardItem"
 import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
 import "./AllCards.scss";
 import { useEvents, useStore } from "../../hooks/hooks";
@@ -15,6 +16,7 @@ export const AllCards: React.FC = () => {
   ) : (
     <>
       <section className="all-cards__wrapper">
+        {state.isAuthenticated && <NewCardItem />}
         {Object.keys(events).map((id) => (
           <CardItem
             cardItem={events[id]}
