@@ -10,7 +10,6 @@ import {
 
 import { useHistory } from "react-router";
 import { IEvent } from "../../models/IEvent";
-import { relative } from "node:path";
 
 const cardImage = require("./../../assets/img/card_img.jpg");
 

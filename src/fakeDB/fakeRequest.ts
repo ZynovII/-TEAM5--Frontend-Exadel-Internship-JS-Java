@@ -15,3 +15,6 @@ export const fakeRequest = (data) => {
 export const fakeRequestEvents = fakeRequest(events);
 export const fakeRequestUsers = fakeRequest(users);
 export const fakeRequestApplicants = fakeRequest(applicants);
+export const fakeRequestInterviews = fakeRequest(applicants);
+export const fakeRequestSignIn = fakeRequest(users[0]);
+export const fakeRequestSignOut = fakeRequest(true);

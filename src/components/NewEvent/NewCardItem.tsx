@@ -20,6 +20,7 @@ const styles = {
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom: "20px",
+      boxShadow: '0px 0px 36px -6px rgba(34, 60, 80, 0.1) inset',
     },
   },
   mainTytle: {
@@ -49,7 +50,7 @@ export const NewCardItem: React.FC = (props) => {
   return (
     <DocumentCard
       styles={styles.styleCard}
-      onClick={() => history.push(`/`)}
+      onClick={() => history.push('/')}
     >
       <div>
       <Image height={143} width={143} imageFit={ImageFit.center} src={cardImage.default} />

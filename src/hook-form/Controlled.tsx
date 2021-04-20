@@ -19,6 +19,7 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
       name={props.name}
       control={props.control}
       rules={props.rules}
+      defaultValue={''}
       render={({ field: { onChange, onBlur, value, name: fieldName } }) => (
         <TextField
           {...props}
@@ -43,9 +44,11 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
       name={props.name}
       control={props.control}
       rules={props.rules}
-      defaultValue={{ key: null }}
-      render={({ field: { onChange } }) => (
-        <Dropdown {...props} onChanged={onChange} />
+      defaultValue={''}
+      render={({ field: { onChange }}) => (
+        <Dropdown {...props} 
+        onChange={(e, data) => onChange(data.key)}
+        />
       )}
     />
   );
@@ -62,13 +65,40 @@ export const ControlledTagPicker: React.FC<HookFormProps & ITagPickerProps> = (
     <Controller
       name={props.name}
       control={props.control}
+      defaultValue= {[]}
       render={({ field: { onChange } }) => (
         <TagPicker
           {...props}
-          onChange={onChange}
+          onChange={(e) => onChange(e.map(el => el.key))}
           removeButtonAriaLabel="Remove"
           pickerSuggestionsProps={pickerSuggestionsProps}
         />
+      )}
+    />
+  );
+};
+
+interface InputUpload {
+  id: string;
+  className: string;
+  onChange: any;
+}
+export const ControlledInputUpload: React.FC<HookFormProps & InputUpload> = (
+  props
+) => {
+  return (
+    <Controller
+      name={props.name}
+      control={props.control}
+      defaultValue={''}
+      render={({ field: { onChange } }) => (
+        <input 
+        {...props}
+        type="file"
+        onChange={(e) => {
+          onChange(e.target.files[0]) 
+          props.onChange(e)}} 
+         />
       )}
     />
   );
