@@ -54,9 +54,7 @@ export const AllApplicantFilter: React.FC = () => {
   const onApplyFilter = () => {
     handleSubmit((data) => {
       const dataSubmit = {
-        events: data.events["key"],
-        skills: data.skills["key"],
-        wstatus: data.wstatus["key"],
+        ...data
       };
 
       console.log(dataSubmit);

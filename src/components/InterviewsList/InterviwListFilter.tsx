@@ -49,10 +49,7 @@ export const InterviewListFilter: React.FC = () => {
   const onApplyFilter = () => {
     handleSubmit((data) => {
       const dataSubmit = {
-        events: data.events["key"],
-        wstatus: data.wstatus["key"],
-        date: data.date["key"],
-        time: data.time["key"],
+        ...data
       };
 
       console.log(dataSubmit);
