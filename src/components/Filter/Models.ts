@@ -4,7 +4,8 @@ import {
 } from "@fluentui/react/lib";
 
 export interface IFilterDropdownItem{
-  id: number;
+  id: string;
+  key: string;
   placeholder: string;
   label: string;
   options: IDropdownOption[];
@@ -16,5 +17,10 @@ export interface IFilterData{
   location: IDropdownOption;
   type:IDropdownOption;
   eventType:IDropdownOption;
+  events:IDropdownOption;
+  skills: IDropdownOption;
+  wstatus: IDropdownOption;
+  date: IDropdownOption;
+  time: IDropdownOption;
   tagPicker: string[];
 }
