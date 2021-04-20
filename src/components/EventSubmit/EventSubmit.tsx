@@ -1,44 +1,26 @@
 import * as React from "react";
-import './styles/EventSubmit.scss';
+import "./styles/EventSubmit.scss";
 
-import EventSubmitForm from './EventSubmitForm/EventSubmitForm'
-import IEventSubmit from './IEventSubmit';
+import EventSubmitForm from "./EventSubmitForm/EventSubmitForm";
 
 const eventSubmit = (props) => {
-  const [state, setState] = React.useState({
-    showForm: false
-  })
-
-  const closeEvent = () => {
-    setState({
-      showForm: false,
-    })
-  }
-
-  const submitForm = (event) => {
-    event.preventDefault();
-    closeEvent();
-  }
-
+  
   let form;
-  if (state.showForm) {
+  if (props.open) {
     form = (
       <div>
-        <div id='backdrop' onClick={closeEvent}></div>
+        <div id="backdrop" onClick={props.close}></div>
         <EventSubmitForm
-          submit={submitForm}
+          submit={props.submit}
           country={props.country}
           city={props.city}
-          technology={props.technology} />
+          technology={props.technology}
+        />
       </div>
-    )
+    );
   }
 
-  return (
-    <div>
-      {form}
-    </div>
-  )
-}
+  return form;
+};
 
 export default eventSubmit;
