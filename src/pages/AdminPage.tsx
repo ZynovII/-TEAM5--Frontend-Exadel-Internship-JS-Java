@@ -8,7 +8,7 @@ import { NotFound } from "../components/NotFound";
 import { ApplicantList } from "../components/applicant-list/ApplicantList";
 import { InterviewList } from "../components/InterviewsList/InterviewsList";
 import { AllCards } from "../components/EventList/AllCards";
-import CandidatInfo from "../components/CandidatePage/CandidateInfo";
+import { CandidatePage } from "../components/CandidatePage/CandidatePage";
 
 export const AdminPage = () => {
   return (
@@ -38,7 +38,7 @@ export const AdminPage = () => {
               <Route path="/admin/candidates" exact component={ApplicantList} />
               <Route path="/admin/candidates/:name" component={CandidatInfo} />
               <Route path="/admin/interviews" exact component={InterviewList} />
-              <Route path="/admin/interviews/:name" component={CandidatInfo} />
+              <Route path="/admin/interviews/:name" component={CandidatePage} />
               <Route path="/admin/archive" component={() => <h1>Archive</h1>} />
               <Route path="/admin/signout" component={() => <h1>SignOut</h1>} />
               <Route component={NotFound} />

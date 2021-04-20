@@ -12,7 +12,7 @@ import { useForm } from "react-hook-form";
 import {
   ControlledDropdown,
   ControlledTagPicker,
-} from "../../hook-form/ControlledTextField";
+} from "../../hook-form/Controlled";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -48,21 +48,6 @@ export const AllFilters: React.FC = () => {
   const onApplyFilter = () => {
     handleSubmit((data) => {
       console.log(data);
-      let tags = null;
-      if (Array.isArray(data.tagPicker)) {
-        tags = data.tagPicker.map((item) => {
-          return item["key"];
-        });
-      }
-
-      const dataSubmit = {
-        ...data,
-        location: data.location["key"],
-        eventType: data.eventType["key"],
-        tagPicker: tags,
-      };
-
-      console.log(dataSubmit);
     })();
   };
   const filters: IFilterDropdownItem[] = useMemo(() => {
