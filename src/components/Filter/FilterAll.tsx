@@ -102,13 +102,14 @@ export const AllFilters: React.FC = () => {
       {
         id: "3",
         key: "3",
-        name: "city",
+        name: "level",
         placeholder: "All",
-        label: "Cities",
+        label: "Level",
         options: [
-          { key: "Minsk", text: "Minsk" },
-          { key: "Kiev", text: "Kiev" },
-          { key: "Gomel", text: "Gomel" },
+          { key: "Trainee", text: "Trainee" },
+          { key: "Junior", text: "Junior" },
+          { key: "Middle", text: "Middle" },
+          { key: "Senior", text: "Senior" },
         ],
       },
     ];
@@ -124,7 +125,6 @@ export const AllFilters: React.FC = () => {
       "Frontend",
       "Backend",
       "c#",
-      "Junior",
       "TypeScript",
       "Data base",
     ].map((item) => ({ key: item.toLowerCase(), name: item }));
@@ -149,7 +149,6 @@ export const AllFilters: React.FC = () => {
 
   return (
     <>
-
       <Stack styles={stackStyles} horizontal verticalAlign="end" wrap>
         <Stack.Item align="center" styles={stackItemStyles}>
           <Label>Tags</Label>
