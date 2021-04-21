@@ -1,6 +1,6 @@
 import React from "react";
 import { useMemo } from "react";
-import { ControlledDropdown } from "../../hook-form/ControlledTextField";
+import { ControlledDropdown } from "../../hook-form/Controlled";
 import { useForm } from "react-hook-form";
 import { IFilterDropdownItem, IFilterData } from "../Filter/Models";
 import { IStackStyles, IDropdownStyles, Stack, PrimaryButton } from "@fluentui/react";
@@ -16,6 +16,7 @@ const stackStyles: IStackStyles = {
     },
   },
 };
+
 
 const styles = {
   div:{
@@ -103,7 +104,7 @@ export const InterviewListFilter: React.FC = () => {
         name: "wstatus",
         label: "Status",
         placeholder: "Waiting status",
-        options: [
+        options: 
           { key: "Registered", text: "Registered" },
           { key: "Awaiting HR interview", text: "Awaiting HR interview" },
           { key: "Waiting Desicion", text: "Waiting Desicion" },
@@ -113,7 +114,9 @@ export const InterviewListFilter: React.FC = () => {
   }, []);
 
   return (
+
     <div style={styles.div}>
+ develop
     <Stack
       styles={stackStyles}
       horizontal

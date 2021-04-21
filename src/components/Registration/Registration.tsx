@@ -1,6 +1,6 @@
 import React, { useEffect, useState, useMemo } from "react";
 import { useForm,  } from "react-hook-form";
-import { ControlledTextField, ControlledDropdown } from "../../hook-form/ControlledTextField";
+import { ControlledTextField, ControlledDropdown, ControlledInputUpload } from "../../hook-form/Controlled";
 import {
   Stack,
   Text,
@@ -68,7 +68,12 @@ export const Registration:React.FC<{name: string}> = (props) => {
       { key: "fourth", text: "16.00 - 18.00" },
     ];
   }, []) 
-
+  const exampleOptionsOfTechnology: IDropdownOption[] = useMemo( () => {
+    return [
+      { key: "js", text: "JavaScript" },
+      { key: "java", text: "Java" }
+    ];
+  }, [])
   const registrationPattern:{name: RegExp, email: RegExp, phoneNumber: RegExp} = useMemo( () => {
     return {
       name: /^[a-z]+ [a-z]+$|^[а-яА-Я]+ [а-яА-Я]+$/i,
@@ -94,16 +99,15 @@ export const Registration:React.FC<{name: string}> = (props) => {
     personalData && privacy ? setDisabledButtonFalse() : setDisabledButtonTrue()
   }, [personalData, privacy])
 
-  // const [fileName, setFileName] = useState<string>('')
-  // const uploadFile = (event) => {
-  //       setFileName(event.target.files[0].name)
-  //     }
+  const [fileName, setFileName] = useState<string>('')
+  const uploadFile = (event) => {
+        setFileName(event.target.files[0].name)
+      }
  
   const onSave = () => {
     handleSubmit(
       (data) => {
-        const dataSubmit = {...data, city: data.city['key'], country: data.country['key'], time: data.time['key'] }
-        console.log(dataSubmit);
+        console.log(data);
         showModal();
       },
       (err) => {
@@ -192,42 +196,33 @@ export const Registration:React.FC<{name: string}> = (props) => {
             tokens={{ childrenGap: "20px" }}
             styles={{ root: { width: "520px" } }}
           >
-            <ControlledTextField
-              placeholder="Cv link"
+            <ControlledDropdown
               control={control}
-              name={"cv"}
-              errors={errors}
+              name={"technology"}
+              placeholder="Technology"
+              options={exampleOptionsOfTechnology}
               styles={textFieldStyles}
             />
             <ControlledDropdown
-              required
               control={control}
               name={"country"}
-              errors={errors}
               placeholder="Country"
-              rules={{ required: "This field is required" }}
               options={optionsOfCountries}
               onChange={() => setCountryStatus(false)}
               styles={textFieldStyles}
             />
             <ControlledDropdown
-              required
               control={control}
               name={"city"}
-              errors={errors}
               placeholder="City"
-              rules={{ required: "This field is required" }}
               options={exampleOptionsOfCities}
               disabled={countryStatus}
               styles={textFieldStyles}
             />
             <ControlledDropdown
-              required
               control={control}
               name={"time"}
-              errors={errors}
               placeholder="Choose time"
-              rules={{ required: "This field is required" }}
               options={exampleTime}
               styles={textFieldStyles}
             />
@@ -245,9 +240,15 @@ export const Registration:React.FC<{name: string}> = (props) => {
         <Text className={contentStyles.lab} nowrap block>
           * Fields marked with * are required
         </Text>
-        {/* <input type='file' id="files" className="input-file__input" onChange={uploadFile}/>
-        <label htmlFor="files" className="input-file__label">Загрузить файл</label>
-        <span>{fileName}</span>  */}
+        <ControlledInputUpload 
+          control={ control }
+          name= {"cv"}
+          id={"cv"} 
+          className="input-file__input"
+          onChange ={ (e) => uploadFile(e) }
+        />
+        <label htmlFor="cv" className="input-file__label">Upload CV</label>
+        <span>{fileName}</span> 
         <div className={contentStyles.checkboxes}>
           <Checkbox
             onChange={checkPersonalData}

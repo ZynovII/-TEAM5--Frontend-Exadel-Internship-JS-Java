@@ -11,6 +11,7 @@ import {
   Spinner,
   SpinnerSize,
 } from "@fluentui/react";
+import { useHistory } from "react-router";
 import { useId } from "@fluentui/react-hooks";
 import { IApplicant } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/hooks";
@@ -27,9 +28,11 @@ export interface IApplicantList {
 }
 export const ApplicantList: React.FC = () => {
   const { applicants, loading, fechApplicants } = useApplicants();
+  const history = useHistory();
   useEffect(() => {
     fechApplicants();
   }, []);
+
   const applicantsList = Object.keys(applicants).map((idx) => {
     return {
       name: applicants[idx].fullName,
@@ -108,6 +111,9 @@ export const ApplicantList: React.FC = () => {
             columns={columns}
             isHeaderVisible={false}
             selectionMode={SelectionMode.multiple}
+            onItemInvoked={(item) =>
+              history.push(`/admin/candidates/${item.name}`)
+            }
           />
         </ScrollablePane>
       </div>

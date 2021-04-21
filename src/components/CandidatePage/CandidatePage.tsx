@@ -7,9 +7,10 @@ import {
   IDropdownOption,
   ProgressIndicator,
   DatePicker,
+  PrimaryButton,
 } from "@fluentui/react/lib";
-
-import { AcceptStatus, IApplicant } from "../../models/IApplicant";
+import { AcceptStatus, IApplicant, InterviewStatus } from "../../models/IApplicant";
+import { CandidateForm } from './CandidateForm'
 
 export interface ICandidatProps {
   candidat: IApplicant;
@@ -19,11 +20,6 @@ const options: { key: string; text: string }[] = [
   { key: "Interview", text: "Interview" },
   { key: "HR", text: "HR" },
   { key: "TS", text: "TS" },
-];
-
-const desicion: IDropdownOption[] = [
-  { key: "Accept", text: "Accept" },
-  { key: "Reject", text: "Reject" },
 ];
 
 const dayPickerStrings = {
@@ -112,24 +108,53 @@ const time = [
     text: "15:00-15:30",
   },
 ];
-
 const filterDisplay = {
   display: "flex",
   justifyContent: "space-between",
-  //position: 'absolute',
   marginTop: -21,
   zIndex: 1,
 } as const;
+const candidat = 
+  {
+    id: "aefo78a0",
+    fullName: "Ivan Ivanov",
+    email: "iivanov@mail.ru",
+    skype: " ",
+    phoneNumber: "+375294722147",
+    country: "Belarus",
+    city: "Minsk",
+    technology: "Java",
+    event: "E-learning",
+    summary: " ",
+    acceptanceStatus: AcceptStatus.Accepted,
+    interviewStatus: InterviewStatus.AwaitingHRInterview,
+    interviewDate: "03.24.2021",
+    interviewTime: "11:00",
+    assignedHRID: "111",
+    assignedTSID: "999",
+    HRFeedback: "",
+    TSFeedback: "",
+  };
 
-export const CandidatePage: React.FC<ICandidatProps> = (props) => {
+
+  const desicion: IDropdownOption[] = [
+    { key: "Accept", text: "Accept" },
+    { key: "Reject", text: "Reject" },
+  ];
+  
+export const CandidatePage: React.FC = (props) => {
+  
   return (
     <>
       <header className={contentStyles.title}>
-        <h3>{props.candidat.fullName}</h3>
+        <div style={{display: 'flex', justifyContent:"space-between", width: '25%', alignItems:'center'}}>
+          <h3>{candidat.fullName}</h3>
+          <PrimaryButton text='Редактировать' />
+        </div>
         <h3>Internship JS&amp;Java</h3>
       </header>
       <div className={contentStyles.container}>
-        <div>
+      <div>
           <Stack
             className={contentStyles.formWrapper}
             horizontal
@@ -142,17 +167,17 @@ export const CandidatePage: React.FC<ICandidatProps> = (props) => {
               <h3
                 style={{
                   color:
-                    (props.candidat.acceptanceStatus ===
+                    (candidat.acceptanceStatus ===
                       AcceptStatus.Accepted &&
                       "#00cc00") ||
-                    (props.candidat.acceptanceStatus === AcceptStatus.Pending &&
+                    (candidat.acceptanceStatus === AcceptStatus.Pending &&
                       "#DBDE36") ||
-                    (props.candidat.acceptanceStatus ===
+                    (candidat.acceptanceStatus ===
                       AcceptStatus.Rejected &&
                       "red"),
                 }}
               >
-                {props.candidat.acceptanceStatus}
+                {candidat.acceptanceStatus}
               </h3>
             </Stack>
             <Stack
@@ -182,44 +207,9 @@ export const CandidatePage: React.FC<ICandidatProps> = (props) => {
               />
             </Stack>
           </Stack>
-          <Stack
-            className={contentStyles.formWrapper}
-            horizontal
-            tokens={{ childrenGap: "40px" }}
-          >
-            <Stack
-              tokens={{ childrenGap: "20px" }}
-              styles={{ root: { width: "450px" } }}
-            >
-              <TextField
-                label="First name and last name"
-                value={props.candidat.fullName}
-              />
-              <TextField label="Email" value={props.candidat.email} />
-              <TextField label="Telephone" value={props.candidat.phoneNumber} />
-            </Stack>
-            <Stack
-              tokens={{ childrenGap: "20px" }}
-              styles={{ root: { width: "450px" } }}
-            >
-              <TextField label="Skils" value={props.candidat.technology} />
-              <TextField label="Country" value={props.candidat.country} />
-              <TextField label="Town" value={props.candidat.city} />
-            </Stack>
-          </Stack>
-          <Stack
-            className={contentStyles.formWrapper}
-            horizontal
-            tokens={{ childrenGap: "70px" }}
-          >
-            <TextField
-              label="Informaiton"
-              multiline
-              autoAdjustHeight
-              styles={{ root: { width: "100%" } }}
-            />
-          </Stack>
-        </div>
+          {<CandidateForm candidat={ candidat }/>}
+          </div>
+        
         <div>
           <h1>To set up iterview</h1>
           <Stack
