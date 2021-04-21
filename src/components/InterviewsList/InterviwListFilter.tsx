@@ -116,7 +116,6 @@ export const InterviewListFilter: React.FC = () => {
   return (
 
     <div style={styles.div}>
- develop
     <Stack
       styles={stackStyles}
       horizontal
