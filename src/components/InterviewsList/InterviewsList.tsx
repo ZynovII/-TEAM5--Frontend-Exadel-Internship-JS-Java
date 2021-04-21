@@ -15,9 +15,12 @@ import {
   SpinnerSize,
 } from "@fluentui/react";
 import { InterviewListFilter } from "./InterviwListFilter";
+import { InterviewStatus } from "../../models/IApplicant";
+import { useApplicants } from "../../hooks/hooks";
 import { useInterviews } from "../../hooks/hooks";
 
 const theme = getTheme();
+
 const calloutProps = { gapSpace: 0 };
 
 const hostStyles: Partial<ITooltipHostStyles> = {

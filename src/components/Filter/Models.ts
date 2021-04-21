@@ -17,5 +17,10 @@ export interface IFilterData{
   location: IDropdownOption;
   type:IDropdownOption;
   eventType:IDropdownOption;
+  events:IDropdownOption;
+  skills: IDropdownOption;
+  wstatus: IDropdownOption;
+  date: IDropdownOption;
+  time: IDropdownOption;
   tagPicker: string[];
 }
