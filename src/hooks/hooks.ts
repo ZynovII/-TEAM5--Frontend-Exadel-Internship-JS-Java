@@ -9,6 +9,7 @@ import {
   fakeRequestSignIn,
   fakeRequestSignOut,
 } from "../fakeDB/fakeRequest";
+import { IApplicant } from "../models/IApplicant";
 
 const showLoader = (dispatch) => dispatch({ type: ActionTypes.SHOW_LOADER });
 export const useStore = () => useContext(Context);
@@ -18,16 +19,21 @@ export const useEvents = () => {
 
   const fechEvents = () => {
     showLoader(dispatch);
-    // axios
-    //   .get("http://localhost:8081/api/events?pageNumber=1&pageSize=2")
-    //   .then((data) => console.log(data.data.content))
-    //   .catch((err) => console.log(err));
-    fakeRequestEvents.then((res) => {
-      dispatch({
-        type: ActionTypes.FETCH_EVENTS,
-        payload: JSON.parse(res),
-      });
-    });
+    axios
+      .get("http://localhost:8081/api/events?pageNumber=1&pageSize=2")
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.FETCH_EVENTS,
+          payload: res.data.content,
+        });
+      })
+      .catch((err) => console.log(err));
+    // fakeRequestEvents.then((res) => {
+    //   dispatch({
+    //     type: ActionTypes.FETCH_EVENTS,
+    //     payload: JSON.parse(res),
+    //   });
+    // });
   };
 
   const selectEvent = (id: string) => {
@@ -48,16 +54,21 @@ export const useApplicants = () => {
 
   const fechApplicants = () => {
     showLoader(dispatch);
-    // axios
-    //   .get("http://localhost:8081/api/candidates")
-    //   .then((data) => console.log(data.data.content))
-    //   .catch((err) => console.log(err));
-    fakeRequestApplicants.then((res) => {
-      dispatch({
-        type: ActionTypes.FETCH_APPLICANTS,
-        payload: JSON.parse(res),
-      });
-    });
+    axios
+      .get("http://localhost:8081/api/candidates")
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.FETCH_APPLICANTS,
+          payload: res.data.content,
+        });
+      })
+      .catch((err) => console.log(err));
+    // fakeRequestApplicants.then((res) => {
+    //   dispatch({
+    //     type: ActionTypes.FETCH_APPLICANTS,
+    //     payload: JSON.parse(res),
+    //   });
+    // });
   };
 
   const selectApplicant = (id: string) => {

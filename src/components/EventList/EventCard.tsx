@@ -16,7 +16,7 @@ const cardImage = require("./../../assets/img/card_img.jpg");
 const styles = {
   styleCard: {
     root: {
-      minWidth: '30%',
+      minWidth: "30%",
       paddingBottom: "10px",
       marginBottom: "20px",
     },
@@ -54,7 +54,6 @@ const documentCardActions = [
   },
 ];
 
-
 export interface ICardItemProps {
   cardItem: IEvent;
   isLogged: boolean;
@@ -69,17 +68,19 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       onClick={() => history.push(`/events/${props.cardItem.name}`)}
     >
       {props.isLogged && <DocumentCardActions actions={documentCardActions} />}
-      <Image height='65%' imageFit={ImageFit.cover} src={cardImage.default} />
+      <Image height="65%" imageFit={ImageFit.cover} src={cardImage.default} />
       <DocumentCardTitle
         styles={styles.mainTytle}
         title={props.cardItem.name}
       />
       <DocumentCardTitle
-        title={props.cardItem.date}
+        title={props.cardItem.startDate}
         showAsSecondaryTitle
         styles={styles.title}
       />
-      <Text style={styles.text}>{props.cardItem.country}</Text>
+      <Text style={styles.text}>
+        {props.cardItem.locations.map((el) => el.city + " ")}
+      </Text>
     </DocumentCard>
   );
 };

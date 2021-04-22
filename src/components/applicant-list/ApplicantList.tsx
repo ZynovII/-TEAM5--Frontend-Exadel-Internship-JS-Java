@@ -14,7 +14,7 @@ import {
 import { useHistory } from "react-router";
 import { useId } from "@fluentui/react-hooks";
 
-import { IApplicant } from "../../models/IApplicant";
+import { AcceptStatus, IApplicant } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/hooks";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
 
@@ -36,11 +36,22 @@ export const ApplicantList: React.FC = () => {
   }, []);
 
   const applicantsList = Object.keys(applicants).map((idx) => {
+    let status: string;
+    switch (applicants[idx].status) {
+      case AcceptStatus.Accepted:
+        status = "Accepted";
+        break;
+      case AcceptStatus.Rejected:
+        status = "Rejected";
+        break;
+      default:
+        status = "Waiting";
+    }
     return {
       name: applicants[idx].fullName,
       event: applicants[idx].event,
-      skill: applicants[idx].technology,
-      interviewStatus: applicants[idx].interviewStatus,
+      skill: applicants[idx].primaryTech,
+      interviewStatus: status,
     };
   });
 

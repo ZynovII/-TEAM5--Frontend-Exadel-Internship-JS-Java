@@ -1,46 +1,60 @@
 import { IInterview } from "./IInterview";
 
 export enum AcceptStatus {
-  Accepted = "Accepted",
-  Rejected = "Rejected",
-  Pending = "Pending",
+  Accepted = "GREEN",
+  Rejected = "RED",
+  Pending = "YELLOW",
 }
 export enum InterviewStatus {
-  Registered = "Registered",
-  AwaitingHRInterview = "Awaiting HR interview",
-  AwaitingTSInterview = "Awaiting TS interview",
-  WaitingDesicion = "WaitingDesicion",
+  Registered = "REGISTERED",
+  AwaitingHRInterview = "AWAITING_HR",
+  AwaitingTSInterview = "AWAITING_TS",
+  WaitingDesicion = "WAITING_DESITION",
 }
 export enum PreferredTime {
-  First = "9:00 - 12:00",
-  Second = "12:00 - 14:00",
-  Third = "14:00 - 16:00",
-  Forth = "16:00 - 18:00",
-  Any = "Any",
-  None = "None",
+  First = "FROM_TEN_TO_TWELVE",
+  Second = "FROM_TWELVE_TO_TWO",
+  Third = "FROM_TWO_TO_FOUR",
+  Forth = "FROM_FOUR_TO_SIX",
+  None = "NONE",
 }
 
 export interface IApplicant {
   id: string;
   fullName: string;
   email: string;
-  phoneNumber?: string;
   skype: string;
+  phoneNumber?: string;
   resumeLink?: string;
-  technology: string; // tags
-  event: string; // event id
+  technology: string;
+  eventName: string;
   summary?: string;
   country: string;
   city: string;
+  interviews?: IInterview[];
   preferredTime: PreferredTime;
   acceptanceStatus: AcceptStatus;
   interviewStatus: InterviewStatus;
-  interviews?: IInterview[];
-  // remove
-  assignedHRID: string; //
-  assignedTSID: string; //
-  HRFeedback: string; //
-  TSFeedback: string; //
-  interviewDate: string; // ?
-  interviewTime: string; // ?
+}
+export interface IApplicantDetailsFromBackEnd {
+  id: string;
+  city: string;
+  skype: string;
+  email: string;
+  phone: string;
+  country: string;
+  summary: string;
+  fullName: string;
+  eventName: string;
+  status: AcceptStatus;
+  interviews: IInterview[];
+  preferredTime: PreferredTime;
+  interviewProcess: InterviewStatus;
+}
+export interface IApplicantShortFromBackEnd {
+  id: number;
+  event: string;
+  fullName: string;
+  primaryTech: string;
+  status: AcceptStatus;
 }

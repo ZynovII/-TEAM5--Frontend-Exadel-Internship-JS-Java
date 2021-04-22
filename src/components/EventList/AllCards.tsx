@@ -3,12 +3,12 @@ import { CardItem } from "./EventCard";
 import { NewCardItem } from "../NewEvent/NewCardItem";
 import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
 import "./AllCards.scss";
-import { useEvents, useStore } from "../../hooks/hooks";
+import { useAuth, useEvents, useStore } from "../../hooks/hooks";
 import Wrapper from "../UI/Wrapper/Wrapper";
 
 export const AllCards: React.FC = () => {
   const { events, loading, fechEvents } = useEvents();
-  const { state } = useStore(); // useAuth()
+  const { isAuth } = useAuth();
   useEffect(() => {
     fechEvents();
   }, []);
@@ -18,13 +18,9 @@ export const AllCards: React.FC = () => {
     <>
       <Wrapper>
         <section className="all-cards__wrapper">
-          {state.isAuthenticated && <NewCardItem />}
+          {isAuth && <NewCardItem />}
           {Object.keys(events).map((id) => (
-            <CardItem
-              cardItem={events[id]}
-              key={id}
-              isLogged={state.isAuthenticated}
-            /> // useAuth()
+            <CardItem cardItem={events[id]} key={id} isLogged={isAuth} />
           ))}
         </section>
         <div className="margin2em button_center">
