@@ -6,33 +6,54 @@ import {
   IDropdownStyles,
   ITag,
   Label,
+  IStackItemStyles,
 } from "@fluentui/react";
 import { IFilterDropdownItem, IFilterData } from "./Models";
 import { useForm } from "react-hook-form";
 import {
   ControlledDropdown,
   ControlledTagPicker,
-} from "../../hook-form/ControlledTextField";
-
+} from "../../hook-form/Controlled";
 
 const stackStyles: IStackStyles = {
   root: {
-    margin: "2em auto",
-    width: "73%",
+    padding: "2rem",
+    display: "block",
+    "@media(min-width: 725px)": {
+      display: "flex",
+      flexWrap: "nowrap",
+      margin: "0 auto",
+      padding: "0",
+      maxWidth: "73%",
+    },
   },
   inner: {
-    "@media(max-width: 600px)": {
-      display: "block",
+    "@media(min-width: 725px)": {
+      display: "flex",
+      justifyContent: "space-between",
     },
   },
 };
 
 const dropdownStyles: Partial<IDropdownStyles> = {
-  dropdown: {},
   root: {
-    width: "30%",
-    minWidth: "200px",
+    width: "100%",
     margin: "0 2px",
+    "@media(min-width: 725px)": {
+      margin: "0 0.2rem",
+      width: "15%",
+    },
+  },
+};
+
+const stackItemStyles: IStackItemStyles = {
+  root: {
+    margin: "0",
+    width: "100%",
+    "@media(min-width: 725px)": {
+      width: "30%",
+      margin: "0 0.2rem 0 0",
+    },
   },
 };
 
@@ -49,28 +70,13 @@ export const AllFilters: React.FC = () => {
   const onApplyFilter = () => {
     handleSubmit((data) => {
       console.log(data);
-      let tags = null;
-      if (Array.isArray(data.tagPicker)) {
-        tags = data.tagPicker.map((item) => {
-          return item["key"];
-        });
-      }
-
-      const dataSubmit = {
-        ...data,
-        location: data.location["key"],
-        eventType: data.eventType["key"],
-        tagPicker: tags,
-      };
-
-      console.log(dataSubmit);
-
     })();
   };
   const filters: IFilterDropdownItem[] = useMemo(() => {
     return [
       {
-        id: 1,
+        id: "1",
+        key: "1",
         name: "eventType",
         placeholder: "All",
         label: "Event type",
@@ -81,7 +87,8 @@ export const AllFilters: React.FC = () => {
         ],
       },
       {
-        id: 3,
+        id: "2",
+        key: "2",
         name: "location",
         placeholder: "All",
         label: "Locations",
@@ -90,6 +97,19 @@ export const AllFilters: React.FC = () => {
           { key: "Belarus", text: "Belarus" },
           { key: "Russia", text: "Russia" },
           { key: "Ukraine", text: "Ukraine" },
+        ],
+      },
+      {
+        id: "3",
+        key: "3",
+        name: "level",
+        placeholder: "All",
+        label: "Level",
+        options: [
+          { key: "Trainee", text: "Trainee" },
+          { key: "Junior", text: "Junior" },
+          { key: "Middle", text: "Middle" },
+          { key: "Senior", text: "Senior" },
         ],
       },
     ];
@@ -105,7 +125,6 @@ export const AllFilters: React.FC = () => {
       "Frontend",
       "Backend",
       "c#",
-      "Junior",
       "TypeScript",
       "Data base",
     ].map((item) => ({ key: item.toLowerCase(), name: item }));
@@ -128,52 +147,46 @@ export const AllFilters: React.FC = () => {
       : [];
   };
 
-
   return (
     <>
-      <Stack
-        styles={stackStyles}
-        horizontal
-        verticalAlign="center"
-        horizontalAlign="space-between"
-        wrap
-      >
-        {filters.map((obj: IFilterDropdownItem) => (
-          <ControlledDropdown
-            label={obj.label}
-            key={obj.id}
-            control={control}
-            name={obj.name}
-            placeholder={obj.placeholder}
-            options={obj.options}
-            errors={errors}
-            styles={dropdownStyles}
-          />
-        ))}
-        <Stack.Item
-          align="center"
-          styles={{
-            root: { margin: "0 2px", minWidth: "200px", width: "30%" },
-          }}
-        >
+      <Stack styles={stackStyles} horizontal verticalAlign="end" wrap>
+        <Stack.Item align="center" styles={stackItemStyles}>
           <Label>Tags</Label>
           <ControlledTagPicker
             name="tagPicker"
             control={control}
             eventTags={eventTags}
             onResolveSuggestions={filterSuggestedTags}
-            itemLimit={eventTags.length}
+            itemLimit={5}
             aria-label="Tag picker"
           />
         </Stack.Item>
-      </Stack>
-      <div className="margin2em button_center">
-        <PrimaryButton
-          onClick={onApplyFilter}
-          text="Search"
-          className="button"
+        <ControlledDropdown
+          {...filters[0]}
+          control={control}
+          errors={errors}
+          styles={dropdownStyles}
         />
-      </div>
+        <ControlledDropdown
+          {...filters[1]}
+          control={control}
+          errors={errors}
+          styles={dropdownStyles}
+        />
+        <ControlledDropdown
+          {...filters[2]}
+          control={control}
+          errors={errors}
+          styles={dropdownStyles}
+        />
+        <div className="filter-btn button_center">
+          <PrimaryButton
+            onClick={onApplyFilter}
+            text="Search"
+            className="button"
+          />
+        </div>
+      </Stack>
     </>
   );
 };

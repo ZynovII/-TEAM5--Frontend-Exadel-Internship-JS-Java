@@ -14,12 +14,13 @@ const cardImage = require("./../../assets/img/plus.svg");
 const styles = {
   styleCard: {
     root: {
-      width: 342,
+      minWidth: '30%',
       height: 'auto',
       display: 'flex',
       justifyContent: 'center',
       alignItems: 'center',
       marginBottom: "20px",
+      boxShadow: '0px 0px 36px -6px rgba(34, 60, 80, 0.1) inset',
     },
   },
   mainTytle: {
@@ -36,10 +37,6 @@ const styles = {
       paddingTop: 0,
     },
   },
-  text: {
-    paddingLeft: "20px",
-    marginBottom: "10px",
-  },
 };
 
 
@@ -49,14 +46,18 @@ export const NewCardItem: React.FC = (props) => {
   return (
     <DocumentCard
       styles={styles.styleCard}
-      onClick={() => history.push(`/`)}
+      onClick={() => history.push('/')}
     >
       <div>
-      <Image height={143} width={143} imageFit={ImageFit.center} src={cardImage.default} />
+      <Image height='100%' width='100%' imageFit={ImageFit.cover} src={cardImage.default} />
       <DocumentCardTitle
         title="Add new event..."
         showAsSecondaryTitle
         styles={styles.title}
+      />
+      <DocumentCardTitle
+        styles={styles.mainTytle}
+        title=""
       />
       </div>
     </DocumentCard>

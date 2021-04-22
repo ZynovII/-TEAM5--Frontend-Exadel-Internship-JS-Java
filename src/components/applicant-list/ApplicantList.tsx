@@ -2,37 +2,27 @@ import React, { useEffect } from "react";
 import {
   DetailsList,
   getTheme,
-  mergeStyleSets,
   SelectionMode,
   IColumn,
   TooltipHost,
   ITooltipHostStyles,
   ScrollablePane,
   ScrollbarVisibility,
-  Sticky,
-  StickyPositionType,
   Spinner,
   SpinnerSize,
 } from "@fluentui/react";
+import { useHistory } from "react-router";
 import { useId } from "@fluentui/react-hooks";
-import { AllApplicantFilter } from "./AllApplicantListFilter";
+
 import { IApplicant } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/hooks";
-import { useHistory } from "react-router";
+import { AllApplicantFilter } from "./AllApplicantListFilter";
 
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
   root: { display: "inline-block" },
 };
-
-const classNames = mergeStyleSets({
-  table: {
-    margin: "auto",
-    maxWidth: "97%",
-    maxHeight: 680,
-  },
-});
 
 export interface IApplicantList {
   columns: IColumn[];
@@ -113,26 +103,25 @@ export const ApplicantList: React.FC = () => {
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
-    <div style={{ height: "80vh", position: "relative" }}>
-      <Sticky stickyPosition={StickyPositionType.Header} isScrollSynced={true}>
-        <AllApplicantFilter />
-      </Sticky>
-      <div
-        className={` ${classNames.table}`}
-        style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
-      >
-        <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-          <DetailsList
-            items={applicantsList}
-            columns={columns}
-            isHeaderVisible={true}
-            selectionMode={SelectionMode.multiple}
-            onItemInvoked={(item) =>
-              history.push(`/admin/candidates/${item.name}`)
-            }
-          />
-        </ScrollablePane>
+    <>
+      <AllApplicantFilter />
+      <div style={{ height: "70vh", position: "relative" }}>
+        <div
+          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
+        >
+          <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
+            <DetailsList
+              items={applicantsList}
+              columns={columns}
+              isHeaderVisible={false}
+              selectionMode={SelectionMode.multiple}
+              onItemInvoked={(item) =>
+                history.push(`/admin/candidates/${item.name}`)
+              }
+            />
+          </ScrollablePane>
+        </div>
       </div>
-    </div>
+    </>
   );
 };
