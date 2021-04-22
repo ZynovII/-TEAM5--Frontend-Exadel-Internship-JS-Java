@@ -278,7 +278,7 @@ const contentStyles = mergeStyleSets({
   },
 
   container: {
-    width: "73%",
+    width: "100%",
     margin: "2em auto",
   },
 

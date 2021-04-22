@@ -4,7 +4,6 @@ import { NewCardItem } from "../NewEvent/NewCardItem";
 import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
 import "./AllCards.scss";
 import { useEvents, useStore } from "../../hooks/hooks";
-import Wrapper from "../UI/Wrapper/Wrapper";
 
 export const AllCards: React.FC = () => {
   const { events, loading, fechEvents } = useEvents();
@@ -16,7 +15,6 @@ export const AllCards: React.FC = () => {
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <>
-      <Wrapper>
         <section className="all-cards__wrapper">
           {state.isAuthenticated && <NewCardItem />}
           {Object.keys(events).map((id) => (
@@ -30,7 +28,6 @@ export const AllCards: React.FC = () => {
         <div className="margin2em button_center">
           <PrimaryButton text="Load More" className="button" />
         </div>
-      </Wrapper>
     </>
   );
 };

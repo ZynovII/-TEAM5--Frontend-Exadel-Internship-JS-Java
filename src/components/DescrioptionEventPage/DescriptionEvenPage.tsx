@@ -29,7 +29,7 @@ export const DescriptionEventPage: React.FC<ICardItemProps> = (props) => {
     <div
       style={{
         boxShadow: theme.effects.elevation64,
-        width: "73%",
+        width: "100%",
         margin: "0 auto",
       }}
     >
