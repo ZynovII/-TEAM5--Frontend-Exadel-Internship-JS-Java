@@ -33,7 +33,19 @@ interface IModalProps {
   hideModal: any;
 }
 
-export const NewEventForm: React.FC<IModalProps> = ({ isModal, hideModal }) => {
+const textFieldStyles = (
+  props: ITextFieldStyleProps | IDropdownStyleProps
+): Partial<ITextFieldStyles | IDropdownStyles> => ({
+  ...{
+    errorMessage: {
+      backgroundColor: "transparent",
+      position: "absolute",
+      paddingTop: "0px",
+    },
+  },
+});
+
+export const NewEventForm: React.FC<{name?: string, candidatePage?: boolean, candidat?: any} & IModalProps>  = ({ isModal, hideModal , ...props}) => {
   const [value, setValue] = React.useState<Date | undefined>();
   const datePickerRef = React.useRef<IDatePicker>(null);
 
@@ -147,6 +159,7 @@ export const NewEventForm: React.FC<IModalProps> = ({ isModal, hideModal }) => {
                 name={"fullName"}
                 errors={errors}
                 rules={{ required: "This field is required" }}
+                styles={textFieldStyles}
               />
 
               <DatePicker
@@ -170,21 +183,29 @@ export const NewEventForm: React.FC<IModalProps> = ({ isModal, hideModal }) => {
             aria-label="Tag picker"
           />  
               <ControlledDropdown
-                control={control}
-                name={"country"}
-                placeholder="Country"
-                options={optionsOfCountries}
-                onChange={() => {setCountryStatus(false); console.log('countryStatus')}}
-                styles={textFieldStyles}
-              />
-              <ControlledDropdown
-                control={control}
-                name={"city"}
-                placeholder="City"
-                options={exampleOptionsOfCities}
-                disabled={countryStatus}
-                styles={textFieldStyles}
-              />
+               required
+               control={control}
+               name={"country"}
+               errors={errors}
+               placeholder="Country"
+               defaultSelectedKey={(props.candidatePage && props.candidat.country) || ''}
+               rules={{ required: "This field is required" }}
+               options={optionsOfCountries}
+               onChange={() => setCountryStatus(false)}
+               styles={textFieldStyles}
+            />
+            <ControlledDropdown
+              required
+              control={control}
+              name={"city"}
+              placeholder="City"
+              defaultSelectedKey={(props.candidatePage && props.candidat.city) || ''}
+              rules={{ required: "This field is required" }}
+              errors={errors}
+              options={exampleOptionsOfCities}
+              disabled={!props.candidatePage && countryStatus}
+              styles={textFieldStyles}
+            />
             </Stack>
             <UploadImage />
           </Stack>
@@ -195,13 +216,13 @@ export const NewEventForm: React.FC<IModalProps> = ({ isModal, hideModal }) => {
             errors={errors}
             className={contentStyles.lab}
             multiline
+            autoAdjustHeight
             resizable={false}
           />
           <PrimaryButton
             className="button margin2em button_center"
             text="Submit"
             onClick={onSave}
-            // disabled={disabledButton}
           />
         </div>
       </Modal>
@@ -247,6 +268,11 @@ const contentStyles = mergeStyleSets({
     margin: "20px 0",
   },
   control: { maxWidth: 300, marginBottom: 15 },
+  errorMessage: {
+    backgroundColor: "transparent",
+    position: "absolute",
+    paddingTop: "0px",
+  },
 });
 
 const iconButtonStyles: Partial<IButtonStyles> = {
@@ -261,14 +287,4 @@ const iconButtonStyles: Partial<IButtonStyles> = {
   },
 };
 
-const textFieldStyles = (
-  props: ITextFieldStyleProps | IDropdownStyleProps
-): Partial<ITextFieldStyles | IDropdownStyles> => ({
-  ...{
-    errorMessage: {
-      backgroundColor: "transparent",
-      position: "absolute",
-      paddingTop: "0px",
-    },
-  },
-});
+
