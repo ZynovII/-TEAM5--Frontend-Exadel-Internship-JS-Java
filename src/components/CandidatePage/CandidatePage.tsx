@@ -1,16 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  TextField,
   Stack,
   mergeStyleSets,
   Dropdown,
-  IDropdownOption,
-  ProgressIndicator,
   DatePicker,
-  PrimaryButton,
-} from "@fluentui/react/lib";
+  DocumentCardActions,
+} from "@fluentui/react";
 import { AcceptStatus, IApplicant, InterviewStatus } from "../../models/IApplicant";
-import { CandidateForm } from './CandidateForm'
+import { Registration } from '../Registration/Registration'
+import { StatusForm } from './StatusForm'
+
 
 export interface ICandidatProps {
   candidat: IApplicant;
@@ -108,106 +107,55 @@ const time = [
     text: "15:00-15:30",
   },
 ];
-const filterDisplay = {
-  display: "flex",
-  justifyContent: "space-between",
-  marginTop: -21,
-  zIndex: 1,
-} as const;
+
 const candidat = 
   {
     id: "aefo78a0",
     fullName: "Ivan Ivanov",
     email: "iivanov@mail.ru",
-    skype: " ",
-    phoneNumber: "+375294722147",
-    country: "Belarus",
-    city: "Minsk",
-    technology: "Java",
+    skype: " skype ",
+    phone: "+375294722147",
+    country: "belarus",
+    city: "minsk",
+    technology: "java",
     event: "E-learning",
-    summary: " ",
+    summary: " bla bla ",
     acceptanceStatus: AcceptStatus.Accepted,
     interviewStatus: InterviewStatus.AwaitingHRInterview,
     interviewDate: "03.24.2021",
-    interviewTime: "11:00",
+    interviewTime: "first",
     assignedHRID: "111",
     assignedTSID: "999",
     HRFeedback: "",
     TSFeedback: "",
   };
 
-
-  const desicion: IDropdownOption[] = [
-    { key: "Accept", text: "Accept" },
-    { key: "Reject", text: "Reject" },
-  ];
-  
 export const CandidatePage: React.FC = (props) => {
-  
+  const [edit, setEdit] = useState<boolean>(false)
   return (
     <>
       <header className={contentStyles.title}>
-        <div style={{display: 'flex', justifyContent:"space-between", width: '25%', alignItems:'center'}}>
-          <h3>{candidat.fullName}</h3>
-          <PrimaryButton text='Редактировать' />
+        <div style={{display: 'flex', justifyContent:"space-between", width: '20%', alignItems:'flex-end'}}>
+          <h2>{candidat.fullName}</h2>
+          <DocumentCardActions 
+          actions={ 
+            [
+              {
+              iconProps: { iconName: "Edit" }, 
+              ariaLabel: "edit event", 
+              onClick: () => setEdit(!edit) 
+              }
+            ]} />
         </div>
         <h3>Internship JS&amp;Java</h3>
       </header>
       <div className={contentStyles.container}>
       <div>
-          <Stack
-            className={contentStyles.formWrapper}
-            horizontal
-            tokens={{ childrenGap: "40px" }}
-          >
-            <Stack
-              tokens={{ childrenGap: "10px" }}
-              styles={{ root: { width: "220px" } }}
-            >
-              <h3
-                style={{
-                  color:
-                    (candidat.acceptanceStatus ===
-                      AcceptStatus.Accepted &&
-                      "#00cc00") ||
-                    (candidat.acceptanceStatus === AcceptStatus.Pending &&
-                      "#DBDE36") ||
-                    (candidat.acceptanceStatus ===
-                      AcceptStatus.Rejected &&
-                      "red"),
-                }}
-              >
-                {candidat.acceptanceStatus}
-              </h3>
-            </Stack>
-            <Stack
-              tokens={{ childrenGap: "0px" }}
-              styles={{ root: { width: "520px" } }}
-            >
-              <div style={filterDisplay}>
-                <p>Registered</p>
-                <p>Waiting HR</p>
-                <p>Waiting TS</p>
-                <p>Waiting desicion</p>
-              </div>
-              <ProgressIndicator
-                barHeight={20}
-                percentComplete={0.4}
-                styles={{ root: { position: "relative" } }}
-              />
-            </Stack>
-            <Stack
-              tokens={{ childrenGap: "20px" }}
-              styles={{ root: { width: "220px" } }}
-            >
-              <Dropdown
-                placeholder="Select a desition"
-                options={desicion}
-                styles={{ root: { width: "220px" } }}
-              />
-            </Stack>
-          </Stack>
-          {<CandidateForm candidat={ candidat }/>}
+          <StatusForm candidat={candidat}/>
+          { edit 
+               ?<Registration candidatePage={true} candidat={candidat}/>
+               :<div>noedit</div>
+          }
           </div>
         
         <div>
@@ -267,6 +215,6 @@ const contentStyles = mergeStyleSets({
   },
   container: {
     width: "auto",
-    margin: "2em",
+    margin: "1em 2em",
   },
 });

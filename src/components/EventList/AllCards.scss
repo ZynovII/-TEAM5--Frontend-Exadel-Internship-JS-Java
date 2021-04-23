@@ -1,10 +1,26 @@
 .all-cards__wrapper {
-  flex-wrap: wrap;
-  margin: 2em auto;
-  display: flex;
-  flex-direction: row;
-  justify-content: space-around;
-  div {
+  @media (min-width: 640px) {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    grid-gap: 1rem;
+  }
+  @media (min-width: 900px) {
+    grid-template-columns: repeat(3, 1fr)
+  }
+
+  & div{
     box-sizing: content-box;
+  }
+
+  & > div {
+    box-sizing: border-box;
+    width: 100%;
+    margin: 2rem auto;
+    @media (min-width: 640px) {
+      padding-bottom: 2rem;
+      justify-self: center;
+      max-width: unset;
+      margin: 0;
+    }
   }
 }
