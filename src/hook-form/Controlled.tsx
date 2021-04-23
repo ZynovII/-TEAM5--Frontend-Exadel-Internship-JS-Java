@@ -19,7 +19,7 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
       name={props.name}
       control={props.control}
       rules={props.rules}
-      defaultValue={''}
+      defaultValue={props.value}
       render={({ field: { onChange, onBlur, value, name: fieldName } }) => (
         <TextField
           {...props}
@@ -36,6 +36,7 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
   );
 };
 
+
 export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
   props
 ) => {
@@ -44,10 +45,17 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
       name={props.name}
       control={props.control}
       rules={props.rules}
-      defaultValue={''}
-      render={({ field: { onChange }}) => (
-        <Dropdown {...props} 
-        onChange={(e, data) => onChange(data.key)}
+      defaultValue={props.defaultSelectedKey}
+      render={({field:{ onChange, name:fieldName }}) => (
+        <Dropdown
+        {...props}
+        onChange={(e, data) => {
+            onChange(data.key)
+            {props.onChange && props.onChange()}
+        } }
+        errorMessage={
+          props.errors[fieldName] && props.errors[fieldName].message
+        }
         />
       )}
     />
