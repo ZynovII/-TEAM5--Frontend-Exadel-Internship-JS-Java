@@ -3,8 +3,6 @@ import { IEvent } from "../models/IEvent";
 
 import { DescriptionEventPage } from "./DescrioptionEventPage/DescriptionEvenPage";
 import { Registration } from "./Registration/Registration";
-import Wrapper from "../components/UI/Wrapper/Wrapper";
-
 
 import Wrapper from "./UI/Wrapper/Wrapper";
 
