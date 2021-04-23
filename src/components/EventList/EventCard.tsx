@@ -10,6 +10,7 @@ import {
 
 import { useHistory } from "react-router";
 import { IEvent } from "../../models/IEvent";
+import { useEvents } from "../../hooks/hooks";
 
 const cardImage = require("./../../assets/img/card_img.jpg");
 
@@ -61,12 +62,13 @@ export interface ICardItemProps {
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const history = useHistory();
+  const { selectEvent } = useEvents();
+  const selectHandler = () => {
+    history.push(`/events/${props.cardItem.id}`);
+  };
 
   return (
-    <DocumentCard
-      styles={styles.styleCard}
-      onClick={() => history.push(`/events/${props.cardItem.name}`)}
-    >
+    <DocumentCard styles={styles.styleCard} onClick={selectHandler}>
       {props.isLogged && <DocumentCardActions actions={documentCardActions} />}
       <Image height="65%" imageFit={ImageFit.cover} src={cardImage.default} />
       <DocumentCardTitle

@@ -2,6 +2,6 @@ import { ActionTypes } from "../../context/actionTypes";
 
 export interface IAction {
   type: ActionTypes;
-  id?: string;
+  id?: number;
   payload?: any; // unknown type
 }

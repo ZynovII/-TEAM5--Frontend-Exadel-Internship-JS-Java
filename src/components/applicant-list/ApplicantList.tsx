@@ -16,7 +16,7 @@ import { useHistory } from "react-router";
 import { useId } from "@fluentui/react-hooks";
 
 import { AcceptStatus, IApplicant } from "../../models/IApplicant";
-import { useApplicants } from "../../hooks/hooks";
+import { useApplicants, useLoader } from "../../hooks/hooks";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
 
 const theme = getTheme();
@@ -30,10 +30,12 @@ export interface IApplicantList {
   items: IApplicant[];
 }
 export const ApplicantList: React.FC = () => {
-  const { applicants, loading, fechApplicants } = useApplicants();
+  const { applicants, fetchApplicants } = useApplicants();
+  const { loading, showLoader } = useLoader();
   const history = useHistory();
   useEffect(() => {
-    fechApplicants();
+    showLoader();
+    fetchApplicants();
   }, []);
 
   const applicantsList = Object.keys(applicants).map((idx) => {

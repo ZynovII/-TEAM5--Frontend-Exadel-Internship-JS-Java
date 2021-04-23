@@ -1,15 +1,25 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { CardItem } from "./EventCard";
 import { NewCardItem } from "../NewEvent/NewCardItem";
 import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
 import "./AllCards.scss";
-import { useEvents, useStore, useAuth } from "../../hooks/hooks";
+import { useEvents, useAuth, useLoader } from "../../hooks/hooks";
 
 export const AllCards: React.FC = () => {
-  const { events, loading, fechEvents } = useEvents();
+  const [loadingEvents, setLoadingEvents] = useState(false);
+  const [size, setSize] = useState(3);
+  const { events, fetchEvents } = useEvents();
+  const { loading, showLoader } = useLoader();
   const { isAuth } = useAuth();
+  const loadMore = () => {
+    const loadSize = 3;
+    fetchEvents(0, size);
+    setSize(size + loadSize);
+    setLoadingEvents(false);
+  };
   useEffect(() => {
-    fechEvents();
+    showLoader();
+    loadMore();
   }, []);
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
@@ -17,12 +27,15 @@ export const AllCards: React.FC = () => {
     <>
       <section className="all-cards__wrapper">
         {isAuth && <NewCardItem />}
-        {Object.keys(events).map((id) => (
-          <CardItem cardItem={events[id]} key={id} isLogged={isAuth} />
+        {Object.values(events).map((item) => (
+          <CardItem cardItem={item} key={item.id} isLogged={isAuth} />
         ))}
+        {loadingEvents && (
+          <Spinner size={SpinnerSize.large} className="margin2em" />
+        )}
       </section>
       <div className="margin2em button_center">
-        <PrimaryButton text="Load More" className="button" />
+        <PrimaryButton text="Load More" className="button" onClick={loadMore} />
       </div>
     </>
   );

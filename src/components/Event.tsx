@@ -1,4 +1,6 @@
-import React from "react";
+import React, { useEffect } from "react";
+import { useParams } from "react-router";
+import { useEvents, useLoader } from "../hooks/hooks";
 import { IEvent } from "../models/IEvent";
 
 import { DescriptionEventPage } from "./DescrioptionEventPage/DescriptionEvenPage";
@@ -9,16 +11,29 @@ import Wrapper from "./UI/Wrapper/Wrapper";
 export interface IEventProps {
   data: IEvent;
 }
+interface RouteParams {
+  id: string;
+}
 
 const Event: React.FC<IEventProps> = (props) => {
-  return (
+  const params = useParams<RouteParams>();
+  const { selectedEvent, selectEvent } = useEvents();
+  const { loading, showLoader } = useLoader();
+  useEffect(() => {
+    showLoader();
+    selectEvent(params.id);
+  }, []);
+  console.log(selectedEvent);
+  return true ? (
+    <h1>HHH</h1>
+  ) : (
     <main className="main">
       <Wrapper>
         <h1 style={{ textAlign: "center", marginBottom: "1em" }}>
-          Internship JS & Java
+          {selectedEvent.name}
         </h1>
         <DescriptionEventPage cardItem={props.data} />
-        <Registration name="Js && Java" />
+        <Registration name={selectedEvent.name} />
       </Wrapper>
     </main>
   );

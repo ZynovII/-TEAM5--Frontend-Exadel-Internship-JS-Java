@@ -11,16 +11,52 @@ import {
 } from "../fakeDB/fakeRequest";
 import { IApplicant } from "../models/IApplicant";
 
-const showLoader = (dispatch) => dispatch({ type: ActionTypes.SHOW_LOADER });
 export const useStore = () => useContext(Context);
+
+export const useLoader = () => {
+  const { state, dispatch } = useStore();
+
+  const showLoader = () => dispatch({ type: ActionTypes.SHOW_LOADER });
+  return {
+    loading: state.loading,
+    showLoader,
+  };
+};
+
+export const useAuth = () => {
+  const { state, dispatch } = useStore();
+
+  const signIn = () => {
+    fakeRequestSignIn.then((res) => {
+      dispatch({
+        type: ActionTypes.SIGN_IN,
+        payload: JSON.parse(res).id,
+      });
+    });
+  };
+
+  const signOut = () => {
+    fakeRequestSignOut.then((res) => {
+      dispatch({
+        type: ActionTypes.SIGN_OUT,
+      });
+    });
+  };
+
+  return {
+    isAuth: state.isAuthenticated,
+    currentUserId: state.currentUserID,
+    signIn,
+    signOut,
+  };
+};
 
 export const useEvents = () => {
   const { state, dispatch } = useStore();
 
-  const fechEvents = () => {
-    showLoader(dispatch);
+  const fetchEvents = (page, size) => {
     axios
-      .get("http://localhost:8081/api/events?pageNumber=1&pageSize=2")
+      .get(`http://localhost:8081/api/events?page=${page}&size=${size}`)
       .then((res) => {
         dispatch({
           type: ActionTypes.FETCH_EVENTS,
@@ -37,23 +73,32 @@ export const useEvents = () => {
   };
 
   const selectEvent = (id: string) => {
-    dispatch({ type: ActionTypes.SELECT_EVENT, id });
+    console.log("Select", state.events[id]);
+
+    if (state.events[id]) {
+      dispatch({ type: ActionTypes.SELECT_EVENT, payload: state.events[id] });
+    } else {
+      axios.get(`http://localhost:8081/api/events/${id}`).then((res) => {
+        console.log("before", state.selectedEvent);
+
+        dispatch({ type: ActionTypes.SELECT_EVENT, payload: res.data });
+        console.log("after", state.selectedEvent);
+      });
+    }
   };
 
   return {
-    selectedEventId: state.selectedEventId,
+    selectedEvent: state.selectedEvent,
     events: state.events,
-    loading: state.loading,
     selectEvent,
-    fechEvents,
+    fetchEvents,
   };
 };
 
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
-  const fechApplicants = () => {
-    showLoader(dispatch);
+  const fetchApplicants = () => {
     axios
       .get("http://localhost:8081/api/candidates")
       .then((res) => {
@@ -71,23 +116,24 @@ export const useApplicants = () => {
     // });
   };
 
-  const selectApplicant = (id: string) => {
-    dispatch({ type: ActionTypes.SELECT_APPLICANT, id });
+  const selectApplicant = (id: number) => {
+    dispatch({
+      type: ActionTypes.SELECT_APPLICANT,
+      payload: state.applicants[id],
+    });
   };
 
   return {
-    selectedApplicantsId: state.selectedApplicantId,
+    selectedApplicant: state.selectedApplicant,
     applicants: state.applicants,
-    loading: state.loading,
     selectApplicant,
-    fechApplicants,
+    fetchApplicants,
   };
 };
 
 export const useInterviews = () => {
   const { state, dispatch } = useStore();
   const fetchInterviews = () => {
-    showLoader(dispatch);
     fakeRequestInterviews.then((res) => {
       dispatch({
         type: ActionTypes.FETCH_INTERVIEWS,
@@ -96,45 +142,14 @@ export const useInterviews = () => {
     });
   };
 
-  const selectInterview = (id: string) => {
+  const selectInterview = (id: number) => {
     dispatch({ type: ActionTypes.SELECT_INTERVIEW, id });
   };
 
   return {
-    selectedInterviewId: state.selectedInterviewId,
+    selectedInterview: state.selectedInterview,
     interviews: state.applicants,
-    loading: state.loading,
     selectInterview,
     fetchInterviews,
-  };
-};
-
-export const useAuth = () => {
-  const { state, dispatch } = useStore();
-
-  const signIn = () => {
-    showLoader(dispatch);
-    fakeRequestSignIn.then((res) => {
-      dispatch({
-        type: ActionTypes.SIGN_IN,
-        payload: JSON.parse(res).id,
-      });
-    });
-  };
-
-  const signOut = () => {
-    showLoader(dispatch);
-    fakeRequestSignOut.then((res) => {
-      dispatch({
-        type: ActionTypes.SIGN_OUT,
-      });
-    });
-  };
-
-  return {
-    isAuth: state.isAuthenticated,
-    currentUserId: state.currentUserID,
-    signIn,
-    signOut,
   };
 };

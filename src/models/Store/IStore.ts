@@ -6,10 +6,10 @@ export interface IStore {
   loading: boolean;
   isAuthenticated: boolean;
   currentUserID: number;
-  events: { [eventId: string]: IEvent };
+  events: { [eventId: number]: IEvent };
   applicants: { [aplicantId: string]: IApplicantShortFromBackEnd };
   interviews: { [interviewId: string]: IInterview };
-  selectedEventId: string;
-  selectedApplicantId: string;
-  selectedInterviewId: string;
+  selectedEvent: IEvent;
+  selectedApplicant: IApplicant;
+  selectedInterview: IInterview;
 }
