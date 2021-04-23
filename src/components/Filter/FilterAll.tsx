@@ -24,7 +24,6 @@ const stackStyles: IStackStyles = {
       flexWrap: "nowrap",
       margin: "0 auto",
       padding: "0",
-      maxWidth: "73%",
     },
   },
   inner: {
