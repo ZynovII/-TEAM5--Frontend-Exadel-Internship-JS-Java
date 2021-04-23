@@ -6,7 +6,7 @@ import {
   DatePicker,
   DocumentCardActions,
 } from "@fluentui/react";
-import { AcceptStatus, IApplicant, InterviewStatus } from "../../models/IApplicant";
+import { AcceptStatus, IApplicant, InterviewStatus, PreferredTime } from "../../models/IApplicant";
 import { Registration } from '../Registration/Registration'
 import { StatusForm } from './StatusForm'
 
@@ -108,29 +108,24 @@ const time = [
   },
 ];
 
-const candidat = 
+const candidat: IApplicant = 
   {
     id: "aefo78a0",
     fullName: "Ivan Ivanov",
     email: "iivanov@mail.ru",
     skype: " skype ",
-    phone: "+375294722147",
+    phoneNumber: "+375294722147",
     country: "belarus",
     city: "minsk",
     technology: "java",
     event: "E-learning",
     summary: " bla bla ",
     acceptanceStatus: AcceptStatus.Accepted,
-    interviewStatus: InterviewStatus.AwaitingHRInterview,
-    interviewDate: "03.24.2021",
-    interviewTime: "first",
-    assignedHRID: "111",
-    assignedTSID: "999",
-    HRFeedback: "",
-    TSFeedback: "",
+    interviewStatus: InterviewStatus.AwaitingTSInterview,
+    preferredTime: PreferredTime.First 
   };
 
-export const CandidatePage: React.FC = (props) => {
+export const CandidatePage: React.FC = () => {
   const [edit, setEdit] = useState<boolean>(false)
   return (
     <>

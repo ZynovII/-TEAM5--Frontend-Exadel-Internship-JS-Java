@@ -1,7 +1,7 @@
 import React from "react";
 import FilterAll from "./Filter/FilterAll";
 import { AllCards } from "./EventList/AllCards";
-import Wrapper from './UI/Wrapper/Wrapper';
+import  Wrapper from './UI/Wrapper/Wrapper';
 
 const MainComponent: React.FC = () => {
   return (
