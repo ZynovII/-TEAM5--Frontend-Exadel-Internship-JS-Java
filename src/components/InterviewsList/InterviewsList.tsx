@@ -13,6 +13,7 @@ import {
   getTheme,
   Spinner,
   SpinnerSize,
+  Sticky
 } from "@fluentui/react";
 import { InterviewListFilter } from "./InterviwListFilter";
 import { InterviewStatus } from "../../models/IApplicant";
@@ -119,9 +120,7 @@ export const InterviewList: React.FC = () => {
       <InterviewListFilter />
       <div style={{ height: "70vh", position: "relative" }}>
         <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-          <div
-            style={{ boxShadow: theme.effects.elevation16}}
-          >
+          <div style={{ boxShadow: theme.effects.elevation16 }}>
             <DetailsList
               items={applicantsList}
               columns={columns}
@@ -130,6 +129,9 @@ export const InterviewList: React.FC = () => {
               onItemInvoked={(item) =>
                 history.push(`/admin/interviews/${item.fullName}`)
               }
+              onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
+                <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
+              )}
               onRenderRow={(props, defaultRender) => (
                 <div>
                   {defaultRender({
