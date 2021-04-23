@@ -1,6 +1,8 @@
 import React from "react";
 
-import { Text, Stack } from "@fluentui/react";
+import { Text } from "@fluentui/react";
+
+import classes from './Footer.module.scss';
 
 const instagram = require("./../../assets/img/instagram.svg");
 const twitter = require("./../../assets/img/twitter.svg");
@@ -41,12 +43,12 @@ const social: Array<{ name: string; href: string; src: any }> = [
 
 const FooterList: React.FC = () => {
   return (
-    <Stack horizontal horizontalAlign="space-between" style={styles.container}>
+    <div className={classes.footer__list}>
       <ul>
         {Links.map((item, index) => {
           return (
             <li style={styles.social} key={index}>
-              <a href={item.href} className="footer__link">
+              <a href={item.href} className={classes['footer__link']}>
                 {item.name}
               </a>
             </li>
@@ -57,10 +59,10 @@ const FooterList: React.FC = () => {
         Our Corporate Headquarters: 1340 Treat Blvd. Suite 375 Walnut Creek, CA
         94597 USA +1 (866) 304-7961
       </Text>
-      <ul>
+      <ul className = {classes.footer__socials}>
         {social.map((item, index) => {
           return (
-            <li style={styles.social} key={index}>
+            <li className = {classes.footer__social} style={styles.social} key={index}>
               <a href={item.href}>
                 <img
                   src={item.src.default}
@@ -72,15 +74,11 @@ const FooterList: React.FC = () => {
           );
         })}
       </ul>
-    </Stack>
+    </div>
   );
 };
 
 const styles = {
-  container: {
-    width: "73%",
-    margin: "0 auto",
-  },
   text: {
     width: "20%",
   },
