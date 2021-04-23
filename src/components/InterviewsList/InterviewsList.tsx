@@ -13,6 +13,7 @@ import {
   getTheme,
   Spinner,
   SpinnerSize,
+  Sticky
 } from "@fluentui/react";
 import { InterviewListFilter } from "./InterviwListFilter";
 import { useInterviews } from "../../hooks/hooks";
@@ -126,6 +127,9 @@ export const InterviewList: React.FC = () => {
               onItemInvoked={(item) =>
                 history.push(`/admin/interviews/${item.fullName}`)
               }
+              onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
+                <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
+              )}
               onRenderRow={(props, defaultRender) => (
                 <div>
                   {defaultRender({

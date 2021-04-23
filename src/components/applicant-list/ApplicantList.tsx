@@ -10,6 +10,7 @@ import {
   ScrollbarVisibility,
   Spinner,
   SpinnerSize,
+  Sticky,
 } from "@fluentui/react";
 import { useHistory } from "react-router";
 import { useId } from "@fluentui/react-hooks";
@@ -124,11 +125,14 @@ export const ApplicantList: React.FC = () => {
             <DetailsList
               items={applicantsList}
               columns={columns}
-              isHeaderVisible={false}
+              isHeaderVisible={true}
               selectionMode={SelectionMode.multiple}
               onItemInvoked={(item) =>
                 history.push(`/admin/candidates/${item.name}`)
               }
+              onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
+                <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
+              )}
             />
           </ScrollablePane>
         </div>
