@@ -1,15 +1,15 @@
-import React from "react";
+import React, { useState } from "react";
 import {
-  TextField,
   Stack,
   mergeStyleSets,
   Dropdown,
-  IDropdownOption,
-  ProgressIndicator,
   DatePicker,
-} from "@fluentui/react/lib";
+  DocumentCardActions,
+} from "@fluentui/react";
+import { AcceptStatus, IApplicant, InterviewStatus } from "../../models/IApplicant";
+import { Registration } from '../Registration/Registration'
+import { StatusForm } from './StatusForm'
 
-import { AcceptStatus, IApplicant } from "../../models/IApplicant";
 
 export interface ICandidatProps {
   candidat: IApplicant;
@@ -19,11 +19,6 @@ const options: { key: string; text: string }[] = [
   { key: "Interview", text: "Interview" },
   { key: "HR", text: "HR" },
   { key: "TS", text: "TS" },
-];
-
-const desicion: IDropdownOption[] = [
-  { key: "Accept", text: "Accept" },
-  { key: "Reject", text: "Reject" },
 ];
 
 const dayPickerStrings = {
@@ -113,113 +108,56 @@ const time = [
   },
 ];
 
-const filterDisplay = {
-  display: "flex",
-  justifyContent: "space-between",
-  //position: 'absolute',
-  marginTop: -21,
-  zIndex: 1,
-} as const;
+const candidat = 
+  {
+    id: "aefo78a0",
+    fullName: "Ivan Ivanov",
+    email: "iivanov@mail.ru",
+    skype: " skype ",
+    phone: "+375294722147",
+    country: "belarus",
+    city: "minsk",
+    technology: "java",
+    event: "E-learning",
+    summary: " bla bla ",
+    acceptanceStatus: AcceptStatus.Accepted,
+    interviewStatus: InterviewStatus.AwaitingHRInterview,
+    interviewDate: "03.24.2021",
+    interviewTime: "first",
+    assignedHRID: "111",
+    assignedTSID: "999",
+    HRFeedback: "",
+    TSFeedback: "",
+  };
 
-export const CandidatePage: React.FC<ICandidatProps> = (props) => {
+export const CandidatePage: React.FC = (props) => {
+  const [edit, setEdit] = useState<boolean>(false)
   return (
     <>
       <header className={contentStyles.title}>
-        <h3>{props.candidat.fullName}</h3>
+        <div style={{display: 'flex', justifyContent:"space-between", width: '20%', alignItems:'flex-end'}}>
+          <h2>{candidat.fullName}</h2>
+          <DocumentCardActions 
+          actions={ 
+            [
+              {
+              iconProps: { iconName: "Edit" }, 
+              ariaLabel: "edit event", 
+              onClick: () => setEdit(!edit) 
+              }
+            ]} />
+        </div>
         <h3>Internship JS&amp;Java</h3>
       </header>
       <div className={contentStyles.container}>
-        <div>
-          <Stack
-            className={contentStyles.formWrapper}
-            horizontal
-            tokens={{ childrenGap: "40px" }}
-          >
-            <Stack
-              tokens={{ childrenGap: "10px" }}
-              styles={{ root: { width: "220px" } }}
-            >
-              <h3
-                style={{
-                  color:
-                    (props.candidat.acceptanceStatus ===
-                      AcceptStatus.Accepted &&
-                      "#00cc00") ||
-                    (props.candidat.acceptanceStatus === AcceptStatus.Pending &&
-                      "#DBDE36") ||
-                    (props.candidat.acceptanceStatus ===
-                      AcceptStatus.Rejected &&
-                      "red"),
-                }}
-              >
-                {props.candidat.acceptanceStatus}
-              </h3>
-            </Stack>
-            <Stack
-              tokens={{ childrenGap: "0px" }}
-              styles={{ root: { width: "520px" } }}
-            >
-              <div style={filterDisplay}>
-                <p>Registered</p>
-                <p>Waiting HR</p>
-                <p>Waiting TS</p>
-                <p>Waiting desicion</p>
-              </div>
-              <ProgressIndicator
-                barHeight={20}
-                percentComplete={0.4}
-                styles={{ root: { position: "relative" } }}
-              />
-            </Stack>
-            <Stack
-              tokens={{ childrenGap: "20px" }}
-              styles={{ root: { width: "220px" } }}
-            >
-              <Dropdown
-                placeholder="Select a desition"
-                options={desicion}
-                styles={{ root: { width: "220px" } }}
-              />
-            </Stack>
-          </Stack>
-          <Stack
-            className={contentStyles.formWrapper}
-            horizontal
-            tokens={{ childrenGap: "40px" }}
-          >
-            <Stack
-              tokens={{ childrenGap: "20px" }}
-              styles={{ root: { width: "450px" } }}
-            >
-              <TextField
-                label="First name and last name"
-                value={props.candidat.fullName}
-              />
-              <TextField label="Email" value={props.candidat.email} />
-              <TextField label="Telephone" value={props.candidat.phoneNumber} />
-            </Stack>
-            <Stack
-              tokens={{ childrenGap: "20px" }}
-              styles={{ root: { width: "450px" } }}
-            >
-              <TextField label="Skils" value={props.candidat.technology} />
-              <TextField label="Country" value={props.candidat.country} />
-              <TextField label="Town" value={props.candidat.city} />
-            </Stack>
-          </Stack>
-          <Stack
-            className={contentStyles.formWrapper}
-            horizontal
-            tokens={{ childrenGap: "70px" }}
-          >
-            <TextField
-              label="Informaiton"
-              multiline
-              autoAdjustHeight
-              styles={{ root: { width: "100%" } }}
-            />
-          </Stack>
-        </div>
+      <div>
+          <StatusForm candidat={candidat}/>
+          { edit 
+               ?<Registration candidatePage={true} candidat={candidat}/>
+               :<div>noedit</div>
+          }
+          </div>
+        
         <div>
           <h1>To set up iterview</h1>
           <Stack
@@ -277,6 +215,6 @@ const contentStyles = mergeStyleSets({
   },
   container: {
     width: "auto",
-    margin: "2em",
+    margin: "1em 2em",
   },
 });

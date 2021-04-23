@@ -16,14 +16,15 @@ const cardImage = require("./../../assets/img/card_img.jpg");
 const styles = {
   styleCard: {
     root: {
+      minWidth: '30%',
       paddingBottom: "10px",
       marginBottom: "20px",
     },
   },
   mainTytle: {
     root: {
-      height: "35px",
-      lineHeight: "35px",
+      height: "20px",
+      lineHeight: "20px",
     },
   },
   title: {
@@ -35,7 +36,7 @@ const styles = {
     },
   },
   text: {
-    paddingLeft: "20px",
+    paddingLeft: "15px",
     marginBottom: "10px",
   },
 };
@@ -68,7 +69,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       onClick={() => history.push(`/events/${props.cardItem.name}`)}
     >
       {props.isLogged && <DocumentCardActions actions={documentCardActions} />}
-      <Image height={150} imageFit={ImageFit.cover} src={cardImage.default} />
+      <Image height='65%' imageFit={ImageFit.cover} src={cardImage.default} />
       <DocumentCardTitle
         styles={styles.mainTytle}
         title={props.cardItem.name}

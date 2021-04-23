@@ -35,7 +35,6 @@ body {
       flex: 0 0 auto;
     }
     .title {
-      width: 73%;
       margin: 2em auto;
     }
   }
@@ -69,7 +68,7 @@ body {
 
 .button {
   background-color: rgb(3, 144, 222);
-  border-radius: 15px;
+  border-radius: 2px;
 }
 
 .button:hover {
@@ -79,8 +78,23 @@ body {
 .button_center {
   display: flex;
   justify-content: center;
+  &.filter-btn {
+    margin: 1rem auto 0;
+    @media (min-width: 725px) {
+      margin: 0;
+    }
+  }
 }
 
 .margin2em {
   margin: 2em auto;
+}
+
+.ms-SelectionZone {
+  & .ms-BasePicker-text.text-89 {
+    min-width: 0;
+  }
+  & .ms-BasePicker-text.text-133 {
+    min-width: 0;
+  }
 }

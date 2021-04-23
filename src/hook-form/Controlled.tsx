@@ -19,6 +19,7 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
       name={props.name}
       control={props.control}
       rules={props.rules}
+      defaultValue={props.value}
       render={({ field: { onChange, onBlur, value, name: fieldName } }) => (
         <TextField
           {...props}
@@ -35,6 +36,7 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
   );
 };
 
+
 export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
   props
 ) => {
@@ -43,9 +45,18 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
       name={props.name}
       control={props.control}
       rules={props.rules}
-      defaultValue={{ key: null }}
-      render={({ field: { onChange } }) => (
-        <Dropdown {...props} onChanged={onChange} />
+      defaultValue={props.defaultSelectedKey}
+      render={({field:{ onChange, name:fieldName }}) => (
+        <Dropdown
+        {...props}
+        onChange={(e, data) => {
+            onChange(data.key)
+            {props.onChange && props.onChange()}
+        } }
+        errorMessage={
+          props.errors[fieldName] && props.errors[fieldName].message
+        }
+        />
       )}
     />
   );
@@ -62,13 +73,40 @@ export const ControlledTagPicker: React.FC<HookFormProps & ITagPickerProps> = (
     <Controller
       name={props.name}
       control={props.control}
+      defaultValue= {[]}
       render={({ field: { onChange } }) => (
         <TagPicker
           {...props}
-          onChange={onChange}
+          onChange={(e) => onChange(e.map(el => el.key))}
           removeButtonAriaLabel="Remove"
           pickerSuggestionsProps={pickerSuggestionsProps}
         />
+      )}
+    />
+  );
+};
+
+interface InputUpload {
+  id: string;
+  className: string;
+  onChange: any;
+}
+export const ControlledInputUpload: React.FC<HookFormProps & InputUpload> = (
+  props
+) => {
+  return (
+    <Controller
+      name={props.name}
+      control={props.control}
+      defaultValue={''}
+      render={({ field: { onChange } }) => (
+        <input 
+        {...props}
+        type="file"
+        onChange={(e) => {
+          onChange(e.target.files[0]) 
+          props.onChange(e)}} 
+         />
       )}
     />
   );
