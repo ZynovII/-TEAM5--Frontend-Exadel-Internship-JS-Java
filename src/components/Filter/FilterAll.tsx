@@ -23,7 +23,7 @@ const stackStyles: IStackStyles = {
       display: "flex",
       flexWrap: "nowrap",
       margin: "0 auto",
-      padding: "0"
+      padding: "0",
     },
   },
   inner: {

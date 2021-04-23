@@ -1,7 +1,7 @@
 import React from "react";
 import FilterAll from "./Filter/FilterAll";
 import { AllCards } from "./EventList/AllCards";
-import Wrapper from "../components/UI/Wrapper/Wrapper";
+import Wrapper from './UI/Wrapper/Wrapper';
 
 const MainComponent: React.FC = () => {
   return (
@@ -15,7 +15,7 @@ const MainComponent: React.FC = () => {
         <FilterAll />
         <h2 className="title">All Events</h2>
         <AllCards />
-      </Wrapper>     
+      </Wrapper>
     </main>
   );
 };
