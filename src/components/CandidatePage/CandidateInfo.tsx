@@ -4,6 +4,7 @@ import {
   IApplicant,
   AcceptStatus,
   InterviewStatus,
+  PreferredTime,
 } from "../../models/IApplicant";
 
 const candidat: IApplicant[] = [
@@ -18,6 +19,7 @@ const candidat: IApplicant[] = [
     technology: "Java",
     event: "E-learning",
     summary: " ",
+    preferredTime: PreferredTime.First,
     acceptanceStatus: AcceptStatus.Accepted,
     interviewStatus: InterviewStatus.AwaitingHRInterview,
     interviewDate: "03.24.2021",
