@@ -1,6 +1,6 @@
 import { IInterview } from "../IInterview";
 import { IApplicant, IApplicantShortFromBackEnd } from "../IApplicant";
-import { IEvent } from "../IEvent";
+import { IEvent, IEventFromBackEnd } from "../IEvent";
 
 export interface IStore {
   loading: boolean;

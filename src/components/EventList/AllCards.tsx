@@ -6,16 +6,11 @@ import "./AllCards.scss";
 import { useEvents, useAuth, useLoader } from "../../hooks/hooks";
 
 export const AllCards: React.FC = () => {
-  const [loadingEvents, setLoadingEvents] = useState(false);
-  const [size, setSize] = useState(3);
   const { events, fetchEvents } = useEvents();
   const { loading, showLoader } = useLoader();
   const { isAuth } = useAuth();
   const loadMore = () => {
-    const loadSize = 3;
-    fetchEvents(0, size);
-    setSize(size + loadSize);
-    setLoadingEvents(false);
+    fetchEvents(0, 0);
   };
   useEffect(() => {
     showLoader();
@@ -30,9 +25,6 @@ export const AllCards: React.FC = () => {
         {Object.values(events).map((item) => (
           <CardItem cardItem={item} key={item.id} isLogged={isAuth} />
         ))}
-        {loadingEvents && (
-          <Spinner size={SpinnerSize.large} className="margin2em" />
-        )}
       </section>
       <div className="margin2em button_center">
         <PrimaryButton text="Load More" className="button" onClick={loadMore} />

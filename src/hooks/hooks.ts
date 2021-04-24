@@ -79,10 +79,10 @@ export const useEvents = () => {
       dispatch({ type: ActionTypes.SELECT_EVENT, payload: state.events[id] });
     } else {
       axios.get(`http://localhost:8081/api/events/${id}`).then((res) => {
-        console.log("before", state.selectedEvent);
-
-        dispatch({ type: ActionTypes.SELECT_EVENT, payload: res.data });
-        console.log("after", state.selectedEvent);
+        dispatch({
+          type: ActionTypes.SELECT_EVENT,
+          payload: res.data,
+        });
       });
     }
   };

@@ -11,7 +11,7 @@ export interface IEvent {
   name: string;
   startDate: string;
   description: string;
-  technology: string;
+  technology?: string;
   type: EventType;
   locations: ILocation[];
 }
