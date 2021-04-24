@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React from "react";
 import { useStore } from "../../hooks/hooks";
 import { Stack } from "@fluentui/react/lib";
 import { ActionTypes } from "../../context/actionTypes";
@@ -32,4 +32,4 @@ const Header: React.FC = () => {
   );
 };
 
-export default useMemo(() => Header, []);
+export default Header;

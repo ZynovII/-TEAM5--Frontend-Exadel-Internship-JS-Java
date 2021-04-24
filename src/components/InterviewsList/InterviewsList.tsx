@@ -153,4 +153,4 @@ const InterviewList: React.FC = () => {
   );
 };
 
-export default useMemo(() => InterviewList, []);
+export default InterviewList;

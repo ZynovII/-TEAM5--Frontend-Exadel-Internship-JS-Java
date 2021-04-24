@@ -32,4 +32,4 @@ const AllCards: React.FC = () => {
   );
 };
 
-export default useMemo(() => AllCards, []);
+export default AllCards;

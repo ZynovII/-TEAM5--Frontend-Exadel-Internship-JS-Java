@@ -133,4 +133,4 @@ const ApplicantList: React.FC = () => {
   );
 };
 
-export default useMemo(() => ApplicantList, []);
+export default ApplicantList;
