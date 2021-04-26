@@ -24,7 +24,7 @@ const Event: React.FC<IEventProps> = (props) => {
     selectEvent(params.id);
   }, []);
   console.log(selectedEvent, loading);
-  return true ? (
+  return loading ? (
     <main className="main">
       <h1>HHH</h1>
     </main>

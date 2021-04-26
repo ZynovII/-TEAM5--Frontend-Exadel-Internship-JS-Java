@@ -6,12 +6,12 @@ export const initialState: IStore = {
   isAuthenticated: true,
   currentUserID: null,
   events: {},
-  loading: false,
+  loading: true,
   applicants: {},
   interviews: {},
-  selectedEventId: null,
-  selectedApplicantId: null,
-  selectedInterviewId: null,
+  selectedEvent: null,
+  selectedApplicant: null,
+  selectedInterview: null,
 };
 
 export const Context = createContext<{
