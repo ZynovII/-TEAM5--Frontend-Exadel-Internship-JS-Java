@@ -5,9 +5,9 @@ import { DashboardNav } from "../components/DashboardNav/DashboardNav";
 
 import "./AdminPage.scss";
 import { NotFound } from "../components/NotFound";
-import { ApplicantList } from "../components/applicant-list/ApplicantList";
-import { InterviewList } from "../components/InterviewsList/InterviewsList";
-import { AllCards } from "../components/EventList/AllCards";
+import ApplicantList from "../components/applicant-list/ApplicantList";
+import InterviewList from "../components/InterviewsList/InterviewsList";
+import AllCards from "../components/EventList/AllCards";
 import { CandidatePage } from "../components/CandidatePage/CandidatePage";
 
 export const AdminPage = () => {
