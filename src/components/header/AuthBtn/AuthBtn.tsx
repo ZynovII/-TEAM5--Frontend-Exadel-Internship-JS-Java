@@ -14,7 +14,7 @@ const AuthBtn: React.FC<{isLoggedIn: boolean, showModal: any, logout: any, userN
           key: 'AdminPanel',
           text: 'Admin Panel',
           iconProps: { iconName: 'AdminALogoFill32' },
-          onClick: () => history.push('/admin'),
+          onClick: () => history.push('/admin/events'),
         },
         {
           key: 'LogOut',
