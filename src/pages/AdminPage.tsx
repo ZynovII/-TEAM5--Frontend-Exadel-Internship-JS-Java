@@ -4,10 +4,10 @@ import { Route, Switch } from "react-router";
 import "./AdminPage.scss";
 
 import { NotFound } from "../components/NotFound";
-import { AllCards } from "../components/EventList/AllCards";
 import { DashboardNav } from "../components/DashboardNav/DashboardNav";
-import { ApplicantList } from "../components/applicant-list/ApplicantList";
-import { InterviewList } from "../components/InterviewsList/InterviewsList";
+import ApplicantList from "../components/applicant-list/ApplicantList";
+import InterviewList from "../components/InterviewsList/InterviewsList";
+import AllCards from "../components/EventList/AllCards";
 import { CandidatePage } from "../components/CandidatePage/CandidatePage";
 
 export const AdminPage = () => {

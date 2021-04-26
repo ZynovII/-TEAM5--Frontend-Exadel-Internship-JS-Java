@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   DetailsList,
   getTheme,
@@ -38,82 +38,89 @@ export const ApplicantList: React.FC = () => {
     fetchApplicants();
   }, []);
 
-  const applicantsList = Object.keys(applicants).map((idx) => {
-    let status: string;
-    switch (applicants[idx].status) {
-      case AcceptStatus.Accepted:
-        status = "Accepted";
-        break;
-      case AcceptStatus.Rejected:
-        status = "Rejected";
-        break;
-      default:
-        status = "Waiting";
-    }
-    return {
-      name: applicants[idx].fullName,
-      event: applicants[idx].event,
-      skill: applicants[idx].primaryTech,
-      interviewStatus: status,
-    };
-  });
+  const applicantsList = useMemo(
+    () =>
+      Object.keys(applicants).map((idx) => {
+        let status: string;
+        switch (applicants[idx].status) {
+          case AcceptStatus.Accepted:
+            status = "Accepted";
+            break;
+          case AcceptStatus.Rejected:
+            status = "Rejected";
+            break;
+          default:
+            status = "Waiting";
+        }
+        return {
+          name: applicants[idx].fullName,
+          event: applicants[idx].event,
+          skill: applicants[idx].primaryTech,
+          interviewStatus: status,
+        };
+      }),
+    []
+  );
 
   const tooltipId = useId("tooltip");
-  const columns: IColumn[] = [
-    {
-      key: "column1",
-      name: "Applicant",
-      fieldName: "name",
-      minWidth: 100,
-      maxWidth: 300,
-      isResizable: true,
-    },
-    {
-      key: "column2",
-      name: "Event",
-      fieldName: "event",
-      minWidth: 100,
-      maxWidth: 300,
-      isResizable: true,
-    },
-    {
-      key: "column3",
-      name: "Main skill",
-      fieldName: "skill",
-      minWidth: 100,
-      maxWidth: 300,
-      isResizable: true,
-    },
-    {
-      key: "column4",
-      name: "Status",
-      fieldName: "interviewStatus",
-      minWidth: 100,
-      maxWidth: 300,
-      isResizable: true,
-    },
-    {
-      key: "column5",
-      name: "More",
-      isIconOnly: true,
-      fieldName: "",
-      minWidth: 50,
-      maxWidth: 50,
-      isResizable: false,
-      onRender: () => (
-        <TooltipHost
-          content="Show more information"
-          id={tooltipId}
-          calloutProps={calloutProps}
-          styles={hostStyles}
-        >
-          <a href="#" aria-describedby={tooltipId}>
-            <i className={`ms-Icon ms-Icon--More`} />
-          </a>
-        </TooltipHost>
-      ),
-    },
-  ];
+  const columns: IColumn[] = useMemo(
+    () => [
+      {
+        key: "column1",
+        name: "Applicant",
+        fieldName: "name",
+        minWidth: 100,
+        maxWidth: 300,
+        isResizable: true,
+      },
+      {
+        key: "column2",
+        name: "Event",
+        fieldName: "event",
+        minWidth: 100,
+        maxWidth: 300,
+        isResizable: true,
+      },
+      {
+        key: "column3",
+        name: "Main skill",
+        fieldName: "skill",
+        minWidth: 100,
+        maxWidth: 300,
+        isResizable: true,
+      },
+      {
+        key: "column4",
+        name: "Status",
+        fieldName: "interviewStatus",
+        minWidth: 100,
+        maxWidth: 300,
+        isResizable: true,
+      },
+      {
+        key: "column5",
+        name: "More",
+        isIconOnly: true,
+        fieldName: "",
+        minWidth: 50,
+        maxWidth: 50,
+        isResizable: false,
+        onRender: () => (
+          <TooltipHost
+            content="Show more information"
+            id={tooltipId}
+            calloutProps={calloutProps}
+            styles={hostStyles}
+          >
+            <a href="#" aria-describedby={tooltipId}>
+              <i className={`ms-Icon ms-Icon--More`} />
+            </a>
+          </TooltipHost>
+        ),
+      },
+    ],
+    []
+  );
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
@@ -142,3 +149,5 @@ export const ApplicantList: React.FC = () => {
     </>
   );
 };
+
+export default ApplicantList;

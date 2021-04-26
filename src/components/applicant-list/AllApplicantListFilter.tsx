@@ -23,17 +23,15 @@ const stackStyles: IStackStyles = {
   },
 };
 
-
-const styles = {
-  div:{
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "flex-end",
-  marginBottom: "2rem",
-  marginRight: "2rem"
-}
-  
+const styles: { div: React.CSSProperties } = {
+  div: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    marginBottom: "2rem",
+    marginRight: "2rem",
+  },
 };
 const dropdownStyles: Partial<IDropdownStyles> = {
   root: {
@@ -56,7 +54,7 @@ export const AllApplicantFilter: React.FC = () => {
   const onApplyFilter = () => {
     handleSubmit((data) => {
       const dataSubmit = {
-        ...data
+        ...data,
       };
 
       console.log(dataSubmit);
@@ -73,7 +71,10 @@ export const AllApplicantFilter: React.FC = () => {
         placeholder: "All events",
         options: [
           { key: "Internship JS & Java", text: "Internship JS & Java" },
-          { key: "Business Analysis Meet UP", text: "Business Analysis Meet UP" },
+          {
+            key: "Business Analysis Meet UP",
+            text: "Business Analysis Meet UP",
+          },
           { key: "C++ interview", text: "C++ interview" },
         ],
       },
@@ -126,11 +127,7 @@ export const AllApplicantFilter: React.FC = () => {
           />
         ))}
       </Stack>
-      <PrimaryButton
-        onClick={onApplyFilter}
-        text="Search"
-        className="button"
-      />
+      <PrimaryButton onClick={onApplyFilter} text="Search" className="button" />
     </div>
   );
 };

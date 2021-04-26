@@ -1,6 +1,6 @@
 import React from "react";
-import { Stack } from "@fluentui/react/lib";
 import { useHistory } from "react-router";
+import { Stack } from "@fluentui/react/lib";
 
 import { useStore } from "../../hooks/hooks";
 import { ActionTypes } from "../../context/actionTypes";

@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo } from "react";
 import { CardItem } from "./EventCard";
 import { NewCardItem } from "../NewEvent/NewCardItem";
 import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
@@ -32,3 +32,5 @@ export const AllCards: React.FC = () => {
     </>
   );
 };
+
+export default AllCards;
