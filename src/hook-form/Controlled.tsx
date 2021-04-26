@@ -8,6 +8,8 @@ import {
   TagPicker,
   ITagPickerProps,
   IBasePickerSuggestionsProps,
+  DatePicker,
+  IDatePicker
 } from "@fluentui/react";
 import { HookFormProps } from "./HookFormProps";
 
@@ -35,6 +37,7 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
     />
   );
 };
+
 
 
 export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
@@ -107,6 +110,29 @@ export const ControlledInputUpload: React.FC<HookFormProps & InputUpload> = (
           onChange(e.target.files[0]) 
           props.onChange(e)}} 
          />
+      )}
+    />
+  );
+};
+
+interface DatePicker{
+  showMonthPickerAsOverlay?: boolean
+  strings?: any //поправь после
+  placeholder: string
+  ariaLabel: string
+}
+export const ControlledDatePicker: React.FC<HookFormProps & DatePicker> = (
+  props
+) => {
+  return (
+    <Controller
+      name={props.name}
+      control={props.control}
+      render={({ field: { onChange } }) => (
+        <DatePicker
+          {...props}
+          onSelectDate={(e) => onChange(e)}
+        />
       )}
     />
   );

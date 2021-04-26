@@ -25,7 +25,7 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<IApplicant>({
+  } = useForm({
     reValidateMode: "onSubmit",
     mode: "all",
   });
