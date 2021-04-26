@@ -25,8 +25,8 @@ export const Registration: React.FC<{
   name?: string;
   candidatePage?: boolean;
   candidat?: IApplicant;
+
 }> = (props) => {
-  //поправь интерфейс
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
   );
@@ -278,6 +278,8 @@ export const Registration: React.FC<{
           errors={errors}
           className={contentStyles.lab}
           multiline
+          autoAdjustHeight
+          resizable={false}
           value={(props.candidatePage && props.candidat.summary) || ""}
         />
         <ControlledInputUpload
