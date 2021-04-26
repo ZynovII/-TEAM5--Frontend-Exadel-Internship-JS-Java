@@ -6,9 +6,16 @@ import {
   DatePicker,
   DocumentCardActions,
 } from "@fluentui/react";
-import { AcceptStatus, IApplicant, InterviewStatus } from "../../models/IApplicant";
-import { Registration } from '../Registration/Registration'
-import { StatusForm } from './StatusForm'
+
+import {
+  AcceptStatus,
+  IApplicant,
+  InterviewStatus,
+  PreferredTime,
+} from "../../models/IApplicant";
+import { Registration } from "../Registration/Registration";
+import { StatusForm } from "./StatusForm";
+import { InfoForm } from "./InfoForm";
 
 
 export interface ICandidatProps {
@@ -108,56 +115,60 @@ const time = [
   },
 ];
 
-const candidat = 
-  {
-    id: "aefo78a0",
-    fullName: "Ivan Ivanov",
-    email: "iivanov@mail.ru",
-    skype: " skype ",
-    phone: "+375294722147",
-    country: "belarus",
-    city: "minsk",
-    technology: "java",
-    event: "E-learning",
-    summary: " bla bla ",
-    acceptanceStatus: AcceptStatus.Accepted,
-    interviewStatus: InterviewStatus.AwaitingHRInterview,
-    interviewDate: "03.24.2021",
-    interviewTime: "first",
-    assignedHRID: "111",
-    assignedTSID: "999",
-    HRFeedback: "",
-    TSFeedback: "",
-  };
+
+const candidat: IApplicant = {
+  id: "aefo78a0",
+  fullName: "Ivan Ivanov",
+  email: "iivanov@mail.ru",
+  skype: " skype ",
+  phoneNumber: "+375294722147",
+  country: "Belarus",
+  city: "Minsk",
+  technology: "Java",
+  event: "E-learning",
+  summary:
+    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure idLorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id..",
+  acceptanceStatus: AcceptStatus.Accepted,
+  interviewStatus: InterviewStatus.AwaitingTSInterview,
+  preferredTime: PreferredTime.First,
+};
 
 export const CandidatePage: React.FC = (props) => {
-  const [edit, setEdit] = useState<boolean>(false)
+  const [edit, setEdit] = useState<boolean>(false);
   return (
     <>
       <header className={contentStyles.title}>
-        <div style={{display: 'flex', justifyContent:"space-between", width: '20%', alignItems:'flex-end'}}>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "20%",
+            alignItems: "flex-end",
+          }}
+        >
           <h2>{candidat.fullName}</h2>
-          <DocumentCardActions 
-          actions={ 
-            [
+          <DocumentCardActions
+            actions={[
               {
-              iconProps: { iconName: "Edit" }, 
-              ariaLabel: "edit event", 
-              onClick: () => setEdit(!edit) 
-              }
-            ]} />
+                iconProps: { iconName: "Edit" },
+                ariaLabel: "edit event",
+                onClick: () => setEdit(!edit),
+              },
+            ]}
+          />
         </div>
         <h3>Internship JS&amp;Java</h3>
       </header>
       <div className={contentStyles.container}>
-      <div>
-          <StatusForm candidat={candidat}/>
-          { edit 
-               ?<Registration candidatePage={true} candidat={candidat}/>
-               :<div>noedit</div>
-          }
-          </div>
-        
+        <div>
+          <StatusForm candidat={candidat} />
+          {edit ? (
+            <Registration candidatePage={true} candidat={candidat} />
+          ) : (
+            <InfoForm candidat={candidat} />
+          )}
+        </div>
+
         <div>
           <h1>To set up iterview</h1>
           <Stack

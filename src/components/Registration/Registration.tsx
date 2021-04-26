@@ -1,11 +1,14 @@
 import React, { useEffect, useState, useMemo } from "react";
-import { useForm,  } from "react-hook-form";
-import { ControlledTextField, ControlledDropdown, ControlledInputUpload } from "../../hook-form/Controlled";
+import { useForm } from "react-hook-form";
+import {
+  ControlledTextField,
+  ControlledDropdown,
+  ControlledInputUpload,
+} from "../../hook-form/Controlled";
 import {
   Stack,
   Text,
   PrimaryButton,
-  DefaultButton,
   ITextFieldStyleProps,
   ITextFieldStyles,
   mergeStyleSets,
@@ -14,26 +17,19 @@ import {
   IDropdownStyles,
   Checkbox,
 } from "@fluentui/react/lib";
-import { IApplicant } from "./models";
-
+import { IApplicant, PreferredTime } from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
-import { CandidatePage } from "../CandidatePage/CandidatePage";
 
-const textFieldStyles = (
-  props: ITextFieldStyleProps | IDropdownStyleProps
-): Partial<ITextFieldStyles | IDropdownStyles > => ({
-  ...{
-    errorMessage: {
-      backgroundColor: "transparent",
-      position: "absolute",
-      paddingTop: "0px",
-    },
-  },
-});
+export const Registration: React.FC<{
+  name?: string;
+  candidatePage?: boolean;
+  candidat?: IApplicant;
 
-export const Registration:React.FC<{name?: string, candidatePage?: boolean, candidat?: any}> = (props) => { //поправь интерфейс
-  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean( false );
+}> = (props) => {
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
+    false
+  );
   const modalText =
     "Your application has been successfully sent. Our specialist will connect with you soon.";
 
@@ -46,66 +42,83 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
     mode: "all",
   });
 
-  const optionsOfCountries: IDropdownOption[] = useMemo( () => {
+  const optionsOfCountries: IDropdownOption[] = useMemo(() => {
     return [
       { key: "belarus", text: "Belarus" },
-      { key: "russia",  text: "Russia" },
+      { key: "russia", text: "Russia" },
       { key: "ukraine", text: "Ukraine", disabled: true },
     ];
-  }, [])
+  }, []);
 
-  const exampleOptionsOfCities: IDropdownOption[] = useMemo( () => {
+  const exampleOptionsOfCities: IDropdownOption[] = useMemo(() => {
     return [
       { key: "minsk", text: "Minsk" },
       { key: "grodno", text: "Grodno" },
       { key: "gomel", text: "Gomel", disabled: true },
     ];
-  }, []) 
+  }, []);
 
-  const exampleTime: IDropdownOption[] = useMemo( () => {
+  const exampleTime: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "first", text: "10.00 - 12.00" },
-      { key: "second", text: "12.00 - 14.00" },
-      { key: "third", text: "14.00 - 16.00" },
-      { key: "fourth", text: "16.00 - 18.00" },
+      { key: PreferredTime.None, text: PreferredTime.None },
+      { key: PreferredTime.Any, text: PreferredTime.Any },
+      { key: PreferredTime.First, text: PreferredTime.First },
+      { key: PreferredTime.Second, text: PreferredTime.Second },
+      { key: PreferredTime.Third, text: PreferredTime.Third },
+      { key: PreferredTime.Fourth, text: PreferredTime.Fourth },
     ];
-  }, []) 
-  const exampleOptionsOfTechnology: IDropdownOption[] = useMemo( () => {
+  }, []);
+  const exampleOptionsOfTechnology: IDropdownOption[] = useMemo(() => {
     return [
       { key: "js", text: "JavaScript" },
-      { key: "java", text: "Java" }
+      { key: "java", text: "Java" },
     ];
-  }, [])
-  const registrationPattern:{name: RegExp, email: RegExp, phoneNumber: RegExp} = useMemo( () => {
+  }, []);
+  const registrationPattern: {
+    name: RegExp;
+    email: RegExp;
+    phoneNumber: RegExp;
+  } = useMemo(() => {
     return {
       name: /^[a-z]+ [a-z]+$|^[а-яА-Я]+ [а-яА-Я]+$/i, // поправь без ограничения по языку
       email: /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@([a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i,
-      phoneNumber: /^(8|\+375) ?([(]\d+[)])? ?\d+/i // поправь только на цифры скобки и тире
-    }
-  }, []) 
+      phoneNumber: /^(8|\+375) ?([(]\d+[)])? ?\d+/i, // поправь только на цифры скобки и тире
+    };
+  }, []);
 
   const [countryStatus, setCountryStatus] = useState<boolean>(true);
-  const [privacy, { setTrue: setPrivacyTrue, setFalse: setPrivacyFalse }] = useBoolean( false );
-  const [personalData, { setTrue: setPersonalDataTrue, setFalse: setPersonalDataFalse }] = useBoolean( false );
-  const [disabledButton, { setTrue: setDisabledButtonTrue, setFalse: setDisabledButtonFalse }] = useBoolean( true );
+  const [
+    privacy,
+    { setTrue: setPrivacyTrue, setFalse: setPrivacyFalse },
+  ] = useBoolean(false);
+  const [
+    personalData,
+    { setTrue: setPersonalDataTrue, setFalse: setPersonalDataFalse },
+  ] = useBoolean(false);
+  const [
+    disabledButton,
+    { setTrue: setDisabledButtonTrue, setFalse: setDisabledButtonFalse },
+  ] = useBoolean(true);
 
   const checkPrivacy = (event) => {
-    event.target.checked ? setPrivacyTrue() : setPrivacyFalse()
-  }
-  
+    event.target.checked ? setPrivacyTrue() : setPrivacyFalse();
+  };
+
   const checkPersonalData = (event) => {
-    event.target.checked ? setPersonalDataTrue() : setPersonalDataFalse()
-  }
+    event.target.checked ? setPersonalDataTrue() : setPersonalDataFalse();
+  };
 
   useEffect(() => {
-    personalData && privacy ? setDisabledButtonFalse() : setDisabledButtonTrue()
-  }, [personalData, privacy])
+    personalData && privacy
+      ? setDisabledButtonFalse()
+      : setDisabledButtonTrue();
+  }, [personalData, privacy]);
 
-  const [fileName, setFileName] = useState<string>('')
+  const [fileName, setFileName] = useState<string>("");
   const uploadFile = (event) => {
-        setFileName(event.target.files[0].name)
-      }
- 
+    setFileName(event.target.files[0].name);
+  };
+
   const onSave = () => {
     handleSubmit(
       (data) => {
@@ -118,7 +131,6 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
       }
     )();
   };
-
 
   return (
     <>
@@ -141,13 +153,14 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
                 control={control}
                 name={"fullName"}
                 errors={errors}
-                value={(props.candidatePage && props.candidat.fullName) || ''}
-                rules={{ required: "This field is required",
-                         pattern: {
-                          value: registrationPattern.name,
-                          message: "Invalid name"
-                         },
-                        }} 
+                value={(props.candidatePage && props.candidat.fullName) || ""}
+                rules={{
+                  required: "This field is required",
+                  pattern: {
+                    value: registrationPattern.name,
+                    message: "Invalid name",
+                  },
+                }}
                 styles={textFieldStyles}
               />
             </div>
@@ -158,13 +171,14 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
                 control={control}
                 name={"email"}
                 errors={errors}
-                value={(props.candidatePage && props.candidat.email) || ''}
-                rules={{ required: "This field is required",
-                         pattern: {
-                          value: registrationPattern.email,
-                          message: "Invalid email"
-                         },
-                        }} 
+                value={(props.candidatePage && props.candidat.email) || ""}
+                rules={{
+                  required: "This field is required",
+                  pattern: {
+                    value: registrationPattern.email,
+                    message: "Invalid email",
+                  },
+                }}
                 styles={textFieldStyles}
               />
             </div>
@@ -172,15 +186,17 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
               <ControlledTextField
                 placeholder="Phone"
                 control={control}
-                name={"phone"}
+                name={"phoneNumber"}
                 errors={errors}
-                value={(props.candidatePage && props.candidat.phone) || ''}
-                rules={{ 
+                value={
+                  (props.candidatePage && props.candidat.phoneNumber) || ""
+                }
+                rules={{
                   pattern: {
-                  value: registrationPattern.phoneNumber,
-                  message: "Invalid phone number"
+                    value: registrationPattern.phoneNumber,
+                    message: "Invalid phone number",
                   },
-               }} 
+                }}
                 styles={textFieldStyles}
               />
             </div>
@@ -191,7 +207,7 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
                 control={control}
                 name={"skype"}
                 errors={errors}
-                value={(props.candidatePage && props.candidat.skype) || ''}
+                value={(props.candidatePage && props.candidat.skype) || ""}
                 rules={{ required: "This field is required" }}
                 styles={textFieldStyles}
               />
@@ -205,7 +221,9 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
               control={control}
               name={"technology"}
               placeholder="Technology"
-              defaultSelectedKey={(props.candidatePage && props.candidat.technology) || ''}
+              defaultSelectedKey={
+                (props.candidatePage && props.candidat.technology) || ""
+              }
               required
               rules={{ required: "This field is required" }}
               errors={errors}
@@ -213,23 +231,27 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
               styles={textFieldStyles}
             />
             <ControlledDropdown
-               required
-               control={control}
-               name={"country"}
-               errors={errors}
-               placeholder="Country"
-               defaultSelectedKey={(props.candidatePage && props.candidat.country) || ''}
-               rules={{ required: "This field is required" }}
-               options={optionsOfCountries}
-               onChange={() => setCountryStatus(false)}
-               styles={textFieldStyles}
+              required
+              control={control}
+              name={"country"}
+              errors={errors}
+              placeholder="Country"
+              defaultSelectedKey={
+                (props.candidatePage && props.candidat.country) || ""
+              }
+              rules={{ required: "This field is required" }}
+              options={optionsOfCountries}
+              onChange={() => setCountryStatus(false)}
+              styles={textFieldStyles}
             />
             <ControlledDropdown
               required
               control={control}
               name={"city"}
               placeholder="City"
-              defaultSelectedKey={(props.candidatePage && props.candidat.city) || ''}
+              defaultSelectedKey={
+                (props.candidatePage && props.candidat.city) || ""
+              }
               rules={{ required: "This field is required" }}
               errors={errors}
               options={exampleOptionsOfCities}
@@ -238,9 +260,11 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
             />
             <ControlledDropdown
               control={control}
-              name={"time"}
+              name={"preferredTime"}
               placeholder="Choose time"
-              defaultSelectedKey={(props.candidatePage && props.candidat.interviewTime) || ''}
+              defaultSelectedKey={
+                (props.candidatePage && props.candidat.preferredTime) || ""
+              }
               errors={errors}
               options={exampleTime}
               styles={textFieldStyles}
@@ -254,28 +278,33 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
           errors={errors}
           className={contentStyles.lab}
           multiline
-          value={(props.candidatePage && props.candidat.summary) || ''}
+          autoAdjustHeight
+          resizable={false}
+          value={(props.candidatePage && props.candidat.summary) || ""}
         />
-        <ControlledInputUpload 
-          control={ control }
-          name= {"cv"}
-          id={"cv"} 
+        <ControlledInputUpload
+          control={control}
+          name={"resumeLink"}
+          id={"cv"}
           className="input-file__input"
-          onChange ={ (e) => uploadFile(e) }
+          onChange={(e) => uploadFile(e)}
         />
-        <label htmlFor="cv" className="input-file__label">Upload CV</label>
+        <label htmlFor="cv" className="input-file__label">
+          Upload CV
+        </label>
         <span>{fileName}</span>
-        {props.candidatePage
-          ?<>
-              <PrimaryButton
+        {props.candidatePage ? (
+          <>
+            <PrimaryButton
               className="button margin2em button_center"
               text="Submit"
               onClick={onSave}
             />
-           </>
-          :<> 
+          </>
+        ) : (
+          <>
             <Text className={contentStyles.lab} nowrap block>
-            * Fields marked with * are required
+              * Fields marked with * are required
             </Text>
             <div className={contentStyles.checkboxes}>
               <Checkbox
@@ -294,7 +323,7 @@ export const Registration:React.FC<{name?: string, candidatePage?: boolean, cand
               disabled={disabledButton}
             />
           </>
-        }
+        )}
       </div>
     </>
   );
@@ -327,10 +356,22 @@ const contentStyles = mergeStyleSets({
     margin: "0 auto",
     display: "flex",
   },
-  
+
   errorMessage: {
     backgroundColor: "transparent",
     position: "absolute",
     paddingTop: "0px",
+  },
+});
+
+const textFieldStyles = (
+  props: ITextFieldStyleProps | IDropdownStyleProps
+): Partial<ITextFieldStyles | IDropdownStyles> => ({
+  ...{
+    errorMessage: {
+      backgroundColor: "transparent",
+      position: "absolute",
+      paddingTop: "0px",
+    },
   },
 });
