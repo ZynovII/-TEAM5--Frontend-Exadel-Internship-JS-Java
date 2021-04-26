@@ -40,6 +40,8 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
         return 0.5;
       case InterviewStatus.WaitingDesicion:
         return 0.75;
+      default:
+        return 0;
     }
   }, [props.candidat.interviewStatus]);
 
