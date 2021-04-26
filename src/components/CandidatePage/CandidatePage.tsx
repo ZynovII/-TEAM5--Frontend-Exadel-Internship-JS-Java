@@ -6,6 +6,7 @@ import {
   DatePicker,
   DocumentCardActions,
 } from "@fluentui/react";
+
 import {
   AcceptStatus,
   IApplicant,
@@ -15,6 +16,7 @@ import {
 import { Registration } from "../Registration/Registration";
 import { StatusForm } from "./StatusForm";
 import { InfoForm } from "./InfoForm";
+
 
 export interface ICandidatProps {
   candidat: IApplicant;
@@ -112,6 +114,7 @@ const time = [
     text: "15:00-15:30",
   },
 ];
+
 
 const candidat: IApplicant = {
   id: "aefo78a0",

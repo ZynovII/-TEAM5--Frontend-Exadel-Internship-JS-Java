@@ -16,30 +16,17 @@ import {
   IDropdownStyleProps,
   IDropdownStyles,
   Checkbox,
-} from "@fluentui/react";
-import { IApplicant } from "./models";
-
+} from "@fluentui/react/lib";
+import { IApplicant, PreferredTime } from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
-
-const textFieldStyles = (
-  props: ITextFieldStyleProps | IDropdownStyleProps
-): Partial<ITextFieldStyles | IDropdownStyles> => ({
-  ...{
-    errorMessage: {
-      backgroundColor: "transparent",
-      position: "absolute",
-      paddingTop: "0px",
-    },
-  },
-});
 
 export const Registration: React.FC<{
   name?: string;
   candidatePage?: boolean;
-  candidat?: any;
+  candidat?: IApplicant;
+
 }> = (props) => {
-  //поправь интерфейс
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
   );
@@ -73,10 +60,12 @@ export const Registration: React.FC<{
 
   const exampleTime: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "first", text: "10.00 - 12.00" },
-      { key: "second", text: "12.00 - 14.00" },
-      { key: "third", text: "14.00 - 16.00" },
-      { key: "fourth", text: "16.00 - 18.00" },
+      { key: PreferredTime.None, text: PreferredTime.None },
+      { key: PreferredTime.Any, text: PreferredTime.Any },
+      { key: PreferredTime.First, text: PreferredTime.First },
+      { key: PreferredTime.Second, text: PreferredTime.Second },
+      { key: PreferredTime.Third, text: PreferredTime.Third },
+      { key: PreferredTime.Fourth, text: PreferredTime.Fourth },
     ];
   }, []);
   const exampleOptionsOfTechnology: IDropdownOption[] = useMemo(() => {
@@ -197,9 +186,11 @@ export const Registration: React.FC<{
               <ControlledTextField
                 placeholder="Phone"
                 control={control}
-                name={"phone"}
+                name={"phoneNumber"}
                 errors={errors}
-                value={(props.candidatePage && props.candidat.phone) || ""}
+                value={
+                  (props.candidatePage && props.candidat.phoneNumber) || ""
+                }
                 rules={{
                   pattern: {
                     value: registrationPattern.phoneNumber,
@@ -269,10 +260,10 @@ export const Registration: React.FC<{
             />
             <ControlledDropdown
               control={control}
-              name={"time"}
+              name={"preferredTime"}
               placeholder="Choose time"
               defaultSelectedKey={
-                (props.candidatePage && props.candidat.interviewTime) || ""
+                (props.candidatePage && props.candidat.preferredTime) || ""
               }
               errors={errors}
               options={exampleTime}
@@ -293,7 +284,7 @@ export const Registration: React.FC<{
         />
         <ControlledInputUpload
           control={control}
-          name={"cv"}
+          name={"resumeLink"}
           id={"cv"}
           className="input-file__input"
           onChange={(e) => uploadFile(e)}
@@ -370,5 +361,17 @@ const contentStyles = mergeStyleSets({
     backgroundColor: "transparent",
     position: "absolute",
     paddingTop: "0px",
+  },
+});
+
+const textFieldStyles = (
+  props: ITextFieldStyleProps | IDropdownStyleProps
+): Partial<ITextFieldStyles | IDropdownStyles> => ({
+  ...{
+    errorMessage: {
+      backgroundColor: "transparent",
+      position: "absolute",
+      paddingTop: "0px",
+    },
   },
 });
