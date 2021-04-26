@@ -9,6 +9,7 @@ import { ApplicantList } from "../components/applicant-list/ApplicantList";
 import { InterviewList } from "../components/InterviewsList/InterviewsList";
 import { AllCards } from "../components/EventList/AllCards";
 import { CandidatePage } from "../components/CandidatePage/CandidatePage";
+import {ArchiveEventList} from "../components/ArchivePage/ArchivePage"
 
 export const AdminPage = () => {
   return (
@@ -39,7 +40,7 @@ export const AdminPage = () => {
               <Route path="/admin/candidates/:name" component={CandidatePage} />
               <Route path="/admin/interviews" exact component={InterviewList} />
               <Route path="/admin/interviews/:name" component={CandidatePage} />
-              <Route path="/admin/archive" component={() => <h1>Archive</h1>} />
+              <Route path="/admin/archive" component={ArchiveEventList} />
               <Route path="/admin/signout" component={() => <h1>SignOut</h1>} />
               <Route component={NotFound} />
             </Switch>
