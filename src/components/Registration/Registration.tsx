@@ -20,12 +20,29 @@ import {
 import { IApplicant, PreferredTime } from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
+import { time } from "node:console";
+
+const preferredTimeReformer = (str: string): string => {
+  switch (str) {
+    case PreferredTime.First:
+      return "10:00-12:00";
+    case PreferredTime.Second:
+      return "12:00-14:00";
+    case PreferredTime.Third:
+      return "14:00-16:00";
+    case PreferredTime.Fourth:
+      return "16:00-18:00";
+    case PreferredTime.None:
+      return "Any time";
+    default:
+      return str;
+  }
+};
 
 export const Registration: React.FC<{
   name?: string;
   candidatePage?: boolean;
   candidat?: IApplicant;
-
 }> = (props) => {
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
@@ -60,12 +77,26 @@ export const Registration: React.FC<{
 
   const exampleTime: IDropdownOption[] = useMemo(() => {
     return [
-      { key: PreferredTime.None, text: PreferredTime.None },
-      { key: PreferredTime.Any, text: PreferredTime.Any },
-      { key: PreferredTime.First, text: PreferredTime.First },
-      { key: PreferredTime.Second, text: PreferredTime.Second },
-      { key: PreferredTime.Third, text: PreferredTime.Third },
-      { key: PreferredTime.Fourth, text: PreferredTime.Fourth },
+      {
+        key: PreferredTime.None,
+        text: preferredTimeReformer(PreferredTime.None),
+      },
+      {
+        key: PreferredTime.First,
+        text: preferredTimeReformer(PreferredTime.First),
+      },
+      {
+        key: PreferredTime.Second,
+        text: preferredTimeReformer(PreferredTime.Second),
+      },
+      {
+        key: PreferredTime.Third,
+        text: preferredTimeReformer(PreferredTime.Third),
+      },
+      {
+        key: PreferredTime.Fourth,
+        text: preferredTimeReformer(PreferredTime.Fourth),
+      },
     ];
   }, []);
   const exampleOptionsOfTechnology: IDropdownOption[] = useMemo(() => {

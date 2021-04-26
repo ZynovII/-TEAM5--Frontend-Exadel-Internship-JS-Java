@@ -10,7 +10,7 @@ import {
 
 import { useHistory } from "react-router";
 import { IEvent } from "../../models/IEvent";
-import { useEvents } from "../../hooks/hooks";
+import { useEvents, useLoader } from "../../hooks/hooks";
 
 const cardImage = require("./../../assets/img/card_img.jpg");
 
@@ -62,8 +62,9 @@ export interface ICardItemProps {
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const history = useHistory();
-  const { selectEvent } = useEvents();
+  const { showLoader } = useLoader();
   const selectHandler = () => {
+    showLoader();
     history.push(`/events/${props.cardItem.id}`);
   };
 

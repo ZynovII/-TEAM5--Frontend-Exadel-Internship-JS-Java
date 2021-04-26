@@ -9,7 +9,6 @@ import {
   fakeRequestSignIn,
   fakeRequestSignOut,
 } from "../fakeDB/fakeRequest";
-import { IApplicant } from "../models/IApplicant";
 
 export const useStore = () => useContext(Context);
 
@@ -17,6 +16,7 @@ export const useLoader = () => {
   const { state, dispatch } = useStore();
 
   const showLoader = () => dispatch({ type: ActionTypes.SHOW_LOADER });
+
   return {
     loading: state.loading,
     showLoader,
@@ -72,11 +72,12 @@ export const useEvents = () => {
     // });
   };
 
-  const selectEvent = (id: string) => {
-    console.log("Select", state.events[id]);
-
+  const selectEvent = (id: string | number) => {
     if (state.events[id]) {
-      dispatch({ type: ActionTypes.SELECT_EVENT, payload: state.events[id] });
+      dispatch({
+        type: ActionTypes.SELECT_EVENT,
+        payload: state.events[id],
+      });
     } else {
       axios.get(`http://localhost:8081/api/events/${id}`).then((res) => {
         dispatch({

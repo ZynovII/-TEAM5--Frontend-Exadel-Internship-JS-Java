@@ -25,7 +25,6 @@ export interface ICardItemProps {
 const eventImg = require("./../../assets/img/event_img.jpg");
 
 export const DescriptionEventPage: React.FC<ICardItemProps> = (props) => {
-  console.log(props.cardItem);
   return (
     <div
       style={{
@@ -39,7 +38,7 @@ export const DescriptionEventPage: React.FC<ICardItemProps> = (props) => {
       <p style={{ padding: "1rem", textAlign: "justify" }}>
         {props.cardItem?.description}
         <br />
-        {props.cardItem?.locations.map((el) => el.city + "")}
+        {props.cardItem?.locations?.map((el) => el.city + " ")}
         <br />
         {props.cardItem?.startDate}
         <br />

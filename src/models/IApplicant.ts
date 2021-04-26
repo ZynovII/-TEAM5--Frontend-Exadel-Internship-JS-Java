@@ -15,7 +15,7 @@ export enum PreferredTime {
   First = "FROM_TEN_TO_TWELVE",
   Second = "FROM_TWELVE_TO_TWO",
   Third = "FROM_TWO_TO_FOUR",
-  Forth = "FROM_FOUR_TO_SIX",
+  Fourth = "FROM_FOUR_TO_SIX",
   None = "NONE",
 }
 
