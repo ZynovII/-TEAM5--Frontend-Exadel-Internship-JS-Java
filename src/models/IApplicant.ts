@@ -37,10 +37,10 @@ export interface IApplicant {
   interviewStatus: InterviewStatus;
   interviews?: IInterview[];
   // remove
-  assignedHRID: string; //
-  assignedTSID: string; //
-  HRFeedback: string; //
-  TSFeedback: string; //
-  interviewDate: string; // ?
-  interviewTime: string; // ?
+  assignedHRID?: string; //
+  assignedTSID?: string; //
+  HRFeedback?: string; //
+  TSFeedback?: string; //
+  interviewDate?: string; // ?
+  interviewTime?: string; // ?
 }
