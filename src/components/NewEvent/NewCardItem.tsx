@@ -1,13 +1,12 @@
-import React from "react";
+import React, {useState} from "react";
+import {NewEventForm} from "./NewEventForm"
 import {
   DocumentCard,
   DocumentCardTitle,
   Image,
   ImageFit,
-  Text,
 } from "@fluentui/react";
 
-import { useHistory } from "react-router";
 
 const cardImage = require("./../../assets/img/plus.svg");
 
@@ -41,12 +40,15 @@ const styles = {
 
 
 export const NewCardItem: React.FC = (props) => {
-  const history = useHistory();
+  const [isModal,setIsModal] = useState(false);
+
+  const toggleModal = () => setIsModal(isModal => !isModal);
 
   return (
+    <>
     <DocumentCard
       styles={styles.styleCard}
-      onClick={() => history.push('/')}
+      onClick={()=>setIsModal(true)}
     >
       <div>
       <Image height='100%' width='100%' imageFit={ImageFit.cover} src={cardImage.default} />
@@ -61,5 +63,7 @@ export const NewCardItem: React.FC = (props) => {
       />
       </div>
     </DocumentCard>
+    <NewEventForm isModal={isModal} hideModal={toggleModal}/> 
+    </>
   );
 };
