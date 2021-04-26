@@ -18,6 +18,7 @@ import { useId } from "@fluentui/react-hooks";
 import { AcceptStatus, IApplicant } from "../../models/IApplicant";
 import { useApplicants, useLoader } from "../../hooks/hooks";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
+import { acceptStatusReformer } from "../../utils/stringReformers";
 
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
@@ -38,29 +39,16 @@ export const ApplicantList: React.FC = () => {
     fetchApplicants();
   }, []);
 
-  const applicantsList = useMemo(
-    () =>
-      Object.keys(applicants).map((idx) => {
-        let status: string;
-        switch (applicants[idx].status) {
-          case AcceptStatus.Accepted:
-            status = "Accepted";
-            break;
-          case AcceptStatus.Rejected:
-            status = "Rejected";
-            break;
-          default:
-            status = "Waiting";
-        }
-        return {
-          name: applicants[idx].fullName,
-          event: applicants[idx].event,
-          skill: applicants[idx].primaryTech,
-          interviewStatus: status,
-        };
-      }),
-    []
-  );
+  const applicantsList = useMemo(() => {
+    return Object.values(applicants).map((item) => {
+      return {
+        name: item.fullName,
+        event: item.event,
+        skill: item.primaryTech,
+        interviewStatus: acceptStatusReformer(item.status), // wrong status
+      };
+    });
+  }, [applicants]);
 
   const tooltipId = useId("tooltip");
   const columns: IColumn[] = useMemo(

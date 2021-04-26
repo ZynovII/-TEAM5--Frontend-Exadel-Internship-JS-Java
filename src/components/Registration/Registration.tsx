@@ -20,24 +20,7 @@ import {
 import { IApplicant, PreferredTime } from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
-import { time } from "node:console";
-
-const preferredTimeReformer = (str: string): string => {
-  switch (str) {
-    case PreferredTime.First:
-      return "10:00-12:00";
-    case PreferredTime.Second:
-      return "12:00-14:00";
-    case PreferredTime.Third:
-      return "14:00-16:00";
-    case PreferredTime.Fourth:
-      return "16:00-18:00";
-    case PreferredTime.None:
-      return "Any time";
-    default:
-      return str;
-  }
-};
+import { preferredTimeReformer } from "../../utils/stringReformers";
 
 export const Registration: React.FC<{
   name?: string;

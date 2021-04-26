@@ -48,8 +48,9 @@ const InterviewList: React.FC = () => {
           interviewTime: interviews[idx].interviewTime,
         };
       }),
-    []
+    [interviews]
   );
+
   const columns: IColumn[] = useMemo(
     () => [
       {
