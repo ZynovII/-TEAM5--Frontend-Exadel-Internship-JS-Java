@@ -17,7 +17,6 @@ import {
 const desicion: IDropdownOption[] = [
   { key: AcceptStatus.Accepted, text: "Accept" },
   { key: AcceptStatus.Rejected, text: "Reject" },
-  { key: AcceptStatus.Pending, text: "Pending" },
 ];
 
 export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
@@ -25,7 +24,7 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<IApplicant>({
+  } = useForm({
     reValidateMode: "onSubmit",
     mode: "all",
   });

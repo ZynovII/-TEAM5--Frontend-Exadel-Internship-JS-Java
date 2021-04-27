@@ -3,7 +3,12 @@ import { useMemo } from "react";
 import { ControlledDropdown } from "../../hook-form/Controlled";
 import { useForm } from "react-hook-form";
 import { IFilterDropdownItem, IFilterData } from "../Filter/Models";
-import { IStackStyles, IDropdownStyles, Stack, PrimaryButton } from "@fluentui/react";
+import {
+  IStackStyles,
+  IDropdownStyles,
+  Stack,
+  PrimaryButton,
+} from "@fluentui/react";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -17,17 +22,16 @@ const stackStyles: IStackStyles = {
   },
 };
 
-
-const styles = {
-  div:{
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "flex-end",
-  marginBottom: "2rem",
-  marginRight: "2rem"
-}
-}
+const styles: { div: React.CSSProperties } = {
+  div: {
+    display: "flex",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    marginBottom: "2rem",
+    marginRight: "2rem",
+  },
+};
 
 const dropdownStyles: Partial<IDropdownStyles> = {
   root: {
@@ -50,14 +54,13 @@ export const InterviewListFilter: React.FC = () => {
   const onApplyFilter = () => {
     handleSubmit((data) => {
       const dataSubmit = {
-        ...data
+        ...data,
       };
 
       console.log(dataSubmit);
     })();
   };
 
-  
   const filters: IFilterDropdownItem[] = useMemo(() => {
     return [
       {
@@ -94,7 +97,10 @@ export const InterviewListFilter: React.FC = () => {
         placeholder: "All events",
         options: [
           { key: "Internship JS & Java", text: "Internship JS & Java" },
-          { key: "Business Analysis Meet UP", text: "Business Analysis Meet UP" },
+          {
+            key: "Business Analysis Meet UP",
+            text: "Business Analysis Meet UP",
+          },
           { key: "C++ interview", text: "C++ interview" },
         ],
       },
@@ -114,33 +120,28 @@ export const InterviewListFilter: React.FC = () => {
   }, []);
 
   return (
-
     <div style={styles.div}>
-    <Stack
-      styles={stackStyles}
-      horizontal
-      verticalAlign="center"
-      horizontalAlign="space-between"
-      wrap
-    >
-      {filters.map((obj: IFilterDropdownItem) => (
-        <ControlledDropdown
-          label={obj.label}
-          key={obj.key}
-          control={control}
-          name={obj.name}
-          placeholder={obj.placeholder}
-          options={obj.options}
-          errors={errors}
-          styles={dropdownStyles}
-        />
-      ))}
-    </Stack>
-     <PrimaryButton
-     onClick={onApplyFilter}
-     text="Search"
-     className="button"
-   />
- </div>
+      <Stack
+        styles={stackStyles}
+        horizontal
+        verticalAlign="center"
+        horizontalAlign="space-between"
+        wrap
+      >
+        {filters.map((obj: IFilterDropdownItem) => (
+          <ControlledDropdown
+            label={obj.label}
+            key={obj.key}
+            control={control}
+            name={obj.name}
+            placeholder={obj.placeholder}
+            options={obj.options}
+            errors={errors}
+            styles={dropdownStyles}
+          />
+        ))}
+      </Stack>
+      <PrimaryButton onClick={onApplyFilter} text="Search" className="button" />
+    </div>
   );
 };

@@ -8,6 +8,8 @@ import {
   TagPicker,
   ITagPickerProps,
   IBasePickerSuggestionsProps,
+  DatePicker,
+  IDatePicker
 } from "@fluentui/react";
 import { HookFormProps } from "./HookFormProps";
 
@@ -35,6 +37,7 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
     />
   );
 };
+
 
 
 export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
@@ -107,6 +110,80 @@ export const ControlledInputUpload: React.FC<HookFormProps & InputUpload> = (
           onChange(e.target.files[0]) 
           props.onChange(e)}} 
          />
+      )}
+    />
+  );
+};
+
+interface DatePicker{
+  showMonthPickerAsOverlay?: boolean
+  placeholder: string
+  ariaLabel: string
+}
+const dayPickerStrings = {
+  months: [
+    "January",
+    "February",
+    "March",
+    "April",
+    "May",
+    "June",
+    "July",
+    "August",
+    "September",
+    "October",
+    "November",
+    "December",
+  ],
+  shortMonths: [
+    "Jan",
+    "Feb",
+    "Mar",
+    "Apr",
+    "May",
+    "Jun",
+    "Jul",
+    "Aug",
+    "Sep",
+    "Oct",
+    "Nov",
+    "Dec",
+  ],
+  days: [
+    "Sunday",
+    "Monday",
+    "Tuesday",
+    "Wednesday",
+    "Thursday",
+    "Friday",
+    "Saturday",
+  ],
+  shortDays: ["S", "M", "T", "W", "T", "F", "S"],
+  goToToday: "Go to today",
+  weekNumberFormatString: "Week number {0}",
+  prevMonthAriaLabel: "Previous month",
+  nextMonthAriaLabel: "Next month",
+  prevYearAriaLabel: "Previous year",
+  nextYearAriaLabel: "Next year",
+  prevYearRangeAriaLabel: "Previous year range",
+  nextYearRangeAriaLabel: "Next year range",
+  closeButtonAriaLabel: "Close",
+  monthPickerHeaderAriaLabel: "{0}, select to change the year",
+  yearPickerHeaderAriaLabel: "{0}, select to change the month",
+};
+export const ControlledDatePicker: React.FC<HookFormProps & DatePicker> = (
+  props
+) => {
+  return (
+    <Controller
+      name={props.name}
+      control={props.control}
+      render={({ field: { onChange } }) => (
+        <DatePicker
+          {...props}
+          strings={dayPickerStrings}
+          onSelectDate={(e) => onChange(e)}
+        />
       )}
     />
   );
