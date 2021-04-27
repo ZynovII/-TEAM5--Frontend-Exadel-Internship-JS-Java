@@ -14,9 +14,12 @@ import {
 } from "@fluentui/react";
 import { useHistory } from "react-router";
 import { useId } from "@fluentui/react-hooks";
-import { IApplicant } from "../../models/IApplicant";
-import { useApplicants } from "../../hooks/hooks";
+
+import { AcceptStatus, IApplicant } from "../../models/IApplicant";
+import { useApplicants, useLoader } from "../../hooks/hooks";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
+import { acceptStatusReformer } from "../../utils/stringReformers";
+
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
@@ -27,23 +30,25 @@ export interface IApplicantList {
   columns: IColumn[];
   items: IApplicant[];
 }
-const ApplicantList: React.FC = () => {
-  const { applicants, loading, fechApplicants } = useApplicants();
+export const ApplicantList: React.FC = () => {
+  const { applicants, fetchApplicants } = useApplicants();
+  const { loading, showLoader } = useLoader();
   const history = useHistory();
   useEffect(() => {
-    fechApplicants();
+    showLoader();
+    fetchApplicants();
   }, []);
 
   const applicantsList = useMemo(() => {
-    return Object.keys(applicants).map((idx) => {
+    return Object.values(applicants).map((item) => {
       return {
-        name: applicants[idx].fullName,
-        event: applicants[idx].event,
-        skill: applicants[idx].technology,
-        interviewStatus: applicants[idx].interviewStatus,
+        name: item.fullName,
+        event: item.event,
+        skill: item.primaryTech,
+        interviewStatus: acceptStatusReformer(item.status), // wrong status
       };
     });
-  }, []);
+  }, [applicants]);
 
   const tooltipId = useId("tooltip");
   const columns: IColumn[] = useMemo(
@@ -108,26 +113,23 @@ const ApplicantList: React.FC = () => {
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <>
-      <AllApplicantFilter />
-      <div style={{ height: "70vh", position: "relative" }}>
-        <div
-          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
-        >
-          <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-            <DetailsList
-              items={applicantsList}
-              columns={columns}
-              isHeaderVisible={true}
-              selectionMode={SelectionMode.multiple}
-              onItemInvoked={(item) =>
-                history.push(`/admin/candidates/${item.name}`)
-              }
-              onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
+    <AllApplicantFilter />
+    <div style={{ height: "70vh", position: "relative", marginTop: '2rem' }}>
+      <div style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }} >
+        <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
+          <DetailsList
+            items={applicantsList}
+            columns={columns}
+            isHeaderVisible={true}
+            selectionMode={SelectionMode.multiple}
+            onItemInvoked={(item) =>
+              history.push(`/admin/candidates/${item.name}`)
+            }
+            onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
                 <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
               )}
-            />
-          </ScrollablePane>
-        </div>
+          />
+        </ScrollablePane>
       </div>
     </>
   );

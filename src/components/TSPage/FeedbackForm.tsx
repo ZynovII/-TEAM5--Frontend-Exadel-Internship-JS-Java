@@ -30,10 +30,6 @@ export const FeedbackForm = (props) => {
         resizable={false}
         rules={{
           required: "This field is required",
-          pattern: {
-            value: /^.{1,500}$/,
-            message: "length limit exceeded",
-          },
         }}
       />
       <PrimaryButton className="button  " text="Save" onClick={props.onSave} />

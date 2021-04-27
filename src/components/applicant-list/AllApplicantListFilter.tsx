@@ -13,31 +13,26 @@ import {
 
 const stackStyles: IStackStyles = {
   root: {
-    margin: "0 auto",
-    width: "73%",
-  },
-  inner: {
-    "@media(max-width: 600px)": {
-      display: "block",
+    padding: "2rem",
+    display: "block",
+    "@media(min-width: 725px)": {
+      display: "flex",
+      flexWrap: "nowrap",
+      margin: "0 auto",
+      padding: "0",
+      maxWidth: "73%",
     },
   },
 };
 
-const styles: { div: React.CSSProperties } = {
-  div: {
-    display: "flex",
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "flex-end",
-    marginBottom: "2rem",
-    marginRight: "2rem",
-  },
-};
 const dropdownStyles: Partial<IDropdownStyles> = {
   root: {
-    width: "20%",
-    minWidth: "100px",
+    width: "100%",
     margin: "0 2px",
+    "@media(min-width: 725px)": {
+      margin: "0 0.2rem",
+      width: "20%",
+    },
   },
 };
 
@@ -106,11 +101,11 @@ export const AllApplicantFilter: React.FC = () => {
   }, []);
 
   return (
-    <div style={styles.div}>
+    <div>
       <Stack
         styles={stackStyles}
         horizontal
-        verticalAlign="center"
+        verticalAlign="end"
         horizontalAlign="space-between"
         wrap
       >
@@ -126,8 +121,14 @@ export const AllApplicantFilter: React.FC = () => {
             styles={dropdownStyles}
           />
         ))}
+        <div className="filter-btn button_center">
+          <PrimaryButton
+            onClick={onApplyFilter}
+            text="Search"
+            className="button"
+          />
+        </div>
       </Stack>
-      <PrimaryButton onClick={onApplyFilter} text="Search" className="button" />
     </div>
   );
 };

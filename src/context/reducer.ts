@@ -2,7 +2,7 @@ import { IStore } from "../models/Store/IStore";
 import { IAction } from "../models/Store/IAction";
 import { ActionTypes } from "./actionTypes";
 import { IEvent } from "../models/IEvent";
-import { IApplicant } from "../models/IApplicant";
+import { IApplicant, IApplicantShortFromBackEnd } from "../models/IApplicant";
 import { IInterview } from "../models/IInterview";
 
 export const reducer = (state: IStore, action: IAction): IStore => {
@@ -38,7 +38,7 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       };
     case ActionTypes.FETCH_APPLICANTS:
       const newApplicants: {
-        [aplicantId: string]: IApplicant;
+        [aplicantId: string]: IApplicantShortFromBackEnd;
       } = (payload as IApplicant[]).reduce(
         (acc, item) => ({ ...acc, [item.id]: item }),
         {}
@@ -81,17 +81,18 @@ export const reducer = (state: IStore, action: IAction): IStore => {
     case ActionTypes.SELECT_EVENT:
       return {
         ...state,
-        selectedEventId: id,
+        selectedEvent: payload,
+        loading: false,
       };
     case ActionTypes.SELECT_APPLICANT:
       return {
         ...state,
-        selectedApplicantId: id,
+        selectedApplicant: payload,
       };
     case ActionTypes.SELECT_INTERVIEW:
       return {
         ...state,
-        selectedInterviewId: id,
+        selectedInterview: payload,
       };
     default:
       return state;

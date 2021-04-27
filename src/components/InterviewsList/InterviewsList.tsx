@@ -48,8 +48,9 @@ const InterviewList: React.FC = () => {
           interviewTime: interviews[idx].interviewTime,
         };
       }),
-    []
+    [interviews]
   );
+
   const columns: IColumn[] = useMemo(
     () => [
       {
@@ -123,7 +124,7 @@ const InterviewList: React.FC = () => {
   ) : (
     <>
       <InterviewListFilter />
-      <div style={{ height: "70vh", position: "relative" }}>
+      <div style={{ height: "70vh", position: "relative" , marginTop: '2rem'}}>
         <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
           <div style={{ boxShadow: theme.effects.elevation16 }}>
             <DetailsList

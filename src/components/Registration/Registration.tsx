@@ -16,16 +16,16 @@ import {
   IDropdownStyleProps,
   IDropdownStyles,
   Checkbox,
-} from "@fluentui/react/lib";
+} from "@fluentui/react";
 import { IApplicant, PreferredTime } from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
+import { preferredTimeReformer } from "../../utils/stringReformers";
 
 export const Registration: React.FC<{
   name?: string;
   candidatePage?: boolean;
   candidat?: IApplicant;
-
 }> = (props) => {
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
@@ -44,34 +44,48 @@ export const Registration: React.FC<{
 
   const optionsOfCountries: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "belarus", text: "Belarus" },
-      { key: "russia", text: "Russia" },
-      { key: "ukraine", text: "Ukraine", disabled: true },
+      { key: "Belarus", text: "Belarus" },
+      { key: "Russia", text: "Russia" },
+      { key: "Ukraine", text: "Ukraine", disabled: true },
     ];
   }, []);
 
   const exampleOptionsOfCities: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "minsk", text: "Minsk" },
-      { key: "grodno", text: "Grodno" },
-      { key: "gomel", text: "Gomel", disabled: true },
+      { key: "Minsk", text: "Minsk" },
+      { key: "Grodno", text: "Grodno" },
+      { key: "Gomel", text: "Gomel", disabled: true },
     ];
   }, []);
 
   const exampleTime: IDropdownOption[] = useMemo(() => {
     return [
-      { key: PreferredTime.None, text: PreferredTime.None },
-      { key: PreferredTime.Any, text: PreferredTime.Any },
-      { key: PreferredTime.First, text: PreferredTime.First },
-      { key: PreferredTime.Second, text: PreferredTime.Second },
-      { key: PreferredTime.Third, text: PreferredTime.Third },
-      { key: PreferredTime.Fourth, text: PreferredTime.Fourth },
+      {
+        key: PreferredTime.None,
+        text: preferredTimeReformer(PreferredTime.None),
+      },
+      {
+        key: PreferredTime.First,
+        text: preferredTimeReformer(PreferredTime.First),
+      },
+      {
+        key: PreferredTime.Second,
+        text: preferredTimeReformer(PreferredTime.Second),
+      },
+      {
+        key: PreferredTime.Third,
+        text: preferredTimeReformer(PreferredTime.Third),
+      },
+      {
+        key: PreferredTime.Fourth,
+        text: preferredTimeReformer(PreferredTime.Fourth),
+      },
     ];
   }, []);
   const exampleOptionsOfTechnology: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "js", text: "JavaScript" },
-      { key: "java", text: "Java" },
+      { key: "JavaScript", text: "JavaScript" },
+      { key: "Java", text: "Java" },
     ];
   }, []);
   const registrationPattern: {
@@ -80,9 +94,9 @@ export const Registration: React.FC<{
     phoneNumber: RegExp;
   } = useMemo(() => {
     return {
-      name: /^[a-z]+ [a-z]+$|^[а-яА-Я]+ [а-яА-Я]+$/i, // поправь без ограничения по языку
+      name: /^\D+\s\D+$/i,
       email: /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@([a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i,
-      phoneNumber: /^(8|\+375) ?([(]\d+[)])? ?\d+/i, // поправь только на цифры скобки и тире
+      phoneNumber: /\W\d+/ig, 
     };
   }, []);
 
@@ -337,7 +351,7 @@ const contentStyles = mergeStyleSets({
   },
 
   container: {
-    margin: "2em auto",
+    margin: "1.5em auto",
   },
 
   checkboxes: {
