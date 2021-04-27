@@ -1,6 +1,8 @@
 import React from "react";
 import { Stack, mergeStyleSets, DefaultButton } from "@fluentui/react";
 import { IApplicant } from "../../models/IApplicant";
+import { preferredTimeReformer } from "../../utils/stringReformers";
+
 
 export const InfoForm: React.FC<{ candidat: IApplicant }> = (props) => {
   return (
@@ -26,7 +28,7 @@ export const InfoForm: React.FC<{ candidat: IApplicant }> = (props) => {
           <p className={contentStyles.input}>{props.candidat.technology}</p>
           <p className={contentStyles.input}>{props.candidat.country}</p>
           <p className={contentStyles.input}>{props.candidat.city}</p>
-          <p className={contentStyles.input}>{props.candidat.preferredTime}</p>
+          <p className={contentStyles.input}>{preferredTimeReformer(props.candidat.preferredTime)}</p>
         </Stack>
       </Stack>
       <p
