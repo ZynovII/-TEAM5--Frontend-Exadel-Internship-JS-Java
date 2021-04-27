@@ -1,13 +1,13 @@
 import React from "react";
 import { Route, Switch } from "react-router";
 
-import { DashboardNav } from "../components/DashboardNav/DashboardNav";
-
 import "./AdminPage.scss";
+
 import { NotFound } from "../components/NotFound";
-import { ApplicantList } from "../components/applicant-list/ApplicantList";
-import { InterviewList } from "../components/InterviewsList/InterviewsList";
-import { AllCards } from "../components/EventList/AllCards";
+import { DashboardNav } from "../components/DashboardNav/DashboardNav";
+import ApplicantList from "../components/applicant-list/ApplicantList";
+import InterviewList from "../components/InterviewsList/InterviewsList";
+import AllCards from "../components/EventList/AllCards";
 import { CandidatePage } from "../components/CandidatePage/CandidatePage";
 import {ArchiveEventList} from "../components/ArchivePage/ArchivePage"
 

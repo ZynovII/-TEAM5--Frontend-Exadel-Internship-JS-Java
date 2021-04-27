@@ -1,10 +1,10 @@
 import React from "react";
 import FilterAll from "./Filter/FilterAll";
-import { AllCards } from "./EventList/AllCards";
+import AllCards from "./EventList/AllCards";
 
 const MainComponent: React.FC = () => {
   return (
-    <main className="main">
+    <>
       <h1 style={{ textAlign: "center" }}>
         You can start your career <br />
         with Exadel
@@ -13,7 +13,7 @@ const MainComponent: React.FC = () => {
       <FilterAll />
       <h2 className="title">All Events</h2>
       <AllCards />
-    </main>
+    </>
   );
 };
 

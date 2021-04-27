@@ -1,15 +1,15 @@
 import { IInterview } from "../IInterview";
-import { IApplicant } from "../IApplicant";
-import { IEvent } from "../IEvent";
+import { IApplicant, IApplicantShortFromBackEnd } from "../IApplicant";
+import { IEvent, IEventFromBackEnd } from "../IEvent";
 
 export interface IStore {
   loading: boolean;
   isAuthenticated: boolean;
   currentUserID: number;
-  events: { [eventId: string]: IEvent };
-  applicants: { [aplicantId: string]: IApplicant };
+  events: { [eventId: number]: IEvent };
+  applicants: { [aplicantId: string]: IApplicantShortFromBackEnd };
   interviews: { [interviewId: string]: IInterview };
-  selectedEventId: string;
-  selectedApplicantId: string;
-  selectedInterviewId: string;
+  selectedEvent: IEvent;
+  selectedApplicant: IApplicant;
+  selectedInterview: IInterview;
 }

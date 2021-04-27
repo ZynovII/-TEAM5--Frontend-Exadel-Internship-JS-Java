@@ -9,4 +9,5 @@ export interface HookFormProps {
   defaultValue?: any;
   label?: string;
   eventTags?: ITag[];
+  onChange?: any
 }

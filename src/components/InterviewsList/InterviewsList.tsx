@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import { useId } from "@fluentui/react-hooks";
 import { useHistory } from "react-router-dom";
 import {
@@ -13,10 +13,9 @@ import {
   getTheme,
   Spinner,
   SpinnerSize,
+  Sticky,
 } from "@fluentui/react";
 import { InterviewListFilter } from "./InterviwListFilter";
-import { InterviewStatus } from "../../models/IApplicant";
-import { useApplicants } from "../../hooks/hooks";
 import { useInterviews } from "../../hooks/hooks";
 
 const theme = getTheme();
@@ -27,7 +26,7 @@ const hostStyles: Partial<ITooltipHostStyles> = {
   root: { display: "inline-block" },
 };
 
-export const InterviewList: React.FC = () => {
+const InterviewList: React.FC = () => {
   const tooltipId = useId("tooltip");
   const history = useHistory();
 
@@ -37,81 +36,89 @@ export const InterviewList: React.FC = () => {
     fetchInterviews();
   }, []);
 
-  const applicantsList = Object.keys(interviews).map((idx) => {
-    return {
-      fullName: interviews[idx].fullName,
-      event: interviews[idx].event,
-      skill: interviews[idx].technology,
-      interviewStatus: interviews[idx].interviewStatus,
-      interviewDate: interviews[idx].interviewDate,
-      interviewTime: interviews[idx].interviewTime,
-    };
-  });
-  const columns: IColumn[] = [
-    {
-      key: "column1",
-      name: "interviewDate",
-      fieldName: "interviewDate",
-      minWidth: 70,
-      maxWidth: 100,
-      isResizable: true,
-    },
-    {
-      key: "column2",
-      name: "interviewTime",
-      fieldName: "interviewTime",
-      minWidth: 70,
-      maxWidth: 100,
-      isResizable: true,
-    },
-    {
-      key: "column3",
-      name: "fullName",
-      fieldName: "fullName",
-      minWidth: 100,
-      maxWidth: 250,
-      isResizable: true,
-    },
-    {
-      key: "column4",
-      name: "event",
-      fieldName: "event",
-      minWidth: 100,
-      maxWidth: 250,
-      isResizable: true,
-    },
-    {
-      key: "column5",
-      name: "interviewStatus",
-      fieldName: "interviewStatus",
-      minWidth: 100,
-      maxWidth: 250,
-      isResizable: false,
-    },
-    {
-      key: "column6",
-      name: "More",
-      isIconOnly: true,
-      fieldName: "",
-      minWidth: 50,
-      maxWidth: 50,
-      isResizable: false,
-      onRender: () => (
-        <TooltipHost
-          content="Show more information"
-          id={tooltipId}
-          calloutProps={calloutProps}
-          styles={hostStyles}
-        >
-          <ActionButton
-            iconProps={{ iconName: "D365TalentHRCore" }}
-            onClick={() => history.push(`/admin/interviews/${"unknow"}`)} // selected id from state
-            aria-describedby={tooltipId}
-          ></ActionButton>
-        </TooltipHost>
-      ),
-    },
-  ];
+  const applicantsList = useMemo(
+    () =>
+      Object.keys(interviews).map((idx) => {
+        return {
+          fullName: interviews[idx].fullName,
+          event: interviews[idx].event,
+          skill: interviews[idx].technology,
+          interviewStatus: interviews[idx].interviewStatus,
+          interviewDate: interviews[idx].interviewDate,
+          interviewTime: interviews[idx].interviewTime,
+        };
+      }),
+    [interviews]
+  );
+
+  const columns: IColumn[] = useMemo(
+    () => [
+      {
+        key: "column1",
+        name: "interviewDate",
+        fieldName: "interviewDate",
+        minWidth: 70,
+        maxWidth: 100,
+        isResizable: true,
+      },
+      {
+        key: "column2",
+        name: "interviewTime",
+        fieldName: "interviewTime",
+        minWidth: 70,
+        maxWidth: 100,
+        isResizable: true,
+      },
+      {
+        key: "column3",
+        name: "fullName",
+        fieldName: "fullName",
+        minWidth: 100,
+        maxWidth: 250,
+        isResizable: true,
+      },
+      {
+        key: "column4",
+        name: "event",
+        fieldName: "event",
+        minWidth: 100,
+        maxWidth: 250,
+        isResizable: true,
+      },
+      {
+        key: "column5",
+        name: "interviewStatus",
+        fieldName: "interviewStatus",
+        minWidth: 100,
+        maxWidth: 250,
+        isResizable: false,
+      },
+      {
+        key: "column6",
+        name: "More",
+        isIconOnly: true,
+        fieldName: "",
+        minWidth: 50,
+        maxWidth: 50,
+        isResizable: false,
+        onRender: () => (
+          <TooltipHost
+            content="Show more information"
+            id={tooltipId}
+            calloutProps={calloutProps}
+            styles={hostStyles}
+          >
+            <ActionButton
+              iconProps={{ iconName: "D365TalentHRCore" }}
+              onClick={() => history.push(`/admin/interviews/${"unknow"}`)} // selected id from state
+              aria-describedby={tooltipId}
+            ></ActionButton>
+          </TooltipHost>
+        ),
+      },
+    ],
+    []
+  );
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
@@ -119,9 +126,7 @@ export const InterviewList: React.FC = () => {
       <InterviewListFilter />
       <div style={{ height: "70vh", position: "relative" , marginTop: '2rem'}}>
         <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-          <div
-            style={{ boxShadow: theme.effects.elevation16}}
-          >
+          <div style={{ boxShadow: theme.effects.elevation16 }}>
             <DetailsList
               items={applicantsList}
               columns={columns}
@@ -130,6 +135,9 @@ export const InterviewList: React.FC = () => {
               onItemInvoked={(item) =>
                 history.push(`/admin/interviews/${item.fullName}`)
               }
+              onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
+                <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
+              )}
               onRenderRow={(props, defaultRender) => (
                 <div>
                   {defaultRender({
@@ -145,3 +153,5 @@ export const InterviewList: React.FC = () => {
     </>
   );
 };
+
+export default InterviewList;

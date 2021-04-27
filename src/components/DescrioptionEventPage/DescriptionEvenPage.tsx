@@ -11,12 +11,19 @@ const eventImg = require("./../../assets/img/event_img.jpg");
 
 export const DescriptionEventPage: React.FC<ICardItemProps> = (props) => {
   return (
-    <div className={contentStyles.descriptionWrapper}
-    >
+
+    <div className={contentStyles.descriptionWrapper}>
       <img className={contentStyles.eventImg} src={eventImg.default} alt="event" />
 
       {/* <p>{props.cardItem.description}</p> */}
-      <p style={{padding: "1rem", textAlign: "justify"}}>
+      <p style={{ padding: "1rem", textAlign: "justify" }}>
+        {props.cardItem?.description}
+        <br />
+        {props.cardItem?.locations?.map((el) => el.city + " ")}
+        <br />
+        {props.cardItem?.startDate}
+        <br />
+        {props.cardItem?.technology}
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis
         tempore quo perspiciatis quia hic. Maiores libero fugiat officia in ab
         reiciendis, animi, blanditiis eligendi dolorum eius, ipsam architecto
@@ -31,7 +38,7 @@ export const DescriptionEventPage: React.FC<ICardItemProps> = (props) => {
         officia in ab reiciendis, animi, blanditiis eligendi dolorum eius, ipsam
         architecto dolor quo!
       </p>
-      <div style={{clear:"both"}}></div>
+      <div style={{ clear: "both" }}></div>
     </div>
   );
 };
