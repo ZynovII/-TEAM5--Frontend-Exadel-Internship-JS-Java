@@ -13,7 +13,9 @@ import {
 import { Registration } from "../Registration/Registration";
 import { StatusForm } from "./StatusForm";
 import { InfoForm } from "./InfoForm";
+import ScrollBar from '../UI/Scrollbar/Scrollbar'
 import { InterviewForm } from "./InterwievForm";
+
 
 export interface ICandidatProps {
   candidat: IApplicant;
@@ -63,8 +65,10 @@ export const CandidatePage: React.FC = () => {
         <h3>Internship JS&amp;Java</h3>
       </header>
       <div className={contentStyles.container}>
-        <div>
-          <StatusForm candidat={candidat} />
+      <StatusForm candidat={candidat} />
+
+      <ScrollBar height="62vh"> 
+        <div style={{margin:'0 1em'}}>
           {edit ? (
             <Registration candidatePage={true} candidat={candidat} />
           ) : (
@@ -72,6 +76,7 @@ export const CandidatePage: React.FC = () => {
           )}
         </div>
         <InterviewForm />
+        </ScrollBar>
       </div>
     </>
   );

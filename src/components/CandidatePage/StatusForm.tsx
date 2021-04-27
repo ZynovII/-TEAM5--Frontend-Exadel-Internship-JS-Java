@@ -116,5 +116,6 @@ const contentStyles = mergeStyleSets({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-end",
+    marginBottom: '1em'
   },
 });
