@@ -3,37 +3,41 @@ import { useMemo } from "react";
 import { ControlledDropdown } from "../../hook-form/Controlled";
 import { useForm } from "react-hook-form";
 import { IFilterDropdownItem, IFilterData } from "../Filter/Models";
-import { IStackStyles, IDropdownStyles, Stack, PrimaryButton } from "@fluentui/react";
+import {
+  IStackStyles,
+  IDropdownStyles,
+  Stack,
+  PrimaryButton,
+} from "@fluentui/react";
 
 const stackStyles: IStackStyles = {
   root: {
-    margin: "0 auto",
-    width: "87%",
+    padding: "2rem",
+    display: "block",
+    "@media(min-width: 725px)": {
+      display: "flex",
+      flexWrap: "nowrap",
+      margin: "0 auto",
+      padding: "0",
+      maxWidth: "73%",
+    },
   },
   inner: {
-    "@media(max-width: 600px)": {
-      display: "block",
+    "@media(min-width: 725px)": {
+      display: "flex",
+      justifyContent: "space-between",
     },
   },
 };
 
-
-const styles = {
-  div:{
-  display: "flex",
-  flexDirection: "row",
-  justifyContent: "space-between",
-  alignItems: "flex-end",
-  marginBottom: "2rem",
-  marginRight: "2rem"
-}
-}
-
 const dropdownStyles: Partial<IDropdownStyles> = {
   root: {
-    width: "15%",
-    minWidth: "80px",
+    width: "100%",
     margin: "0 2px",
+    "@media(min-width: 725px)": {
+      margin: "0 0.2rem",
+      width: "20%",
+    },
   },
 };
 
@@ -50,14 +54,13 @@ export const InterviewListFilter: React.FC = () => {
   const onApplyFilter = () => {
     handleSubmit((data) => {
       const dataSubmit = {
-        ...data
+        ...data,
       };
 
       console.log(dataSubmit);
     })();
   };
 
-  
   const filters: IFilterDropdownItem[] = useMemo(() => {
     return [
       {
@@ -94,7 +97,10 @@ export const InterviewListFilter: React.FC = () => {
         placeholder: "All events",
         options: [
           { key: "Internship JS & Java", text: "Internship JS & Java" },
-          { key: "Business Analysis Meet UP", text: "Business Analysis Meet UP" },
+          {
+            key: "Business Analysis Meet UP",
+            text: "Business Analysis Meet UP",
+          },
           { key: "C++ interview", text: "C++ interview" },
         ],
       },
@@ -114,33 +120,34 @@ export const InterviewListFilter: React.FC = () => {
   }, []);
 
   return (
-
-    <div style={styles.div}>
-    <Stack
-      styles={stackStyles}
-      horizontal
-      verticalAlign="center"
-      horizontalAlign="space-between"
-      wrap
-    >
-      {filters.map((obj: IFilterDropdownItem) => (
-        <ControlledDropdown
-          label={obj.label}
-          key={obj.key}
-          control={control}
-          name={obj.name}
-          placeholder={obj.placeholder}
-          options={obj.options}
-          errors={errors}
-          styles={dropdownStyles}
-        />
-      ))}
-    </Stack>
-     <PrimaryButton
-     onClick={onApplyFilter}
-     text="Search"
-     className="button"
-   />
- </div>
+    <>
+      <Stack
+        styles={stackStyles}
+        horizontal
+        verticalAlign="end"
+        horizontalAlign="space-between"
+        wrap
+      >
+        {filters.map((obj: IFilterDropdownItem) => (
+          <ControlledDropdown
+            label={obj.label}
+            key={obj.key}
+            control={control}
+            name={obj.name}
+            placeholder={obj.placeholder}
+            options={obj.options}
+            errors={errors}
+            styles={dropdownStyles}
+          />
+        ))}
+        <div className="filter-btn button_center">
+          <PrimaryButton
+            onClick={onApplyFilter}
+            text="Search"
+            className="button"
+          />
+        </div>
+      </Stack>
+    </>
   );
 };

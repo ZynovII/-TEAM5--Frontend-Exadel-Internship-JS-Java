@@ -103,13 +103,13 @@ export const ApplicantList: React.FC = () => {
   ) : (
     <>
     <AllApplicantFilter />
-    <div style={{ height: "70vh", position: "relative" }}>
+    <div style={{ height: "70vh", position: "relative", marginTop: '2rem' }}>
       <div style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }} >
         <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
           <DetailsList
             items={applicantsList}
             columns={columns}
-            isHeaderVisible={false}
+            isHeaderVisible={true}
             selectionMode={SelectionMode.multiple}
             onItemInvoked={(item) =>
               history.push(`/admin/candidates/${item.name}`)

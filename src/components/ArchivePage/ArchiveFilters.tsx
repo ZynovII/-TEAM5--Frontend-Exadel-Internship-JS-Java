@@ -4,13 +4,10 @@ import {
   PrimaryButton,
   IStackStyles,
   IDropdownStyles,
-  IStackItemStyles,
 } from "@fluentui/react";
 import { IFilterDropdownItem, IFilterData } from "../Filter/Models";
 import { useForm } from "react-hook-form";
-import {
-  ControlledDropdown,
-} from "../../hook-form/Controlled";
+import { ControlledDropdown } from "../../hook-form/Controlled";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -38,18 +35,7 @@ const dropdownStyles: Partial<IDropdownStyles> = {
     margin: "0 2px",
     "@media(min-width: 725px)": {
       margin: "0 0.2rem",
-      width: "15%",
-    },
-  },
-};
-
-const stackItemStyles: IStackItemStyles = {
-  root: {
-    margin: "0",
-    width: "100%",
-    "@media(min-width: 725px)": {
-      width: "30%",
-      margin: "0 0.2rem 0 0",
+      width: "20%",
     },
   },
 };
@@ -126,8 +112,13 @@ export const ArchiveFilters: React.FC = () => {
 
   return (
     <>
-      <Stack styles={stackStyles} horizontal verticalAlign="end" wrap>
-        
+      <Stack
+        styles={stackStyles}
+        horizontal
+        verticalAlign="end"
+        horizontalAlign="space-between"
+        wrap
+      >
         <ControlledDropdown
           {...filters[0]}
           control={control}
