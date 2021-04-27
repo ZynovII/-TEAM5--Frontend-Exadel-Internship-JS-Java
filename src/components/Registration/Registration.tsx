@@ -44,17 +44,17 @@ export const Registration: React.FC<{
 
   const optionsOfCountries: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "belarus", text: "Belarus" },
-      { key: "russia", text: "Russia" },
-      { key: "ukraine", text: "Ukraine", disabled: true },
+      { key: "Belarus", text: "Belarus" },
+      { key: "Russia", text: "Russia" },
+      { key: "Ukraine", text: "Ukraine", disabled: true },
     ];
   }, []);
 
   const exampleOptionsOfCities: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "minsk", text: "Minsk" },
-      { key: "grodno", text: "Grodno" },
-      { key: "gomel", text: "Gomel", disabled: true },
+      { key: "Minsk", text: "Minsk" },
+      { key: "Grodno", text: "Grodno" },
+      { key: "Gomel", text: "Gomel", disabled: true },
     ];
   }, []);
 
@@ -70,8 +70,8 @@ export const Registration: React.FC<{
   }, []);
   const exampleOptionsOfTechnology: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "js", text: "JavaScript" },
-      { key: "java", text: "Java" },
+      { key: "JavaScript", text: "JavaScript" },
+      { key: "Java", text: "Java" },
     ];
   }, []);
   const registrationPattern: {
@@ -337,7 +337,7 @@ const contentStyles = mergeStyleSets({
   },
 
   container: {
-    margin: "2em auto",
+    margin: "1.5em auto",
   },
 
   checkboxes: {
