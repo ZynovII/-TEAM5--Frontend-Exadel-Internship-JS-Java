@@ -16,7 +16,8 @@ import { useHistory } from "react-router";
 import { useId } from "@fluentui/react-hooks";
 
 import { AcceptStatus, IApplicant } from "../../models/IApplicant";
-import { useApplicants, useLoader } from "../../hooks/hooks";
+import { useApplicants } from "../../hooks/useApplicants";
+import { useLoader } from "../../hooks/hooks";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
 import { acceptStatusReformer } from "../../utils/stringReformers";
 
@@ -113,23 +114,26 @@ export const ApplicantList: React.FC = () => {
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <>
-    <AllApplicantFilter />
-    <div style={{ height: "70vh", position: "relative", marginTop: '2rem' }}>
-      <div style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }} >
-        <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-          <DetailsList
-            items={applicantsList}
-            columns={columns}
-            isHeaderVisible={true}
-            selectionMode={SelectionMode.multiple}
-            onItemInvoked={(item) =>
-              history.push(`/admin/candidates/${item.name}`)
-            }
-            onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
+      <AllApplicantFilter />
+      <div style={{ height: "70vh", position: "relative", marginTop: "2rem" }}>
+        <div
+          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
+        >
+          <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
+            <DetailsList
+              items={applicantsList}
+              columns={columns}
+              isHeaderVisible={true}
+              selectionMode={SelectionMode.multiple}
+              onItemInvoked={(item) =>
+                history.push(`/admin/candidates/${item.name}`)
+              }
+              onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
                 <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
               )}
-          />
-        </ScrollablePane>
+            />
+          </ScrollablePane>
+        </div>
       </div>
     </>
   );

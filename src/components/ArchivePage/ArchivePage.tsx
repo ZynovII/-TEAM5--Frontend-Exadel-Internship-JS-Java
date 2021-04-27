@@ -10,13 +10,14 @@ import {
   ScrollbarVisibility,
   Spinner,
   SpinnerSize,
-  ActionButton
+  ActionButton,
 } from "@fluentui/react";
 import { useHistory } from "react-router";
 import { useId } from "@fluentui/react-hooks";
 import { IApplicant } from "../../models/IApplicant";
-import { useEvents } from "../../hooks/hooks";
+import { useEvents } from "../../hooks/useEvents";
 import ArchiveFilters from "./ArchiveFilters";
+import { useLoader } from "../../hooks/hooks";
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
@@ -28,10 +29,12 @@ export interface IApplicantList {
   items: IApplicant[];
 }
 export const ArchiveEventList: React.FC = () => {
-  const { events, loading, fechEvents } = useEvents();
+  const { events, fetchEvents } = useEvents();
+  const { loading, showLoader } = useLoader();
   const history = useHistory();
   useEffect(() => {
-    fechEvents();
+    showLoader();
+    fetchEvents(0, 0);
   }, []);
 
   const eventList = Object.keys(events).map((idx) => {

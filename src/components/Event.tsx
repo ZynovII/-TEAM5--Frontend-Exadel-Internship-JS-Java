@@ -2,7 +2,8 @@ import React, { useEffect } from "react";
 import { useParams } from "react-router";
 import { Spinner, SpinnerSize } from "@fluentui/react";
 
-import { useEvents, useLoader } from "../hooks/hooks";
+import { useLoader } from "../hooks/hooks";
+import { useEvents } from "../hooks/useEvents";
 import { IEvent } from "../models/IEvent";
 
 import { DescriptionEventPage } from "./DescrioptionEventPage/DescriptionEvenPage";
