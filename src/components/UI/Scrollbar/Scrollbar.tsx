@@ -9,9 +9,9 @@ const styles = mergeStyleSets({
   }
 })
 
-const Scrollbar = props => (
+const Scrollbar:React.FC<{height:string}> = props => (
   <Scrollbars
-    style={{ width: "100%", height: "100%" }}
+    style={{ width: "100%", height: `${props.height || '100%'}` }}
     autoHide
     renderThumbVertical={(props) => (
       <div

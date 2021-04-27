@@ -1,23 +1,8 @@
 import React from "react";
-import { getTheme } from "@fluentui/react";
+import { getTheme, mergeStyleSets } from "@fluentui/react";
 import { IEvent } from "../../models/IEvent";
 
 const theme = getTheme();
-const styles: { img: React.CSSProperties; div: React.CSSProperties } = {
-  img: {
-    paddingTop: 5,
-    width: 520,
-    maxWidth: "100%",
-    height: "auto",
-    display: "block",
-    paddingBottom: 5,
-    float: "left",
-    marginRight: "1rem",
-  },
-  div: {
-    margin: "0 auto 140px",
-  },
-};
 
 export interface ICardItemProps {
   cardItem: IEvent;
@@ -26,13 +11,9 @@ const eventImg = require("./../../assets/img/event_img.jpg");
 
 export const DescriptionEventPage: React.FC<ICardItemProps> = (props) => {
   return (
-    <div
-      style={{
-        boxShadow: theme.effects.elevation64,
-        margin: "0 auto",
-      }}
-    >
-      <img style={styles.img} src={eventImg.default} alt="event" />
+
+    <div className={contentStyles.descriptionWrapper}>
+      <img className={contentStyles.eventImg} src={eventImg.default} alt="event" />
 
       {/* <p>{props.cardItem.description}</p> */}
       <p style={{ padding: "1rem", textAlign: "justify" }}>
@@ -61,3 +42,32 @@ export const DescriptionEventPage: React.FC<ICardItemProps> = (props) => {
     </div>
   );
 };
+
+const contentStyles = mergeStyleSets({
+  eventImg: {
+    paddingTop: 5,
+    width: 520,
+    maxWidth: "100%",
+    height: "auto",
+    display: "block",
+    paddingBottom: 5,
+    float: "left",
+    marginRight: "1rem",
+    "@media(max-width: 875px)": {
+      margin: '0 auto'
+    },
+  },
+  descriptionWrapper: {
+    boxShadow: theme.effects.elevation64,
+        width: "73%",
+        margin: "0 auto",
+        "@media(max-width: 875px)": {
+          display: "flex",
+          flexDirection: 'column',
+          margin: "0 auto",
+          padding: "0",
+          maxWidth: "73%",
+        },
+  }
+
+})
