@@ -10,91 +10,16 @@ import {
   fakeRequestSignOut,
 } from "../fakeDB/fakeRequest";
 
-const showLoader = (dispatch) => dispatch({ type: ActionTypes.SHOW_LOADER });
 export const useStore = () => useContext(Context);
 
-export const useEvents = () => {
+export const useLoader = () => {
   const { state, dispatch } = useStore();
 
-  const fechEvents = () => {
-    showLoader(dispatch);
-    // axios
-    //   .get("http://localhost:8081/api/events?pageNumber=1&pageSize=2")
-    //   .then((data) => console.log(data.data.content))
-    //   .catch((err) => console.log(err));
-    fakeRequestEvents.then((res) => {
-      dispatch({
-        type: ActionTypes.FETCH_EVENTS,
-        payload: JSON.parse(res),
-      });
-    });
-  };
-
-  const selectEvent = (id: string) => {
-    dispatch({ type: ActionTypes.SELECT_EVENT, id });
-  };
+  const showLoader = () => dispatch({ type: ActionTypes.SHOW_LOADER });
 
   return {
-    selectedEventId: state.selectedEventId,
-    events: state.events,
     loading: state.loading,
-    selectEvent,
-    fechEvents,
-  };
-};
-
-export const useApplicants = () => {
-  const { state, dispatch } = useStore();
-
-  const fechApplicants = () => {
-    showLoader(dispatch);
-    // axios
-    //   .get("http://localhost:8081/api/candidates")
-    //   .then((data) => console.log(data.data.content))
-    //   .catch((err) => console.log(err));
-    fakeRequestApplicants.then((res) => {
-      dispatch({
-        type: ActionTypes.FETCH_APPLICANTS,
-        payload: JSON.parse(res),
-      });
-    });
-  };
-
-  const selectApplicant = (id: string) => {
-    dispatch({ type: ActionTypes.SELECT_APPLICANT, id });
-  };
-
-  return {
-    selectedApplicantsId: state.selectedApplicantId,
-    applicants: state.applicants,
-    loading: state.loading,
-    selectApplicant,
-    fechApplicants,
-  };
-};
-
-export const useInterviews = () => {
-  const { state, dispatch } = useStore();
-  const fetchInterviews = () => {
-    showLoader(dispatch);
-    fakeRequestInterviews.then((res) => {
-      dispatch({
-        type: ActionTypes.FETCH_INTERVIEWS,
-        payload: JSON.parse(res),
-      });
-    });
-  };
-
-  const selectInterview = (id: string) => {
-    dispatch({ type: ActionTypes.SELECT_INTERVIEW, id });
-  };
-
-  return {
-    selectedInterviewId: state.selectedInterviewId,
-    interviews: state.applicants,
-    loading: state.loading,
-    selectInterview,
-    fetchInterviews,
+    showLoader,
   };
 };
 
@@ -102,7 +27,6 @@ export const useAuth = () => {
   const { state, dispatch } = useStore();
 
   const signIn = () => {
-    showLoader(dispatch);
     fakeRequestSignIn.then((res) => {
       dispatch({
         type: ActionTypes.SIGN_IN,
@@ -112,7 +36,6 @@ export const useAuth = () => {
   };
 
   const signOut = () => {
-    showLoader(dispatch);
     fakeRequestSignOut.then((res) => {
       dispatch({
         type: ActionTypes.SIGN_OUT,
@@ -125,5 +48,109 @@ export const useAuth = () => {
     currentUserId: state.currentUserID,
     signIn,
     signOut,
+  };
+};
+
+export const useEvents = () => {
+  const { state, dispatch } = useStore();
+
+  const fetchEvents = (page, size) => {
+    axios
+      .get(`http://localhost:8081/api/events?page=${page}&size=${size}`)
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.FETCH_EVENTS,
+          payload: res.data.content,
+        });
+      })
+      .catch((err) => console.log(err));
+    // fakeRequestEvents.then((res) => {
+    //   dispatch({
+    //     type: ActionTypes.FETCH_EVENTS,
+    //     payload: JSON.parse(res),
+    //   });
+    // });
+  };
+
+  const selectEvent = (id: string | number) => {
+    if (state.events[id]) {
+      dispatch({
+        type: ActionTypes.SELECT_EVENT,
+        payload: state.events[id],
+      });
+    } else {
+      axios.get(`http://localhost:8081/api/events/${id}`).then((res) => {
+        dispatch({
+          type: ActionTypes.SELECT_EVENT,
+          payload: res.data,
+        });
+      });
+    }
+  };
+
+  return {
+    selectedEvent: state.selectedEvent,
+    events: state.events,
+    selectEvent,
+    fetchEvents,
+  };
+};
+
+export const useApplicants = () => {
+  const { state, dispatch } = useStore();
+
+  const fetchApplicants = () => {
+    axios
+      .get("http://localhost:8081/api/candidates")
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.FETCH_APPLICANTS,
+          payload: res.data.content,
+        });
+      })
+      .catch((err) => console.log(err));
+    // fakeRequestApplicants.then((res) => {
+    //   dispatch({
+    //     type: ActionTypes.FETCH_APPLICANTS,
+    //     payload: JSON.parse(res),
+    //   });
+    // });
+  };
+
+  const selectApplicant = (id: number) => {
+    dispatch({
+      type: ActionTypes.SELECT_APPLICANT,
+      payload: state.applicants[id],
+    });
+  };
+
+  return {
+    selectedApplicant: state.selectedApplicant,
+    applicants: state.applicants,
+    selectApplicant,
+    fetchApplicants,
+  };
+};
+
+export const useInterviews = () => {
+  const { state, dispatch } = useStore();
+  const fetchInterviews = () => {
+    fakeRequestInterviews.then((res) => {
+      dispatch({
+        type: ActionTypes.FETCH_INTERVIEWS,
+        payload: JSON.parse(res),
+      });
+    });
+  };
+
+  const selectInterview = (id: number) => {
+    dispatch({ type: ActionTypes.SELECT_INTERVIEW, id });
+  };
+
+  return {
+    selectedInterview: state.selectedInterview,
+    interviews: state.applicants,
+    selectInterview,
+    fetchInterviews,
   };
 };

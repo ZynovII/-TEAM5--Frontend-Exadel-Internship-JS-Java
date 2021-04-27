@@ -36,6 +36,13 @@ export const DescriptionEventPage: React.FC<ICardItemProps> = (props) => {
 
       {/* <p>{props.cardItem.description}</p> */}
       <p style={{ padding: "1rem", textAlign: "justify" }}>
+        {props.cardItem?.description}
+        <br />
+        {props.cardItem?.locations?.map((el) => el.city + " ")}
+        <br />
+        {props.cardItem?.startDate}
+        <br />
+        {props.cardItem?.technology}
         Lorem ipsum dolor, sit amet consectetur adipisicing elit. Veritatis
         tempore quo perspiciatis quia hic. Maiores libero fugiat officia in ab
         reiciendis, animi, blanditiis eligendi dolorum eius, ipsam architecto

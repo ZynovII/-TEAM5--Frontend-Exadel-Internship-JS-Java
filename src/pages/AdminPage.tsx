@@ -1,10 +1,10 @@
 import React from "react";
 import { Route, Switch } from "react-router";
 
-import { DashboardNav } from "../components/DashboardNav/DashboardNav";
-
 import "./AdminPage.scss";
+
 import { NotFound } from "../components/NotFound";
+import { DashboardNav } from "../components/DashboardNav/DashboardNav";
 import ApplicantList from "../components/applicant-list/ApplicantList";
 import InterviewList from "../components/InterviewsList/InterviewsList";
 import AllCards from "../components/EventList/AllCards";

@@ -20,12 +20,12 @@ import {
 import { IApplicant, PreferredTime } from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
+import { preferredTimeReformer } from "../../utils/stringReformers";
 
 export const Registration: React.FC<{
   name?: string;
   candidatePage?: boolean;
   candidat?: IApplicant;
-
 }> = (props) => {
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
@@ -60,12 +60,26 @@ export const Registration: React.FC<{
 
   const exampleTime: IDropdownOption[] = useMemo(() => {
     return [
-      { key: PreferredTime.None, text: PreferredTime.None },
-      { key: PreferredTime.Any, text: PreferredTime.Any },
-      { key: PreferredTime.First, text: PreferredTime.First },
-      { key: PreferredTime.Second, text: PreferredTime.Second },
-      { key: PreferredTime.Third, text: PreferredTime.Third },
-      { key: PreferredTime.Fourth, text: PreferredTime.Fourth },
+      {
+        key: PreferredTime.None,
+        text: preferredTimeReformer(PreferredTime.None),
+      },
+      {
+        key: PreferredTime.First,
+        text: preferredTimeReformer(PreferredTime.First),
+      },
+      {
+        key: PreferredTime.Second,
+        text: preferredTimeReformer(PreferredTime.Second),
+      },
+      {
+        key: PreferredTime.Third,
+        text: preferredTimeReformer(PreferredTime.Third),
+      },
+      {
+        key: PreferredTime.Fourth,
+        text: preferredTimeReformer(PreferredTime.Fourth),
+      },
     ];
   }, []);
   const exampleOptionsOfTechnology: IDropdownOption[] = useMemo(() => {

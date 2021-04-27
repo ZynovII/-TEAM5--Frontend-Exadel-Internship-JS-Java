@@ -14,9 +14,12 @@ import {
 } from "@fluentui/react";
 import { useHistory } from "react-router";
 import { useId } from "@fluentui/react-hooks";
-import { IApplicant } from "../../models/IApplicant";
-import { useApplicants } from "../../hooks/hooks";
+
+import { AcceptStatus, IApplicant } from "../../models/IApplicant";
+import { useApplicants, useLoader } from "../../hooks/hooks";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
+import { acceptStatusReformer } from "../../utils/stringReformers";
+
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
@@ -27,23 +30,25 @@ export interface IApplicantList {
   columns: IColumn[];
   items: IApplicant[];
 }
-const ApplicantList: React.FC = () => {
-  const { applicants, loading, fechApplicants } = useApplicants();
+export const ApplicantList: React.FC = () => {
+  const { applicants, fetchApplicants } = useApplicants();
+  const { loading, showLoader } = useLoader();
   const history = useHistory();
   useEffect(() => {
-    fechApplicants();
+    showLoader();
+    fetchApplicants();
   }, []);
 
   const applicantsList = useMemo(() => {
-    return Object.keys(applicants).map((idx) => {
+    return Object.values(applicants).map((item) => {
       return {
-        name: applicants[idx].fullName,
-        event: applicants[idx].event,
-        skill: applicants[idx].technology,
-        interviewStatus: applicants[idx].interviewStatus,
+        name: item.fullName,
+        event: item.event,
+        skill: item.primaryTech,
+        interviewStatus: acceptStatusReformer(item.status), // wrong status
       };
     });
-  }, []);
+  }, [applicants]);
 
   const tooltipId = useId("tooltip");
   const columns: IColumn[] = useMemo(
