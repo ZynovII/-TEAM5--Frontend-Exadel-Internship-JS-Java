@@ -16,7 +16,7 @@ import {
   IDropdownStyleProps,
   IDropdownStyles,
   Checkbox,
-} from "@fluentui/react/lib";
+} from "@fluentui/react";
 import { IApplicant, PreferredTime } from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
@@ -80,9 +80,9 @@ export const Registration: React.FC<{
     phoneNumber: RegExp;
   } = useMemo(() => {
     return {
-      name: /^[a-z]+ [a-z]+$|^[а-яА-Я]+ [а-яА-Я]+$/i, // поправь без ограничения по языку
+      name: /^\D+\s\D+$/i,
       email: /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@([a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i,
-      phoneNumber: /^(8|\+375) ?([(]\d+[)])? ?\d+/i, // поправь только на цифры скобки и тире
+      phoneNumber: /\W\d+/ig, 
     };
   }, []);
 
