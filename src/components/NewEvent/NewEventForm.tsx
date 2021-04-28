@@ -124,7 +124,6 @@ export const NewEventForm: React.FC<{name?: string, candidatePage?: boolean, can
   const titleId = useId("title");
 
   return (
-    <div>
       <Modal
         titleAriaId={titleId}
         isOpen={isModal}
@@ -226,7 +225,6 @@ export const NewEventForm: React.FC<{name?: string, candidatePage?: boolean, can
           />
         </div>
       </Modal>
-    </div>
   );
 };
 
