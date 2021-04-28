@@ -16,7 +16,8 @@ import {
   Sticky,
 } from "@fluentui/react";
 import { InterviewListFilter } from "./InterviwListFilter";
-import { useInterviews } from "../../hooks/hooks";
+import { useInterviews } from "../../hooks/useInterwievs";
+import { useLoader } from "../../hooks/hooks";
 
 const theme = getTheme();
 
@@ -30,9 +31,11 @@ const InterviewList: React.FC = () => {
   const tooltipId = useId("tooltip");
   const history = useHistory();
 
-  const { interviews, loading, fetchInterviews } = useInterviews();
+  const { interviews, fetchInterviews } = useInterviews();
+  const { loading, showLoader } = useLoader();
 
   useEffect(() => {
+    showLoader();
     fetchInterviews();
   }, []);
 
@@ -124,7 +127,7 @@ const InterviewList: React.FC = () => {
   ) : (
     <>
       <InterviewListFilter />
-      <div style={{ height: "70vh", position: "relative" , marginTop: '2rem'}}>
+      <div style={{ height: "70vh", position: "relative", marginTop: "2rem" }}>
         <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
           <div style={{ boxShadow: theme.effects.elevation16 }}>
             <DetailsList

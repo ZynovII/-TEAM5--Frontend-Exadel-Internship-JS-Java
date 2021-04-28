@@ -29,3 +29,13 @@ export const acceptStatusReformer = (str: string): string => {
       return str;
   }
 };
+
+export const dateReformer = (str: string): string => {
+  const options = {
+    year: 'numeric',
+    month: "long",
+    day: "numeric",
+  } as const
+  
+  return new Date(str).toLocaleDateString("en-GB",options);
+}

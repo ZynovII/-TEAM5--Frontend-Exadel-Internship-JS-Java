@@ -3,7 +3,9 @@ import { CardItem } from "./EventCard";
 import { NewCardItem } from "../NewEvent/NewCardItem";
 import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
 import "./AllCards.scss";
-import { useEvents, useAuth, useLoader } from "../../hooks/hooks";
+import { useLoader } from "../../hooks/hooks";
+import { useEvents } from "../../hooks/useEvents";
+import { useAuth } from "../../hooks/useAuth";
 
 export const AllCards: React.FC = () => {
   const { events, fetchEvents } = useEvents();

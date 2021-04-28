@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   DocumentCard,
   DocumentCardTitle,
@@ -6,54 +6,46 @@ import {
   ImageFit,
   Text,
   DocumentCardActions,
+  mergeStyleSets,
+  FontIcon,
 } from "@fluentui/react";
 
+import {  useBoolean } from "@fluentui/react-hooks";
 import { useHistory } from "react-router";
 import { IEvent } from "../../models/IEvent";
 import { useEvents, useLoader } from "../../hooks/hooks";
+import { PublishDialog } from "./PublishDialog";
+
+import { dateReformer } from "./../../utils/stringReformers";
 
 const cardImage = require("./../../assets/img/card_img.jpg");
 
-const styles = {
+const styles = mergeStyleSets({
   styleCard: {
-    root: {
-      minWidth: "30%",
-      paddingBottom: "10px",
-      marginBottom: "20px",
-    },
+    minWidth: "30%",
+    paddingBottom: "10px",
+    marginBottom: "20px",
   },
   mainTytle: {
-    root: {
-      height: "20px",
-      lineHeight: "20px",
-    },
+    height: "20px",
+    lineHeight: "20px",
   },
   title: {
-    root: {
-      height: "25px",
-      lineHeight: "25px",
-      paddingBottom: 0,
-      paddingTop: 0,
-    },
+    height: "25px",
+    lineHeight: "25px",
+    paddingBottom: 0,
+    paddingTop: 0,
   },
   text: {
     paddingLeft: "15px",
     marginBottom: "10px",
   },
-};
-
-const documentCardActions = [
-  {
-    iconProps: { iconName: "Edit" },
-    // onClick:
-    ariaLabel: "delete event",
+  acceptIcon: {
+    color: "blue",
+    fontSize: "40px",
+    marginRight: "0.2rem",
   },
-  {
-    iconProps: { iconName: "Delete" },
-    // onClick:
-    ariaLabel: "edit event",
-  },
-];
+});
 
 export interface ICardItemProps {
   cardItem: IEvent;
@@ -68,20 +60,76 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     history.push(`/events/${props.cardItem.id}`);
   };
 
+  const [hideDialog, { toggle: toggleHideDialog }] = useBoolean(true);
+  const [isPublished, setIspublished] = useState(false);
+  const onHandleClick = (e) => {
+    isPublished ? setIspublished(false) : toggleHideDialog();
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  const apdateData = (value: boolean) => {
+    setIspublished(value);
+  };
+
+  const documentCardActions = [
+    {
+      iconProps: { iconName: "Edit" },
+      // onClick:
+      ariaLabel: "edit event",
+      title: "Edit event",
+    },
+    {
+      iconProps: { iconName: "Delete" },
+      // onClick:
+      ariaLabel: "move to archive",
+      title: "Move to archive",
+    },
+    {
+      iconProps: {
+        iconName: isPublished ? "UnpublishContent" : "PublishContent",
+      },
+      onClick: onHandleClick,
+      ariaLabel: "publish event",
+      title: isPublished ? "Unpublish Event" : "Publish event",
+    },
+  ];
+
   return (
-    <DocumentCard styles={styles.styleCard} onClick={selectHandler}>
-      {props.isLogged && <DocumentCardActions actions={documentCardActions} />}
+    <DocumentCard className={styles.styleCard} onClick={selectHandler}>
+      <div>
+        {props.isLogged && (
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <DocumentCardActions actions={documentCardActions} />
+            {isPublished ? (
+              <FontIcon
+                aria-label="Accept"
+                iconName="Accept"
+                className={styles.acceptIcon}
+                title="Event is piblished"
+              />
+            ) : (
+              <></>
+            )}
+          </div>
+        )}
+      </div>
+      <PublishDialog
+        hideDialog={hideDialog}
+        toggleHideDialog={toggleHideDialog}
+        apdateData={apdateData}
+      />
       <Image height="65%" imageFit={ImageFit.cover} src={cardImage.default} />
       <DocumentCardTitle
-        styles={styles.mainTytle}
+        className={styles.mainTytle}
         title={props.cardItem.name}
       />
       <DocumentCardTitle
-        title={props.cardItem.startDate}
+        title={dateReformer(props.cardItem.startDate)}
         showAsSecondaryTitle
-        styles={styles.title}
+        className={styles.title}
       />
-      <Text style={styles.text}>
+      <Text className={styles.text}>
         {props.cardItem.locations.map((el) => el.city + " ")}
       </Text>
     </DocumentCard>
