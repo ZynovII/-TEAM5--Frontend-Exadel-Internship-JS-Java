@@ -135,7 +135,6 @@ export const ApplicantList: React.FC = () => {
           </ScrollablePane>
         </div>
       </div>
-      </div>
     </>
   );
 };
