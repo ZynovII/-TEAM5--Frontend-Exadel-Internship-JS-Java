@@ -16,6 +16,8 @@ import { IEvent } from "../../models/IEvent";
 import { useEvents, useLoader } from "../../hooks/hooks";
 import { PublishDialog } from "./PublishDialog";
 
+import { dateReformer } from "./../../utils/stringReformers";
+
 const cardImage = require("./../../assets/img/card_img.jpg");
 
 const styles = mergeStyleSets({
@@ -123,7 +125,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         title={props.cardItem.name}
       />
       <DocumentCardTitle
-        title={props.cardItem.startDate}
+        title={dateReformer(props.cardItem.startDate)}
         showAsSecondaryTitle
         className={styles.title}
       />
