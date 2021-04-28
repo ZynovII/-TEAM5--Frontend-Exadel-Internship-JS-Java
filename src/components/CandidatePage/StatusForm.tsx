@@ -32,22 +32,27 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
   const status = useMemo(() => {
     switch (props.candidat.interviewStatus) {
       case InterviewStatus.Registered:
-        return 0;
+        return [0, 'Registered'];
       case InterviewStatus.AwaitingHRInterview:
-        return 0.25;
+        return [0.25, 'HR Interview'];
       case InterviewStatus.AwaitingTSInterview:
-        return 0.5;
+        return [0.5, 'TS Interview'];
       case InterviewStatus.WaitingDesicion:
-        return 0.75;
+        return [0.75, 'Waiting Desicion'];
+      case InterviewStatus.Desicion:
+        return [1, InterviewStatus.Desicion];
       default:
-        return 0;
+        return [0, 'Registered'];
     }
   }, [props.candidat.interviewStatus]);
 
+  const textAlign = useMemo(() => {
+    return status[0] <= 0.2 ? { textAlign: 'left' } : { textAlign: 'right' }
+  }, [status[0]])
+  
   const onSave = () => {
     handleSubmit((data) => console.log(data))();
   };
-
   return (
     <Stack
       className={contentStyles.formWrapper}
@@ -78,11 +83,13 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
       >
         <ProgressIndicator
           barHeight={20}
-          percentComplete={status}
-          label={props.candidat.interviewStatus}
+          percentComplete={+status[0]}
+          label={status[1]}
           styles={{
             itemName: {
-              paddingLeft: status * 100 + "%",
+              minWidth: '18%',
+              width: +status[0] * 100 + '%',
+              ...textAlign
             },
           }}
         />

@@ -10,6 +10,7 @@ export enum InterviewStatus {
   AwaitingHRInterview = "AWAITING_HR",
   AwaitingTSInterview = "AWAITING_TS",
   WaitingDesicion = "WAITING_DESITION",
+  Desicion = "ACCEPT"
 }
 export enum PreferredTime {
   First = "FROM_TEN_TO_TWELVE",
