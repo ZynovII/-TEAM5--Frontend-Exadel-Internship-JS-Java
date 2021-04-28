@@ -12,6 +12,8 @@ import { useHistory } from "react-router";
 import { IEvent } from "../../models/IEvent";
 import { useEvents, useLoader } from "../../hooks/hooks";
 
+import { dateReformer } from "./../../utils/stringReformers";
+
 const cardImage = require("./../../assets/img/card_img.jpg");
 
 const styles = {
@@ -77,7 +79,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         title={props.cardItem.name}
       />
       <DocumentCardTitle
-        title={props.cardItem.startDate}
+        title={dateReformer(props.cardItem.startDate)}
         showAsSecondaryTitle
         styles={styles.title}
       />
