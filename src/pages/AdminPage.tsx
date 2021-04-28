@@ -9,7 +9,8 @@ import ApplicantList from "../components/applicant-list/ApplicantList";
 import InterviewList from "../components/InterviewsList/InterviewsList";
 import AllCards from "../components/EventList/AllCards";
 import { CandidatePage } from "../components/CandidatePage/CandidatePage";
-import {ArchiveEventList} from "../components/ArchivePage/ArchivePage"
+import { ArchiveEventList } from "../components/ArchivePage/ArchivePage";
+import UserCircle from "../components/UserCircle/UserCircle";
 
 export const AdminPage = () => {
   return (
@@ -19,12 +20,7 @@ export const AdminPage = () => {
           <DashboardNav />
         </div>
         <div className="ms-Grid-col ms-sm10 ms-xl10 main-element">
-          <div className="ms-Grid-row">
-            <div className="dashboard__title">
-              <h3 style={{ marginBottom: 0 }}>Welcome, User!</h3>
-              <span className="ms-fontSize-16">HR specialist</span>
-            </div>
-          </div>
+          <UserCircle />
           <div className="ms-Grid-row">
             <Switch>
               <Route path="/admin" exact component={() => <h1>Main</h1>} />
