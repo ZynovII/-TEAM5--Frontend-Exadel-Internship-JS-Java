@@ -20,7 +20,6 @@ export const AdminPage = () => {
           <DashboardNav />
         </div>
         <div className="ms-Grid-col ms-sm10 ms-xl10 main-element">
-          {/* <UserCircle /> */}
           <div className="ms-Grid-row">
             <div style={{ overflowY: "auto", maxHeight: "100vh" }}>
               <Switch>
