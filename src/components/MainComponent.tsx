@@ -1,6 +1,6 @@
 import React from "react";
 import FilterAll from "./Filter/FilterAll";
-import AllCards from "./EventList/AllCards";
+import EventList from "./EventList/EventList";
 
 const MainComponent: React.FC = () => {
   return (
@@ -12,7 +12,7 @@ const MainComponent: React.FC = () => {
       <h2 className="title">Filter</h2>
       <FilterAll />
       <h2 className="title">All Events</h2>
-      <AllCards />
+      <EventList />
     </>
   );
 };
