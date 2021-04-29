@@ -20,26 +20,38 @@ export const AdminPage = () => {
           <DashboardNav />
         </div>
         <div className="ms-Grid-col ms-sm10 ms-xl10 main-element">
-          <UserCircle />
+          {/* <UserCircle /> */}
           <div className="ms-Grid-row">
-            <Switch>
-              <Route path="/admin" exact component={() => <h1>Main</h1>} />
-              <Route
-                path="/admin/events"
-                component={() => (
-                  <div style={{ overflowY: "auto", maxHeight: "85vh" }}>
-                    <AllCards />
-                  </div>
-                )}
-              />
-              <Route path="/admin/candidates" exact component={ApplicantList} />
-              <Route path="/admin/candidates/:name" component={CandidatePage} />
-              <Route path="/admin/interviews" exact component={InterviewList} />
-              <Route path="/admin/interviews/:name" component={CandidatePage} />
-              <Route path="/admin/archive" component={ArchiveEventList} />
-              <Route path="/admin/signout" component={() => <h1>SignOut</h1>} />
-              <Route component={NotFound} />
-            </Switch>
+            <div style={{ overflowY: "auto", maxHeight: "100vh" }}>
+              <Switch>
+                <Route path="/admin" exact component={() => <h1>Main</h1>} />
+                <Route path="/admin/events" component={() => <AllCards />} />
+                <Route
+                  path="/admin/candidates"
+                  exact
+                  component={ApplicantList}
+                />
+                <Route
+                  path="/admin/candidates/:name"
+                  component={CandidatePage}
+                />
+                <Route
+                  path="/admin/interviews"
+                  exact
+                  component={InterviewList}
+                />
+                <Route
+                  path="/admin/interviews/:name"
+                  component={CandidatePage}
+                />
+                <Route path="/admin/archive" component={ArchiveEventList} />
+                <Route
+                  path="/admin/signout"
+                  component={() => <h1>SignOut</h1>}
+                />
+                <Route component={NotFound} />
+              </Switch>
+            </div>
           </div>
         </div>
       </div>
