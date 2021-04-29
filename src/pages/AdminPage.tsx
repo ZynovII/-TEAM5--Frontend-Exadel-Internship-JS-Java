@@ -7,7 +7,8 @@ import { NotFound } from "../components/NotFound";
 import { DashboardNav } from "../components/DashboardNav/DashboardNav";
 import ApplicantList from "../components/applicant-list/ApplicantList";
 import InterviewList from "../components/InterviewsList/InterviewsList";
-import AllCards from "../components/EventList/AllCards";
+import EventList from "../components/EventList/EventList";
+import AllFilters from "../components/Filter/FilterAll";
 import { CandidatePage } from "../components/CandidatePage/CandidatePage";
 import {ArchiveEventList} from "../components/ArchivePage/ArchivePage"
 
@@ -32,7 +33,9 @@ export const AdminPage = () => {
                 path="/admin/events"
                 component={() => (
                   <div style={{ overflowY: "auto", maxHeight: "85vh" }}>
-                    <AllCards />
+                    <AllFilters />
+                    <h3 className="title">All Events</h3>
+                    <EventList />
                   </div>
                 )}
               />
