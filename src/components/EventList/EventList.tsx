@@ -7,7 +7,8 @@ import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { useAuth } from "../../hooks/useAuth";
 
-export const AllCards: React.FC = () => {
+export const EventList
+: React.FC = () => {
   const { events, fetchEvents } = useEvents();
   const { loading, showLoader } = useLoader();
   const { isAuth } = useAuth();
@@ -35,4 +36,4 @@ export const AllCards: React.FC = () => {
   );
 };
 
-export default AllCards;
+export default EventList;

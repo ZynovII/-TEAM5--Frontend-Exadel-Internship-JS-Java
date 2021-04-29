@@ -59,14 +59,12 @@ const contentStyles = mergeStyleSets({
   },
   descriptionWrapper: {
     boxShadow: theme.effects.elevation64,
-        width: "73%",
         margin: "0 auto",
         "@media(max-width: 875px)": {
           display: "flex",
           flexDirection: 'column',
           margin: "0 auto",
           padding: "0",
-          maxWidth: "73%",
         },
   }
 

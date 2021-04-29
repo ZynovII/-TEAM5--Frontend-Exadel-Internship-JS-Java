@@ -23,7 +23,8 @@ const iconClass = mergeStyles({
   width: 50,
 });
 const classNames = mergeStyleSets({
-  uploaIcon: [{ color: "rgb(2,118,180)", margin: "0 auto" }, iconClass],
+  uploadIcon: [{ color: "rgb(2,118,180)", margin: "0 auto", ":hover": {cursor: "pointer"} }, iconClass],
+  uploadText: { color: "#444", ":hover": {cursor: "pointer"}},
   closeIcon: {
     color: "black",
     position: "absolute",
@@ -64,9 +65,9 @@ export const UploadImage: React.FC = () => {
             <FontIcon
               aria-label="FileImage"
               iconName="FileImage"
-              className={classNames.uploaIcon}
+              className={classNames.uploadIcon}
             />
-            <p style={{ color: "#444" }}>Click to upload image</p>
+            <p className={classNames.uploadText}>Click to upload image</p>
           </label>
         </>
       ) : (

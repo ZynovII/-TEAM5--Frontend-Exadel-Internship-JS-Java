@@ -6,7 +6,6 @@ import {
   ControlledInputUpload,
 } from "../../hook-form/Controlled";
 import {
-  Stack,
   Text,
   PrimaryButton,
   ITextFieldStyleProps,
@@ -153,207 +152,187 @@ export const Registration: React.FC<{
   return (
     <>
       <ModalWindow open={isModalOpen} text={modalText} hideModal={hideModal} />
-      <div className={contentStyles.container}>
-        <h2 style={{ margin: "2em 0 1em" }}>{props.name}</h2>
-        <Stack
-          className={contentStyles.formWrapper}
-          horizontal
-          tokens={{ childrenGap: "40px" }}
-        >
-          <Stack
-            tokens={{ childrenGap: "20px" }}
-            styles={{ root: { width: "50%" } }}
-          >
-            <div className="username">
-              <ControlledTextField
-                required
-                placeholder="First and Last name"
-                control={control}
-                name={"fullName"}
-                errors={errors}
-                value={(props.candidatePage && props.candidat.fullName) || ""}
-                rules={{
-                  required: "This field is required",
-                  pattern: {
-                    value: registrationPattern.name,
-                    message: "Invalid name",
-                  },
-                }}
-                styles={textFieldStyles}
-              />
-            </div>
-            <div className="email">
-              <ControlledTextField
-                required
-                placeholder="Email"
-                control={control}
-                name={"email"}
-                errors={errors}
-                value={(props.candidatePage && props.candidat.email) || ""}
-                rules={{
-                  required: "This field is required",
-                  pattern: {
-                    value: registrationPattern.email,
-                    message: "Invalid email",
-                  },
-                }}
-                styles={textFieldStyles}
-              />
-            </div>
-            <div className="phone">
-              <ControlledTextField
-                placeholder="Phone"
-                control={control}
-                name={"phoneNumber"}
-                errors={errors}
-                value={
-                  (props.candidatePage && props.candidat.phoneNumber) || ""
-                }
-                rules={{
-                  pattern: {
-                    value: registrationPattern.phoneNumber,
-                    message: "Invalid phone number",
-                  },
-                }}
-                styles={textFieldStyles}
-              />
-            </div>
-            <div className="skype">
-              <ControlledTextField
-                required
-                placeholder="Skype"
-                control={control}
-                name={"skype"}
-                errors={errors}
-                value={(props.candidatePage && props.candidat.skype) || ""}
-                rules={{ required: "This field is required" }}
-                styles={textFieldStyles}
-              />
-            </div>
-          </Stack>
-          <Stack
-            tokens={{ childrenGap: "20px" }}
-            styles={{ root: { width: "50%" } }}
-          >
-            <ControlledDropdown
-              control={control}
-              name={"technology"}
-              placeholder="Technology"
-              defaultSelectedKey={
-                (props.candidatePage && props.candidat.technology) || ""
-              }
-              required
-              rules={{ required: "This field is required" }}
-              errors={errors}
-              options={exampleOptionsOfTechnology}
-              styles={textFieldStyles}
-            />
-            <ControlledDropdown
-              required
-              control={control}
-              name={"country"}
-              errors={errors}
-              placeholder="Country"
-              defaultSelectedKey={
-                (props.candidatePage && props.candidat.country) || ""
-              }
-              rules={{ required: "This field is required" }}
-              options={optionsOfCountries}
-              onChange={() => setCountryStatus(false)}
-              styles={textFieldStyles}
-            />
-            <ControlledDropdown
-              required
-              control={control}
-              name={"city"}
-              placeholder="City"
-              defaultSelectedKey={
-                (props.candidatePage && props.candidat.city) || ""
-              }
-              rules={{ required: "This field is required" }}
-              errors={errors}
-              options={exampleOptionsOfCities}
-              disabled={!props.candidatePage && countryStatus}
-              styles={textFieldStyles}
-            />
-            <ControlledDropdown
-              control={control}
-              name={"preferredTime"}
-              placeholder="Choose time"
-              defaultSelectedKey={
-                (props.candidatePage && props.candidat.preferredTime) || ""
-              }
-              errors={errors}
-              options={exampleTime}
-              styles={textFieldStyles}
-            />
-          </Stack>
-        </Stack>
-        <ControlledTextField
-          placeholder="Summary"
-          control={control}
-          name={"summary"}
-          errors={errors}
-          className={contentStyles.lab}
-          multiline
-          autoAdjustHeight
-          resizable={false}
-          value={(props.candidatePage && props.candidat.summary) || ""}
-        />
-        <ControlledInputUpload
-          control={control}
-          name={"resumeLink"}
-          id={"cv"}
-          className="input-file__input"
-          onChange={(e) => uploadFile(e)}
-        />
-        <label htmlFor="cv" className="input-file__label">
-          Upload CV
-        </label>
-        <span>{fileName}</span>
-        {props.candidatePage ? (
-          <>
-            <PrimaryButton
-              className="button margin2em button_center"
-              text="Submit"
-              onClick={onSave}
-            />
-          </>
-        ) : (
-          <>
-            <Text className={contentStyles.lab} nowrap block>
-              * Fields marked with * are required
-            </Text>
-            <div className={contentStyles.checkboxes}>
-              <Checkbox
-                onChange={checkPersonalData}
-                label="By applying for this position, I submit my personal data to the Exadel and give my consent for the processing of personal data for job recruitment purpose"
-              />
-              <Checkbox
-                onChange={checkPrivacy}
-                label="I understand and accept that for purpose of evaluation of my application, professional skills and experience my personal data may be accessible to the intra-group companies of Exadel"
-              />
-            </div>
-            <PrimaryButton
-              className="button margin2em button_center"
-              text="Submit"
-              onClick={onSave}
-              disabled={disabledButton}
-            />
-          </>
-        )}
+      <h2 style={{ margin: "2em 0 1em" }}>{props.name}</h2>
+      <div className={contentStyles.mediaContainer}>
+        <div className={contentStyles.mediaItem}>
+          <ControlledTextField
+            required
+            placeholder="First and Last name"
+            control={control}
+            name={"fullName"}
+            errors={errors}
+            value={(props.candidatePage && props.candidat.fullName) || ""}
+            rules={{
+              required: "This field is required",
+              pattern: {
+                value: registrationPattern.name,
+                message: "Invalid name",
+              },
+            }}
+            styles={textFieldStyles}
+            className={contentStyles.margin}
+          />
+          <ControlledTextField
+            required
+            placeholder="Email"
+            control={control}
+            name={"email"}
+            errors={errors}
+            value={(props.candidatePage && props.candidat.email) || ""}
+            rules={{
+              required: "This field is required",
+              pattern: {
+                value: registrationPattern.email,
+                message: "Invalid email",
+              },
+            }}
+            styles={textFieldStyles}
+            className={contentStyles.margin}
+          />
+          <ControlledTextField
+            placeholder="Phone"
+            control={control}
+            name={"phoneNumber"}
+            errors={errors}
+            value={(props.candidatePage && props.candidat.phoneNumber) || ""}
+            rules={{
+              pattern: {
+                value: registrationPattern.phoneNumber,
+                message: "Invalid phone number",
+              },
+            }}
+            styles={textFieldStyles}
+            className={contentStyles.margin}
+          />
+          <ControlledTextField
+            required
+            placeholder="Skype"
+            control={control}
+            name={"skype"}
+            errors={errors}
+            value={(props.candidatePage && props.candidat.skype) || ""}
+            rules={{ required: "This field is required" }}
+            styles={textFieldStyles}
+            className={contentStyles.margin}
+          />
+        </div>
+        <div className={contentStyles.mediaItem}>
+          <ControlledDropdown
+            control={control}
+            name={"technology"}
+            placeholder="Technology"
+            defaultSelectedKey={
+              (props.candidatePage && props.candidat.technology) || ""
+            }
+            required
+            rules={{ required: "This field is required" }}
+            errors={errors}
+            options={exampleOptionsOfTechnology}
+            styles={textFieldStyles}
+            className={contentStyles.margin}
+          />
+          <ControlledDropdown
+            required
+            control={control}
+            name={"country"}
+            errors={errors}
+            placeholder="Country"
+            defaultSelectedKey={
+              (props.candidatePage && props.candidat.country) || ""
+            }
+            rules={{ required: "This field is required" }}
+            options={optionsOfCountries}
+            onChange={() => setCountryStatus(false)}
+            styles={textFieldStyles}
+            className={contentStyles.margin}
+          />
+          <ControlledDropdown
+            required
+            control={control}
+            name={"city"}
+            placeholder="City"
+            defaultSelectedKey={
+              (props.candidatePage && props.candidat.city) || ""
+            }
+            rules={{ required: "This field is required" }}
+            errors={errors}
+            options={exampleOptionsOfCities}
+            disabled={!props.candidatePage && countryStatus}
+            styles={textFieldStyles}
+            className={contentStyles.margin}
+          />
+          <ControlledDropdown
+            control={control}
+            name={"preferredTime"}
+            placeholder="Choose time"
+            defaultSelectedKey={
+              (props.candidatePage && props.candidat.preferredTime) || ""
+            }
+            errors={errors}
+            options={exampleTime}
+            styles={textFieldStyles}
+            className={contentStyles.margin}
+          />
+        </div>
       </div>
+      <ControlledTextField
+        placeholder="Summary"
+        control={control}
+        name={"summary"}
+        errors={errors}
+        className={contentStyles.margin}
+        multiline
+        autoAdjustHeight
+        resizable={false}
+        value={(props.candidatePage && props.candidat.summary) || ""}
+      />
+      <ControlledInputUpload
+        control={control}
+        name={"resumeLink"}
+        id={"cv"}
+        className="input-file__input"
+        onChange={(e) => uploadFile(e)}
+      />
+      <label htmlFor="cv" className="input-file__label">
+        Upload CV
+      </label>
+      <span>{fileName}</span>
+      {props.candidatePage ? (
+        <>
+          <PrimaryButton
+            className="button margin2em button_center"
+            text="Submit"
+            onClick={onSave}
+          />
+        </>
+      ) : (
+        <>
+          <Text className={contentStyles.margin} nowrap block>
+            * Fields marked with * are required
+          </Text>
+          <div className={contentStyles.checkboxes}>
+            <Checkbox
+              onChange={checkPersonalData}
+              label="By applying for this position, I submit my personal data to the Exadel and give my consent for the processing of personal data for job recruitment purpose"
+            />
+            <Checkbox
+              onChange={checkPrivacy}
+              label="I understand and accept that for purpose of evaluation of my application, professional skills and experience my personal data may be accessible to the intra-group companies of Exadel"
+            />
+          </div>
+          <PrimaryButton
+            className="button margin2em button_center"
+            text="Submit"
+            onClick={onSave}
+            disabled={disabledButton}
+          />
+        </>
+      )}
     </>
   );
 };
 
 const contentStyles = mergeStyleSets({
-  formWrapper: {
-    display: "flex",
-    justifyContent: "space-between",
-    alignItems: "stretch",
-  },
-
   container: {
     margin: "1.5em auto",
   },
@@ -365,20 +344,20 @@ const contentStyles = mergeStyleSets({
     maxWidth: "800px",
   },
 
-  lab: {
+  margin: {
     backgroundColor: "transparent",
-    margin: "20px 0",
+    margin: "0 0 20px",
   },
-
-  submitButton: {
-    margin: "0 auto",
-    display: "flex",
+  mediaContainer: {
+    "@media(min-width: 725px)": {
+      display: "flex",
+      justifyContent: "space-between",
+    },
   },
-
-  errorMessage: {
-    backgroundColor: "transparent",
-    position: "absolute",
-    paddingTop: "0px",
+  mediaItem: {
+    "@media(min-width: 725px)": {
+      width: "48%",
+    },
   },
 });
 
