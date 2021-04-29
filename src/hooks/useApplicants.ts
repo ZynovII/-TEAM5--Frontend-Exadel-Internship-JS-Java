@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ActionTypes } from "../context/actionTypes";
-import { IApplicant, IApplicantShortFromBackEnd } from "../models/IApplicant";
+import { IApplicant } from "../models/IApplicant";
 import { URL, useStore } from "./hooks";
 
 export const useApplicants = () => {
@@ -53,8 +53,11 @@ export const useApplicants = () => {
       skype: candidat.skype,
       summary: candidat.summary,
     };
+
     axios
-      .post(`${URL}/api/candidates`, candidateForBackEnd)
+      .post(`${URL}/api/candidates`, candidateForBackEnd, {
+        headers: { "Content-Type": "application/json" },
+      })
       .then((response) => {
         console.log(response);
       });
