@@ -34,13 +34,11 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
       case InterviewStatus.Registered:
         return [0, 'Registered'];
       case InterviewStatus.AwaitingHRInterview:
-        return [0.25, 'HR Interview'];
+        return [0.33, 'HR Interview'];
       case InterviewStatus.AwaitingTSInterview:
-        return [0.5, 'TS Interview'];
+        return [0.66, 'TS Interview'];
       case InterviewStatus.WaitingDesicion:
-        return [0.75, 'Waiting Desicion'];
-      case InterviewStatus.Desicion:
-        return [1, InterviewStatus.Desicion];
+        return [1, 'Waiting Desicion'];
       default:
         return [0, 'Registered'];
     }
