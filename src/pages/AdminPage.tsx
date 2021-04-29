@@ -41,7 +41,6 @@ export const AdminPage = () => {
               <Route path="/admin/interviews" exact component={InterviewList} />
               <Route path="/admin/interviews/:name" component={CandidatePage} />
               <Route path="/admin/archive" component={ArchiveEventList} />
-              <Route path="/admin/signout" component={() => <h1>SignOut</h1>} />
               <Route component={NotFound} />
             </Switch>
           </div>
