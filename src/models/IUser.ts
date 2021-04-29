@@ -1,3 +1,5 @@
+import { ID } from "./Store/IStore";
+
 export enum UserRole {
   Admin = "Admin",
   SuperAdmin = "SuperAdmin",
@@ -5,7 +7,7 @@ export enum UserRole {
 }
 
 export interface IUser {
-  id: number;
+  id: ID;
   role: UserRole;
   fullName: string;
   email: string;

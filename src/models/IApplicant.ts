@@ -1,4 +1,5 @@
 import { IInterview } from "./IInterview";
+import { ID } from "./Store/IStore";
 
 export enum AcceptStatus {
   Accepted = "GREEN",
@@ -20,7 +21,7 @@ export enum PreferredTime {
 }
 
 export interface IApplicant {
-  id: string;
+  id: ID;
   fullName: string;
   email: string;
   skype: string;
@@ -37,7 +38,7 @@ export interface IApplicant {
   interviewStatus: InterviewStatus;
 }
 export interface IApplicantDetailsFromBackEnd {
-  id: string;
+  id: ID;
   city: string;
   skype: string;
   email: string;
@@ -52,7 +53,7 @@ export interface IApplicantDetailsFromBackEnd {
   interviewProcess: InterviewStatus;
 }
 export interface IApplicantShortFromBackEnd {
-  id: number;
+  id: ID;
   event: string;
   fullName: string;
   primaryTech: string;

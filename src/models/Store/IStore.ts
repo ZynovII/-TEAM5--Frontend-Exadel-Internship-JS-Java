@@ -2,11 +2,13 @@ import { IInterview } from "../IInterview";
 import { IApplicant, IApplicantShortFromBackEnd } from "../IApplicant";
 import { IEvent, IEventFromBackEnd } from "../IEvent";
 
+export type ID = string | number;
+
 export interface IStore {
   loading: boolean;
   isAuthenticated: boolean;
   currentUserID: number;
-  events: { [eventId: number]: IEvent };
+  events: { [eventId: string]: IEvent };
   applicants: { [aplicantId: string]: IApplicantShortFromBackEnd };
   interviews: { [interviewId: string]: IInterview };
   selectedEvent: IEvent;

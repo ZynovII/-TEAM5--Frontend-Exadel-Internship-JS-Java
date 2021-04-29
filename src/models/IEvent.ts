@@ -1,4 +1,5 @@
 import { ILocation } from "./ILocation";
+import { ID } from "./Store/IStore";
 
 export enum EventType {
   Internship = "INTERNSHIP",
@@ -7,7 +8,7 @@ export enum EventType {
 }
 
 export interface IEvent {
-  id: number;
+  id: ID;
   name: string;
   startDate: string;
   description: string;
@@ -16,7 +17,7 @@ export interface IEvent {
   locations: ILocation[];
 }
 export interface IEventFromBackEnd {
-  id: number;
+  id: ID;
   locations: ILocation[];
   name: string;
   startDate: string;

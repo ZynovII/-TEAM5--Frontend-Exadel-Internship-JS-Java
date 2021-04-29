@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ActionTypes } from "../context/actionTypes";
-import { useStore } from "./hooks";
+import { URL, useStore } from "./hooks";
 import { fakeRequestEvents } from "../fakeDB/fakeRequest";
 import { IEvent } from "../models/IEvent";
 
@@ -32,7 +32,7 @@ export const useEvents = () => {
         payload: state.events[id],
       });
     } else {
-      axios.get(`http://localhost:8081/api/events/${id}`).then((res) => {
+      axios.get(`${URL}/api/events/${id}`).then((res) => {
         dispatch({
           type: ActionTypes.SELECT_EVENT,
           payload: res.data,
@@ -42,7 +42,7 @@ export const useEvents = () => {
   };
 
   const createEvent = (event) => {
-    //axios.post(`http://localhost:8081/api/events/`)
+    //axios.post(`${URL}/api/events/`)
     console.log(event);
   };
 

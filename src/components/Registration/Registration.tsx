@@ -21,12 +21,15 @@ import { IApplicant, PreferredTime } from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
 import { preferredTimeReformer } from "../../utils/stringReformers";
+import { useApplicants } from "../../hooks/useApplicants";
 
 export const Registration: React.FC<{
   name?: string;
   candidatePage?: boolean;
   candidat?: IApplicant;
 }> = (props) => {
+  const { createCandidate } = useApplicants();
+
   const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
     false
   );
@@ -96,7 +99,7 @@ export const Registration: React.FC<{
     return {
       name: /^\D+\s\D+$/i,
       email: /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@([a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i,
-      phoneNumber: /\W\d+/ig, 
+      phoneNumber: /\W\d+/gi,
     };
   }, []);
 
@@ -136,7 +139,8 @@ export const Registration: React.FC<{
   const onSave = () => {
     handleSubmit(
       (data) => {
-        console.log(data);
+        //console.log(data);
+        createCandidate(data);
         showModal();
       },
       (err) => {
