@@ -30,15 +30,6 @@ export const useApplicants = () => {
       payload: state.applicants[id],
     });
   };
-  // "city": "string",
-  // "email": "string",
-  // "event": "string",
-  // "fullName": "string",
-  // "phone": "string",
-  // "preferredTime": "FROM_FOUR_TO_SIX",
-  // "primaryTech": "string",
-  // "skype": "string",
-  // "summary": "string"
 
   const createCandidate = (
     candidat: IApplicant,
