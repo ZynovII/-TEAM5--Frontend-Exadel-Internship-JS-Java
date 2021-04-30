@@ -18,9 +18,6 @@ module.exports = merge(commonConfig, {
   plugins: [
     new webpack.HotModuleReplacementPlugin(), // enable HMR globally
   ],
-  output: {
-    crossOriginLoading: "anonymous",
-  },
   devServer: {
     contentBase: "./dist",
     hot: true,
