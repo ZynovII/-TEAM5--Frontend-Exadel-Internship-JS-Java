@@ -4,7 +4,8 @@ import { useForm } from "react-hook-form";
 import {
   ControlledTextField,
   ControlledDropdown,
-  ControlledTagPicker
+  ControlledTagPicker,
+  ControlledDatePicker,
 } from "../../hook-form/Controlled";
 import {
   getTheme,
@@ -24,9 +25,10 @@ import {
   IDropdownStyles,
   ITextFieldStyleProps,
   IDropdownStyleProps,
+  Label,
 } from "@fluentui/react";
 import { IEvent } from "../../models/IEvent";
-import { UploadImage } from "./UploadFile";
+import { UploadImage } from "./UploadImage";
 
 interface IModalProps {
   isModal: boolean;
@@ -45,7 +47,9 @@ const textFieldStyles = (
   },
 });
 
-export const NewEventForm: React.FC<{name?: string, candidatePage?: boolean, candidat?: any} & IModalProps>  = ({ isModal, hideModal , ...props}) => {
+export const NewEventForm: React.FC<
+  { name?: string; candidatePage?: boolean; candidat?: any } & IModalProps
+> = ({ isModal, hideModal, ...props }) => {
   const [value, setValue] = React.useState<Date | undefined>();
   const datePickerRef = React.useRef<IDatePicker>(null);
 
@@ -62,46 +66,46 @@ export const NewEventForm: React.FC<{name?: string, candidatePage?: boolean, can
     handleSubmit(
       (data) => {
         console.log(data);
-        hideModal()
+        hideModal();
       },
       (err) => {
         console.log("ошибка заполнения");
         console.log(err);
       }
     )();
-    };
+  };
 
-    const eventTags: ITag[] = useMemo(() => {
-      return [
-        "JavaScript",
-        "Java",
-        "Python",
-        "React",
-        "Web",
-        "Frontend",
-        "Backend",
-        "c#",
-        "TypeScript",
-        "Data base",
-      ].map((item) => ({ key: item.toLowerCase(), name: item }));
-    }, []);
-    
-    const listContainsTagList = (tag: ITag, tagList?: ITag[]) => {
-      if (!tagList || !tagList.length || tagList.length === 0) {
-        return false;
-      }
-      return tagList.some((compareTag) => compareTag.key === tag.key);
-    };
-    
-    const filterSuggestedTags = (filterText: string, tagList: ITag[]): ITag[] => {
-      return filterText
-        ? eventTags.filter(
-            (tag) =>
-              tag.key.toString().indexOf(filterText.toLowerCase()) === 0 &&
-              !listContainsTagList(tag, tagList)
-          )
-        : [];
-    };
+  const eventTags: ITag[] = useMemo(() => {
+    return [
+      "JavaScript",
+      "Java",
+      "Python",
+      "React",
+      "Web",
+      "Frontend",
+      "Backend",
+      "c#",
+      "TypeScript",
+      "Data base",
+    ].map((item) => ({ key: item.toLowerCase(), name: item }));
+  }, []);
+
+  const listContainsTagList = (tag: ITag, tagList?: ITag[]) => {
+    if (!tagList || !tagList.length || tagList.length === 0) {
+      return false;
+    }
+    return tagList.some((compareTag) => compareTag.key === tag.key);
+  };
+
+  const filterSuggestedTags = (filterText: string, tagList: ITag[]): ITag[] => {
+    return filterText
+      ? eventTags.filter(
+          (tag) =>
+            tag.key.toString().indexOf(filterText.toLowerCase()) === 0 &&
+            !listContainsTagList(tag, tagList)
+        )
+      : [];
+  };
 
   const optionsOfCountries: IDropdownOption[] = useMemo(() => {
     return [
@@ -124,107 +128,113 @@ export const NewEventForm: React.FC<{name?: string, candidatePage?: boolean, can
   const titleId = useId("title");
 
   return (
-      <Modal
-        titleAriaId={titleId}
-        isOpen={isModal}
-        onDismiss={hideModal}
-        isBlocking={false}
-        containerClassName={contentStyles.container}
-      >
-        <div className={contentStyles.header}>
-          <span id={titleId}>New event</span>
-          <IconButton
-            styles={iconButtonStyles}
-            iconProps={cancelIcon}
-            ariaLabel="Close popup modal"
-            onClick={hideModal}
-          />
-        </div>
+    <Modal
+      titleAriaId={titleId}
+      isOpen={isModal}
+      onDismiss={hideModal}
+      isBlocking={false}
+      containerClassName={contentStyles.container}
+    >
+      <div className={contentStyles.header}>
+        <span id={titleId}>New event</span>
+        <IconButton
+          styles={iconButtonStyles}
+          iconProps={cancelIcon}
+          ariaLabel="Close popup modal"
+          onClick={hideModal}
+        />
+      </div>
 
-        <div className={contentStyles.body}>
+      <div className={contentStyles.body}>
+        <Stack
+          className={contentStyles.formWrapper}
+          horizontal
+          tokens={{ childrenGap: "40px" }}
+        >
           <Stack
-            className={contentStyles.formWrapper}
-            horizontal
-            tokens={{ childrenGap: "40px" }}
+            tokens={{ childrenGap: "10px" }}
+            styles={{ root: { width: "520px" } }}
           >
-            <Stack
-              tokens={{ childrenGap: "20px" }}
-              styles={{ root: { width: "520px" } }}
-            >
-              <ControlledTextField
-                required={true}
-                placeholder="Name"
+            <ControlledTextField
+              required={true}
+              label="Event name"
+              placeholder="Name"
+              control={control}
+              name={"fullName"}
+              errors={errors}
+              rules={{ required: "This field is required" }}
+              styles={textFieldStyles}
+            />
+            <ControlledDatePicker
+              control={control}
+              name={"eventStartDate"}
+              label="Start date"
+              showMonthPickerAsOverlay={true}
+              placeholder="Select a date..."
+              ariaLabel="Select a date"
+            />
+            <Stack.Item>
+              <Label>Technologies</Label>
+              <ControlledTagPicker
+                name="tagPicker"
                 control={control}
-                name={"fullName"}
-                errors={errors}
-                rules={{ required: "This field is required" }}
-                styles={textFieldStyles}
-              />
+                eventTags={eventTags}
+                onResolveSuggestions={filterSuggestedTags}
+                itemLimit={5}
+                aria-label="Tag picker"
+              />{" "}
+            </Stack.Item>
 
-              <DatePicker
-                componentRef={datePickerRef}
-                label="Start date"
-                allowTextInput
-                ariaLabel="Select a date"
-                value={value}
-                onSelectDate={
-                  setValue as (date: Date | null | undefined) => void
-                }
-                className={contentStyles.control}
-              />
-
-          <ControlledTagPicker
-            name="tagPicker"
-            control={control}
-            eventTags={eventTags}
-            onResolveSuggestions={filterSuggestedTags}
-            itemLimit={5}
-            aria-label="Tag picker"
-          />  
-              <ControlledDropdown
-               required
-               control={control}
-               name={"country"}
-               errors={errors}
-               placeholder="Country"
-               defaultSelectedKey={(props.candidatePage && props.candidat.country) || ''}
-               rules={{ required: "This field is required" }}
-               options={optionsOfCountries}
-               onChange={() => setCountryStatus(false)}
-               styles={textFieldStyles}
+            <ControlledDropdown
+              required
+              control={control}
+              name={"country"}
+              label={"Country"}
+              errors={errors}
+              placeholder="Country"
+              defaultSelectedKey={
+                (props.candidatePage && props.candidat.country) || ""
+              }
+              rules={{ required: "This field is required" }}
+              options={optionsOfCountries}
+              onChange={() => setCountryStatus(false)}
+              styles={textFieldStyles}
             />
             <ControlledDropdown
               required
               control={control}
               name={"city"}
+              label="City"
               placeholder="City"
-              defaultSelectedKey={(props.candidatePage && props.candidat.city) || ''}
+              defaultSelectedKey={
+                (props.candidatePage && props.candidat.city) || ""
+              }
               rules={{ required: "This field is required" }}
               errors={errors}
               options={exampleOptionsOfCities}
               disabled={!props.candidatePage && countryStatus}
               styles={textFieldStyles}
             />
-            </Stack>
-            <UploadImage />
           </Stack>
-          <ControlledTextField
-            placeholder="Summary"
-            control={control}
-            name={"summary"}
-            errors={errors}
-            className={contentStyles.lab}
-            multiline
-            autoAdjustHeight
-            resizable={false}
-          />
-          <PrimaryButton
-            className="button margin2em button_center"
-            text="Submit"
-            onClick={onSave}
-          />
-        </div>
-      </Modal>
+          <UploadImage />
+        </Stack>
+        <ControlledTextField
+          placeholder="Summary"
+          control={control}
+          name={"summary"}
+          errors={errors}
+          className={contentStyles.lab}
+          multiline
+          autoAdjustHeight
+          resizable={false}
+        />
+        <PrimaryButton
+          className="button margin2em button_center"
+          text="Submit"
+          onClick={onSave}
+        />
+      </div>
+    </Modal>
   );
 };
 
@@ -233,7 +243,7 @@ const cancelIcon: IIconProps = { iconName: "Cancel" };
 const theme = getTheme();
 const contentStyles = mergeStyleSets({
   container: {
-    maxWidth: '750px',
+    maxWidth: "750px",
     display: "flex",
     flexFlow: "column nowrap",
     alignItems: "stretch",
@@ -265,7 +275,7 @@ const contentStyles = mergeStyleSets({
     backgroundColor: "transparent",
     margin: "20px 0",
   },
-  control: { maxWidth: 300, marginBottom: 15 },
+  control: { maxWidth: 300 },
   errorMessage: {
     backgroundColor: "transparent",
     position: "absolute",
@@ -284,5 +294,3 @@ const iconButtonStyles: Partial<IButtonStyles> = {
     color: theme.palette.neutralDark,
   },
 };
-
-

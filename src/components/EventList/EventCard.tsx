@@ -13,7 +13,7 @@ import {
 import {  useBoolean } from "@fluentui/react-hooks";
 import { useHistory } from "react-router";
 import { IEvent } from "../../models/IEvent";
-import { useEvents, useLoader } from "../../hooks/hooks";
+import {  useLoader } from "../../hooks/hooks";
 import { PublishDialog } from "./PublishDialog";
 
 import { dateReformer } from "./../../utils/stringReformers";
