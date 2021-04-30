@@ -192,6 +192,7 @@ export const NewEventForm: React.FC<
               label={"Country"}
               errors={errors}
               placeholder="Country"
+              multiSelect
               defaultSelectedKey={
                 (props.candidatePage && props.candidat.country) || ""
               }
@@ -206,6 +207,7 @@ export const NewEventForm: React.FC<
               name={"city"}
               label="City"
               placeholder="City"
+              multiSelect
               defaultSelectedKey={
                 (props.candidatePage && props.candidat.city) || ""
               }
