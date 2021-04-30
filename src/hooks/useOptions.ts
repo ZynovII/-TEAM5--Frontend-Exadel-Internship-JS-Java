@@ -9,7 +9,7 @@ import { URL } from "./hooks";
 
 export const useOptions = () => {
   const fetchLocation = async () => {
-    const response = await axios.get(`${URL}/api/location/`);
+    const response = await axios.get(`${URL}/api/locations/`);
     const locationOptions: ILocationFromBackEnd[] = response.data;
     return locationOptions;
   };

@@ -40,27 +40,32 @@ export const useApplicants = () => {
   // "skype": "string",
   // "summary": "string"
 
-  const createCandidate = (candidat: IApplicant, eventName: string) => {
+  const createCandidate = (
+    candidat: IApplicant,
+    eventName: string,
+    file: File
+  ) => {
     const candidateForBackEnd = {
-      city: candidat.city,
+      city: candidat.city[0],
       email: candidat.email,
       event: eventName,
       fullName: candidat.fullName,
       phone: candidat.phoneNumber,
-      preferredTime: candidat.preferredTime,
-      primaryTech: candidat.technology,
+      preferredTime: candidat.preferredTime[0],
+      primaryTech: candidat.technology[0],
       skype: candidat.skype,
       summary: candidat.summary,
     };
-    console.log(candidateForBackEnd);
     axios
-      .post(`${URL}/api/candidates`, candidateForBackEnd, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      })
-      .then((response) => {
-        console.log(response);
+      .post(`${URL}/api/candidates`, candidateForBackEnd)
+      .then((response) => response.data.id)
+      .then((id) => {
+        const formData = new FormData();
+        formData.append("file", file, file.name);
+        axios.post(
+          `http://localhost:8081/api/candidates/${id}/cv/upload`,
+          formData
+        );
       });
   };
 

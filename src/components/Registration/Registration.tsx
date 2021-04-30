@@ -119,16 +119,17 @@ export const Registration: React.FC<{
       : setDisabledButtonTrue();
   }, [personalData, privacy]);
 
-  const [fileName, setFileName] = useState<string>("");
+  const [file, setFile] = useState<File>();
   const uploadFile = (event) => {
-    setFileName(event.target.files[0].name);
+    setFile(event.target.files[0]);
+    console.log(event.target.files[0]);
   };
 
   const onSave = () => {
     handleSubmit(
       (data) => {
         //console.log(data);
-        createCandidate(data, props.name);
+        createCandidate(data, props.name, file);
         showModal();
       },
       (err) => {
@@ -288,7 +289,7 @@ export const Registration: React.FC<{
       <label htmlFor="cv" className="input-file__label">
         Upload CV
       </label>
-      <span>{fileName}</span>
+      <span>{file.name}</span>
       {props.candidatePage ? (
         <>
           <PrimaryButton
