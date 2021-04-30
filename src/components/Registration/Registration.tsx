@@ -139,7 +139,7 @@ export const Registration: React.FC<{
     handleSubmit(
       (data) => {
         //console.log(data);
-        createCandidate(data);
+        createCandidate(data, props.name);
         showModal();
       },
       (err) => {

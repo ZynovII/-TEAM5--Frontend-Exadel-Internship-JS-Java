@@ -40,12 +40,11 @@ export const useApplicants = () => {
   // "skype": "string",
   // "summary": "string"
 
-  const createCandidate = (candidat: IApplicant) => {
-    console.log(candidat);
+  const createCandidate = (candidat: IApplicant, eventName: string) => {
     const candidateForBackEnd = {
       city: candidat.city,
       email: candidat.email,
-      event: candidat.eventName,
+      event: eventName,
       fullName: candidat.fullName,
       phone: candidat.phoneNumber,
       preferredTime: candidat.preferredTime,
@@ -53,10 +52,12 @@ export const useApplicants = () => {
       skype: candidat.skype,
       summary: candidat.summary,
     };
-
+    console.log(candidateForBackEnd);
     axios
       .post(`${URL}/api/candidates`, candidateForBackEnd, {
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
       })
       .then((response) => {
         console.log(response);
