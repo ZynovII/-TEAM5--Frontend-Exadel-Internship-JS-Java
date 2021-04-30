@@ -15,10 +15,10 @@ import { AdminPage } from "./pages/AdminPage";
 import { Store } from "./context/Store";
 import { NotFoundPage } from "./pages/NotFoundPage";
 import Scrollbar from "./components/UI/Scrollbar/Scrollbar";
-
+import TSPage from "./components/TSPage/TSPage";
 const App = () => (
   <Store>
-    <HashRouter>
+    <BrowserRouter>
       <Scrollbar>
         <Switch>
           <Route path="/" exact>
@@ -26,10 +26,11 @@ const App = () => (
           </Route>
           <Route path="/events" component={MainPage} />
           <Route path="/admin" component={AdminPage} />
+          <Route path="/techinterview" component={TSPage} />
           <Route component={NotFoundPage} />
         </Switch>
       </Scrollbar>
-    </HashRouter>
+    </BrowserRouter>
   </Store>
 );
 
