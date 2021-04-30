@@ -52,18 +52,16 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
         <Dropdown
         {...props}
         onChange={(e, data) => {
+          {props.onChange && props.onChange()}
           if (props.multiSelect) {
             if (data.selected) {
               dataMulti.push(data.key)
             } else {
               dataMulti = dataMulti.filter((item) => item != data.key)
             }
-            onChange( [...new Set(dataMulti)] )
-          } else {
+           return onChange( [...new Set(dataMulti)] )
+          } 
             onChange( [data.key] )
-          }
-          
-            {props.onChange && props.onChange()}
         } }
         errorMessage={
           props.errors[fieldName] && props.errors[fieldName].message
