@@ -17,7 +17,7 @@ export enum PreferredTime {
   Second = "FROM_TWELVE_TO_TWO",
   Third = "FROM_TWO_TO_FOUR",
   Fourth = "FROM_FOUR_TO_SIX",
-  None = "NONE",
+  Any = "ANY",
 }
 
 export interface IApplicant {

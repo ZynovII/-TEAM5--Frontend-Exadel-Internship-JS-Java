@@ -10,7 +10,7 @@ export const preferredTimeReformer = (str: string): string => {
       return "14:00-16:00";
     case PreferredTime.Fourth:
       return "16:00-18:00";
-    case PreferredTime.None:
+    case PreferredTime.Any:
       return "Any time";
     default:
       return str;
@@ -32,10 +32,10 @@ export const acceptStatusReformer = (str: string): string => {
 
 export const dateReformer = (str: string): string => {
   const options = {
-    year: 'numeric',
+    year: "numeric",
     month: "long",
     day: "numeric",
-  } as const
-  
-  return new Date(str).toLocaleDateString("en-GB",options);
-}
+  } as const;
+
+  return new Date(str).toLocaleDateString("en-GB", options);
+};
