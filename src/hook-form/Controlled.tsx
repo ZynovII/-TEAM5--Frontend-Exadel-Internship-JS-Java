@@ -52,9 +52,7 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
         <Dropdown
         {...props}
         onChange={(e, data) => {
-
           {props.onChange && props.onChange()}
-          
           if (props.multiSelect) {
             if (data.selected) {
               dataMulti.push(data.key)

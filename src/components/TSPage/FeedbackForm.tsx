@@ -3,7 +3,7 @@ import React from "react";
 import {
   PrimaryButton,
   FontIcon,
-  mergeStyles,
+  mergeStyleSets,
   ITextFieldStyleProps,
   ITextFieldStyles,
 } from "@fluentui/react/lib";
@@ -14,9 +14,9 @@ export const FeedbackForm = (props) => {
   return (
     <>
       <div>
-        <h3>
+        <h3 className={contentStyles.title}>
           Feedback
-          <FontIcon iconName="Edit" className={iconClass}></FontIcon>{" "}
+          <FontIcon iconName="Edit" className={contentStyles.icon} />
         </h3>
       </div>
       <ControlledTextField
@@ -37,11 +37,16 @@ export const FeedbackForm = (props) => {
   );
 };
 
-const iconClass = mergeStyles({
-  fontSize: 16,
-
-  margin: "0 0 0 10px",
+const contentStyles = mergeStyleSets({
+  icon: {
+    fontSize: 16,
+    marginLeft: "0.5rem",
+  },
+  title: {
+    margin: "0 0 1rem 0",
+  },
 });
+
 const textFieldStyles = (
   props: ITextFieldStyleProps
 ): Partial<ITextFieldStyles> => ({
@@ -54,6 +59,7 @@ const textFieldStyles = (
     root: {
       width: "100%",
       backgroundColor: "transparent",
+      marginBottom: "1rem",
     },
     field: {
       height: "7rem",
