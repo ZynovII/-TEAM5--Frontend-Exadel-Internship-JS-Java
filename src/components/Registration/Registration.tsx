@@ -58,6 +58,7 @@ export const Registration: React.FC<{
         locations: res[0],
         preferredTimes: res[1],
       };
+      console.log(options);
       setOptions(options);
     });
   }, []);
@@ -230,10 +231,8 @@ export const Registration: React.FC<{
             }
             rules={{ required: "This field is required" }}
             options={countries}
-            onChange={() => {
-              const curr = options.locations.find(
-                (el) => el.name === control.fieldsRef.current.country._f.value
-              );
+            onChange={(_, data) => {
+              const curr = options.locations.find((el) => el.name === data.key);
               setCountry(curr);
             }}
             styles={textFieldStyles}
