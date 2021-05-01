@@ -5,7 +5,7 @@ import { Depths, Nav } from "@fluentui/react";
 
 import { useHistory } from "react-router";
 
-import { useStore } from "../../hooks/hooks";
+import { useAuth } from "../../hooks/useAuth";
 import { ActionTypes } from "../../context/actionTypes";
 
 const Logo = require("../../assets/img/exadel-logo-dash.png");
@@ -68,7 +68,6 @@ const Links = [
       {
         name: "Sign out",
         key: "key5",
-        onClick: () => {},
         iconProps: {
           iconName: "SignOut",
           styles: {
@@ -77,6 +76,7 @@ const Links = [
             },
           },
         },
+        onClick: null,
       },
     ],
   },
@@ -102,12 +102,11 @@ const headStyle = {
 };
 
 export const DashboardNav = () => {
-  const { state, dispatch } = useStore();
-
+  const { signOut } = useAuth();
   const history = useHistory();
 
   const signout = () => {
-    dispatch({ type: ActionTypes.SIGN_OUT });
+    signOut();
     clickHadler();
   };
 
