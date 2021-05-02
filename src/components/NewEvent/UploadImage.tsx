@@ -38,12 +38,13 @@ const classNames = mergeStyleSets({
   },
 });
 
-export const UploadImage: React.FC = () => {
+export const UploadImage: React.FC<{setImageSrc:Function}> = ({setImageSrc}) => {
   const [fileName, setFileName] = useState<string>("");
   const [isUploaded, setisUploaded] = useState<boolean>(false);
   const uploadFile = (event) => {
     setFileName(URL.createObjectURL(event.target.files[0]));
     setisUploaded(true);
+    setImageSrc(URL.createObjectURL(event.target.files[0]));
   };
 
   const { control } = useForm({
@@ -90,7 +91,7 @@ export const UploadImage: React.FC = () => {
 
 const contentStyles = mergeStyleSets({
   imageContainer: {
-    width: "40%",
+    width: "100%",
     height: 270,
     display: "flex",
     flexDirection: "column",

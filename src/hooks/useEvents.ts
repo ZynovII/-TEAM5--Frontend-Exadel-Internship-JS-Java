@@ -41,10 +41,37 @@ export const useEvents = () => {
     }
   };
 
+
   const createEvent = (event) => {
-    //axios.post(`http://localhost:8081/api/events/`)
+    const headers = {
+      'Content-Type': 'application/json'
+  };
+    const createEventForBackEnd = {
+      city: event.city,
+      description: event.summary,
+      endDate: event.eventEndDate,
+      name: event.fullName,
+      startDate: event.eventStartDate,
+      techs: event.technology,
+      type: event.eventType
+    }
+    axios.post(`http://localhost:8081/api/events/create`, createEventForBackEnd, {headers}).then((res)=>console.log(res))
     console.log(event);
   };
+
+  // {
+  //   "cities": [
+  //     "string"
+  //   ],
+  //   "description": "string",
+  //   "endDate": "2021-04-30T06:24:44.984Z",
+  //   "name": "string",
+  //   "startDate": "2021-04-30T06:24:44.984Z",
+  //   "techs": [
+  //     "string"
+  //   ],
+  //   "type": "INTERNSHIP"
+  // }
 
   return {
     selectedEvent: state.selectedEvent,
