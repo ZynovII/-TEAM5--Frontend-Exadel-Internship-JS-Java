@@ -177,9 +177,16 @@ const [imageSrc, setImageSrc]=useState<string>("")
               label={"Country"}
               errors={errors}
               placeholder="Country"
+<<<<<<< HEAD
               // defaultSelectedKey={
               //   (props.candidatePage && props.candidat.country) || []
               // }
+=======
+              multiSelect
+              defaultSelectedKey={
+                (props.candidatePage && props.candidat.country) || ""
+              }
+>>>>>>> fd6e56605394143de1f42ac787b91f2b5f68576d
               rules={{ required: "This field is required" }}
               options={optionsOfCountries}
               onChange={() => setCountryStatus(false)}
@@ -191,10 +198,18 @@ const [imageSrc, setImageSrc]=useState<string>("")
               multiSelect
               label="City"
               placeholder="City"
+<<<<<<< HEAD
               // defaultSelectedKeys={
               //   (props.candidatePage && props.candidat.city) || []
               // }
               // rules={{ required: "This field is required" }}
+=======
+              multiSelect
+              defaultSelectedKey={
+                (props.candidatePage && props.candidat.city) || ""
+              }
+              rules={{ required: "This field is required" }}
+>>>>>>> fd6e56605394143de1f42ac787b91f2b5f68576d
               errors={errors}
               options={exampleOptionsOfCities}
               disabled={!props.candidatePage && countryStatus}
