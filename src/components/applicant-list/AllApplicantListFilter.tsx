@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useMemo } from "react";
 
 import { ControlledDropdown } from "../../hook-form/Controlled";
@@ -10,6 +10,7 @@ import {
   Stack,
   PrimaryButton,
 } from "@fluentui/react";
+import { useOptions } from "../../hooks/useOptions";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -45,6 +46,30 @@ export const AllApplicantFilter: React.FC = () => {
     reValidateMode: "onSubmit",
     mode: "all",
   });
+  const [options, setOptions] = useState({
+    eventTypes: [],
+    techs: [],
+    interviewStatuses: [],
+  });
+  const {
+    fetchEventTypes,
+    fetchInterviewStatuses,
+    fetchTechnology,
+  } = useOptions();
+
+  useEffect(() => {
+    Promise.all([
+      fetchEventTypes(),
+      fetchTechnology(),
+      fetchInterviewStatuses(),
+    ]).then((res) => {
+      setOptions({
+        eventTypes: res[0],
+        techs: res[1],
+        interviewStatuses: res[2],
+      });
+    });
+  }, []);
 
   const onApplyFilter = () => {
     handleSubmit((data) => {
@@ -64,14 +89,7 @@ export const AllApplicantFilter: React.FC = () => {
         name: "events",
         label: "Event Type",
         placeholder: "All events",
-        options: [
-          { key: "Internship JS & Java", text: "Internship JS & Java" },
-          {
-            key: "Business Analysis Meet UP",
-            text: "Business Analysis Meet UP",
-          },
-          { key: "C++ interview", text: "C++ interview" },
-        ],
+        options: options.eventTypes,
       },
       {
         id: "456",
@@ -79,11 +97,7 @@ export const AllApplicantFilter: React.FC = () => {
         name: "skills",
         label: "Main skill",
         placeholder: "All skills",
-        options: [
-          { key: "JavaScript", text: "JavaScript" },
-          { key: "Java", text: "Java" },
-          { key: "Business Analysis", text: "Business Analysis" },
-        ],
+        options: options.techs,
       },
       {
         id: "789",
@@ -91,14 +105,10 @@ export const AllApplicantFilter: React.FC = () => {
         name: "wstatus",
         label: "Status",
         placeholder: "Waiting status",
-        options: [
-          { key: "Registered", text: "Registered" },
-          { key: "Awaiting HR interview", text: "Awaiting HR interview" },
-          { key: "Waiting Desicion", text: "Waiting Desicion" },
-        ],
+        options: options.interviewStatuses,
       },
     ];
-  }, []);
+  }, [options]);
 
   return (
     <div>

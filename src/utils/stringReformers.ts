@@ -1,4 +1,8 @@
-import { AcceptStatus, PreferredTime } from "../models/IApplicant";
+import {
+  AcceptStatus,
+  InterviewStatus,
+  PreferredTime,
+} from "../models/IApplicant";
 import { EventType } from "../models/IEvent";
 
 export const preferredTimeReformer = (str: string): string => {
@@ -13,6 +17,20 @@ export const preferredTimeReformer = (str: string): string => {
       return "16:00-18:00";
     case PreferredTime.Any:
       return "Any time";
+    default:
+      return str;
+  }
+};
+export const interviewStatusReformer = (str: string): string => {
+  switch (str) {
+    case InterviewStatus.Registered:
+      return "Registered";
+    case InterviewStatus.AwaitingHRInterview:
+      return "Waiting for HR";
+    case InterviewStatus.AwaitingTSInterview:
+      return "Waiting for TS";
+    case InterviewStatus.WaitingDecision:
+      return "Awaiting a Decision";
     default:
       return str;
   }

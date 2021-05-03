@@ -4,6 +4,7 @@ import { ILocationFromBackEnd } from "../models/ILocation";
 import {
   acceptStatusReformer,
   eventTypeReformer,
+  interviewStatusReformer,
   preferredTimeReformer,
 } from "../utils/stringReformers";
 import { URL } from "./hooks";
@@ -18,6 +19,7 @@ export const useOptions = () => {
     const response = await axios.get(`${URL}/api/techs`);
     const techOptions: ITag[] = response.data.map((el) => ({
       key: el.toLowerCase(),
+      text: el,
       name: el,
     }));
     return techOptions;
@@ -29,7 +31,7 @@ export const useOptions = () => {
     const interviewStatusesOptions: IDropdownOption[] = response.data.map(
       (el) => ({
         key: el,
-        text: el,
+        text: interviewStatusReformer(el),
       })
     );
     return interviewStatusesOptions;
