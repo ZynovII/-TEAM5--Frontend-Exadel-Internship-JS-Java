@@ -18,6 +18,7 @@ import {
   ControlledTagPicker,
 } from "../../hook-form/Controlled";
 import { useOptions } from "../../hooks/useOptions";
+import { useLoader } from "../../hooks/hooks";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -61,6 +62,7 @@ const stackItemStyles: IStackItemStyles = {
 };
 
 export const AllFilters: React.FC = () => {
+  const { loading, showLoader, hideLoader } = useLoader();
   const [options, setOptions] = useState<IOptionsEventFilter>({
     locations: [],
     eventTypes: [],
@@ -77,6 +79,7 @@ export const AllFilters: React.FC = () => {
     mode: "all",
   });
   useEffect(() => {
+    showLoader();
     Promise.all([fetchEventTypes(), fetchLocation(), fetchTechnology()]).then(
       (res) => {
         const options: IOptionsEventFilter = {
@@ -85,6 +88,7 @@ export const AllFilters: React.FC = () => {
           techTags: res[2],
         };
         setOptions(options);
+        hideLoader();
       }
     );
   }, []);
@@ -137,20 +141,21 @@ export const AllFilters: React.FC = () => {
     return tagList.some((compareTag) => compareTag.key === tag.key);
   };
 
-  const filterSuggestedTags = (filterText: string, tagList: ITag[]): ITag[] => {
-    return filterText
-      ? tagList.filter((tag) => {
-          console.log(tag, options.techTags);
-          return (
-            tag.key.toString().indexOf(filterText.toLowerCase()) === 0 &&
-            !listContainsTagList(tag, tagList)
-          );
-        })
-      : [];
-  };
+  const filterSuggestedTags = useCallback(
+    (filterText: string, tagList: ITag[]): ITag[] => {
+      return filterText
+        ? options.techTags.filter(
+            (tag) =>
+              tag.key.toString().indexOf(filterText.toLowerCase()) === 0 &&
+              !listContainsTagList(tag, tagList)
+          )
+        : [];
+    },
+    [options]
+  );
 
   return (
-    <>
+    !loading && (
       <Stack styles={stackStyles} horizontal verticalAlign="end" wrap>
         <Stack.Item align="center" styles={stackItemStyles}>
           <Label>Tags</Label>
@@ -189,7 +194,7 @@ export const AllFilters: React.FC = () => {
           />
         </div>
       </Stack>
-    </>
+    )
   );
 };
 

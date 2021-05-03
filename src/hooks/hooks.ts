@@ -9,9 +9,12 @@ export const useLoader = () => {
 
   const showLoader = () => dispatch({ type: ActionTypes.SHOW_LOADER });
 
+  const hideLoader = () => dispatch({ type: ActionTypes.HIDE_LOADER });
+
   return {
     loading: state.loading,
     showLoader,
+    hideLoader,
   };
 };
 
