@@ -61,7 +61,7 @@ const contentStyles = mergeStyleSets({
     padding: "8px",
     maxHeight: "32px",
     color: "rgb(50, 49, 48)",
-    font: "400 13.3333px Arial",
+    // font: "400 13.3333px Arial",
     border: "1px solid rgb(96, 94, 92)",
     borderRadius: "2px",
   },
