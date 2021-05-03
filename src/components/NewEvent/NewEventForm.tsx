@@ -21,11 +21,10 @@ import {
   IDropdownStyles,
   ITextFieldStyleProps,
   IDropdownStyleProps,
-  Label,
 } from "@fluentui/react";
-import { IEvent } from "../../models/IEvent";
+import { IEventForBackEnd } from "../../models/IEvent";
 import { UploadImage } from "./UploadImage";
-import {useEvents} from "../../hooks/useEvents"
+import { useEvents } from "../../hooks/useEvents";
 
 interface IModalProps {
   isModal: boolean;
@@ -47,25 +46,24 @@ const textFieldStyles = (
 export const NewEventForm: React.FC<
   { name?: string; candidatePage?: boolean; candidat?: any } & IModalProps
 > = ({ isModal, hideModal, ...props }) => {
-  
-  const {createEvent} = useEvents();
+  const { createEvent } = useEvents();
 
   const {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<IEvent>({
+  } = useForm<IEventForBackEnd>({
     reValidateMode: "onSubmit",
     mode: "all",
   });
-  
-const [imageSrc, setImageSrc]=useState<string>("")
-// console.log(imageSrc);
+
+  const [imageSrc, setImageSrc] = useState<File>();
+  // console.log("imageSrc",imageSrc.name);
   const onSave = () => {
     handleSubmit(
       (data) => {
         console.log(data);
-        createEvent(data);
+        createEvent(data, imageSrc);
         hideModal();
       },
       (err) => {
@@ -85,7 +83,7 @@ const [imageSrc, setImageSrc]=useState<string>("")
 
   const exampleOptionsOfCities: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "minsk", text: "Minsk" },
+      { key: "Minsk", text: "Minsk" },
       { key: "grodno", text: "Grodno" },
       { key: "gomel", text: "Gomel", disabled: true },
     ];
@@ -93,7 +91,7 @@ const [imageSrc, setImageSrc]=useState<string>("")
 
   const optionsOfTechnology: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "javaScript", text: "JavaScript" },
+      { key: "JavaScript", text: "JavaScript" },
       { key: "java", text: "Java" },
       { key: "python", text: "Python" },
       { key: "react", text: "React" },
@@ -104,7 +102,7 @@ const [imageSrc, setImageSrc]=useState<string>("")
   }, []);
   const optionsOfStatus: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "intership", text: "Intership" },
+      { key: "INTERNSHIP", text: "Intership" },
       { key: "meet-up", text: "Meet-up" },
       { key: "taining", text: "Training" },
     ];
@@ -148,7 +146,7 @@ const [imageSrc, setImageSrc]=useState<string>("")
               label="Event name"
               placeholder="Name"
               control={control}
-              name={"fullName"}
+              name={"name"}
               errors={errors}
               rules={{ required: "This field is required" }}
               styles={textFieldStyles}
@@ -156,7 +154,7 @@ const [imageSrc, setImageSrc]=useState<string>("")
             <ControlledDropdown
               required
               control={control}
-              name={"technology"}
+              name={"techs"}
               multiSelect
               label={"Technology"}
               errors={errors}
@@ -177,16 +175,9 @@ const [imageSrc, setImageSrc]=useState<string>("")
               label={"Country"}
               errors={errors}
               placeholder="Country"
-<<<<<<< HEAD
               // defaultSelectedKey={
               //   (props.candidatePage && props.candidat.country) || []
               // }
-=======
-              multiSelect
-              defaultSelectedKey={
-                (props.candidatePage && props.candidat.country) || ""
-              }
->>>>>>> fd6e56605394143de1f42ac787b91f2b5f68576d
               rules={{ required: "This field is required" }}
               options={optionsOfCountries}
               onChange={() => setCountryStatus(false)}
@@ -194,22 +185,14 @@ const [imageSrc, setImageSrc]=useState<string>("")
             />
             <ControlledDropdown
               control={control}
-              name={"city"}
+              name={"cities"}
               multiSelect
               label="City"
               placeholder="City"
-<<<<<<< HEAD
               // defaultSelectedKeys={
               //   (props.candidatePage && props.candidat.city) || []
               // }
               // rules={{ required: "This field is required" }}
-=======
-              multiSelect
-              defaultSelectedKey={
-                (props.candidatePage && props.candidat.city) || ""
-              }
-              rules={{ required: "This field is required" }}
->>>>>>> fd6e56605394143de1f42ac787b91f2b5f68576d
               errors={errors}
               options={exampleOptionsOfCities}
               disabled={!props.candidatePage && countryStatus}
@@ -218,8 +201,7 @@ const [imageSrc, setImageSrc]=useState<string>("")
             <ControlledDropdown
               required
               control={control}
-              name={"eventType"}
-              multiSelect
+              name={"type"}
               label={"CEvent type"}
               errors={errors}
               placeholder="Event type"
@@ -232,10 +214,10 @@ const [imageSrc, setImageSrc]=useState<string>("")
             />
           </Stack>
           <Stack styles={{ root: { width: "40%" } }}>
-            <UploadImage setImageSrc={setImageSrc}/>
+            <UploadImage setImageSrc={setImageSrc} />
             <ControlledDatePicker
               control={control}
-              name={"eventStartDate"}
+              name={"startDate"}
               label="Start date"
               showMonthPickerAsOverlay={true}
               placeholder="Select a date..."
@@ -243,7 +225,7 @@ const [imageSrc, setImageSrc]=useState<string>("")
             />
             <ControlledDatePicker
               control={control}
-              name={"eventEndDate"}
+              name={"endDate"}
               label="Finish date"
               showMonthPickerAsOverlay={true}
               placeholder="Select a date..."
@@ -254,7 +236,7 @@ const [imageSrc, setImageSrc]=useState<string>("")
         <ControlledTextField
           placeholder="Summary"
           control={control}
-          name={"summary"}
+          name={"description"}
           errors={errors}
           className={contentStyles.lab}
           multiline

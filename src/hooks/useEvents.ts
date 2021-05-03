@@ -2,7 +2,7 @@ import axios from "axios";
 import { ActionTypes } from "../context/actionTypes";
 import { useStore } from "./hooks";
 import { fakeRequestEvents } from "../fakeDB/fakeRequest";
-import { IEvent } from "../models/IEvent";
+import { IEventForBackEnd } from "../models/IEvent";
 
 export const useEvents = () => {
   const { state, dispatch } = useStore();
@@ -42,36 +42,28 @@ export const useEvents = () => {
   };
 
 
-  const createEvent = (event) => {
-    const headers = {
-      'Content-Type': 'application/json'
-  };
-    const createEventForBackEnd = {
-      city: event.city,
-      description: event.summary,
-      endDate: event.eventEndDate,
-      name: event.fullName,
-      startDate: event.eventStartDate,
-      techs: event.technology,
-      type: event.eventType
-    }
-    axios.post(`http://localhost:8081/api/events/create`, createEventForBackEnd, {headers}).then((res)=>console.log(res))
-    console.log(event);
-  };
+  const createEvent = (event: IEventForBackEnd, imageSrc: File) => {
 
-  // {
-  //   "cities": [
-  //     "string"
-  //   ],
-  //   "description": "string",
-  //   "endDate": "2021-04-30T06:24:44.984Z",
-  //   "name": "string",
-  //   "startDate": "2021-04-30T06:24:44.984Z",
-  //   "techs": [
-  //     "string"
-  //   ],
-  //   "type": "INTERNSHIP"
-  // }
+    const createEventForBackEnd = {
+      cities: event.cities,
+      description: event.description,
+      endDate: event.endDate,
+      name: event.name,
+      startDate: event.startDate,
+      techs: event.techs,
+      type: event.type[0],
+    };
+    axios.post(`http://localhost:8081/api/events/create`, createEventForBackEnd).then((res) => res.data.id)
+      .then((id) => {
+        const formData = new FormData();
+        formData.append("file", imageSrc, imageSrc.name);
+        axios.post(
+          `http://localhost:8081/api/events/{id}/image/upload?id=${id}`,
+          formData
+        );
+      })
+
+  };
 
   return {
     selectedEvent: state.selectedEvent,

@@ -22,3 +22,13 @@ export interface IEventFromBackEnd {
   startDate: string;
   type: EventType;
 }
+
+export interface IEventForBackEnd {
+  cities: string[];
+  description: string,
+  endDate: Date,
+  name: string,
+  startDate: Date,
+  techs: string[],
+  type: string,
+}

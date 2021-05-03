@@ -23,8 +23,15 @@ const iconClass = mergeStyles({
   width: 50,
 });
 const classNames = mergeStyleSets({
-  uploadIcon: [{ color: "rgb(2,118,180)", margin: "0 auto", ":hover": {cursor: "pointer"} }, iconClass],
-  uploadText: { color: "#444", ":hover": {cursor: "pointer"}},
+  uploadIcon: [
+    {
+      color: "rgb(2,118,180)",
+      margin: "0 auto",
+      ":hover": { cursor: "pointer" },
+    },
+    iconClass,
+  ],
+  uploadText: { color: "#444", ":hover": { cursor: "pointer" } },
   closeIcon: {
     color: "black",
     position: "absolute",
@@ -38,13 +45,16 @@ const classNames = mergeStyleSets({
   },
 });
 
-export const UploadImage: React.FC<{setImageSrc:Function}> = ({setImageSrc}) => {
+export const UploadImage: React.FC<{ setImageSrc: Function }> = ({
+  setImageSrc,
+}) => {
   const [fileName, setFileName] = useState<string>("");
   const [isUploaded, setisUploaded] = useState<boolean>(false);
   const uploadFile = (event) => {
+    console.log(URL.createObjectURL(event.target.files[0]));
     setFileName(URL.createObjectURL(event.target.files[0]));
     setisUploaded(true);
-    setImageSrc(URL.createObjectURL(event.target.files[0]));
+    setImageSrc(event.target.files[0]);
   };
 
   const { control } = useForm({
@@ -58,11 +68,11 @@ export const UploadImage: React.FC<{setImageSrc:Function}> = ({setImageSrc}) => 
           <ControlledInputUpload
             control={control}
             name={"eventImage"}
-            id={"eImg"}
+            id={"eventImage"}
             className="input-file__input"
             onChange={(e) => uploadFile(e)}
           />
-          <label htmlFor="eImg" className={contentStyles.inputLabel}>
+          <label htmlFor="eventImage" className={contentStyles.inputLabel}>
             <FontIcon
               aria-label="FileImage"
               iconName="FileImage"
@@ -100,9 +110,9 @@ const contentStyles = mergeStyleSets({
     border: "1px dashed rgb(2,118,180)",
     borderRadius: "5px",
     boxShadow: "0px 0px 36px -6px rgba(2,118,180, 0.1) inset",
-    '@media(max-width: 725px)': {
-      display: 'none'
-    }
+    "@media(max-width: 725px)": {
+      display: "none",
+    },
   },
   inputLabel: {
     display: "flex",
