@@ -1,12 +1,6 @@
 import React from "react";
 
-import {
-  Stack,
-  IStackStyles,
-  IStackItemStyles,
-  ITextStyles,
-  mergeStyles,
-} from "@fluentui/react/lib";
+import { mergeStyleSets } from "@fluentui/react/lib";
 import { useBoolean } from "@fluentui/react-hooks";
 
 import {
@@ -34,18 +28,12 @@ const candidat: IApplicant = {
   country: "Belarus",
   city: "Minsk",
   technology: "Java",
-  event: "E-learning",
   summary:
     " Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum",
   acceptanceStatus: AcceptStatus.Accepted,
   interviewStatus: InterviewStatus.AwaitingHRInterview,
-  interviewDate: "03.24.2021",
-  interviewTime: "11:00",
-  assignedHRID: "111",
-  assignedTSID: "999",
-  HRFeedback: "",
-  TSFeedback: "",
   preferredTime: PreferredTime.First,
+  eventName: "js&java",
 };
 const interview: IInterview = {
   id: "aefd78a0",
@@ -97,38 +85,28 @@ const TSPage: React.FC = () => {
   return (
     <>
       <ModalWindow open={isModalOpen} text={modalText} hideModal={hideModal} />
-      <Wrapper egdfg>
-        <Stack
-          horizontalAlign="start"
-          styles={containerStackStyles}
-          tokens={{ childrenGap: "l2" }}
-        >
-          <div>
+      <Wrapper>
+        <div className={contentStyles.container}>
+          <div className={contentStyles.label}>
             <h3 style={{ marginBottom: 0 }}>Welcome, User!</h3>
             <span className="ms-fontSize-16">TS specialist</span>
           </div>
-          <Stack styles={stackStyles}>
-            <Stack.Item align="start" tokens={{ margin: "0 0 3rem 0" }}>
-              <h1>Internship JS&amp;Java</h1>
-            </Stack.Item>
-            <Stack
-              horizontal
-              verticalAlign="start"
-              wrap
-              tokens={{ childrenGap: "l2" }}
-              styles={candidatInfoStyles}
-            >
+          <div className={contentStyles.cadidatInfo}>
+            <div className={contentStyles.title}>
+              <h2>Internship JS&amp;Java</h2>
+            </div>
+            <div className={contentStyles.infoform}>
               <InfoForm candidat={candidat} />
-            </Stack>
-          </Stack>
+            </div>
+          </div>
           <div>
             <h3>Interview</h3>
           </div>
-          <Stack styles={interwiStack}>
+          <div className={contentStyles.table}>
             <OperationsTable operations={operations} />
-          </Stack>
+          </div>
           <FeedbackForm control={control} errors={errors} onSave={onSave} />
-        </Stack>
+        </div>
       </Wrapper>
     </>
   );
@@ -136,69 +114,38 @@ const TSPage: React.FC = () => {
 
 export default TSPage;
 
-const interwiStack: IStackStyles = {
-  root: { width: "100%" },
-};
-const containerStackStyles: IStackStyles = {
-  root: {
-    padding: "0",
-    display: "block",
-    "@media(min-width: 725px)": {
-      display: "flex",
-      maxWidth: "100%",
-    },
+const contentStyles = mergeStyleSets({
+  label: {
+    marginBottom: "1rem",
   },
-};
+  container: {
+    padding: "1.5rem 0",
+  },
 
-const stackStyles: IStackStyles = {
-  root: {
+  cadidatInfo: {
     boxShadow: "rgba(0, 0, 0, 0.1) 0px 4px 12px",
-    width: "100%",
-    padding: "2rem 1rem",
-    display: "block",
-    textAlign: "center",
-    "@media(min-width: 725px)": {
-      display: "flex",
-      padding: "4rem",
-      textAlign: "start",
-    },
-  },
-};
-
-const candidatInfoStyles: IStackStyles = {
-  root: {
-    margin: "0 0 2rem 0",
-  },
-  inner: {
+    padding: "0rem 1rem",
+    display: "flex",
     flexDirection: "column",
-    alignItems: "center",
-    "@media(min-width: 500px)": {
-      flexDirection: "row",
+    textAlign: "center",
+    marginBottom: "1rem",
+    "@media(min-width: 725px)": {
+      padding: "4rem 4rem 1rem 4rem",
+      textAlign: "start",
+      marginBottom: "2rem",
     },
   },
-};
-
-const tsInfoStyles1: IStackItemStyles = {
-  root: {
-    boxShadow: "0px 4px 10px -6px rgba(17, 17, 26, 0.1)",
-    padding: "0 0.7rem 0.5rem",
-    width: "100%",
+  title: {
+    //margin: "0 0 3rem 0",
   },
-};
-const tsInfoStyles2: IStackItemStyles = {
-  root: {
-    padding: "0.5rem 0.7rem 0.5rem",
-    width: "100%",
+  infoform: {
+    marginBottom: "0",
   },
-};
-const textStyles: ITextStyles = {
-  root: {
-    boxShadow: "rgba(17, 17, 26, 0.1) 0px 2px 0px",
-    padding: "0.1rem 0.7rem",
+  table: {
+    marginBottom: "2rem",
   },
-};
-const iconClass = mergeStyles({
-  fontSize: 16,
-
-  margin: "0 0 0 10px",
+  icon: {
+    fontSize: 16,
+    margin: "0 0 0 10px",
+  },
 });

@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useMemo} from "react";
 import { Controller } from "react-hook-form";
 import {
   ITextFieldProps,
@@ -38,11 +38,10 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
   );
 };
 
-
-
 export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
   props
 ) => {
+  let dataMulti = useMemo(() => [], [])
   return (
     <Controller
       name={props.name}
@@ -53,8 +52,16 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
         <Dropdown
         {...props}
         onChange={(e, data) => {
-            onChange(data.key)
-            {props.onChange && props.onChange()}
+          {props.onChange && props.onChange()}
+          if (props.multiSelect) {
+            if (data.selected) {
+              dataMulti.push(data.key)
+            } else {
+              dataMulti = dataMulti.filter((item) => item != data.key)
+            }
+           return onChange( [...new Set(dataMulti)] )
+          } 
+            onChange( [data.key] )
         } }
         errorMessage={
           props.errors[fieldName] && props.errors[fieldName].message

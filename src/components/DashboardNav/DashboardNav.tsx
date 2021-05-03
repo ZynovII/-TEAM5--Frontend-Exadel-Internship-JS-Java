@@ -4,6 +4,7 @@ import { Depths, Nav } from "@fluentui/react";
 // import Signout from "../AdminPanel/Signout/Signout";
 
 import { useHistory } from "react-router";
+import UserCircle from "../UserCircle/UserCircle";
 
 import { useAuth } from "../../hooks/useAuth";
 import { ActionTypes } from "../../context/actionTypes";
@@ -102,6 +103,7 @@ const headStyle = {
 };
 
 export const DashboardNav = () => {
+
   const { signOut } = useAuth();
   const history = useHistory();
 
