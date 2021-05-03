@@ -1,4 +1,5 @@
 import { AcceptStatus, PreferredTime } from "../models/IApplicant";
+import { EventType } from "../models/IEvent";
 
 export const preferredTimeReformer = (str: string): string => {
   switch (str) {
@@ -38,4 +39,17 @@ export const dateReformer = (str: string): string => {
   } as const;
 
   return new Date(str).toLocaleDateString("en-GB", options);
+};
+
+export const eventTypeReformer = (str: string): string => {
+  switch (str) {
+    case EventType.Internship:
+      return "Internship";
+    case EventType.MeetUp:
+      return "MeetUp";
+    case EventType.Training:
+      return "Training";
+    default:
+      return str;
+  }
 };

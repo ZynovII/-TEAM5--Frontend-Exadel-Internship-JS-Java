@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useCallback, useEffect, useMemo, useState } from "react";
 import {
   Stack,
   PrimaryButton,
@@ -8,12 +8,16 @@ import {
   Label,
   IStackItemStyles,
 } from "@fluentui/react";
-import { IFilterDropdownItem, IFilterData } from "./Models";
 import { useForm } from "react-hook-form";
+
+import { IFilterDropdownItem, IFilterData } from "./Models";
+import { IOptionsEventFilter } from "../../models/Forms/IOptions";
+import { ILocationFromBackEnd } from "../../models/ILocation";
 import {
   ControlledDropdown,
   ControlledTagPicker,
 } from "../../hook-form/Controlled";
+import { useOptions } from "../../hooks/useOptions";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -57,6 +61,13 @@ const stackItemStyles: IStackItemStyles = {
 };
 
 export const AllFilters: React.FC = () => {
+  const [options, setOptions] = useState<IOptionsEventFilter>({
+    locations: [],
+    eventTypes: [],
+    techTags: [],
+  });
+  const [country, setCountry] = useState<ILocationFromBackEnd>();
+  const { fetchEventTypes, fetchLocation, fetchTechnology } = useOptions();
   const {
     handleSubmit,
     formState: { errors },
@@ -65,6 +76,18 @@ export const AllFilters: React.FC = () => {
     reValidateMode: "onSubmit",
     mode: "all",
   });
+  useEffect(() => {
+    Promise.all([fetchEventTypes(), fetchLocation(), fetchTechnology()]).then(
+      (res) => {
+        const options: IOptionsEventFilter = {
+          eventTypes: res[0],
+          locations: res[1],
+          techTags: res[2],
+        };
+        setOptions(options);
+      }
+    );
+  }, []);
 
   const onApplyFilter = () => {
     handleSubmit((data) => {
@@ -79,55 +102,33 @@ export const AllFilters: React.FC = () => {
         name: "eventType",
         placeholder: "All",
         label: "Event type",
-        options: [
-          { key: "Meet-up", text: "Meet-up" },
-          { key: "Training", text: "Training" },
-          { key: "Internship", text: "Internship" },
-        ],
+        options: options.eventTypes,
       },
       {
         id: "2",
         key: "2",
-        name: "location",
+        name: "country",
         placeholder: "All",
-        label: "Locations",
-        options: [
-          { key: "USA", text: "USA" },
-          { key: "Belarus", text: "Belarus" },
-          { key: "Russia", text: "Russia" },
-          { key: "Ukraine", text: "Ukraine" },
-        ],
+        label: "Country",
+        options: options.locations.map((el) => ({
+          key: el.name,
+          text: el.name,
+        })),
+        onChange: (_, data) => {
+          const curr = options.locations.find((el) => el.name === data.key);
+          setCountry(curr);
+        },
       },
       {
         id: "3",
         key: "3",
-        name: "level",
+        name: "cities",
         placeholder: "All",
-        label: "Level",
-        options: [
-          { key: "Trainee", text: "Trainee" },
-          { key: "Junior", text: "Junior" },
-          { key: "Middle", text: "Middle" },
-          { key: "Senior", text: "Senior" },
-        ],
+        label: "Cities",
+        options: country?.cities.map((el) => ({ key: el, text: el })),
       },
     ];
-  }, []);
-
-  const eventTags: ITag[] = useMemo(() => {
-    return [
-      "JavaScript",
-      "Java",
-      "Python",
-      "React",
-      "Web",
-      "Frontend",
-      "Backend",
-      "c#",
-      "TypeScript",
-      "Data base",
-    ].map((item) => ({ key: item.toLowerCase(), name: item }));
-  }, []);
+  }, [options, country]);
 
   const listContainsTagList = (tag: ITag, tagList?: ITag[]) => {
     if (!tagList || !tagList.length || tagList.length === 0) {
@@ -138,11 +139,13 @@ export const AllFilters: React.FC = () => {
 
   const filterSuggestedTags = (filterText: string, tagList: ITag[]): ITag[] => {
     return filterText
-      ? eventTags.filter(
-          (tag) =>
+      ? tagList.filter((tag) => {
+          console.log(tag, options.techTags);
+          return (
             tag.key.toString().indexOf(filterText.toLowerCase()) === 0 &&
             !listContainsTagList(tag, tagList)
-        )
+          );
+        })
       : [];
   };
 
@@ -154,7 +157,7 @@ export const AllFilters: React.FC = () => {
           <ControlledTagPicker
             name="tagPicker"
             control={control}
-            eventTags={eventTags}
+            eventTags={options.techTags}
             onResolveSuggestions={filterSuggestedTags}
             itemLimit={5}
             aria-label="Tag picker"

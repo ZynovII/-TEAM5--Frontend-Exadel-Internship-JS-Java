@@ -1,8 +1,9 @@
-import { IDropdownOption } from "@fluentui/react";
+import { IDropdownOption, ITag } from "@fluentui/react";
 import axios from "axios";
 import { ILocationFromBackEnd } from "../models/ILocation";
 import {
   acceptStatusReformer,
+  eventTypeReformer,
   preferredTimeReformer,
 } from "../utils/stringReformers";
 import { URL } from "./hooks";
@@ -14,8 +15,8 @@ export const useOptions = () => {
     return locationOptions;
   };
   const fetchTechnology = async () => {
-    const response = await axios.get(`${URL}/tech`);
-    const techOptions: IDropdownOption[] = response.data.map((el) => ({
+    const response = await axios.get(`${URL}/api/techs`);
+    const techOptions: ITag[] = response.data.map((el) => ({
       key: el,
       text: el,
     }));
@@ -56,7 +57,7 @@ export const useOptions = () => {
     const response = await axios.get(`${URL}/api/events/types`);
     const eventTypesOptions: IDropdownOption[] = response.data.map((el) => ({
       key: el,
-      text: el,
+      text: eventTypeReformer(el),
     }));
     return eventTypesOptions;
   };
