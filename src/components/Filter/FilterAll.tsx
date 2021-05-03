@@ -141,60 +141,56 @@ export const AllFilters: React.FC = () => {
     return tagList.some((compareTag) => compareTag.key === tag.key);
   };
 
-  const filterSuggestedTags = useCallback(
-    (filterText: string, tagList: ITag[]): ITag[] => {
-      return filterText
-        ? options.techTags.filter(
-            (tag) =>
-              tag.key.toString().indexOf(filterText.toLowerCase()) === 0 &&
-              !listContainsTagList(tag, tagList)
-          )
-        : [];
-    },
-    [options]
-  );
+  const filterSuggestedTags = (filterText: string, tagList: ITag[]): ITag[] => {
+    return filterText
+      ? options.techTags.filter(
+          (tag) =>
+            tag.key.toString().indexOf(filterText.toLowerCase()) === 0 &&
+            !listContainsTagList(tag, tagList)
+        )
+      : [];
+  };
 
   return (
-    !loading && (
-      <Stack styles={stackStyles} horizontal verticalAlign="end" wrap>
-        <Stack.Item align="center" styles={stackItemStyles}>
-          <Label>Tags</Label>
-          <ControlledTagPicker
-            name="tagPicker"
-            control={control}
-            eventTags={options.techTags}
-            onResolveSuggestions={filterSuggestedTags}
-            itemLimit={5}
-            aria-label="Tag picker"
-          />
-        </Stack.Item>
-        <ControlledDropdown
-          {...filters[0]}
+    <Stack styles={stackStyles} horizontal verticalAlign="end" wrap>
+      <Stack.Item align="center" styles={stackItemStyles}>
+        <Label>Tags</Label>
+        <ControlledTagPicker
+          name="tagPicker"
           control={control}
-          errors={errors}
-          styles={dropdownStyles}
+          eventTags={options.techTags}
+          onResolveSuggestions={filterSuggestedTags}
+          getTextFromItem={(item) => item.name}
+          itemLimit={5}
+          aria-label="Tag picker"
         />
-        <ControlledDropdown
-          {...filters[1]}
-          control={control}
-          errors={errors}
-          styles={dropdownStyles}
+      </Stack.Item>
+      <ControlledDropdown
+        {...filters[0]}
+        control={control}
+        errors={errors}
+        styles={dropdownStyles}
+      />
+      <ControlledDropdown
+        {...filters[1]}
+        control={control}
+        errors={errors}
+        styles={dropdownStyles}
+      />
+      <ControlledDropdown
+        {...filters[2]}
+        control={control}
+        errors={errors}
+        styles={dropdownStyles}
+      />
+      <div className="filter-btn button_center">
+        <PrimaryButton
+          onClick={onApplyFilter}
+          text="Search"
+          className="button"
         />
-        <ControlledDropdown
-          {...filters[2]}
-          control={control}
-          errors={errors}
-          styles={dropdownStyles}
-        />
-        <div className="filter-btn button_center">
-          <PrimaryButton
-            onClick={onApplyFilter}
-            text="Search"
-            className="button"
-          />
-        </div>
-      </Stack>
-    )
+      </div>
+    </Stack>
   );
 };
 

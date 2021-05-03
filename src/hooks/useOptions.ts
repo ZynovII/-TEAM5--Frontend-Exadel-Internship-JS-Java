@@ -18,7 +18,7 @@ export const useOptions = () => {
     const response = await axios.get(`${URL}/api/techs`);
     const techOptions: ITag[] = response.data.map((el) => ({
       key: el.toLowerCase(),
-      text: el,
+      name: el,
     }));
     return techOptions;
   };
