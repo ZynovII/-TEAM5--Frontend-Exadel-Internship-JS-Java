@@ -4,7 +4,6 @@ import { useForm } from "react-hook-form";
 import {
   ControlledTextField,
   ControlledDropdown,
-  ControlledTagPicker,
   ControlledDatePicker,
 } from "../../hook-form/Controlled";
 import {
@@ -14,10 +13,7 @@ import {
   Modal,
   IIconProps,
   IDropdownOption,
-  ITag,
   Stack,
-  DatePicker,
-  IDatePicker,
   PrimaryButton,
   IconButton,
   IButtonStyles,
@@ -25,10 +21,10 @@ import {
   IDropdownStyles,
   ITextFieldStyleProps,
   IDropdownStyleProps,
-  Label,
 } from "@fluentui/react";
-import { IEvent } from "../../models/IEvent";
+import { IEventForBackEnd } from "../../models/IEvent";
 import { UploadImage } from "./UploadImage";
+import { useEvents } from "../../hooks/useEvents";
 
 interface IModalProps {
   isModal: boolean;
@@ -50,22 +46,24 @@ const textFieldStyles = (
 export const NewEventForm: React.FC<
   { name?: string; candidatePage?: boolean; candidat?: any } & IModalProps
 > = ({ isModal, hideModal, ...props }) => {
-  const [value, setValue] = React.useState<Date | undefined>();
-  const datePickerRef = React.useRef<IDatePicker>(null);
+  const { createEvent } = useEvents();
 
   const {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<IEvent>({
+  } = useForm<IEventForBackEnd>({
     reValidateMode: "onSubmit",
     mode: "all",
   });
 
+  const [imageSrc, setImageSrc] = useState<File>();
+  // console.log("imageSrc",imageSrc.name);
   const onSave = () => {
     handleSubmit(
       (data) => {
         console.log(data);
+        createEvent(data, imageSrc);
         hideModal();
       },
       (err) => {
@@ -73,38 +71,6 @@ export const NewEventForm: React.FC<
         console.log(err);
       }
     )();
-  };
-
-  const eventTags: ITag[] = useMemo(() => {
-    return [
-      "JavaScript",
-      "Java",
-      "Python",
-      "React",
-      "Web",
-      "Frontend",
-      "Backend",
-      "c#",
-      "TypeScript",
-      "Data base",
-    ].map((item) => ({ key: item.toLowerCase(), name: item }));
-  }, []);
-
-  const listContainsTagList = (tag: ITag, tagList?: ITag[]) => {
-    if (!tagList || !tagList.length || tagList.length === 0) {
-      return false;
-    }
-    return tagList.some((compareTag) => compareTag.key === tag.key);
-  };
-
-  const filterSuggestedTags = (filterText: string, tagList: ITag[]): ITag[] => {
-    return filterText
-      ? eventTags.filter(
-          (tag) =>
-            tag.key.toString().indexOf(filterText.toLowerCase()) === 0 &&
-            !listContainsTagList(tag, tagList)
-        )
-      : [];
   };
 
   const optionsOfCountries: IDropdownOption[] = useMemo(() => {
@@ -117,9 +83,28 @@ export const NewEventForm: React.FC<
 
   const exampleOptionsOfCities: IDropdownOption[] = useMemo(() => {
     return [
-      { key: "minsk", text: "Minsk" },
+      { key: "Minsk", text: "Minsk" },
       { key: "grodno", text: "Grodno" },
       { key: "gomel", text: "Gomel", disabled: true },
+    ];
+  }, []);
+
+  const optionsOfTechnology: IDropdownOption[] = useMemo(() => {
+    return [
+      { key: "JavaScript", text: "JavaScript" },
+      { key: "java", text: "Java" },
+      { key: "python", text: "Python" },
+      { key: "react", text: "React" },
+      { key: "typeScript", text: "TypeScript" },
+      { key: "c#", text: "C#" },
+      { key: "data base", text: "Data base" },
+    ];
+  }, []);
+  const optionsOfStatus: IDropdownOption[] = useMemo(() => {
+    return [
+      { key: "INTERNSHIP", text: "Intership" },
+      { key: "meet-up", text: "Meet-up" },
+      { key: "taining", text: "Training" },
     ];
   }, []);
 
@@ -150,80 +135,108 @@ export const NewEventForm: React.FC<
           className={contentStyles.formWrapper}
           horizontal
           tokens={{ childrenGap: "40px" }}
+          // styles={{ root: { width: "100%" } }}
         >
           <Stack
             tokens={{ childrenGap: "10px" }}
-            styles={{ root: { width: "520px" } }}
+            styles={{ root: { width: 520 } }}
           >
             <ControlledTextField
               required={true}
               label="Event name"
               placeholder="Name"
               control={control}
-              name={"fullName"}
+              name={"name"}
               errors={errors}
               rules={{ required: "This field is required" }}
               styles={textFieldStyles}
             />
-            <ControlledDatePicker
+            <ControlledDropdown
+              required
               control={control}
-              name={"eventStartDate"}
-              label="Start date"
-              showMonthPickerAsOverlay={true}
-              placeholder="Select a date..."
-              ariaLabel="Select a date"
+              name={"techs"}
+              multiSelect
+              label={"Technology"}
+              errors={errors}
+              placeholder="Technology"
+              // defaultSelectedKey={
+              //   (props.candidatePage && props.candidat.country) || []
+              // }
+              // rules={{ required: "This field is required" }}
+              options={optionsOfTechnology}
+              styles={textFieldStyles}
             />
-            <Stack.Item>
-              <Label>Technologies</Label>
-              <ControlledTagPicker
-                name="tagPicker"
-                control={control}
-                eventTags={eventTags}
-                onResolveSuggestions={filterSuggestedTags}
-                itemLimit={5}
-                aria-label="Tag picker"
-              />{" "}
-            </Stack.Item>
 
             <ControlledDropdown
               required
               control={control}
               name={"country"}
+              multiSelect
               label={"Country"}
               errors={errors}
               placeholder="Country"
-              multiSelect
-              defaultSelectedKey={
-                (props.candidatePage && props.candidat.country) || ""
-              }
+              // defaultSelectedKey={
+              //   (props.candidatePage && props.candidat.country) || []
+              // }
               rules={{ required: "This field is required" }}
               options={optionsOfCountries}
               onChange={() => setCountryStatus(false)}
               styles={textFieldStyles}
             />
             <ControlledDropdown
-              required
               control={control}
-              name={"city"}
+              name={"cities"}
+              multiSelect
               label="City"
               placeholder="City"
-              multiSelect
-              defaultSelectedKey={
-                (props.candidatePage && props.candidat.city) || ""
-              }
-              rules={{ required: "This field is required" }}
+              // defaultSelectedKeys={
+              //   (props.candidatePage && props.candidat.city) || []
+              // }
+              // rules={{ required: "This field is required" }}
               errors={errors}
               options={exampleOptionsOfCities}
               disabled={!props.candidatePage && countryStatus}
               styles={textFieldStyles}
             />
+            <ControlledDropdown
+              required
+              control={control}
+              name={"type"}
+              label={"CEvent type"}
+              errors={errors}
+              placeholder="Event type"
+              // defaultSelectedKey={
+              //   (props.candidatePage && props.candidat.country) || []
+              // }
+              rules={{ required: "This field is required" }}
+              options={optionsOfStatus}
+              styles={textFieldStyles}
+            />
           </Stack>
-          <UploadImage />
+          <Stack styles={{ root: { width: "40%" } }}>
+            <UploadImage setImageSrc={setImageSrc} />
+            <ControlledDatePicker
+              control={control}
+              name={"startDate"}
+              label="Start date"
+              showMonthPickerAsOverlay={true}
+              placeholder="Select a date..."
+              ariaLabel="Select a date"
+            />
+            <ControlledDatePicker
+              control={control}
+              name={"endDate"}
+              label="Finish date"
+              showMonthPickerAsOverlay={true}
+              placeholder="Select a date..."
+              ariaLabel="Select a date"
+            />
+          </Stack>
         </Stack>
         <ControlledTextField
           placeholder="Summary"
           control={control}
-          name={"summary"}
+          name={"description"}
           errors={errors}
           className={contentStyles.lab}
           multiline
@@ -245,7 +258,7 @@ const cancelIcon: IIconProps = { iconName: "Cancel" };
 const theme = getTheme();
 const contentStyles = mergeStyleSets({
   container: {
-    maxWidth: "750px",
+    maxWidth: "900px",
     display: "flex",
     flexFlow: "column nowrap",
     alignItems: "stretch",
