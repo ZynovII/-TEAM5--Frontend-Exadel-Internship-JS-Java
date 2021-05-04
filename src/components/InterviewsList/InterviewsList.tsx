@@ -7,8 +7,6 @@ import {
   IColumn,
   TooltipHost,
   ITooltipHostStyles,
-  ScrollablePane,
-  ScrollbarVisibility,
   ActionButton,
   getTheme,
   Spinner,
@@ -127,9 +125,7 @@ const InterviewList: React.FC = () => {
   ) : (
     <>
       <InterviewListFilter />
-      <div style={{ height: "70vh", position: "relative", marginTop: "2rem" }}>
-        <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
-          <div style={{ boxShadow: theme.effects.elevation16 }}>
+          <div style={{ boxShadow: theme.effects.elevation16, marginTop: "2rem" }}>
             <DetailsList
               items={applicantsList}
               columns={columns}
@@ -151,8 +147,6 @@ const InterviewList: React.FC = () => {
               )}
             />
           </div>
-        </ScrollablePane>
-      </div>
     </>
   );
 };

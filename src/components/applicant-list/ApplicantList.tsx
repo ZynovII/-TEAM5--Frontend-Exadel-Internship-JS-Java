@@ -6,8 +6,6 @@ import {
   IColumn,
   TooltipHost,
   ITooltipHostStyles,
-  ScrollablePane,
-  ScrollbarVisibility,
   Spinner,
   SpinnerSize,
   Sticky,
@@ -114,12 +112,11 @@ export const ApplicantList: React.FC = () => {
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <>
-      <AllApplicantFilter />
-      <div style={{ height: "70vh", position: "relative", marginTop: "2rem" }}>
+        <AllApplicantFilter />
+
         <div
-          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
+          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold", marginTop: "2rem" }}
         >
-          <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
             <DetailsList
               items={applicantsList}
               columns={columns}
@@ -132,9 +129,7 @@ export const ApplicantList: React.FC = () => {
                 <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
               )}
             />
-          </ScrollablePane>
         </div>
-      </div>
     </>
   );
 };
