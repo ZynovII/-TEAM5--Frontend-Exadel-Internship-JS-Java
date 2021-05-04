@@ -1,3 +1,5 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+
 $bg-color: yellow;
 $border-color: red;
 
@@ -18,7 +20,7 @@ html {
 }
 
 body {
-  font-family: helvetica, arial, sans-serif;
+  font-family: "Roboto", sans-serif;
   height: 100%;
   color: #525252;
   #root {
