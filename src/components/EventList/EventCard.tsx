@@ -10,10 +10,10 @@ import {
   FontIcon,
 } from "@fluentui/react";
 
-import {  useBoolean } from "@fluentui/react-hooks";
+import { useBoolean } from "@fluentui/react-hooks";
 import { useHistory } from "react-router";
 import { IEvent } from "../../models/IEvent";
-import {  useLoader } from "../../hooks/hooks";
+import { useLoader } from "../../hooks/hooks";
 import { PublishDialog } from "./PublishDialog";
 
 import { dateReformer } from "./../../utils/stringReformers";
@@ -108,9 +108,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
                 className={styles.acceptIcon}
                 title="Event is piblished"
               />
-            ) : (
-              <></>
-            )}
+            ) : null}
           </div>
         )}
       </div>

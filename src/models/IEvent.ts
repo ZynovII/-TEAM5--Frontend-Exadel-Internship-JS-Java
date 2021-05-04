@@ -1,4 +1,4 @@
-import { ILocationFromBackEnd } from "./ILocation";
+import { ILocationForEvents } from "./ILocation";
 import { ID } from "./Store/IStore";
 
 export enum EventType {
@@ -23,6 +23,6 @@ export interface IEvent {
   description: string;
   techs: ITech[];
   type: EventType;
-  locations: ILocationFromBackEnd[];
+  locations: ILocationForEvents[];
   eventStatus: EventStatus;
 }
