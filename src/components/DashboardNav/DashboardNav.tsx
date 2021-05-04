@@ -120,9 +120,9 @@ export const DashboardNav = () => {
   return (
     <div className="dash-nav">
       <div style={headStyle} onClick={clickHadler}>
-        <img src={Logo.default} alt="logo" width="50" style={logoStyle} />
+        <UserCircle />
         <h4 className="ms-hiddenLgDown ms-fontColor-themePrimary">
-          RecruitStyle
+          Ivan Ivanov
         </h4>
       </div>
       <Nav
