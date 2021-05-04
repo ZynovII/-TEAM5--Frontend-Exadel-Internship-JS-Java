@@ -8,10 +8,9 @@ import { DashboardNav } from "../components/DashboardNav/DashboardNav";
 import ApplicantList from "../components/applicant-list/ApplicantList";
 import InterviewList from "../components/InterviewsList/InterviewsList";
 import EventList from "../components/EventList/EventList";
-import AllFilters from "../components/Filter/FilterAll";
 import { CandidatePage } from "../components/CandidatePage/CandidatePage";
 import { ArchiveEventList } from "../components/ArchivePage/ArchivePage";
-import UserCircle from "../components/UserCircle/UserCircle";
+import ScrollBar from '../components/UI/Scrollbar/Scrollbar'
 
 export const AdminPage = () => {
   return (
@@ -20,12 +19,13 @@ export const AdminPage = () => {
         <div className="ms-Grid-col ms-sm2 ms-md1 ms-lg2 ms-depth-8">
           <DashboardNav />
         </div>
-        <div className="ms-Grid-col ms-sm10 ms-xl10 main-element">
-          <div className="ms-Grid-row">
-            <div style={{ overflowY: "auto", maxHeight: "100vh" }}>
+        <div className="ms-Grid-col ms-sm10 ms-xl10 main-element pd-0">
+          <ScrollBar height="100vh">
+          <div className="ms-Grid-row" style={{padding:'1em'}}>
               <Switch>
-                <Route path="/admin" exact component={() => <h1>Main</h1>} />
-                <Route path="/admin/events" component={() => <AllCards />} />
+                <Route 
+                  path="/admin/events" 
+                  component={EventList} />
                 <Route
                   path="/admin/candidates"
                   exact
@@ -44,15 +44,20 @@ export const AdminPage = () => {
                   path="/admin/interviews/:name"
                   component={CandidatePage}
                 />
-                <Route path="/admin/archive" component={ArchiveEventList} />
+                <Route 
+                  path="/admin/archive" 
+                  component={ArchiveEventList} 
+                />
                 <Route
                   path="/admin/signout"
                   component={() => <h1>SignOut</h1>}
                 />
-                <Route component={NotFound} />
+                <Route 
+                  component={NotFound} 
+                />
               </Switch>
-            </div>
           </div>
+          </ScrollBar>
         </div>
       </div>
     </div>
