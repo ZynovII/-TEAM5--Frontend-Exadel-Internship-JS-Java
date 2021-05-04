@@ -289,7 +289,7 @@ export const Registration: React.FC<{
       <label htmlFor="cv" className="input-file__label">
         Upload CV
       </label>
-      <span>{file.name}</span>
+      <span>{file && file.name}</span>
       {props.candidatePage ? (
         <>
           <PrimaryButton

@@ -3,6 +3,7 @@ import { ActionTypes } from "../context/actionTypes";
 import { URL, useStore } from "./hooks";
 import { fakeRequestEvents } from "../fakeDB/fakeRequest";
 import { IEvent } from "../models/IEvent";
+import { ID } from "../models/Store/IStore";
 
 export const useEvents = () => {
   const { state, dispatch } = useStore();
@@ -25,7 +26,7 @@ export const useEvents = () => {
     // });
   };
 
-  const selectEvent = (id: string | number) => {
+  const selectEvent = (id: ID) => {
     if (state.events[id]) {
       dispatch({
         type: ActionTypes.SELECT_EVENT,
