@@ -4,6 +4,7 @@ import { URL, useStore } from "./hooks";
 import { fakeRequestEvents } from "../fakeDB/fakeRequest";
 import { IEvent } from "../models/IEvent";
 import { ID } from "../models/Store/IStore";
+import { IEventForBackEnd } from "../models/IEvent";
 
 export const useEvents = () => {
   const { state, dispatch } = useStore();
@@ -42,9 +43,27 @@ export const useEvents = () => {
     }
   };
 
-  const createEvent = (event) => {
-    //axios.post(`${URL}/api/events/`)
-    console.log(event);
+  const createEvent = (event: IEventForBackEnd, imageSrc: File) => {
+    const createEventForBackEnd = {
+      cities: event.cities,
+      description: event.description,
+      endDate: event.endDate,
+      name: event.name,
+      startDate: event.startDate,
+      techs: event.techs,
+      type: event.type[0],
+    };
+    axios
+      .post(`http://localhost:8081/api/events/create`, createEventForBackEnd)
+      .then((res) => res.data.id)
+      .then((id) => {
+        const formData = new FormData();
+        formData.append("file", imageSrc, imageSrc.name);
+        axios.post(
+          `http://localhost:8081/api/events/{id}/image/upload?id=${id}`,
+          formData
+        );
+      });
   };
 
   return {

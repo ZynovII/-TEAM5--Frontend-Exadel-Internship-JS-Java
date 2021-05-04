@@ -6,8 +6,6 @@ import {
   IColumn,
   TooltipHost,
   ITooltipHostStyles,
-  ScrollablePane,
-  ScrollbarVisibility,
   Spinner,
   SpinnerSize,
   ActionButton,
@@ -100,18 +98,11 @@ export const ArchiveEventList: React.FC = () => {
   ) : (
     <>
       <ArchiveFilters />
-      <div
-        style={{
-          height: "70vh",
-          position: "relative",
-          margin: "2rem auto 0",
-          width: "93%",
-        }}
-      >
+
         <div
-          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold" }}
+          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold", marginTop: "2rem" }}
         >
-          <ScrollablePane scrollbarVisibility={ScrollbarVisibility.auto}>
+
             <DetailsList
               items={eventList}
               columns={columns}
@@ -130,8 +121,6 @@ export const ArchiveEventList: React.FC = () => {
               //   history.push(`/admin/candidates/${item.name}`)
               // }
             />
-          </ScrollablePane>
-        </div>
       </div>
     </>
   );

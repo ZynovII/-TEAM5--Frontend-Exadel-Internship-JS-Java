@@ -1,5 +1,5 @@
-import React, {useState} from "react";
-import {NewEventForm} from "./NewEventForm"
+import React, { useState } from "react";
+import { NewEventForm } from "./NewEventForm";
 import {
   DocumentCard,
   DocumentCardTitle,
@@ -7,19 +7,18 @@ import {
   ImageFit,
 } from "@fluentui/react";
 
-
 const cardImage = require("./../../assets/img/plus.svg");
 
 const styles = {
   styleCard: {
     root: {
-      minWidth: '30%',
-      height: 'auto',
-      display: 'flex',
-      justifyContent: 'center',
-      alignItems: 'center',
+      minWidth: "30%",
+      height: "auto",
+      display: "flex",
+      justifyContent: "center",
+      alignItems: "center",
       marginBottom: "20px",
-      boxShadow: '0px 0px 36px -6px rgba(34, 60, 80, 0.1) inset',
+      boxShadow: "0px 0px 36px -6px rgba(34, 60, 80, 0.1) inset",
     },
   },
   mainTytle: {
@@ -38,32 +37,30 @@ const styles = {
   },
 };
 
-
 export const NewCardItem: React.FC = (props) => {
-  const [isModal,setIsModal] = useState(false);
+  const [isModal, setIsModal] = useState(false);
 
-  const toggleModal = () => setIsModal(isModal => !isModal);
+  const toggleModal = () => setIsModal((isModal) => !isModal);
 
   return (
     <>
-    <DocumentCard
-      styles={styles.styleCard}
-      onClick={()=>setIsModal(true)}
-    >
-      <div>
-      <Image height='100%' width='100%' imageFit={ImageFit.cover} src={cardImage.default} />
-      <DocumentCardTitle
-        title="Add new event..."
-        showAsSecondaryTitle
-        styles={styles.title}
-      />
-      <DocumentCardTitle
-        styles={styles.mainTytle}
-        title=""
-      />
-      </div>
-    </DocumentCard>
-    <NewEventForm isModal={isModal} hideModal={toggleModal}/> 
+      <DocumentCard styles={styles.styleCard} onClick={() => setIsModal(true)}>
+        <div>
+          <Image
+            height="100%"
+            width="100%"
+            imageFit={ImageFit.cover}
+            src={cardImage.default}
+          />
+          <DocumentCardTitle
+            title="Add new event..."
+            showAsSecondaryTitle
+            styles={styles.title}
+          />
+          <DocumentCardTitle styles={styles.mainTytle} title="" />
+        </div>
+        <NewEventForm isModal={isModal} hideModal={toggleModal} />
+      </DocumentCard>
     </>
   );
 };

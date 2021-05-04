@@ -26,3 +26,13 @@ export interface IEvent {
   locations: ILocationForEvents[];
   eventStatus: EventStatus;
 }
+
+export interface IEventForBackEnd {
+  cities: string[];
+  description: string,
+  endDate: Date,
+  name: string,
+  startDate: Date,
+  techs: string[],
+  type: string,
+}
