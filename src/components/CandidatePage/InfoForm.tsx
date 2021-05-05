@@ -58,7 +58,7 @@ const contentStyles = mergeStyleSets({
   input: {
     backgroundColor: "white",
     fontSize: "14px",
-    padding: "8px",
+    padding: "7px 8px",
     maxHeight: "32px",
     color: "rgb(50, 49, 48)",
     border: "1px solid rgb(96, 94, 92)",
