@@ -100,6 +100,7 @@ interface InputUpload {
   id: string;
   className: string;
   onChange: any;
+  accept: string;
 }
 export const ControlledInputUpload: React.FC<HookFormProps & InputUpload> = (
   props
