@@ -6,9 +6,8 @@ import "./AllCards.scss";
 import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { useAuth } from "../../hooks/useAuth";
-import { withRouter } from "react-router-dom";
  const EventList
-: React.FC = () => {
+: React.FC<{mode:string}> = ({mode}) => {
   const { events, fetchEvents } = useEvents();
   const { loading, showLoader } = useLoader();
   const { isAuth } = useAuth();
@@ -36,4 +35,4 @@ import { withRouter } from "react-router-dom";
   );
 };
 
-export default withRouter(EventList) ;
+export default EventList ;

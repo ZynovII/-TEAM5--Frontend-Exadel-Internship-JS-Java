@@ -24,8 +24,9 @@ export const AdminPage = () => {
           <div className="ms-Grid-row" style={{padding:'1em'}}>
               <Switch>
                 <Route 
-                  path="/admin/events" 
-                  component={EventList} />
+                  path="/admin/events">
+                    <EventList isAdminPage />
+                  </Route>
                 <Route
                   path="/admin/candidates"
                   exact
