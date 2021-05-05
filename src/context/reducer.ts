@@ -63,6 +63,21 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         events: { ...state.events, ...newEvents },
         loading: false,
       };
+    case ActionTypes.FETCH_PUBLISHED_EVENTS:
+      const newEvent: {
+        [eventId: string]: IEvent;
+      } = (payload as IEvent[]).reduce(
+        (acc, item) => ({
+          ...acc,
+          [item.id]: item,
+        }),
+        {}
+      );
+      return {
+        ...state,
+        publishedEvents: { ...state.publishedEvents, ...newEvent },
+        loading: false,
+      };
     case ActionTypes.FETCH_INTERVIEWS:
       const newInterviews: {
         [interviewId: string]: IInterview;

@@ -7,6 +7,7 @@ export interface IStore {
   isAuthenticated: boolean;
   currentUserID: number;
   events: { [eventId: number]: IEvent };
+  publishedEvents: { [eventId: number]: IEvent };
   applicants: { [aplicantId: string]: IApplicantShortFromBackEnd };
   interviews: { [interviewId: string]: IInterview };
   selectedEvent: IEvent;

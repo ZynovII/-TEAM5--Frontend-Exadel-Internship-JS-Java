@@ -5,7 +5,11 @@ export enum EventType {
   MeetUp = "MEETUP",
   Training = "TRAINING",
 }
-
+export enum EventStatus {
+  Published = "PUBLISHED",
+  Archived = "ARCHIVED",
+  NotPublished = "NOT_PUBLISHED"
+}
 export interface IEvent {
   id: number;
   name: string;
@@ -14,6 +18,7 @@ export interface IEvent {
   technology?: string;
   type: EventType;
   locations: ILocation[];
+  eventStatus: EventStatus;
 }
 export interface IEventFromBackEnd {
   id: number;

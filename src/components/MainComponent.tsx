@@ -12,7 +12,7 @@ const MainComponent: React.FC = () => {
       <h2 className="title">Filter</h2>
       <FilterAll />
       <h2 className="title">All Events</h2>
-      <EventList />
+      <EventList isAdminPage={false}/>
     </>
   );
 };

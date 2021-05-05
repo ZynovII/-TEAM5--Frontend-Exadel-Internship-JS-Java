@@ -1,7 +1,7 @@
 import axios from "axios";
 import { ActionTypes } from "../context/actionTypes";
 import { useStore } from "./hooks";
-import { fakeRequestEvents } from "../fakeDB/fakeRequest";
+// import { fakeRequestEvents } from "../fakeDB/fakeRequest";
 import { IEventForBackEnd } from "../models/IEvent";
 
 export const useEvents = () => {
@@ -24,7 +24,17 @@ export const useEvents = () => {
     //   });
     // });
   };
-
+  const fetchPublishedEvents = (page, size) => {
+    axios
+      .get(`http://localhost:8081/api/events/published?page=${page}&size=${size}`)
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.FETCH_PUBLISHED_EVENTS,
+          payload: res.data.content,
+        });
+      })
+      .catch((err) => console.log(err));
+  };
   const selectEvent = (id: string | number) => {
     if (state.events[id]) {
       dispatch({
@@ -77,9 +87,11 @@ export const useEvents = () => {
   return {
     selectedEvent: state.selectedEvent,
     events: state.events,
+    publishedEvents: state.publishedEvents,
     selectEvent,
     fetchEvents,
     createEvent,
-    loadImage
+    loadImage,
+    fetchPublishedEvents
   };
 };
