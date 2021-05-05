@@ -48,10 +48,6 @@ export const AdminPage = () => {
                   path="/admin/archive" 
                   component={ArchiveEventList} 
                 />
-                <Route
-                  path="/admin/signout"
-                  component={() => <h1>SignOut</h1>}
-                />
                 <Route 
                   component={NotFound} 
                 />
