@@ -25,23 +25,18 @@ body {
   color: #525252;
   #root {
     height: 100%;
-    // > div > div {
-    //   height: 105%;
-    //   // display: flex; 
-    //   flex-direction: column;
-    //   header {
-    //     flex: 0 0 auto;
-    //   }
-    //   main {
-    //     flex: 1 0 auto;
-    //   }
-    //   footer {
-    //     flex: 0 0 auto;
-    //   }
-    // }
     .title {
       margin: 2em auto;
     }
+  }
+}
+
+.main-page {
+  &__wrapper {
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
   }
 }
 
@@ -104,6 +99,6 @@ body {
   }
 }
 
-.pd-0{
+.pd-0 {
   padding: 0;
 }
