@@ -152,45 +152,47 @@ export const AllFilters: React.FC = () => {
   };
 
   return (
-    <Stack styles={stackStyles} horizontal verticalAlign="end" wrap>
-      <Stack.Item align="center" styles={stackItemStyles}>
-        <Label>Tags</Label>
-        <ControlledTagPicker
-          name="tagPicker"
+    !loading && (
+      <Stack styles={stackStyles} horizontal verticalAlign="end" wrap>
+        <Stack.Item align="center" styles={stackItemStyles}>
+          <Label>Tags</Label>
+          <ControlledTagPicker
+            name="tagPicker"
+            control={control}
+            eventTags={options.techTags}
+            onResolveSuggestions={filterSuggestedTags}
+            getTextFromItem={(item) => item.name}
+            itemLimit={5}
+            aria-label="Tag picker"
+          />
+        </Stack.Item>
+        <ControlledDropdown
+          {...filters[0]}
           control={control}
-          eventTags={options.techTags}
-          onResolveSuggestions={filterSuggestedTags}
-          getTextFromItem={(item) => item.name}
-          itemLimit={5}
-          aria-label="Tag picker"
+          errors={errors}
+          styles={dropdownStyles}
         />
-      </Stack.Item>
-      <ControlledDropdown
-        {...filters[0]}
-        control={control}
-        errors={errors}
-        styles={dropdownStyles}
-      />
-      <ControlledDropdown
-        {...filters[1]}
-        control={control}
-        errors={errors}
-        styles={dropdownStyles}
-      />
-      <ControlledDropdown
-        {...filters[2]}
-        control={control}
-        errors={errors}
-        styles={dropdownStyles}
-      />
-      <div className="filter-btn button_center">
-        <PrimaryButton
-          onClick={onApplyFilter}
-          text="Search"
-          className="button"
+        <ControlledDropdown
+          {...filters[1]}
+          control={control}
+          errors={errors}
+          styles={dropdownStyles}
         />
-      </div>
-    </Stack>
+        <ControlledDropdown
+          {...filters[2]}
+          control={control}
+          errors={errors}
+          styles={dropdownStyles}
+        />
+        <div className="filter-btn button_center">
+          <PrimaryButton
+            onClick={onApplyFilter}
+            text="Search"
+            className="button"
+          />
+        </div>
+      </Stack>
+    )
   );
 };
 

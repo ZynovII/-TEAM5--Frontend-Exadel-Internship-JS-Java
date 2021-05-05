@@ -24,6 +24,7 @@ const Event: React.FC<IEventProps> = (props) => {
   useEffect(() => {
     showLoader();
     selectEvent(params.id);
+    return () => selectEvent(null);
   }, []);
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />

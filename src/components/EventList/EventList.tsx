@@ -7,8 +7,7 @@ import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { useAuth } from "../../hooks/useAuth";
 
-export const EventList
-: React.FC = () => {
+export const EventList: React.FC = () => {
   const { events, fetchEvents } = useEvents();
   const { loading, showLoader } = useLoader();
   const { isAuth } = useAuth();

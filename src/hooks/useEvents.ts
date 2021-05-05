@@ -33,6 +33,11 @@ export const useEvents = () => {
         type: ActionTypes.SELECT_EVENT,
         payload: state.events[id],
       });
+    } else if (id === null) {
+      dispatch({
+        type: ActionTypes.SELECT_EVENT,
+        payload: null,
+      });
     } else {
       axios.get(`${URL}/api/events/${id}`).then((res) => {
         dispatch({
