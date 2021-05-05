@@ -7,7 +7,7 @@ import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { useAuth } from "../../hooks/useAuth";
  const EventList
-: React.FC<{mode:string}> = ({mode}) => {
+: React.FC<{isAdminPage:boolean}> = ({isAdminPage}) => {
   const { events, fetchEvents } = useEvents();
   const { loading, showLoader } = useLoader();
   const { isAuth } = useAuth();
@@ -23,7 +23,7 @@ import { useAuth } from "../../hooks/useAuth";
   ) : (
     <>
       <section className="all-cards__wrapper">
-        {(location.hash=="#/admin/events")&&isAuth && <NewCardItem />}
+        {(isAdminPage)&&isAuth && <NewCardItem />}
         {Object.values(events).map((item) => (
           <CardItem cardItem={item} key={item.id} isLogged={isAuth} />
         ))}
