@@ -1,26 +1,30 @@
-import { ILocation } from "./ILocation";
+import { ILocationForEvents } from "./ILocation";
+import { ID } from "./Store/IStore";
 
 export enum EventType {
   Internship = "INTERNSHIP",
   MeetUp = "MEETUP",
   Training = "TRAINING",
 }
+export enum EventStatus {
+  Archived = "ARCHIVED",
+  NotPublished = "NOT_PUBLISHED",
+  Published = "PUBLISHED",
+}
+export interface ITech {
+  id: ID;
+  name: string;
+}
 
 export interface IEvent {
-  id: number;
+  id: ID;
   name: string;
   startDate: string;
   description: string;
-  technology?: string;
+  techs: ITech[];
   type: EventType;
-  locations: ILocation[];
-}
-export interface IEventFromBackEnd {
-  id: number;
-  locations: ILocation[];
-  name: string;
-  startDate: string;
-  type: EventType;
+  locations: ILocationForEvents[];
+  eventStatus: EventStatus;
 }
 
 export interface IEventForBackEnd {

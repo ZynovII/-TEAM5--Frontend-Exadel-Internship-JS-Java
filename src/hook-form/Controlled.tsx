@@ -1,4 +1,4 @@
-import React, {useMemo} from "react";
+import React, { useMemo } from "react";
 import { Controller } from "react-hook-form";
 import {
   ITextFieldProps,
@@ -9,7 +9,7 @@ import {
   ITagPickerProps,
   IBasePickerSuggestionsProps,
   DatePicker,
-  IDatePicker
+  IDatePicker,
 } from "@fluentui/react";
 import { HookFormProps } from "./HookFormProps";
 
@@ -41,31 +41,33 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
 export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
   props
 ) => {
-  let dataMulti = useMemo(() => [], [])
+  let dataMulti = useMemo(() => [], []);
   return (
     <Controller
       name={props.name}
       control={props.control}
       rules={props.rules}
       defaultValue={props.defaultSelectedKey}
-      render={({field:{ onChange, name:fieldName }}) => (
+      render={({ field: { onChange, name: fieldName } }) => (
         <Dropdown
-        {...props}
-        onChange={(e, data) => {
-          {props.onChange && props.onChange()}
-          if (props.multiSelect) {
-            if (data.selected) {
-              dataMulti.push(data.key)
-            } else {
-              dataMulti = dataMulti.filter((item) => item != data.key)
+          {...props}
+          onChange={(e, data) => {
+            {
+              props.onChange && props.onChange(e, data);
             }
-           return onChange( [...new Set(dataMulti)] )
-          } 
-            onChange( [data.key] )
-        } }
-        errorMessage={
-          props.errors[fieldName] && props.errors[fieldName].message
-        }
+            if (props.multiSelect) {
+              if (data.selected) {
+                dataMulti.push(data.key);
+              } else {
+                dataMulti = dataMulti.filter((item) => item != data.key);
+              }
+              return onChange([...new Set(dataMulti)]);
+            }
+            onChange([data.key]);
+          }}
+          errorMessage={
+            props.errors[fieldName] && props.errors[fieldName].message
+          }
         />
       )}
     />
@@ -83,11 +85,11 @@ export const ControlledTagPicker: React.FC<HookFormProps & ITagPickerProps> = (
     <Controller
       name={props.name}
       control={props.control}
-      defaultValue= {[]}
+      defaultValue={[]}
       render={({ field: { onChange } }) => (
         <TagPicker
           {...props}
-          onChange={(e) => onChange(e.map(el => el.key))}
+          onChange={(e) => onChange(e.map((el) => el.key))}
           removeButtonAriaLabel="Remove"
           pickerSuggestionsProps={pickerSuggestionsProps}
         />
@@ -100,6 +102,7 @@ interface InputUpload {
   id: string;
   className: string;
   onChange: any;
+  accept: string;
 }
 export const ControlledInputUpload: React.FC<HookFormProps & InputUpload> = (
   props
@@ -108,24 +111,25 @@ export const ControlledInputUpload: React.FC<HookFormProps & InputUpload> = (
     <Controller
       name={props.name}
       control={props.control}
-      defaultValue={''}
+      defaultValue={""}
       render={({ field: { onChange } }) => (
-        <input 
-        {...props}
-        type="file"
-        onChange={(e) => {
-          onChange(e.target.files[0]) 
-          props.onChange(e)}} 
-         />
+        <input
+          {...props}
+          type="file"
+          onChange={(e) => {
+            onChange(e.target.files[0]);
+            props.onChange(e);
+          }}
+        />
       )}
     />
   );
 };
 
-interface DatePicker{
-  showMonthPickerAsOverlay?: boolean
-  placeholder: string
-  ariaLabel: string
+interface DatePicker {
+  showMonthPickerAsOverlay?: boolean;
+  placeholder: string;
+  ariaLabel: string;
 }
 const dayPickerStrings = {
   months: [

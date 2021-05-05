@@ -1,5 +1,6 @@
 export enum ActionTypes {
   SHOW_LOADER = "SHOW_LOADER",
+  HIDE_LOADER = "HIDE_LOADER",
   SIGN_IN = "SIGN_IN",
   SIGN_OUT = "SIGN_OUT",
   CREATE_EVENT = "CREATE_EVENT",
