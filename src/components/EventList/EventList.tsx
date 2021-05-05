@@ -6,8 +6,8 @@ import "./AllCards.scss";
 import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { useAuth } from "../../hooks/useAuth";
- const EventList
-: React.FC<{isAdminPage:boolean}> = ({isAdminPage}) => {
+
+const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
   const { events, fetchEvents } = useEvents();
   const { loading, showLoader } = useLoader();
   const { isAuth } = useAuth();
@@ -23,9 +23,14 @@ import { useAuth } from "../../hooks/useAuth";
   ) : (
     <>
       <section className="all-cards__wrapper">
-        {(isAdminPage)&&isAuth && <NewCardItem />}
+        {isAdminPage && isAuth && <NewCardItem />}
         {Object.values(events).map((item) => (
-          <CardItem cardItem={item} key={item.id} isLogged={isAuth} isAdminPage={isAdminPage} />
+          <CardItem
+            cardItem={item}
+            key={item.id}
+            isLogged={isAuth}
+            isAdminPage={isAdminPage}
+          />
         ))}
       </section>
       <div className="margin2em button_center">
@@ -35,4 +40,4 @@ import { useAuth } from "../../hooks/useAuth";
   );
 };
 
-export default EventList ;
+export default EventList;

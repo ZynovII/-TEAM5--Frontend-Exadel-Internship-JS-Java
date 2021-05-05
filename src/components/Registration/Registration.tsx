@@ -16,21 +16,69 @@ import {
   IDropdownStyles,
   Checkbox,
 } from "@fluentui/react";
-import { IApplicant, PreferredTime } from "../../models/IApplicant";
+import { IApplicant } from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
-import { preferredTimeReformer } from "../../utils/stringReformers";
+import { useApplicants } from "../../hooks/useApplicants";
+import { useOptions } from "../../hooks/useOptions";
+import { IOptionsRegistration } from "../../models/Forms/IOptions";
+import { ILocationFromBackEnd } from "../../models/ILocation";
+import { ITech } from "../../models/IEvent";
+
+const registrationPattern: {
+  name: RegExp;
+  email: RegExp;
+  phoneNumber: RegExp;
+} = {
+  name: /^\D+\s\D+$/i,
+  email: /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@([a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i,
+  phoneNumber: /\W\d+/gi,
+};
+
+const modalText =
+  "Your application has been successfully sent. Our specialist will connect with you soon.";
 
 export const Registration: React.FC<{
   name?: string;
   candidatePage?: boolean;
   candidat?: IApplicant;
+  techs?: ITech[];
 }> = (props) => {
-  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
-    false
+  const { createCandidate } = useApplicants();
+  const { fetchLocation, fetchPreferredTime } = useOptions();
+  const [options, setOptions] = useState<IOptionsRegistration>({
+    locations: [],
+    preferredTimes: [],
+  });
+  const [country, setCountry] = useState<ILocationFromBackEnd>();
+
+  useEffect(() => {
+    Promise.all([fetchLocation(), fetchPreferredTime()]).then((res) => {
+      const options: IOptionsRegistration = {
+        locations: res[0],
+        preferredTimes: res[1],
+      };
+      console.log(options);
+      setOptions(options);
+    });
+  }, []);
+
+  const countries: IDropdownOption[] = useMemo(
+    () =>
+      options.locations.map((el) => ({
+        key: el.name,
+        text: el.name,
+      })),
+    [options]
   );
-  const modalText =
-    "Your application has been successfully sent. Our specialist will connect with you soon.";
+  const cities: IDropdownOption[] = useMemo(
+    () => country?.cities.map((el) => ({ key: el, text: el })),
+    [country]
+  );
+  const techsToOptions: IDropdownOption[] = useMemo(
+    () => props.techs.map((el) => ({ key: el.name, text: el.name })),
+    []
+  );
 
   const {
     handleSubmit,
@@ -41,65 +89,9 @@ export const Registration: React.FC<{
     mode: "all",
   });
 
-  const optionsOfCountries: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "Belarus", text: "Belarus" },
-      { key: "Russia", text: "Russia" },
-      { key: "Ukraine", text: "Ukraine", disabled: true },
-    ];
-  }, []);
-
-  const exampleOptionsOfCities: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "Minsk", text: "Minsk" },
-      { key: "Grodno", text: "Grodno" },
-      { key: "Gomel", text: "Gomel", disabled: true },
-    ];
-  }, []);
-
-  const exampleTime: IDropdownOption[] = useMemo(() => {
-    return [
-      {
-        key: PreferredTime.None,
-        text: preferredTimeReformer(PreferredTime.None),
-      },
-      {
-        key: PreferredTime.First,
-        text: preferredTimeReformer(PreferredTime.First),
-      },
-      {
-        key: PreferredTime.Second,
-        text: preferredTimeReformer(PreferredTime.Second),
-      },
-      {
-        key: PreferredTime.Third,
-        text: preferredTimeReformer(PreferredTime.Third),
-      },
-      {
-        key: PreferredTime.Fourth,
-        text: preferredTimeReformer(PreferredTime.Fourth),
-      },
-    ];
-  }, []);
-  const exampleOptionsOfTechnology: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "JavaScript", text: "JavaScript" },
-      { key: "Java", text: "Java" },
-    ];
-  }, []);
-  const registrationPattern: {
-    name: RegExp;
-    email: RegExp;
-    phoneNumber: RegExp;
-  } = useMemo(() => {
-    return {
-      name: /^\D+\s\D+$/i,
-      email: /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@([a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i,
-      phoneNumber: /\W\d+/ig,
-    };
-  }, []);
-
-  const [countryStatus, setCountryStatus] = useState<boolean>(true);
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
+    false
+  );
   const [
     privacy,
     { setTrue: setPrivacyTrue, setFalse: setPrivacyFalse },
@@ -127,15 +119,17 @@ export const Registration: React.FC<{
       : setDisabledButtonTrue();
   }, [personalData, privacy]);
 
-  const [fileName, setFileName] = useState<string>("");
+  const [file, setFile] = useState<File>();
   const uploadFile = (event) => {
-    setFileName(event.target.files[0].name);
+    setFile(event.target.files[0]);
+    console.log(event.target.files[0]);
   };
 
   const onSave = () => {
     handleSubmit(
       (data) => {
-        console.log(data);
+        //console.log(data);
+        createCandidate(data, props.name, file);
         showModal();
       },
       (err) => {
@@ -190,9 +184,7 @@ export const Registration: React.FC<{
             control={control}
             name={"phoneNumber"}
             errors={errors}
-            value={
-              (props.candidatePage && props.candidat.phoneNumber) || ""
-            }
+            value={(props.candidatePage && props.candidat.phoneNumber) || ""}
             rules={{
               pattern: {
                 value: registrationPattern.phoneNumber,
@@ -225,7 +217,7 @@ export const Registration: React.FC<{
             required
             rules={{ required: "This field is required" }}
             errors={errors}
-            options={exampleOptionsOfTechnology}
+            options={techsToOptions}
             styles={textFieldStyles}
             className={contentStyles.margin}
           />
@@ -239,8 +231,11 @@ export const Registration: React.FC<{
               (props.candidatePage && props.candidat.country) || ""
             }
             rules={{ required: "This field is required" }}
-            options={optionsOfCountries}
-            onChange={() => setCountryStatus(false)}
+            options={countries}
+            onChange={(_, data) => {
+              const curr = options.locations.find((el) => el.name === data.key);
+              setCountry(curr);
+            }}
             styles={textFieldStyles}
             className={contentStyles.margin}
           />
@@ -254,8 +249,8 @@ export const Registration: React.FC<{
             }
             rules={{ required: "This field is required" }}
             errors={errors}
-            options={exampleOptionsOfCities}
-            disabled={!props.candidatePage && countryStatus}
+            options={cities}
+            disabled={!props.candidatePage && !country}
             styles={textFieldStyles}
             className={contentStyles.margin}
           />
@@ -267,7 +262,7 @@ export const Registration: React.FC<{
               (props.candidatePage && props.candidat.preferredTime) || ""
             }
             errors={errors}
-            options={exampleTime}
+            options={options.preferredTimes}
             styles={textFieldStyles}
             className={contentStyles.margin}
           />
@@ -294,8 +289,8 @@ export const Registration: React.FC<{
       />
       <label htmlFor="cv" className="input-file__label">
         Upload CV
-        </label>
-      <span>{fileName}</span>
+      </label>
+      <span>{file && file.name}</span>
       {props.candidatePage ? (
         <>
           <PrimaryButton
@@ -308,7 +303,7 @@ export const Registration: React.FC<{
         <>
           <Text className={contentStyles.margin} nowrap block>
             * Fields marked with * are required
-            </Text>
+          </Text>
           <div className={contentStyles.checkboxes}>
             <Checkbox
               onChange={checkPersonalData}
@@ -332,7 +327,6 @@ export const Registration: React.FC<{
 };
 
 const contentStyles = mergeStyleSets({
-
   container: {
     margin: "1.5em auto",
   },
@@ -352,12 +346,12 @@ const contentStyles = mergeStyleSets({
     "@media(min-width: 725px)": {
       display: "flex",
       justifyContent: "space-between",
-    }
+    },
   },
   mediaItem: {
     "@media(min-width: 725px)": {
-      width: '48%'
-    }
+      width: "48%",
+    },
   },
 });
 
