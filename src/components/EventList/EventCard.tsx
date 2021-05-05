@@ -106,7 +106,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   return (
     <DocumentCard className={styles.styleCard} onClick={selectHandler}>
       <div>
-        {props.isLogged && (
+        {(location.hash=="#/admin/events")&&props.isLogged && (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <DocumentCardActions actions={documentCardActions} />
             {isPublished ? (

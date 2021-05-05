@@ -6,8 +6,8 @@ import "./AllCards.scss";
 import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { useAuth } from "../../hooks/useAuth";
-
-export const EventList
+import { withRouter } from "react-router-dom";
+ const EventList
 : React.FC = () => {
   const { events, fetchEvents } = useEvents();
   const { loading, showLoader } = useLoader();
@@ -24,7 +24,7 @@ export const EventList
   ) : (
     <>
       <section className="all-cards__wrapper">
-        {isAuth && <NewCardItem />}
+        {(location.hash=="#/admin/events")&&isAuth && <NewCardItem />}
         {Object.values(events).map((item) => (
           <CardItem cardItem={item} key={item.id} isLogged={isAuth} />
         ))}
@@ -36,4 +36,4 @@ export const EventList
   );
 };
 
-export default EventList;
+export default withRouter(EventList) ;
