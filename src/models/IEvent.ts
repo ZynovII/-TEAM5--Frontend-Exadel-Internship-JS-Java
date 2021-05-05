@@ -23,7 +23,7 @@ export interface IEvent {
   description: string;
   techs: ITech[];
   type: EventType;
-  locations: ILocation[];
+  locations: ILocationForEvents[];
   eventStatus: EventStatus;
 }
 
