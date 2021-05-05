@@ -290,6 +290,7 @@ export const Registration: React.FC<{
         id={"cv"}
         className="input-file__input"
         onChange={(e) => uploadFile(e)}
+        accept=".doc, .docx, .pdf"
       />
       <label htmlFor="cv" className="input-file__label">
         Upload CV
