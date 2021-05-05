@@ -1,7 +1,6 @@
 import { hot } from "react-hot-loader/root";
 import * as React from "react";
 import {
-  BrowserRouter,
   Route,
   Switch,
   Redirect,
@@ -14,12 +13,10 @@ import { MainPage } from "./pages/MainPage";
 import { AdminPage } from "./pages/AdminPage";
 import { Store } from "./context/Store";
 import { NotFoundPage } from "./pages/NotFoundPage";
-import Scrollbar from "./components/UI/Scrollbar/Scrollbar";
 import TSPage from "./components/TSPage/TSPage";
 const App = () => (
   <Store>
     <HashRouter>
-      <Scrollbar>
         <Switch>
           <Route path="/" exact>
             <Redirect to="/events" />
@@ -29,7 +26,6 @@ const App = () => (
           <Route path="/techinterview:id" component={TSPage} />
           <Route component={NotFoundPage} />
         </Switch>
-      </Scrollbar>
     </HashRouter>
   </Store>
 );
