@@ -71,6 +71,7 @@ export const UploadImage: React.FC<{ setImageSrc: Function }> = ({
             id={"eventImage"}
             className="input-file__input"
             onChange={(e) => uploadFile(e)}
+            accept=".jpeg, .png, .gif, .bmp "
           />
           <label htmlFor="eventImage" className={contentStyles.inputLabel}>
             <FontIcon

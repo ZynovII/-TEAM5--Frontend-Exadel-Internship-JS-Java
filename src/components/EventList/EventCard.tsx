@@ -14,6 +14,7 @@ import { useBoolean } from "@fluentui/react-hooks";
 import { useHistory } from "react-router";
 import { IEvent } from "../../models/IEvent";
 import { useLoader } from "../../hooks/hooks";
+import { useEvents } from "../../hooks/useEvents";
 import { PublishDialog } from "./PublishDialog";
 
 import { dateReformer } from "./../../utils/stringReformers";
@@ -23,6 +24,7 @@ const cardImage = require("./../../assets/img/card_img.jpg");
 const styles = mergeStyleSets({
   styleCard: {
     minWidth: "30%",
+    height: 345,
     paddingBottom: "10px",
     marginBottom: "20px",
   },
@@ -50,15 +52,24 @@ const styles = mergeStyleSets({
 export interface ICardItemProps {
   cardItem: IEvent;
   isLogged: boolean;
+  isAdminPage: boolean;
 }
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const history = useHistory();
+  const { loadImage } = useEvents();
   const { showLoader } = useLoader();
   const selectHandler = () => {
     showLoader();
     history.push(`/events/${props.cardItem.id}`);
   };
+
+  const [imageEvent, setImageEvent] = useState(
+    "https://veraconsulting.it/wp-content/uploads/2014/04/placeholder.png"
+  );
+  React.useEffect(() => {
+    loadImage(props.cardItem.id, setImageEvent);
+  }, []);
 
   const [hideDialog, { toggle: toggleHideDialog }] = useBoolean(true);
   const [isPublished, setIspublished] = useState(false);
@@ -98,7 +109,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   return (
     <DocumentCard className={styles.styleCard} onClick={selectHandler}>
       <div>
-        {props.isLogged && (
+        {props.isAdminPage && props.isLogged && (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <DocumentCardActions actions={documentCardActions} />
             {isPublished ? (
@@ -117,7 +128,8 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         toggleHideDialog={toggleHideDialog}
         apdateData={apdateData}
       />
-      <Image height="65%" imageFit={ImageFit.cover} src={cardImage.default} />
+      <Image height="65%" imageFit={ImageFit.cover} src={imageEvent} />
+      {/* {imageEvent && <>PICTURE<Image src={imageEvent}/></>} */}
       <DocumentCardTitle
         className={styles.mainTytle}
         title={props.cardItem.name}

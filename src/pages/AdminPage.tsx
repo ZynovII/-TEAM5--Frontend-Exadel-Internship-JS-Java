@@ -23,7 +23,9 @@ export const AdminPage = () => {
           <ScrollBar height="100vh">
             <div className="ms-Grid-row" style={{ padding: "1em" }}>
               <Switch>
-                <Route path="/admin/events" component={EventList} />
+                <Route path="/admin/events">
+                  <EventList isAdminPage />
+                </Route>
                 <Route
                   path="/admin/candidates"
                   exact

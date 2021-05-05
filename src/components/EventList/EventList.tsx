@@ -7,7 +7,7 @@ import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { useAuth } from "../../hooks/useAuth";
 
-export const EventList: React.FC = () => {
+const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
   const { events, fetchEvents } = useEvents();
   const { loading, showLoader } = useLoader();
   const { isAuth } = useAuth();
@@ -23,9 +23,14 @@ export const EventList: React.FC = () => {
   ) : (
     <>
       <section className="all-cards__wrapper">
-        {isAuth && <NewCardItem />}
+        {isAdminPage && isAuth && <NewCardItem />}
         {Object.values(events).map((item) => (
-          <CardItem cardItem={item} key={item.id} isLogged={isAuth} />
+          <CardItem
+            cardItem={item}
+            key={item.id}
+            isLogged={isAuth}
+            isAdminPage={isAdminPage}
+          />
         ))}
       </section>
       <div className="margin2em button_center">

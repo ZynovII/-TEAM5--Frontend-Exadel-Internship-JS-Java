@@ -71,11 +71,21 @@ export const useEvents = () => {
       });
   };
 
+  const loadImage = (id: string | number, setImageEvent) => {
+    axios.get(`http://localhost:8081/api/events/${id}/image/exists`).then((res) => {
+      if (res.data) {
+        axios({ url: `http://localhost:8081/api/events/${id}/image/download`, method: 'GET', responseType: 'blob' }).then((res) => { setImageEvent(window.URL.createObjectURL(new Blob([res.data]))) })
+      }
+
+    })
+  }
+
   return {
     selectedEvent: state.selectedEvent,
     events: state.events,
     selectEvent,
     fetchEvents,
     createEvent,
+    loadImage
   };
 };
