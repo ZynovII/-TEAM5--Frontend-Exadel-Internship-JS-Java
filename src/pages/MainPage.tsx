@@ -10,13 +10,12 @@ import MainComponent from "../components/MainComponent";
 import Event from "../components/Event";
 import Scrollbar from "../components/UI/Scrollbar/Scrollbar";
 
-import classes from './MainPage.module.scss';
 
 export const MainPage = () => {
   return (
     <>
       <Scrollbar height="100%">
-        <div className={classes.MainPage__wrapper}>
+        <div className='adjustment-wrapper'>
           <Header />
           <main className="main">
             <Wrapper>

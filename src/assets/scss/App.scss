@@ -31,6 +31,15 @@ body {
   }
 }
 
+.adjustment {
+  &-wrapper {
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+  }
+}
+
 .input-file {
   position: relative;
   margin: 10px;

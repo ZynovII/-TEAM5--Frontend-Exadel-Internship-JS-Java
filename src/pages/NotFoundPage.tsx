@@ -5,10 +5,12 @@ import { NotFound } from "../components/NotFound";
 
 export const NotFoundPage = () => (
   <>
-    <Header />
-    <main className="main">
-      <NotFound />
-    </main>
-    <Footer />
+    <div className="adjustment-wrapper">
+      <Header />
+      <main className="main">
+        <NotFound />
+      </main>
+      <Footer />
+    </div>
   </>
 );
