@@ -10,6 +10,8 @@ export const reducer = (state: IStore, action: IAction): IStore => {
   switch (type) {
     case ActionTypes.SHOW_LOADER:
       return { ...state, loading: true };
+    case ActionTypes.HIDE_LOADER:
+      return { ...state, loading: false };
     case ActionTypes.SIGN_IN:
       return {
         ...state,

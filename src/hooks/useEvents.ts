@@ -2,6 +2,11 @@ import axios from "axios";
 import { ActionTypes } from "../context/actionTypes";
 import { useStore } from "./hooks";
 // import { fakeRequestEvents } from "../fakeDB/fakeRequest";
+
+import { URL, useStore } from "./hooks";
+import { IEvent } from "../models/IEvent";
+import { ID } from "../models/Store/IStore";
+
 import { IEventForBackEnd } from "../models/IEvent";
 
 export const useEvents = () => {
@@ -35,14 +40,20 @@ export const useEvents = () => {
       })
       .catch((err) => console.log(err));
   };
-  const selectEvent = (id: string | number) => {
+
+  const selectEvent = (id: ID) => {
     if (state.events[id]) {
       dispatch({
         type: ActionTypes.SELECT_EVENT,
         payload: state.events[id],
       });
+    } else if (id === null) {
+      dispatch({
+        type: ActionTypes.SELECT_EVENT,
+        payload: null,
+      });
     } else {
-      axios.get(`http://localhost:8081/api/events/${id}`).then((res) => {
+      axios.get(`${URL}/api/events/${id}`).then((res) => {
         dispatch({
           type: ActionTypes.SELECT_EVENT,
           payload: res.data,
@@ -51,9 +62,7 @@ export const useEvents = () => {
     }
   };
 
-
   const createEvent = (event: IEventForBackEnd, imageSrc: File) => {
-
     const createEventForBackEnd = {
       cities: event.cities,
       description: event.description,
@@ -63,7 +72,9 @@ export const useEvents = () => {
       techs: event.techs,
       type: event.type[0],
     };
-    axios.post(`http://localhost:8081/api/events/create`, createEventForBackEnd).then((res) => res.data.id)
+    axios
+      .post(`http://localhost:8081/api/events/create`, createEventForBackEnd)
+      .then((res) => res.data.id)
       .then((id) => {
         const formData = new FormData();
         formData.append("file", imageSrc, imageSrc.name);
@@ -71,8 +82,7 @@ export const useEvents = () => {
           `http://localhost:8081/api/events/{id}/image/upload?id=${id}`,
           formData
         );
-      })
-
+      });
   };
 
   const loadImage = (id: string | number, setImageEvent) => {

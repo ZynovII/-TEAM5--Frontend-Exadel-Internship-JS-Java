@@ -6,6 +6,7 @@ import "./AllCards.scss";
 import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { useAuth } from "../../hooks/useAuth";
+
 const EventList
   : React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
     const { events, publishedEvents, fetchEvents, fetchPublishedEvents } = useEvents();
@@ -38,5 +39,6 @@ const EventList
       </>
     );
   };
+
 
 export default EventList;

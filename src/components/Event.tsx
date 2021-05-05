@@ -20,12 +20,11 @@ const Event: React.FC<IEventProps> = (props) => {
   const params = useParams<RouteParams>();
   const { selectedEvent, selectEvent } = useEvents();
   const { loading, showLoader } = useLoader();
-  const load = () => {
+
+  useEffect(() => {
     showLoader();
     selectEvent(params.id);
-  };
-  useEffect(() => {
-    load();
+    return () => selectEvent(null);
   }, []);
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
@@ -35,7 +34,7 @@ const Event: React.FC<IEventProps> = (props) => {
         {selectedEvent.name}
       </h1>
       <DescriptionEventPage cardItem={selectedEvent} />
-      <Registration name={selectedEvent.name} />
+      <Registration name={selectedEvent.name} techs={selectedEvent.techs} />
     </>
   );
 };

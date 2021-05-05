@@ -13,7 +13,7 @@ import {
 import { Registration } from "../Registration/Registration";
 import { StatusForm } from "./StatusForm";
 import { InfoForm } from "./InfoForm";
-import ScrollBar from '../UI/Scrollbar/Scrollbar'
+// import ScrollBar from '../UI/Scrollbar/Scrollbar'
 import { InterviewForm } from "./InterwievForm";
 
 
@@ -25,7 +25,7 @@ const candidat: IApplicant = {
   id: "aefo78a0",
   fullName: "Ivan Ivanov",
   email: "iivanov@mail.ru",
-  skype: " skype ",
+  skype: "skype ",
   phoneNumber: "+375294722147",
   country: "Belarus",
   city: "Minsk",
@@ -42,7 +42,7 @@ export const CandidatePage: React.FC = () => {
   const [edit, setEdit] = useState<boolean>(false);
   return (
     <>
-      <header className={contentStyles.title}>
+      <header >
         <div
           style={{
             display: "flex",
@@ -66,9 +66,7 @@ export const CandidatePage: React.FC = () => {
       </header>
       <div className={contentStyles.container}>
       <StatusForm candidat={candidat} />
-
-      <ScrollBar height="62vh"> 
-        <div style={{margin:'0 1em'}}>
+        <div >
           {edit ? (
             <Registration candidatePage={true} candidat={candidat} />
           ) : (
@@ -76,16 +74,13 @@ export const CandidatePage: React.FC = () => {
           )}
         </div>
         <InterviewForm />
-        </ScrollBar>
       </div>
     </>
   );
 };
 
 const contentStyles = mergeStyleSets({
-  title: {
-    margin: "0 2em",
-  },
+  
   container: {
     width: "auto",
     margin: "1em 2em",

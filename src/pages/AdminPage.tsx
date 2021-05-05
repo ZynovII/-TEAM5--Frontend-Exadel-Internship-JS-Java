@@ -10,7 +10,7 @@ import InterviewList from "../components/InterviewsList/InterviewsList";
 import EventList from "../components/EventList/EventList";
 import { CandidatePage } from "../components/CandidatePage/CandidatePage";
 import { ArchiveEventList } from "../components/ArchivePage/ArchivePage";
-import ScrollBar from '../components/UI/Scrollbar/Scrollbar'
+import ScrollBar from "../components/UI/Scrollbar/Scrollbar";
 
 export const AdminPage = () => {
   return (
@@ -21,12 +21,11 @@ export const AdminPage = () => {
         </div>
         <div className="ms-Grid-col ms-sm10 ms-xl10 main-element pd-0">
           <ScrollBar height="100vh">
-          <div className="ms-Grid-row" style={{padding:'1em'}}>
+            <div className="ms-Grid-row" style={{ padding: "1em" }}>
               <Switch>
-                <Route 
-                  path="/admin/events">
-                    <EventList isAdminPage />
-                  </Route>
+                <Route path="/admin/events">
+                  <EventList isAdminPage />
+                </Route>
                 <Route
                   path="/admin/candidates"
                   exact
@@ -45,19 +44,14 @@ export const AdminPage = () => {
                   path="/admin/interviews/:name"
                   component={CandidatePage}
                 />
-                <Route 
-                  path="/admin/archive" 
-                  component={ArchiveEventList} 
-                />
+                <Route path="/admin/archive" component={ArchiveEventList} />
                 <Route
                   path="/admin/signout"
                   component={() => <h1>SignOut</h1>}
                 />
-                <Route 
-                  component={NotFound} 
-                />
+                <Route component={NotFound} />
               </Switch>
-          </div>
+            </div>
           </ScrollBar>
         </div>
       </div>

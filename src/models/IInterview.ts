@@ -1,7 +1,8 @@
 import { UserRole } from "./IUser";
+import { ID } from "./Store/IStore";
 
 export interface IInterview {
-  id: string;
+  id: ID;
   interviewDate: string;
   interviewTime: any;
   fullName: string;

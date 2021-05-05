@@ -52,7 +52,7 @@ const styles = mergeStyleSets({
 export interface ICardItemProps {
   cardItem: IEvent;
   isLogged: boolean;
-  isAdminPage:boolean;
+  isAdminPage: boolean;
 }
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
@@ -64,7 +64,9 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     history.push(`/events/${props.cardItem.id}`);
   };
 
-  const [imageEvent, setImageEvent] = useState("https://veraconsulting.it/wp-content/uploads/2014/04/placeholder.png");
+  const [imageEvent, setImageEvent] = useState(
+    "https://veraconsulting.it/wp-content/uploads/2014/04/placeholder.png"
+  );
   React.useEffect(() => {
     loadImage(props.cardItem.id, setImageEvent);
   }, []);
@@ -107,7 +109,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   return (
     <DocumentCard className={styles.styleCard} onClick={selectHandler}>
       <div>
-        {(props.isAdminPage)&&props.isLogged && (
+        {props.isAdminPage && props.isLogged && (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <DocumentCardActions actions={documentCardActions} />
             {isPublished ? (
@@ -117,9 +119,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
                 className={styles.acceptIcon}
                 title="Event is piblished"
               />
-            ) : (
-              <></>
-            )}
+            ) : null}
           </div>
         )}
       </div>

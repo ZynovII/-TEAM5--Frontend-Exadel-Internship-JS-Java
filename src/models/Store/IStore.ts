@@ -1,6 +1,8 @@
 import { IInterview } from "../IInterview";
 import { IApplicant, IApplicantShortFromBackEnd } from "../IApplicant";
-import { IEvent, IEventFromBackEnd } from "../IEvent";
+import { IEvent } from "../IEvent";
+
+export type ID = string | number;
 
 export interface IStore {
   loading: boolean;
