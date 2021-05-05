@@ -52,6 +52,7 @@ const styles = mergeStyleSets({
 export interface ICardItemProps {
   cardItem: IEvent;
   isLogged: boolean;
+  isAdminPage:boolean;
 }
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
@@ -106,7 +107,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   return (
     <DocumentCard className={styles.styleCard} onClick={selectHandler}>
       <div>
-        {(location.hash=="#/admin/events")&&props.isLogged && (
+        {(props.isAdminPage)&&props.isLogged && (
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <DocumentCardActions actions={documentCardActions} />
             {isPublished ? (

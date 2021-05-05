@@ -25,7 +25,7 @@ import { useAuth } from "../../hooks/useAuth";
       <section className="all-cards__wrapper">
         {(isAdminPage)&&isAuth && <NewCardItem />}
         {Object.values(events).map((item) => (
-          <CardItem cardItem={item} key={item.id} isLogged={isAuth} />
+          <CardItem cardItem={item} key={item.id} isLogged={isAuth} isAdminPage={isAdminPage} />
         ))}
       </section>
       <div className="margin2em button_center">
