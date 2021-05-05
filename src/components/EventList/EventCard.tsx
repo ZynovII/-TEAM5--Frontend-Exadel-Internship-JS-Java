@@ -63,7 +63,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     history.push(`/events/${props.cardItem.id}`);
   };
 
-  const [imageEvent, setImageEvent] = useState(cardImage.default);
+  const [imageEvent, setImageEvent] = useState("https://veraconsulting.it/wp-content/uploads/2014/04/placeholder.png");
   React.useEffect(() => {
     loadImage(props.cardItem.id, setImageEvent);
   }, []);
