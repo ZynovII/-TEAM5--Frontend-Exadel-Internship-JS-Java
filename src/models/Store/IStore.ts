@@ -8,8 +8,8 @@ export interface IStore {
   loading: boolean;
   isAuthenticated: boolean;
   currentUserID: number;
-  events: { [eventId: number]: IEvent };
-  publishedEvents: { [eventId: number]: IEvent };
+  events: { [eventId: string]: IEvent };
+  publishedEvents: { [eventId: string]: IEvent };
   applicants: { [aplicantId: string]: IApplicantShortFromBackEnd };
   interviews: { [interviewId: string]: IInterview };
   selectedEvent: IEvent;
