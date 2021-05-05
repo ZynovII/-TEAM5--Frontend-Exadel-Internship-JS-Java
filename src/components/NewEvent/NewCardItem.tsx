@@ -13,7 +13,7 @@ const styles = {
   styleCard: {
     root: {
       minWidth: "30%",
-      height: "auto",
+      height: 345,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
@@ -57,7 +57,6 @@ export const NewCardItem: React.FC = (props) => {
             showAsSecondaryTitle
             styles={styles.title}
           />
-          <DocumentCardTitle styles={styles.mainTytle} title="" />
         </div>
         <NewEventForm isModal={isModal} hideModal={toggleModal} />
       </DocumentCard>
