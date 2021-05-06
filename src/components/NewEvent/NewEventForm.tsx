@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { isValidElement, useMemo, useState, useEffect } from "react";
 import { useId } from "@fluentui/react-hooks";
 import { useForm } from "react-hook-form";
 import {
@@ -25,6 +25,11 @@ import {
 import { IEventForBackEnd } from "../../models/IEvent";
 import { UploadImage } from "./UploadImage";
 import { useEvents } from "../../hooks/useEvents";
+import axios from "axios";
+import { useOptions } from "../../hooks/useOptions";
+import { IOptionsEventFilter } from "../../models/Forms/IOptions";
+import { ILocationFromBackEnd } from "../../models/ILocation";
+import { ITech } from "../../models/IEvent";
 
 interface IModalProps {
   isModal: boolean;
@@ -44,9 +49,48 @@ const textFieldStyles = (
 });
 
 export const NewEventForm: React.FC<
-  { name?: string; candidatePage?: boolean; candidat?: any } & IModalProps
+  {
+    name?: string;
+    candidatePage?: boolean;
+    candidat?: any;
+    techs?: ITech[];
+  } & IModalProps
 > = ({ isModal, hideModal, ...props }) => {
   const { createEvent } = useEvents();
+  const { fetchLocation, fetchEventTypes, fetchTechs } = useOptions();
+  const [options, setOptions] = useState<IOptionsEventFilter>({
+    locations: [],
+    eventTypes: [],
+    techs: [],
+  });
+  const [country, setCountry] = useState<ILocationFromBackEnd>();
+
+  useEffect(() => {
+    Promise.all([fetchLocation(), fetchEventTypes(), fetchTechs()]).then(
+      (res) => {
+        const options: IOptionsEventFilter = {
+          locations: res[0],
+          eventTypes: res[1],
+          techs: res[2],
+        };
+        console.log(options);
+        setOptions(options);
+      }
+    );
+  }, []);
+
+  const countries: IDropdownOption[] = useMemo(
+    () =>
+      options.locations.map((el) => ({
+        key: el.name,
+        text: el.name,
+      })),
+    [options]
+  );
+  const cities: IDropdownOption[] = useMemo(
+    () => country?.cities.map((el) => ({ key: el, text: el })),
+    [country]
+  );
 
   const {
     handleSubmit,
@@ -58,6 +102,19 @@ export const NewEventForm: React.FC<
   });
 
   const [imageSrc, setImageSrc] = useState<File>();
+
+  const isNameUniqe = (value) => {
+    axios
+      .get(`http://localhost:8081/api/events/uniqueness/${value}`)
+      .then((res) => {
+        console.log(res.data);
+      });
+  };
+
+  // const validateEvenName = async(value)=>{
+  //   const valid = await fetch(`http://localhost:8081/api/events/uniqueness/${value}`)
+
+  // }
   // console.log("imageSrc",imageSrc.name);
   const onSave = () => {
     handleSubmit(
@@ -72,43 +129,6 @@ export const NewEventForm: React.FC<
       }
     )();
   };
-
-  const optionsOfCountries: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "belarus", text: "Belarus" },
-      { key: "russia", text: "Russia" },
-      { key: "ukraine", text: "Ukraine", disabled: true },
-    ];
-  }, []);
-
-  const exampleOptionsOfCities: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "Minsk", text: "Minsk" },
-      { key: "grodno", text: "Grodno" },
-      { key: "gomel", text: "Gomel", disabled: true },
-    ];
-  }, []);
-
-  const optionsOfTechnology: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "JavaScript", text: "JavaScript" },
-      { key: "java", text: "Java" },
-      { key: "python", text: "Python" },
-      { key: "react", text: "React" },
-      { key: "typeScript", text: "TypeScript" },
-      { key: "c#", text: "C#" },
-      { key: "data base", text: "Data base" },
-    ];
-  }, []);
-  const optionsOfStatus: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "INTERNSHIP", text: "Intership" },
-      { key: "meet-up", text: "Meet-up" },
-      { key: "taining", text: "Training" },
-    ];
-  }, []);
-
-  const [countryStatus, setCountryStatus] = useState<boolean>(true);
 
   const titleId = useId("title");
 
@@ -145,10 +165,14 @@ export const NewEventForm: React.FC<
               required={true}
               label="Event name"
               placeholder="Name"
+              // onBlur={isNameUniqe}
               control={control}
               name={"name"}
               errors={errors}
-              rules={{ required: "This field is required" }}
+              rules={{
+                required: "This field is required",
+                //  validate: validateEvenName
+              }}
               styles={textFieldStyles}
             />
             <ControlledDropdown
@@ -163,7 +187,7 @@ export const NewEventForm: React.FC<
               //   (props.candidatePage && props.candidat.country) || []
               // }
               // rules={{ required: "This field is required" }}
-              options={optionsOfTechnology}
+              options={options.techs}
               styles={textFieldStyles}
             />
 
@@ -179,8 +203,13 @@ export const NewEventForm: React.FC<
               //   (props.candidatePage && props.candidat.country) || []
               // }
               rules={{ required: "This field is required" }}
-              options={optionsOfCountries}
-              onChange={() => setCountryStatus(false)}
+              options={countries}
+              onChange={(_, data) => {
+                const curr = options.locations.find(
+                  (el) => el.name === data.key
+                );
+                setCountry(curr);
+              }}
               styles={textFieldStyles}
             />
             <ControlledDropdown
@@ -194,8 +223,8 @@ export const NewEventForm: React.FC<
               // }
               // rules={{ required: "This field is required" }}
               errors={errors}
-              options={exampleOptionsOfCities}
-              disabled={!props.candidatePage && countryStatus}
+              options={cities}
+              disabled={!props.candidatePage && !country}
               styles={textFieldStyles}
             />
             <ControlledDropdown
@@ -209,7 +238,7 @@ export const NewEventForm: React.FC<
               //   (props.candidatePage && props.candidat.country) || []
               // }
               rules={{ required: "This field is required" }}
-              options={optionsOfStatus}
+              options={options.eventTypes}
               styles={textFieldStyles}
             />
           </Stack>

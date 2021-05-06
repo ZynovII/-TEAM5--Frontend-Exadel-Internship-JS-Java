@@ -64,6 +64,15 @@ export const useOptions = () => {
     return eventTypesOptions;
   };
 
+  const fetchTechs = async () => {
+    const response = await axios.get(`${URL}/api/techs`);
+    const techsOptions: IDropdownOption[] = response.data.map((el) => ({
+      key: el,
+      text: el,
+    }));
+    return techsOptions;
+  }
+
   return {
     fetchTechnology,
     fetchEventTypes,
@@ -71,5 +80,6 @@ export const useOptions = () => {
     fetchInterviewStatuses,
     fetchStatuses,
     fetchPreferredTime,
+    fetchTechs
   };
 };
