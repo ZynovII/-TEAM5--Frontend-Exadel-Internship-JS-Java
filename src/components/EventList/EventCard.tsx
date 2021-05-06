@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   DocumentCard,
   DocumentCardTitle,
@@ -92,7 +92,6 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   };
 
   const handleArchiveBtn = (e) => {
-    console.log("id", props.cardItem.id);
     replaceToArchive(props.cardItem.id);
   };
 
@@ -123,30 +122,35 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     },
   ];
 
-  const publishDialogProps = {
-    hideDialog: hidePublishDialog,
-    toggleHideDialog: toggleHidePublishDialog,
-    apdateData: apdateData,
-    dialogContentProps: {
-      type: DialogType.normal,
-      title: "Attention",
-      closeButtonAriaLabel: "Close",
-      subText: "Are you sure you want to publish this event?",
-    },
-    actionType: "publish",
-  };
-  const removeDialogProps = {
-    hideDialog: hideRemoveDialog,
-    toggleHideDialog: toggleHideRemoveDialog,
-    apdateData: handleArchiveBtn,
-    dialogContentProps: {
-      type: DialogType.normal,
-      title: "Attention",
-      closeButtonAriaLabel: "Close",
-      subText: "Are you sure you want to remove this event?",
-    },
-    actionType: "remove",
-  };
+  const publishDialogProps = useMemo(() => {
+    return {
+      hideDialog: hidePublishDialog,
+      toggleHideDialog: toggleHidePublishDialog,
+      apdateData: apdateData,
+      dialogContentProps: {
+        type: DialogType.normal,
+        title: "Attention",
+        closeButtonAriaLabel: "Close",
+        subText: "Are you sure you want to publish this event?",
+      },
+      actionType: "publish",
+    };
+  }, []);
+  const removeDialogProps = useMemo(
+    () => ({
+      hideDialog: hideRemoveDialog,
+      toggleHideDialog: toggleHideRemoveDialog,
+      apdateData: handleArchiveBtn,
+      dialogContentProps: {
+        type: DialogType.normal,
+        title: "Attention",
+        closeButtonAriaLabel: "Close",
+        subText: "Are you sure you want to remove this event?",
+      },
+      actionType: "remove",
+    }),
+    []
+  );
 
   return (
     <DocumentCard className={styles.styleCard} onClick={selectHandler}>
