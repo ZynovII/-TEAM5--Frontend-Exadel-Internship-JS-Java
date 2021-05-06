@@ -80,12 +80,20 @@ export const useEvents = () => {
     })
   }
 
+  const replaceToArchive = (id: ID) => {
+    const s = `${URL}/api/events/${id}/archive`
+    axios.get(s).then((res) => {
+      console.log(res.data);
+    }).catch((err) => console.log(err));
+  }
+
   return {
     selectedEvent: state.selectedEvent,
     events: state.events,
     selectEvent,
     fetchEvents,
     createEvent,
-    loadImage
+    loadImage,
+    replaceToArchive
   };
 };
