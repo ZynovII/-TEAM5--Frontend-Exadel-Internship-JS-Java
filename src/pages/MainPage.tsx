@@ -15,17 +15,19 @@ export const MainPage = () => {
   return (
     <>
       <Scrollbar height="100%">
-        <Header />
-        <main className="main">
-          <Wrapper>
-            <Switch>
-              <Route path="/events" exact component={MainComponent} />
-              <Route path="/events/:id" component={Event} />
-              <Route component={NotFound} />
-            </Switch>
-          </Wrapper>
-        </main>
-        <Footer />
+        <div className='adjustment-wrapper'>
+          <Header />
+          <main className="main">
+            <Wrapper>
+              <Switch>
+                <Route path="/events" exact component={MainComponent} />
+                <Route path="/events/:id" component={Event} />
+                <Route component={NotFound} />
+              </Switch>
+            </Wrapper>
+          </main>
+          <Footer />
+        </div>
       </Scrollbar>
     </>
   );
