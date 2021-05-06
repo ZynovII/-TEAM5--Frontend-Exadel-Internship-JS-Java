@@ -45,15 +45,20 @@ export const Registration: React.FC<{
   techs?: ITech[];
 }> = (props) => {
   const { createCandidate } = useApplicants();
-  const { fetchLocation, fetchPreferredTime } = useOptions();
+  const { fetchLocation, fetchPreferredTime, fetchTechnology } = useOptions();
   const [options, setOptions] = useState<IOptionsRegistration>({
     locations: [],
     preferredTimes: [],
   });
+  const [techsOptions, setTechsOptions] = useState<IDropdownOption[]>();
   const [country, setCountry] = useState<ILocationFromBackEnd>();
 
   useEffect(() => {
-    Promise.all([fetchLocation(), fetchPreferredTime()]).then((res) => {
+    Promise.all([
+      fetchLocation(),
+      fetchPreferredTime(),
+      fetchTechnology(),
+    ]).then((res) => {
       const options: IOptionsRegistration = {
         locations: res[0],
         preferredTimes: res[1],
@@ -75,10 +80,25 @@ export const Registration: React.FC<{
     () => country?.cities.map((el) => ({ key: el, text: el })),
     [country]
   );
-  const techsToOptions: IDropdownOption[] = useMemo(
-    () => props.techs.map((el) => ({ key: el.name, text: el.name })),
-    []
-  );
+  useEffect(() => {
+    if (props.techs) {
+      setTechsOptions(
+        props.techs.map((el) => ({
+          key: el.name,
+          text: el.name,
+        }))
+      );
+    } else {
+      fetchTechnology().then((res) =>
+        setTechsOptions(
+          res.map((el) => ({
+            key: el.name,
+            text: el.name,
+          }))
+        )
+      );
+    }
+  }, []);
 
   const {
     handleSubmit,
@@ -217,7 +237,7 @@ export const Registration: React.FC<{
             required
             rules={{ required: "This field is required" }}
             errors={errors}
-            options={techsToOptions}
+            options={techsOptions}
             styles={textFieldStyles}
             className={contentStyles.margin}
           />
