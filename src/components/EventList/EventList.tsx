@@ -14,17 +14,14 @@ const EventList
     const [page, setPage] = useState(0)
     const { isAuth } = useAuth();
     const loadMore = (page, size) => {
-      fetchEvents(page, size);
+      isAdminPage ? fetchEvents(page, size) : fetchPublishedEvents(page, 6);
+      setPage(page+1)
     };
-    const loadPublish = (page, size) => {
-      fetchPublishedEvents(page, size)
-    }
+    
     useEffect(() => {
       showLoader();
-      let size
-      page ?  size = 6 :  size = 5;
-      isAdminPage ? loadMore(page, size) : loadPublish(page, 6);
-    }, [page]);
+      loadMore(page, 5)
+    }, []);
 
     return loading ? (
       <Spinner size={SpinnerSize.large} className="margin2em" />
@@ -37,7 +34,7 @@ const EventList
           ))}
         </section>
         <div className="margin2em button_center">
-          <PrimaryButton text="Load More" className="button" onClick={() => setPage(page+1)} />
+          <PrimaryButton text="Load More" className="button" onClick={() => loadMore(page, 6)} />
         </div>
       </>
     );
