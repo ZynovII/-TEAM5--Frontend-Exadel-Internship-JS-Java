@@ -58,7 +58,7 @@ export interface ICardItemProps {
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const history = useHistory();
-  const { loadImage, moveEventToArchive } = useEvents();
+  const { loadImage, replaceToArchive } = useEvents();
   const { showLoader } = useLoader();
   const selectHandler = () => {
     showLoader();
@@ -92,7 +92,8 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   };
 
   const handleArchiveBtn = (e) => {
-    moveEventToArchive(Number(props.cardItem.id));
+    console.log("id", props.cardItem.id);
+    replaceToArchive(props.cardItem.id);
   };
 
   const apdateData = (value: boolean) => {

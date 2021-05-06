@@ -80,8 +80,8 @@ export const useEvents = () => {
     })
   }
 
-  const replaceToArchive = (id: number) => {
-    const s = `${URL}/api/events/${id}/toarchive`
+  const replaceToArchive = (id: ID) => {
+    const s = `${URL}/api/events/${id}/archive`
     axios.get(s).then((res) => {
       console.log(res.data);
     }).catch((err) => console.log(err));
@@ -94,6 +94,6 @@ export const useEvents = () => {
     fetchEvents,
     createEvent,
     loadImage,
-    moveEventToArchive: replaceToArchive
+    replaceToArchive
   };
 };
