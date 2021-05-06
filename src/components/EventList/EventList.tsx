@@ -11,7 +11,7 @@ const EventList
   : React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
     const { events, publishedEvents, fetchEvents, fetchPublishedEvents } = useEvents();
     const { loading, showLoader } = useLoader();
-    const [size, setSize] = useState(6)
+    const [page, setPage] = useState(0)
     const { isAuth } = useAuth();
     const loadMore = (page, size) => {
       fetchEvents(page, size);
@@ -21,8 +21,13 @@ const EventList
     }
     useEffect(() => {
       showLoader();
-      isAdminPage ? loadMore(0, size - 1) : loadPublish(0, size);
-    }, [size]);
+      let size
+      page ?  size = 6 :  size = 5;
+      isAdminPage ? loadMore(page, size) : loadPublish(page, 6);
+    }, [page]);
+
+    console.log( publishedEvents)
+    console.log( events)
     return loading ? (
       <Spinner size={SpinnerSize.large} className="margin2em" />
     ) : (
@@ -34,7 +39,7 @@ const EventList
           ))}
         </section>
         <div className="margin2em button_center">
-          <PrimaryButton text="Load More" className="button" onClick={() => setSize(size + 6)} />
+          <PrimaryButton text="Load More" className="button" onClick={() => setPage(page+1)} />
         </div>
       </>
     );

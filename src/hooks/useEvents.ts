@@ -1,6 +1,5 @@
 import axios from "axios";
 import { ActionTypes } from "../context/actionTypes";
-import { useStore } from "./hooks";
 // import { fakeRequestEvents } from "../fakeDB/fakeRequest";
 
 import { URL, useStore } from "./hooks";
@@ -16,6 +15,7 @@ export const useEvents = () => {
     axios
       .get(`http://localhost:8081/api/events?page=${page}&size=${size}`)
       .then((res) => {
+        console.log(res.data)
         dispatch({
           type: ActionTypes.FETCH_EVENTS,
           payload: res.data.content,
