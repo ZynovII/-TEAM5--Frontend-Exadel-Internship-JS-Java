@@ -1,8 +1,23 @@
 import React from "react";
-import { Depths, Nav } from "@fluentui/react";
+import { useId, useBoolean } from "@fluentui/react-hooks";
+import {
+  PrimaryButton,
+  FontWeights,
+  Depths,
+  Nav,
+  Modal,
+  mergeStyleSets,
+  getTheme,
+  IconButton,
+  IIconProps,
+} from "@fluentui/react";
 
 import { useHistory } from "react-router";
 import UserCircle from "../UserCircle/UserCircle";
+
+import { useAuth } from "../../hooks/useAuth";
+
+const cancelIcon: IIconProps = { iconName: "Cancel" };
 
 const Logo = require("../../assets/img/exadel-logo-dash.png");
 
@@ -63,7 +78,7 @@ const Links = [
       },
       {
         name: "Sign out",
-        url: "/admin/signout",
+        url: "",
         key: "key5",
         iconProps: {
           iconName: "SignOut",
@@ -73,36 +88,60 @@ const Links = [
             },
           },
         },
+        onClick: null,
       },
     ],
   },
 ];
 
-const dashboardStyles = {
-  root: {
-    boxSizing: "border-box",
-    overflowY: "auto",
-    paddingTop: "5vh",
-  },
-};
-const logoStyle = {
-  borderRadius: "50%",
-  boxShadow: Depths.depth8,
-  width: "4vw",
-};
-const headStyle = {
-  padding: "10px 0",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "space-around",
-};
-
 export const DashboardNav = () => {
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
+    false
+  );
+  const titleId = useId("signout");
   const history = useHistory();
-  const clickHadler = () => history.push("/");
+  const clickHandler = () => history.push("/");
+  const { signOut } = useAuth();
+  Links[0].links[4].onClick = (e) => {
+    showModal();
+  };
   return (
     <div className="dash-nav">
-      <div style={headStyle} onClick={clickHadler}>
+      <Modal
+        titleAriaId={titleId}
+        isOpen={isModalOpen}
+        onDismiss={() => {
+          hideModal();
+        }}
+        isBlocking={false}
+      >
+        <div className={contentStyles.wrapper}>
+          <div className={contentStyles.header}>
+            <div className={contentStyles.header__inner}>
+              <span id={titleId}>Are you sure?</span>
+              <IconButton
+                styles={iconButtonStyles}
+                iconProps={cancelIcon}
+                ariaLabel="Close modal"
+                onClick={() => {
+                  hideModal();
+                }}
+              />
+            </div>
+          </div>
+          <div className={contentStyles.body}>
+            <PrimaryButton
+              onClick={() => {
+                signOut();
+                clickHandler();
+              }}
+              text="YES!"
+              className="button"
+            />
+          </div>
+        </div>
+      </Modal>
+      <div style={headStyle} onClick={clickHandler}>
         <UserCircle />
         <h4 className="ms-hiddenLgDown ms-fontColor-themePrimary">
           Ivan Ivanov
@@ -118,4 +157,72 @@ export const DashboardNav = () => {
       />
     </div>
   );
+};
+
+const dashboardStyles = {
+  root: {
+    boxSizing: "border-box",
+    overflowY: "auto",
+    paddingTop: "5vh",
+  },
+};
+
+const logoStyle = {
+  borderRadius: "50%",
+  boxShadow: Depths.depth8,
+  width: "4vw",
+};
+const headStyle = {
+  padding: "10px 0",
+  display: "flex",
+  alignItems: "center",
+  justifyContent: "space-around",
+};
+
+const theme = getTheme();
+const contentStyles = mergeStyleSets({
+  wrapper: {
+    height: "176px",
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-between",
+  },
+  header: [
+    theme.fonts.xLargePlus,
+    {
+      flex: "1 1 auto",
+      borderTop: `4px solid ${theme.palette.themePrimary}`,
+      color: theme.palette.neutralPrimary,
+      display: "flex",
+      fontWeight: FontWeights.semibold,
+      padding: "1.5rem 12px 14px 24px",
+    },
+  ],
+  header__inner: {
+    display: "flex",
+    justifyContent: "space-between",
+    width: "100%",
+    alignItems: "center",
+    height: "3rem",
+  },
+  body: {
+    overflowY: "hidden",
+    textAlign: "center",
+    paddingBottom: "2rem",
+  },
+  item: {
+    marginBottom: "10px",
+  },
+});
+
+const iconButtonStyles = {
+  root: {
+    color: theme.palette.neutralPrimary,
+    marginLeft: "auto",
+    marginTop: "4px",
+    marginRight: "2px",
+  },
+  rootHovered: {
+    color: theme.palette.neutralDark,
+  },
 };
