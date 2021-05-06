@@ -90,6 +90,7 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       return {
         ...state,
         selectedApplicant: payload,
+        loading: false,
       };
     case ActionTypes.SELECT_INTERVIEW:
       return {

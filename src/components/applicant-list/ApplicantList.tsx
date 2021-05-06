@@ -41,6 +41,7 @@ export const ApplicantList: React.FC = () => {
   const applicantsList = useMemo(() => {
     return Object.values(applicants).map((item) => {
       return {
+        id: item.id,
         name: item.fullName,
         event: item.event,
         skill: item.primaryTech,
@@ -123,7 +124,7 @@ export const ApplicantList: React.FC = () => {
               isHeaderVisible={true}
               selectionMode={SelectionMode.multiple}
               onItemInvoked={(item) =>
-                history.push(`/admin/candidates/${item.name}`)
+                history.push(`/admin/candidates/${item.id}`)
               }
               onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
                 <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
