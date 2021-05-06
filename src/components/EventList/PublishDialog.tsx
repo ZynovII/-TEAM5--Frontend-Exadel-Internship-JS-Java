@@ -18,12 +18,16 @@ const dialogContentProps = {
 interface IDialogProps {
   hideDialog: boolean;
   toggleHideDialog: any;
-  apdateData: Function;
+  apdateData?: Function;
+  dialogContentProps: object;
+  actionType: string;
 }
 export const PublishDialog: React.FunctionComponent<IDialogProps> = ({
   hideDialog,
   toggleHideDialog,
   apdateData,
+  dialogContentProps,
+  actionType,
 }) => {
   const labelId: string = useId("dialogLabel");
   const subTextId: string = useId("subTextLabel");
@@ -49,12 +53,15 @@ export const PublishDialog: React.FunctionComponent<IDialogProps> = ({
         <DialogFooter>
           <PrimaryButton
             onClick={() => {
-              apdateData(true);
+              if (apdateData) apdateData(true);
               toggleHideDialog();
             }}
-            text="Publish"
+            text={actionType}
           />
-          <DefaultButton onClick={toggleHideDialog} text="Don't publish" />
+          <DefaultButton
+            onClick={toggleHideDialog}
+            text={`Don\`t ${actionType}`}
+          />
         </DialogFooter>
       </Dialog>
     </>

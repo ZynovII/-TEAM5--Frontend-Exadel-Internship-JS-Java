@@ -8,6 +8,7 @@ import {
   DocumentCardActions,
   mergeStyleSets,
   FontIcon,
+  DialogType,
 } from "@fluentui/react";
 
 import { useBoolean } from "@fluentui/react-hooks";
@@ -57,7 +58,7 @@ export interface ICardItemProps {
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const history = useHistory();
-  const { loadImage } = useEvents();
+  const { loadImage, moveEventToArchive } = useEvents();
   const { showLoader } = useLoader();
   const selectHandler = () => {
     showLoader();
@@ -71,12 +72,27 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     loadImage(props.cardItem.id, setImageEvent);
   }, []);
 
-  const [hideDialog, { toggle: toggleHideDialog }] = useBoolean(true);
+  const [hidePublishDialog, { toggle: toggleHidePublishDialog }] = useBoolean(
+    true
+  );
+  const [hideRemoveDialog, { toggle: toggleHideRemoveDialog }] = useBoolean(
+    true
+  );
   const [isPublished, setIspublished] = useState(false);
-  const onHandleClick = (e) => {
-    isPublished ? setIspublished(false) : toggleHideDialog();
+  const onClickPublishBtn = (e) => {
+    isPublished ? setIspublished(false) : toggleHidePublishDialog();
     e.stopPropagation();
     e.preventDefault();
+  };
+
+  const onClickRemoveBtn = (e) => {
+    toggleHideRemoveDialog();
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  const handleArchiveBtn = (e) => {
+    moveEventToArchive(Number(props.cardItem.id));
   };
 
   const apdateData = (value: boolean) => {
@@ -92,7 +108,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     },
     {
       iconProps: { iconName: "Delete" },
-      // onClick:
+      onClick: onClickRemoveBtn,
       ariaLabel: "move to archive",
       title: "Move to archive",
     },
@@ -100,11 +116,36 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       iconProps: {
         iconName: isPublished ? "UnpublishContent" : "PublishContent",
       },
-      onClick: onHandleClick,
+      onClick: onClickPublishBtn,
       ariaLabel: "publish event",
       title: isPublished ? "Unpublish Event" : "Publish event",
     },
   ];
+
+  const publishDialogProps = {
+    hideDialog: hidePublishDialog,
+    toggleHideDialog: toggleHidePublishDialog,
+    apdateData: apdateData,
+    dialogContentProps: {
+      type: DialogType.normal,
+      title: "Attention",
+      closeButtonAriaLabel: "Close",
+      subText: "Are you sure you want to publish this event?",
+    },
+    actionType: "publish",
+  };
+  const removeDialogProps = {
+    hideDialog: hideRemoveDialog,
+    toggleHideDialog: toggleHideRemoveDialog,
+    apdateData: handleArchiveBtn,
+    dialogContentProps: {
+      type: DialogType.normal,
+      title: "Attention",
+      closeButtonAriaLabel: "Close",
+      subText: "Are you sure you want to remove this event?",
+    },
+    actionType: "remove",
+  };
 
   return (
     <DocumentCard className={styles.styleCard} onClick={selectHandler}>
@@ -117,17 +158,14 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
                 aria-label="Accept"
                 iconName="Accept"
                 className={styles.acceptIcon}
-                title="Event is piblished"
+                title="Event is published"
               />
             ) : null}
           </div>
         )}
       </div>
-      <PublishDialog
-        hideDialog={hideDialog}
-        toggleHideDialog={toggleHideDialog}
-        apdateData={apdateData}
-      />
+      <PublishDialog {...removeDialogProps} />
+      <PublishDialog {...publishDialogProps} />
       <Image height="65%" imageFit={ImageFit.cover} src={imageEvent} />
       {/* {imageEvent && <>PICTURE<Image src={imageEvent}/></>} */}
       <DocumentCardTitle
