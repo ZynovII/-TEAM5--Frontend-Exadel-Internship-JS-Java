@@ -26,8 +26,6 @@ const EventList
       isAdminPage ? loadMore(page, size) : loadPublish(page, 6);
     }, [page]);
 
-    console.log( publishedEvents)
-    console.log( events)
     return loading ? (
       <Spinner size={SpinnerSize.large} className="margin2em" />
     ) : (

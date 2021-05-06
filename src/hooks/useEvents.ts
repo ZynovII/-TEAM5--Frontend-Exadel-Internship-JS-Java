@@ -15,7 +15,6 @@ export const useEvents = () => {
     axios
       .get(`http://localhost:8081/api/events?page=${page}&size=${size}`)
       .then((res) => {
-        console.log(res.data)
         dispatch({
           type: ActionTypes.FETCH_EVENTS,
           payload: res.data.content,
