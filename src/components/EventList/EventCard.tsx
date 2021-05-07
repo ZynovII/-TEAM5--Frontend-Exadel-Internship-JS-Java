@@ -58,7 +58,7 @@ export interface ICardItemProps {
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const history = useHistory();
-  const { loadImage, replaceToArchive } = useEvents();
+  const { loadImage, replaceToArchive, publishEvent } = useEvents();
   const { showLoader } = useLoader();
   const selectHandler = () => {
     showLoader();
@@ -95,7 +95,8 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     replaceToArchive(props.cardItem.id);
   };
 
-  const apdateData = (value: boolean) => {
+  const handlePublishBtn = (value: boolean) => {
+    publishEvent(props.cardItem.id);
     setIspublished(value);
   };
 
@@ -126,7 +127,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     return {
       hideDialog: hidePublishDialog,
       toggleHideDialog: toggleHidePublishDialog,
-      apdateData: apdateData,
+      apdateData: handlePublishBtn,
       dialogContentProps: {
         type: DialogType.normal,
         title: "Attention",
@@ -135,7 +136,8 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       },
       actionType: "publish",
     };
-  }, []);
+  }, [hidePublishDialog]);
+
   const removeDialogProps = useMemo(
     () => ({
       hideDialog: hideRemoveDialog,
@@ -149,7 +151,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       },
       actionType: "remove",
     }),
-    []
+    [hideRemoveDialog]
   );
 
   return (
@@ -168,9 +170,9 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
             ) : null}
           </div>
         )}
+        <PublishDialog {...removeDialogProps} />
+        <PublishDialog {...publishDialogProps} />
       </div>
-      <PublishDialog {...removeDialogProps} />
-      <PublishDialog {...publishDialogProps} />
       <Image height="65%" imageFit={ImageFit.cover} src={imageEvent} />
       {/* {imageEvent && <>PICTURE<Image src={imageEvent}/></>} */}
       <DocumentCardTitle
