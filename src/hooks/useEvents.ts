@@ -93,6 +93,19 @@ export const useEvents = () => {
     })
   }
 
+  const replaceToArchive = (id: ID) => {
+    const s = `${URL}/api/events/${id}/archive`
+    axios.get(s).then((res) => {
+      console.log(res.data);
+    }).catch((err) => console.log(err));
+  }
+
+  const publishEvent = (id: ID) => {
+    axios.get(`${URL}/api/events/${id}/publish`).then((res) => {
+      console.log(res.data);
+    }).catch((err) => console.log(err));
+  }
+
   return {
     selectedEvent: state.selectedEvent,
     events: state.events,
@@ -102,5 +115,7 @@ export const useEvents = () => {
     createEvent,
     loadImage,
     fetchPublishedEvents
+    replaceToArchive,
+    publishEvent
   };
 };
