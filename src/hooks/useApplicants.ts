@@ -30,6 +30,11 @@ export const useApplicants = () => {
         type: ActionTypes.SELECT_APPLICANT,
         payload: state.applicants[id],
       });
+    } else if (id === null) {
+      dispatch({
+        type: ActionTypes.SELECT_APPLICANT,
+        payload: null,
+      });
     } else {
       axios.get(`${URL}/api/candidates/${id}`).then((res) => {
         dispatch({

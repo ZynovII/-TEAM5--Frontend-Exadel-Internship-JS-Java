@@ -28,34 +28,19 @@ interface RouteParams {
   id: string;
 }
 
-const candidat: IApplicant = {
-  id: "aefo78a0",
-  fullName: "Ivan Ivanov",
-  email: "iivanov@mail.ru",
-  skype: "skype ",
-  phoneNumber: "+375294722147",
-  country: "Belarus",
-  city: "Minsk",
-  technology: "Java",
-  eventName: "E-learning",
-  summary:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure idLorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id..",
-  acceptanceStatus: AcceptStatus.Accepted,
-  interviewStatus: InterviewStatus.AwaitingTSInterview,
-  preferredTime: PreferredTime.First,
-};
-
 export const CandidatePage: React.FC = () => {
   const [edit, setEdit] = useState<boolean>(false);
   const params = useParams<RouteParams>();
   const {  selectedApplicant, selectApplicant } = useApplicants();
   const { loading, showLoader } = useLoader();
   useEffect(() => {
-    console.log(params.id)
+    console.log('use')
     showLoader()
     selectApplicant(params.id)
+    return () => selectApplicant(null)
   }, [])
 
+  console.log(loading)
   console.log(selectedApplicant)
 
   return loading ? (
@@ -85,12 +70,12 @@ export const CandidatePage: React.FC = () => {
         <h3>{selectedApplicant.eventName}</h3>
       </header>
       <div className={contentStyles.container}>
-      <StatusForm candidat={candidat} />
+      <StatusForm candidat={selectedApplicant} />
         <div >
           {edit ? (
-            <Registration candidatePage={true} candidat={candidat} />
+            <Registration candidatePage={true} candidat={selectedApplicant} />
           ) : (
-            <InfoForm candidat={candidat} />
+            <InfoForm candidat={selectedApplicant} />
           )}
         </div>
         <InterviewForm />

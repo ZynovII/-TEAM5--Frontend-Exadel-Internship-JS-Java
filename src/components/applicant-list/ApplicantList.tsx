@@ -123,8 +123,10 @@ export const ApplicantList: React.FC = () => {
               columns={columns}
               isHeaderVisible={true}
               selectionMode={SelectionMode.multiple}
-              onItemInvoked={(item) =>
+              onItemInvoked={(item) =>{
                 history.push(`/admin/candidates/${item.id}`)
+                showLoader()
+              }
               }
               onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
                 <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
