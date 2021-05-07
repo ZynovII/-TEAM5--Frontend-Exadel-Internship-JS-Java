@@ -34,8 +34,8 @@ export interface IApplicant {
   city: string;
   interviews?: IInterview[];
   preferredTime: PreferredTime;
-  acceptanceStatus: AcceptStatus;
-  interviewStatus: InterviewStatus;
+  status: AcceptStatus;
+  interviewProcess: InterviewStatus;
 }
 export interface IApplicantDetailsFromBackEnd {
   id: ID;

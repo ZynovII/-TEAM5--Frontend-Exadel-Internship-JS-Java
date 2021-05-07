@@ -32,7 +32,7 @@ export const AdminPage = () => {
                   component={ApplicantList}
                 />
                 <Route
-                  path="/admin/candidates/:name"
+                  path="/admin/candidates/:id"
                   component={CandidatePage}
                 />
                 <Route

@@ -24,11 +24,25 @@ export const useApplicants = () => {
     // });
   };
 
-  const selectApplicant = (id: number) => {
-    dispatch({
-      type: ActionTypes.SELECT_APPLICANT,
-      payload: state.applicants[id],
-    });
+  const selectApplicant = (id: string) => {
+    if (state.events[id]) {
+      dispatch({
+        type: ActionTypes.SELECT_APPLICANT,
+        payload: state.applicants[id],
+      });
+    } else if (id === null) {
+      dispatch({
+        type: ActionTypes.SELECT_APPLICANT,
+        payload: null,
+      });
+    } else {
+      axios.get(`${URL}/api/candidates/${id}`).then((res) => {
+        dispatch({
+          type: ActionTypes.SELECT_APPLICANT,
+          payload: res.data,
+        });
+      });
+    }
   };
 
   const createCandidate = (
