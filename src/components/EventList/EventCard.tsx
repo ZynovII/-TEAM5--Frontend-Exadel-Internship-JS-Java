@@ -16,6 +16,7 @@ import { IEvent } from "../../models/IEvent";
 import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { PublishDialog } from "./PublishDialog";
+import { NewEventForm } from "../NewEvent/NewEventForm";
 
 import { dateReformer } from "./../../utils/stringReformers";
 
@@ -56,6 +57,8 @@ export interface ICardItemProps {
 }
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
+  const [isModal, setIsModal] = useState(false);
+  const toggleModal = () => setIsModal((isModal) => !isModal);
   const history = useHistory();
   const { loadImage } = useEvents();
   const { showLoader } = useLoader();
@@ -79,6 +82,13 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     e.preventDefault();
   };
 
+  const onHadleEdit = (e) => {
+    setIsModal(true);
+    console.log(props.cardItem)
+    e.stopPropagation();
+    e.preventDefault();
+  }
+
   const apdateData = (value: boolean) => {
     setIspublished(value);
   };
@@ -86,7 +96,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   const documentCardActions = [
     {
       iconProps: { iconName: "Edit" },
-      // onClick:
+      onClick: onHadleEdit,
       ariaLabel: "edit event",
       title: "Edit event",
     },
@@ -142,6 +152,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       <Text className={styles.text}>
         {props.cardItem.locations.map((el) => el.city + " ")}
       </Text>
+      <NewEventForm isModal={isModal} hideModal={toggleModal} eventCard={true} cardItem={props.cardItem}/>
     </DocumentCard>
   );
 };

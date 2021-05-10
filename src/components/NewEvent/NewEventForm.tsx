@@ -1,4 +1,4 @@
-import React, { isValidElement, useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useId } from "@fluentui/react-hooks";
 import { useForm } from "react-hook-form";
 import {
@@ -29,6 +29,7 @@ import axios from "axios";
 import { useOptions } from "../../hooks/useOptions";
 import { IOptionsEventFilter } from "../../models/Forms/IOptions";
 import { ILocationFromBackEnd } from "../../models/ILocation";
+import { IEvent } from "../../models/IEvent";
 import { ITech } from "../../models/IEvent";
 
 interface IModalProps {
@@ -50,9 +51,8 @@ const textFieldStyles = (
 
 export const NewEventForm: React.FC<
   {
-    name?: string;
-    candidatePage?: boolean;
-    candidat?: any;
+    eventCard: boolean;
+    cardItem?: IEvent;
     techs?: ITech[];
   } & IModalProps
 > = ({ isModal, hideModal, ...props }) => {
@@ -103,19 +103,14 @@ export const NewEventForm: React.FC<
 
   const [imageSrc, setImageSrc] = useState<File>();
 
-  const isNameUniqe = (value) => {
-    axios
-      .get(`http://localhost:8081/api/events/uniqueness/${value}`)
-      .then((res) => {
-        console.log(res.data);
-      });
+  const isNameUniqe = async (value) => {
+    const { data } = await axios.get(
+      `http://localhost:8081/api/events/uniqueness/${value}`
+    );
+    console.log(data);
+    return data || "This name is already used";
   };
 
-  // const validateEvenName = async(value)=>{
-  //   const valid = await fetch(`http://localhost:8081/api/events/uniqueness/${value}`)
-
-  // }
-  // console.log("imageSrc",imageSrc.name);
   const onSave = () => {
     handleSubmit(
       (data) => {
@@ -165,13 +160,14 @@ export const NewEventForm: React.FC<
               required={true}
               label="Event name"
               placeholder="Name"
+              defaultValue={props.cardItem && props.cardItem.name}
               // onBlur={isNameUniqe}
               control={control}
               name={"name"}
               errors={errors}
               rules={{
                 required: "This field is required",
-                //  validate: validateEvenName
+                validate: isNameUniqe,
               }}
               styles={textFieldStyles}
             />
@@ -183,10 +179,11 @@ export const NewEventForm: React.FC<
               label={"Technology"}
               errors={errors}
               placeholder="Technology"
-              // defaultSelectedKey={
-              //   (props.candidatePage && props.candidat.country) || []
-              // }
-              // rules={{ required: "This field is required" }}
+              defaultSelectedKeys={
+                (props.cardItem && props.cardItem.techs.map((el) => el.name)) ||
+                []
+              }
+              rules={{ required: "This field is required" }}
               options={options.techs}
               styles={textFieldStyles}
             />
@@ -199,9 +196,12 @@ export const NewEventForm: React.FC<
               label={"Country"}
               errors={errors}
               placeholder="Country"
-              // defaultSelectedKey={
-              //   (props.candidatePage && props.candidat.country) || []
-              // }
+              defaultSelectedKeys={
+                (props.cardItem && [
+                  ...new Set(props.cardItem.locations.map((el) => el.country)),
+                ]) ||
+                []
+              }
               rules={{ required: "This field is required" }}
               options={countries}
               onChange={(_, data) => {
@@ -218,25 +218,25 @@ export const NewEventForm: React.FC<
               multiSelect
               label="City"
               placeholder="City"
-              // defaultSelectedKeys={
-              //   (props.candidatePage && props.candidat.city) || []
-              // }
-              // rules={{ required: "This field is required" }}
+              defaultSelectedKeys={
+                (props.cardItem &&
+                  props.cardItem.locations.map((el) => el.city)) ||
+                []
+              }
+              rules={{ required: "This field is required" }}
               errors={errors}
               options={cities}
-              disabled={!props.candidatePage && !country}
+              disabled={!props.cardItem && !country}
               styles={textFieldStyles}
             />
             <ControlledDropdown
               required
               control={control}
               name={"type"}
-              label={"CEvent type"}
+              label={"Event type"}
               errors={errors}
               placeholder="Event type"
-              // defaultSelectedKey={
-              //   (props.candidatePage && props.candidat.country) || []
-              // }
+              defaultSelectedKey={(props.cardItem && props.cardItem.type) || ""}
               rules={{ required: "This field is required" }}
               options={options.eventTypes}
               styles={textFieldStyles}
@@ -246,19 +246,27 @@ export const NewEventForm: React.FC<
             <UploadImage setImageSrc={setImageSrc} />
             <ControlledDatePicker
               control={control}
+              allowTextInput={true}
               name={"startDate"}
               label="Start date"
               showMonthPickerAsOverlay={true}
               placeholder="Select a date..."
               ariaLabel="Select a date"
+              value={
+                (props.cardItem && new Date(props.cardItem.startDate)) || null
+              }
             />
             <ControlledDatePicker
               control={control}
+              allowTextInput={true}
               name={"endDate"}
               label="Finish date"
               showMonthPickerAsOverlay={true}
               placeholder="Select a date..."
               ariaLabel="Select a date"
+              value={
+                (props.cardItem && new Date(props.cardItem.startDate)) || null
+              }
             />
           </Stack>
         </Stack>
@@ -266,6 +274,7 @@ export const NewEventForm: React.FC<
           placeholder="Summary"
           control={control}
           name={"description"}
+          defaultValue={props.cardItem && props.cardItem.description}
           errors={errors}
           className={contentStyles.lab}
           multiline
