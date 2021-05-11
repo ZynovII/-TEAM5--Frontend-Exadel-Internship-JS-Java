@@ -43,7 +43,7 @@ const textFieldStyles = (
   ...{
     errorMessage: {
       backgroundColor: "transparent",
-      position: "absolute",
+      position: "sticky",
       paddingTop: "0px",
     },
   },
