@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import { useId } from "@fluentui/react-hooks";
 import { useForm } from "react-hook-form";
 import {
@@ -25,6 +25,12 @@ import {
 import { IEventForBackEnd } from "../../models/IEvent";
 import { UploadImage } from "./UploadImage";
 import { useEvents } from "../../hooks/useEvents";
+import axios from "axios";
+import { useOptions } from "../../hooks/useOptions";
+import { IOptionsEventFilter } from "../../models/Forms/IOptions";
+import { ILocationFromBackEnd } from "../../models/ILocation";
+import { IEvent } from "../../models/IEvent";
+import { ITech } from "../../models/IEvent";
 
 interface IModalProps {
   isModal: boolean;
@@ -37,16 +43,54 @@ const textFieldStyles = (
   ...{
     errorMessage: {
       backgroundColor: "transparent",
-      position: "absolute",
+      position: "sticky",
       paddingTop: "0px",
     },
   },
 });
 
 export const NewEventForm: React.FC<
-  { name?: string; candidatePage?: boolean; candidat?: any } & IModalProps
+  {
+    eventCard: boolean;
+    cardItem?: IEvent;
+    techs?: ITech[];
+  } & IModalProps
 > = ({ isModal, hideModal, ...props }) => {
   const { createEvent } = useEvents();
+  const { fetchLocation, fetchEventTypes, fetchTechs } = useOptions();
+  const [options, setOptions] = useState<IOptionsEventFilter>({
+    locations: [],
+    eventTypes: [],
+    techs: [],
+  });
+  const [country, setCountry] = useState<ILocationFromBackEnd>();
+
+  useEffect(() => {
+    Promise.all([fetchLocation(), fetchEventTypes(), fetchTechs()]).then(
+      (res) => {
+        const options: IOptionsEventFilter = {
+          locations: res[0],
+          eventTypes: res[1],
+          techs: res[2],
+        };
+        console.log(options);
+        setOptions(options);
+      }
+    );
+  }, []);
+
+  const countries: IDropdownOption[] = useMemo(
+    () =>
+      options.locations.map((el) => ({
+        key: el.name,
+        text: el.name,
+      })),
+    [options]
+  );
+  const cities: IDropdownOption[] = useMemo(
+    () => country?.cities.map((el) => ({ key: el, text: el })),
+    [country]
+  );
 
   const {
     handleSubmit,
@@ -58,7 +102,15 @@ export const NewEventForm: React.FC<
   });
 
   const [imageSrc, setImageSrc] = useState<File>();
-  // console.log("imageSrc",imageSrc.name);
+
+  const isNameUniqe = async (value) => {
+    const { data } = await axios.get(
+      `http://localhost:8081/api/events/uniqueness/${value}`
+    );
+    console.log(data);
+    return data || "This name is already used";
+  };
+
   const onSave = () => {
     handleSubmit(
       (data) => {
@@ -72,43 +124,6 @@ export const NewEventForm: React.FC<
       }
     )();
   };
-
-  const optionsOfCountries: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "belarus", text: "Belarus" },
-      { key: "russia", text: "Russia" },
-      { key: "ukraine", text: "Ukraine", disabled: true },
-    ];
-  }, []);
-
-  const exampleOptionsOfCities: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "Minsk", text: "Minsk" },
-      { key: "grodno", text: "Grodno" },
-      { key: "gomel", text: "Gomel", disabled: true },
-    ];
-  }, []);
-
-  const optionsOfTechnology: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "JavaScript", text: "JavaScript" },
-      { key: "java", text: "Java" },
-      { key: "python", text: "Python" },
-      { key: "react", text: "React" },
-      { key: "typeScript", text: "TypeScript" },
-      { key: "c#", text: "C#" },
-      { key: "data base", text: "Data base" },
-    ];
-  }, []);
-  const optionsOfStatus: IDropdownOption[] = useMemo(() => {
-    return [
-      { key: "INTERNSHIP", text: "Intership" },
-      { key: "meet-up", text: "Meet-up" },
-      { key: "taining", text: "Training" },
-    ];
-  }, []);
-
-  const [countryStatus, setCountryStatus] = useState<boolean>(true);
 
   const titleId = useId("title");
 
@@ -145,10 +160,15 @@ export const NewEventForm: React.FC<
               required={true}
               label="Event name"
               placeholder="Name"
+              defaultValue={props.cardItem && props.cardItem.name}
+              // onBlur={isNameUniqe}
               control={control}
               name={"name"}
               errors={errors}
-              rules={{ required: "This field is required" }}
+              rules={{
+                required: "This field is required",
+                validate: isNameUniqe,
+              }}
               styles={textFieldStyles}
             />
             <ControlledDropdown
@@ -159,11 +179,12 @@ export const NewEventForm: React.FC<
               label={"Technology"}
               errors={errors}
               placeholder="Technology"
-              // defaultSelectedKey={
-              //   (props.candidatePage && props.candidat.country) || []
-              // }
-              // rules={{ required: "This field is required" }}
-              options={optionsOfTechnology}
+              defaultSelectedKeys={
+                (props.cardItem && props.cardItem.techs.map((el) => el.name)) ||
+                []
+              }
+              rules={{ required: "This field is required" }}
+              options={options.techs}
               styles={textFieldStyles}
             />
 
@@ -175,12 +196,20 @@ export const NewEventForm: React.FC<
               label={"Country"}
               errors={errors}
               placeholder="Country"
-              // defaultSelectedKey={
-              //   (props.candidatePage && props.candidat.country) || []
-              // }
+              defaultSelectedKeys={
+                (props.cardItem && [
+                  ...new Set(props.cardItem.locations.map((el) => el.country)),
+                ]) ||
+                []
+              }
               rules={{ required: "This field is required" }}
-              options={optionsOfCountries}
-              onChange={() => setCountryStatus(false)}
+              options={countries}
+              onChange={(_, data) => {
+                const curr = options.locations.find(
+                  (el) => el.name === data.key
+                );
+                setCountry(curr);
+              }}
               styles={textFieldStyles}
             />
             <ControlledDropdown
@@ -189,27 +218,27 @@ export const NewEventForm: React.FC<
               multiSelect
               label="City"
               placeholder="City"
-              // defaultSelectedKeys={
-              //   (props.candidatePage && props.candidat.city) || []
-              // }
-              // rules={{ required: "This field is required" }}
+              defaultSelectedKeys={
+                (props.cardItem &&
+                  props.cardItem.locations.map((el) => el.city)) ||
+                []
+              }
+              rules={{ required: "This field is required" }}
               errors={errors}
-              options={exampleOptionsOfCities}
-              disabled={!props.candidatePage && countryStatus}
+              options={cities}
+              disabled={!props.cardItem && !country}
               styles={textFieldStyles}
             />
             <ControlledDropdown
               required
               control={control}
               name={"type"}
-              label={"CEvent type"}
+              label={"Event type"}
               errors={errors}
               placeholder="Event type"
-              // defaultSelectedKey={
-              //   (props.candidatePage && props.candidat.country) || []
-              // }
+              defaultSelectedKey={(props.cardItem && props.cardItem.type) || ""}
               rules={{ required: "This field is required" }}
-              options={optionsOfStatus}
+              options={options.eventTypes}
               styles={textFieldStyles}
             />
           </Stack>
@@ -217,19 +246,27 @@ export const NewEventForm: React.FC<
             <UploadImage setImageSrc={setImageSrc} />
             <ControlledDatePicker
               control={control}
+              allowTextInput={true}
               name={"startDate"}
               label="Start date"
               showMonthPickerAsOverlay={true}
               placeholder="Select a date..."
               ariaLabel="Select a date"
+              value={
+                (props.cardItem && new Date(props.cardItem.startDate)) || null
+              }
             />
             <ControlledDatePicker
               control={control}
+              allowTextInput={true}
               name={"endDate"}
               label="Finish date"
               showMonthPickerAsOverlay={true}
               placeholder="Select a date..."
               ariaLabel="Select a date"
+              value={
+                (props.cardItem && new Date(props.cardItem.startDate)) || null
+              }
             />
           </Stack>
         </Stack>
@@ -237,6 +274,7 @@ export const NewEventForm: React.FC<
           placeholder="Summary"
           control={control}
           name={"description"}
+          defaultValue={props.cardItem && props.cardItem.description}
           errors={errors}
           className={contentStyles.lab}
           multiline

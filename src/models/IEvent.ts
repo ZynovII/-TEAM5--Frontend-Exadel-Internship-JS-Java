@@ -20,6 +20,7 @@ export interface IEvent {
   id: ID;
   name: string;
   startDate: string;
+  endDate: Date,
   description: string;
   techs: ITech[];
   type: EventType;

@@ -10,6 +10,7 @@ import {
   IBasePickerSuggestionsProps,
   DatePicker,
   IDatePicker,
+  IDatePickerProps,
 } from "@fluentui/react";
 import { HookFormProps } from "./HookFormProps";
 
@@ -22,18 +23,17 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
       control={props.control}
       rules={props.rules}
       defaultValue={props.value}
-      render={({ field: { onChange, onBlur, value, name: fieldName } }) => (
-        <TextField
-          {...props}
-          onChange={onChange}
-          value={value}
-          onBlur={onBlur}
-          name={fieldName}
-          errorMessage={
-            props.errors[fieldName] && props.errors[fieldName].message
-          }
-        />
-      )}
+      render={({ field: { onChange, value, name: fieldName } }) => {
+				return (<TextField
+					{...props}
+					onChange={onChange}
+					value={value}
+					name={fieldName}
+					errorMessage={
+						props.errors[fieldName] && props.errors[fieldName].message
+					}
+				/>)
+			}}
     />
   );
 };
@@ -130,6 +130,7 @@ interface DatePicker {
   showMonthPickerAsOverlay?: boolean;
   placeholder: string;
   ariaLabel: string;
+  
 }
 const dayPickerStrings = {
   months: [
@@ -182,7 +183,7 @@ const dayPickerStrings = {
   monthPickerHeaderAriaLabel: "{0}, select to change the year",
   yearPickerHeaderAriaLabel: "{0}, select to change the month",
 };
-export const ControlledDatePicker: React.FC<HookFormProps & DatePicker> = (
+export const ControlledDatePicker: React.FC<HookFormProps & DatePicker & IDatePickerProps> = (
   props
 ) => {
   return (
@@ -194,6 +195,7 @@ export const ControlledDatePicker: React.FC<HookFormProps & DatePicker> = (
           {...props}
           strings={dayPickerStrings}
           onSelectDate={(e) => onChange(e)}
+          allowTextInput
         />
       )}
     />

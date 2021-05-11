@@ -8,5 +8,6 @@ export interface IOptionsRegistration {
 export interface IOptionsEventFilter {
   eventTypes: IDropdownOption[];
   locations: ILocationFromBackEnd[];
-  techTags: ITag[];
+  techTags?: ITag[];
+  techs?:IDropdownOption[]
 }
