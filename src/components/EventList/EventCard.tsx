@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useMemo, useState } from "react";
 import {
   DocumentCard,
   DocumentCardTitle,
@@ -8,6 +8,7 @@ import {
   DocumentCardActions,
   mergeStyleSets,
   FontIcon,
+  DialogType,
 } from "@fluentui/react";
 
 import { useBoolean } from "@fluentui/react-hooks";
@@ -60,7 +61,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   const [isModal, setIsModal] = useState(false);
   const toggleModal = () => setIsModal((isModal) => !isModal);
   const history = useHistory();
-  const { loadImage } = useEvents();
+  const { loadImage, replaceToArchive, publishEvent } = useEvents();
   const { showLoader } = useLoader();
   const selectHandler = () => {
     showLoader();
@@ -74,10 +75,21 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     loadImage(props.cardItem.id, setImageEvent);
   }, []);
 
-  const [hideDialog, { toggle: toggleHideDialog }] = useBoolean(true);
+  const [hidePublishDialog, { toggle: toggleHidePublishDialog }] = useBoolean(
+    true
+  );
+  const [hideRemoveDialog, { toggle: toggleHideRemoveDialog }] = useBoolean(
+    true
+  );
   const [isPublished, setIspublished] = useState(false);
-  const onHandleClick = (e) => {
-    isPublished ? setIspublished(false) : toggleHideDialog();
+  const onClickPublishBtn = (e) => {
+    isPublished ? setIspublished(false) : toggleHidePublishDialog();
+    e.stopPropagation();
+    e.preventDefault();
+  };
+
+  const onClickRemoveBtn = (e) => {
+    toggleHideRemoveDialog();
     e.stopPropagation();
     e.preventDefault();
   };
@@ -89,7 +101,13 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     e.preventDefault();
   }
 
-  const apdateData = (value: boolean) => {
+  const handleArchiveBtn = (e) => {
+    replaceToArchive(props.cardItem.id);
+  };
+
+  const handlePublishBtn = (value: boolean) => {
+    publishEvent(props.cardItem.id);
+    
     setIspublished(value);
   };
 
@@ -102,7 +120,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     },
     {
       iconProps: { iconName: "Delete" },
-      // onClick:
+      onClick: onClickRemoveBtn,
       ariaLabel: "move to archive",
       title: "Move to archive",
     },
@@ -110,11 +128,42 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       iconProps: {
         iconName: isPublished ? "UnpublishContent" : "PublishContent",
       },
-      onClick: onHandleClick,
+      onClick: onClickPublishBtn,
       ariaLabel: "publish event",
       title: isPublished ? "Unpublish Event" : "Publish event",
     },
   ];
+
+  const publishDialogProps = useMemo(() => {
+    return {
+      hideDialog: hidePublishDialog,
+      toggleHideDialog: toggleHidePublishDialog,
+      apdateData: handlePublishBtn,
+      dialogContentProps: {
+        type: DialogType.normal,
+        title: "Attention",
+        closeButtonAriaLabel: "Close",
+        subText: "Are you sure you want to publish this event?",
+      },
+      actionType: "publish",
+    };
+  }, [hidePublishDialog]);
+
+  const removeDialogProps = useMemo(
+    () => ({
+      hideDialog: hideRemoveDialog,
+      toggleHideDialog: toggleHideRemoveDialog,
+      apdateData: handleArchiveBtn,
+      dialogContentProps: {
+        type: DialogType.normal,
+        title: "Attention",
+        closeButtonAriaLabel: "Close",
+        subText: "Are you sure you want to remove this event?",
+      },
+      actionType: "remove",
+    }),
+    [hideRemoveDialog]
+  );
 
   return (
     <DocumentCard className={styles.styleCard} onClick={selectHandler}>
@@ -127,17 +176,14 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
                 aria-label="Accept"
                 iconName="Accept"
                 className={styles.acceptIcon}
-                title="Event is piblished"
+                title="Event is published"
               />
             ) : null}
           </div>
         )}
+        <PublishDialog {...removeDialogProps} />
+        <PublishDialog {...publishDialogProps} />
       </div>
-      <PublishDialog
-        hideDialog={hideDialog}
-        toggleHideDialog={toggleHideDialog}
-        apdateData={apdateData}
-      />
       <Image height="65%" imageFit={ImageFit.cover} src={imageEvent} />
       {/* {imageEvent && <>PICTURE<Image src={imageEvent}/></>} */}
       <DocumentCardTitle

@@ -32,7 +32,7 @@ export const AdminPage = () => {
                   component={ApplicantList}
                 />
                 <Route
-                  path="/admin/candidates/:name"
+                  path="/admin/candidates/:id"
                   component={CandidatePage}
                 />
                 <Route
@@ -44,12 +44,13 @@ export const AdminPage = () => {
                   path="/admin/interviews/:name"
                   component={CandidatePage}
                 />
-                <Route path="/admin/archive" component={ArchiveEventList} />
-                <Route
-                  path="/admin/signout"
-                  component={() => <h1>SignOut</h1>}
+                <Route 
+                  path="/admin/archive" 
+                  component={ArchiveEventList} 
                 />
-                <Route component={NotFound} />
+                <Route 
+                  component={NotFound} 
+                />
               </Switch>
             </div>
           </ScrollBar>

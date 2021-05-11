@@ -1,9 +1,11 @@
 import axios from "axios";
 import { ActionTypes } from "../context/actionTypes";
+// import { fakeRequestEvents } from "../fakeDB/fakeRequest";
+
 import { URL, useStore } from "./hooks";
-import { fakeRequestEvents } from "../fakeDB/fakeRequest";
 import { IEvent } from "../models/IEvent";
 import { ID } from "../models/Store/IStore";
+
 import { IEventForBackEnd } from "../models/IEvent";
 
 export const useEvents = () => {
@@ -25,6 +27,17 @@ export const useEvents = () => {
     //     payload: JSON.parse(res),
     //   });
     // });
+  };
+  const fetchPublishedEvents = (page, size) => {
+    axios
+      .get(`http://localhost:8081/api/events/published?page=${page}&size=${size}`)
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.FETCH_PUBLISHED_EVENTS,
+          payload: res.data.content,
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   const selectEvent = (id: ID) => {
@@ -80,12 +93,29 @@ export const useEvents = () => {
     })
   }
 
+  const replaceToArchive = (id: ID) => {
+    const s = `${URL}/api/events/${id}/archive`
+    axios.get(s).then((res) => {
+      console.log(res.data);
+    }).catch((err) => console.log(err));
+  }
+
+  const publishEvent = (id: ID) => {
+    axios.get(`${URL}/api/events/${id}/publish`).then((res) => {
+      console.log(res.data);
+    }).catch((err) => console.log(err));
+  }
+
   return {
     selectedEvent: state.selectedEvent,
     events: state.events,
+    publishedEvents: state.publishedEvents,
     selectEvent,
     fetchEvents,
     createEvent,
-    loadImage
+    loadImage,
+    fetchPublishedEvents
+    replaceToArchive,
+    publishEvent
   };
 };

@@ -19,7 +19,7 @@ const desicion: IDropdownOption[] = [
   { key: AcceptStatus.Rejected, text: "Reject" },
 ];
 
-export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
+export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
   const {
     handleSubmit,
     formState: { errors },
@@ -29,24 +29,24 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
     mode: "all",
   });
 
-  const status = useMemo(() => {
-    switch (props.candidat.interviewStatus) {
+  const interviewProcess = useMemo(() => {
+    switch (candidat.interviewProcess) {
       case InterviewStatus.Registered:
         return [0, 'Registered'];
       case InterviewStatus.AwaitingHRInterview:
         return [0.33, 'HR Interview'];
       case InterviewStatus.AwaitingTSInterview:
         return [0.66, 'TS Interview'];
-      case InterviewStatus.WaitingDesicion:
+      case InterviewStatus.WaitingDecision:
         return [1, 'Waiting Desicion'];
       default:
         return [0, 'Registered'];
     }
-  }, [props.candidat.interviewStatus]);
+  }, [candidat.interviewProcess]);
 
   const textAlign = useMemo(() => {
-    return status[0] <= 0.2 ? { textAlign: 'left' } : { textAlign: 'right' }
-  }, [status[0]])
+    return interviewProcess[0] <= 0.2 ? { textAlign: 'left' } : { textAlign: 'right' }
+  }, [interviewProcess[0]])
   
   const onSave = () => {
     handleSubmit((data) => console.log(data))();
@@ -64,15 +64,15 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
         <h3
           style={{
             color:
-              (props.candidat.acceptanceStatus === AcceptStatus.Accepted &&
+              (candidat.status === AcceptStatus.Accepted &&
                 "#00cc00") ||
-              (props.candidat.acceptanceStatus === AcceptStatus.Pending &&
+              (candidat.status === AcceptStatus.Pending &&
                 "#DBDE36") ||
-              (props.candidat.acceptanceStatus === AcceptStatus.Rejected &&
+              (candidat.status === AcceptStatus.Rejected &&
                 "red"),
           }}
         >
-          {props.candidat.acceptanceStatus}
+          {candidat.status}
         </h3>
       </Stack>
       <Stack
@@ -81,12 +81,12 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = (props) => {
       >
         <ProgressIndicator
           barHeight={20}
-          percentComplete={+status[0]}
-          label={status[1]}
+          percentComplete={+interviewProcess[0]}
+          label={interviewProcess[1]}
           styles={{
             itemName: {
               minWidth: '18%',
-              width: +status[0] * 100 + '%',
+              width: +interviewProcess[0] * 100 + '%',
               ...textAlign
             },
           }}

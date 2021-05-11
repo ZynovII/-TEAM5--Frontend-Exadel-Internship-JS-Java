@@ -1,4 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useLoader } from "../../hooks/hooks";
+import { useApplicants } from "../../hooks/useApplicants";
+import { useParams } from "react-router";
+import { Spinner, SpinnerSize } from "@fluentui/react";
+
 import {
   mergeStyleSets,
   DocumentCardActions,
@@ -13,34 +18,34 @@ import {
 import { Registration } from "../Registration/Registration";
 import { StatusForm } from "./StatusForm";
 import { InfoForm } from "./InfoForm";
-// import ScrollBar from '../UI/Scrollbar/Scrollbar'
 import { InterviewForm } from "./InterwievForm";
 
 
 export interface ICandidatProps {
   candidat: IApplicant;
 }
-
-const candidat: IApplicant = {
-  id: "aefo78a0",
-  fullName: "Ivan Ivanov",
-  email: "iivanov@mail.ru",
-  skype: "skype ",
-  phoneNumber: "+375294722147",
-  country: "Belarus",
-  city: "Minsk",
-  technology: "Java",
-  eventName: "E-learning",
-  summary:
-    "Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure idLorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id.Lorem ipsum dolor sit amet consectetur adipisicing elit. Ipsam iure libero optio fuga nostrum animi alias accusantium exercitationem natus consectetur placeat, totam, consequatur ea! Consequatur saepe cupiditate dicta iure id..",
-  acceptanceStatus: AcceptStatus.Accepted,
-  interviewStatus: InterviewStatus.AwaitingTSInterview,
-  preferredTime: PreferredTime.First,
-};
+interface RouteParams {
+  id: string;
+}
 
 export const CandidatePage: React.FC = () => {
   const [edit, setEdit] = useState<boolean>(false);
-  return (
+  const params = useParams<RouteParams>();
+  const {  selectedApplicant, selectApplicant } = useApplicants();
+  const { loading, showLoader } = useLoader();
+  useEffect(() => {
+    console.log('use')
+    showLoader()
+    selectApplicant(params.id)
+    return () => selectApplicant(null)
+  }, [])
+
+  console.log(loading)
+  console.log(selectedApplicant)
+
+  return loading ? (
+    <Spinner size={SpinnerSize.large} className="margin2em" />
+  ) : (
     <>
       <header >
         <div
@@ -51,7 +56,7 @@ export const CandidatePage: React.FC = () => {
             alignItems: "flex-end",
           }}
         >
-          <h2>{candidat.fullName}</h2>
+          <h2>{selectedApplicant.fullName}</h2>
           <DocumentCardActions
             actions={[
               {
@@ -62,15 +67,15 @@ export const CandidatePage: React.FC = () => {
             ]}
           />
         </div>
-        <h3>Internship JS&amp;Java</h3>
+        <h3>{selectedApplicant.eventName}</h3>
       </header>
       <div className={contentStyles.container}>
-      <StatusForm candidat={candidat} />
+      <StatusForm candidat={selectedApplicant} />
         <div >
           {edit ? (
-            <Registration candidatePage={true} candidat={candidat} />
+            <Registration candidatePage={true} candidat={selectedApplicant} />
           ) : (
-            <InfoForm candidat={candidat} />
+            <InfoForm candidat={selectedApplicant} />
           )}
         </div>
         <InterviewForm />
