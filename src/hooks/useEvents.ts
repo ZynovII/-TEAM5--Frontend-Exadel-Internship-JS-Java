@@ -114,7 +114,7 @@ export const useEvents = () => {
     fetchEvents,
     createEvent,
     loadImage,
-    fetchPublishedEvents
+    fetchPublishedEvents,
     replaceToArchive,
     publishEvent
   };
