@@ -1,11 +1,9 @@
 import { mergeStyles } from "@fluentui/merge-styles";
 import React from "react";
-import { useAuth } from "../../hooks/useAuth";
 
-const UserCircle: React.FC = () => {
-  const { currentUserId } = useAuth();
-  return <div className={userCircle}>{currentUserId}II</div>;
-};
+const UserCircle = ({ initials }) => (
+  <div className={userCircle}>{initials}</div>
+);
 
 const userCircle = mergeStyles({
   borderRadius: "50%",

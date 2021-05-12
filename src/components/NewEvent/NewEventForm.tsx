@@ -73,7 +73,6 @@ export const NewEventForm: React.FC<
           eventTypes: res[1],
           techs: res[2],
         };
-        console.log(options);
         setOptions(options);
       }
     );
@@ -107,14 +106,12 @@ export const NewEventForm: React.FC<
     const { data } = await axios.get(
       `http://localhost:8081/api/events/uniqueness/${value}`
     );
-    console.log(data);
     return data || "This name is already used";
   };
 
   const onSave = () => {
     handleSubmit(
       (data) => {
-        console.log(data);
         createEvent(data, imageSrc);
         hideModal();
       },

@@ -1,9 +1,9 @@
 import { ID } from "./Store/IStore";
 
 export enum UserRole {
-  Admin = "Admin",
-  SuperAdmin = "SuperAdmin",
-  TechSpec = "TechSpec",
+  Admin = "ADMIN",
+  SuperAdmin = "SUPERADMIN",
+  TechSpec = "TECH",
 }
 
 export interface IUser {
@@ -11,6 +11,4 @@ export interface IUser {
   role: UserRole;
   fullName: string;
   email: string;
-  login: string;
-  password: string;
 }

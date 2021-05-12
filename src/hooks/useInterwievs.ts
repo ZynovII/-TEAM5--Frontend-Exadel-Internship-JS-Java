@@ -1,16 +1,14 @@
 import { ActionTypes } from "../context/actionTypes";
-import { fakeRequestInterviews } from "../fakeDB/fakeRequest";
 import { useStore } from "./hooks";
 
 export const useInterviews = () => {
   const { state, dispatch } = useStore();
   const fetchInterviews = () => {
-    fakeRequestInterviews.then((res) => {
-      dispatch({
-        type: ActionTypes.FETCH_INTERVIEWS,
-        payload: JSON.parse(res),
-      });
-    });
+    console.log("interview");
+    // dispatch({
+    //   type: ActionTypes.FETCH_INTERVIEWS,
+    //   payload: JSON.parse(res),
+    // });
   };
 
   const selectInterview = (id: number) => {
