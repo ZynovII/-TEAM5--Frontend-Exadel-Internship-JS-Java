@@ -60,7 +60,9 @@ export interface ICardItemProps {
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const [isModal, setIsModal] = useState(false);
-  const [imageEvent, setImageEvent] = useState("");
+  const [imageEvent, setImageEvent] = useState(
+    "https://veraconsulting.it/wp-content/uploads/2014/04/placeholder.png"
+  );
   const history = useHistory();
   const { loadImage, replaceToArchive, publishEvent } = useEvents();
   const { showLoader } = useLoader();

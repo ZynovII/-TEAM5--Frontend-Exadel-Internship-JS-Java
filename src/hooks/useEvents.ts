@@ -95,7 +95,6 @@ export const useEvents = () => {
       });
       return window.URL.createObjectURL(new Blob([img.data]));
     }
-    return "https://veraconsulting.it/wp-content/uploads/2014/04/placeholder.png";
   };
 
   const replaceToArchive = (id: ID) => {
