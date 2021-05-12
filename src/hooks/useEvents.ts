@@ -1,6 +1,5 @@
 import axios from "axios";
 import { ActionTypes } from "../context/actionTypes";
-// import { fakeRequestEvents } from "../fakeDB/fakeRequest";
 
 import { URL, useStore } from "./hooks";
 import { IEvent } from "../models/IEvent";
@@ -11,31 +10,31 @@ import { IEventForBackEnd } from "../models/IEvent";
 export const useEvents = () => {
   const { state, dispatch } = useStore();
 
-  const fetchEvents = (page, size) => {
+  const fetchEvents = (page, size, mounted) => {
     axios
       .get(`http://localhost:8081/api/events?page=${page}&size=${size}`)
       .then((res) => {
-        dispatch({
-          type: ActionTypes.FETCH_EVENTS,
-          payload: res.data.content,
-        });
+        if (mounted) {
+          dispatch({
+            type: ActionTypes.FETCH_EVENTS,
+            payload: res.data.content,
+          });
+        }
       })
       .catch((err) => console.log(err));
-    // fakeRequestEvents.then((res) => {
-    //   dispatch({
-    //     type: ActionTypes.FETCH_EVENTS,
-    //     payload: JSON.parse(res),
-    //   });
-    // });
   };
-  const fetchPublishedEvents = (page, size) => {
+  const fetchPublishedEvents = (page, size, mounted) => {
     axios
-      .get(`http://localhost:8081/api/events/published?page=${page}&size=${size}`)
+      .get(
+        `http://localhost:8081/api/events/published?page=${page}&size=${size}`
+      )
       .then((res) => {
-        dispatch({
-          type: ActionTypes.FETCH_PUBLISHED_EVENTS,
-          payload: res.data.content,
-        });
+        if (mounted) {
+          dispatch({
+            type: ActionTypes.FETCH_PUBLISHED_EVENTS,
+            payload: res.data.content,
+          });
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -84,27 +83,39 @@ export const useEvents = () => {
       });
   };
 
-  const loadImage = (id: string | number, setImageEvent) => {
-    axios.get(`http://localhost:8081/api/events/${id}/image/exists`).then((res) => {
-      if (res.data) {
-        axios({ url: `http://localhost:8081/api/events/${id}/image/download`, method: 'GET', responseType: 'blob' }).then((res) => { setImageEvent(window.URL.createObjectURL(new Blob([res.data]))) })
-      }
-
-    })
-  }
+  const loadImage = async (id: ID) => {
+    const res = await axios.get(
+      `http://localhost:8081/api/events/${id}/image/exists`
+    );
+    if (res.data) {
+      const img = await axios({
+        url: `http://localhost:8081/api/events/${id}/image/download`,
+        method: "GET",
+        responseType: "blob",
+      });
+      return window.URL.createObjectURL(new Blob([img.data]));
+    }
+    return "https://veraconsulting.it/wp-content/uploads/2014/04/placeholder.png";
+  };
 
   const replaceToArchive = (id: ID) => {
-    const s = `${URL}/api/events/${id}/archive`
-    axios.get(s).then((res) => {
-      console.log(res.data);
-    }).catch((err) => console.log(err));
-  }
+    const s = `${URL}/api/events/${id}/archive`;
+    axios
+      .get(s)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const publishEvent = (id: ID) => {
-    axios.get(`${URL}/api/events/${id}/publish`).then((res) => {
-      console.log(res.data);
-    }).catch((err) => console.log(err));
-  }
+    axios
+      .get(`${URL}/api/events/${id}/publish`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   return {
     selectedEvent: state.selectedEvent,
@@ -116,6 +127,6 @@ export const useEvents = () => {
     loadImage,
     fetchPublishedEvents,
     replaceToArchive,
-    publishEvent
+    publishEvent,
   };
 };

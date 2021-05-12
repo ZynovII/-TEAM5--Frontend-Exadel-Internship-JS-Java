@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   DocumentCard,
   DocumentCardTitle,
@@ -20,6 +20,7 @@ import { PublishDialog } from "./PublishDialog";
 import { NewEventForm } from "../NewEvent/NewEventForm";
 
 import { dateReformer } from "./../../utils/stringReformers";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const cardImage = require("./../../assets/img/card_img.jpg");
 
@@ -59,20 +60,25 @@ export interface ICardItemProps {
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const [isModal, setIsModal] = useState(false);
-  const toggleModal = () => setIsModal((isModal) => !isModal);
+  const [imageEvent, setImageEvent] = useState("");
   const history = useHistory();
   const { loadImage, replaceToArchive, publishEvent } = useEvents();
   const { showLoader } = useLoader();
+  const isMountedRef = useIsMountedRef();
+
   const selectHandler = () => {
     showLoader();
     history.push(`/events/${props.cardItem.id}`);
   };
 
-  const [imageEvent, setImageEvent] = useState(
-    "https://veraconsulting.it/wp-content/uploads/2014/04/placeholder.png"
-  );
-  React.useEffect(() => {
-    loadImage(props.cardItem.id, setImageEvent);
+  const toggleModal = () => setIsModal((isModal) => !isModal);
+
+  useEffect(() => {
+    loadImage(props.cardItem.id).then((res) => {
+      if (isMountedRef.current) {
+        setImageEvent(res);
+      }
+    });
   }, []);
 
   const [hidePublishDialog, { toggle: toggleHidePublishDialog }] = useBoolean(
@@ -96,10 +102,10 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
 
   const onHadleEdit = (e) => {
     setIsModal(true);
-    console.log(props.cardItem)
+    console.log(props.cardItem);
     e.stopPropagation();
     e.preventDefault();
-  }
+  };
 
   const handleArchiveBtn = (e) => {
     replaceToArchive(props.cardItem.id);
@@ -107,32 +113,34 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
 
   const handlePublishBtn = (value: boolean) => {
     publishEvent(props.cardItem.id);
-    
     setIspublished(value);
   };
 
-  const documentCardActions = [
-    {
-      iconProps: { iconName: "Edit" },
-      onClick: onHadleEdit,
-      ariaLabel: "edit event",
-      title: "Edit event",
-    },
-    {
-      iconProps: { iconName: "Delete" },
-      onClick: onClickRemoveBtn,
-      ariaLabel: "move to archive",
-      title: "Move to archive",
-    },
-    {
-      iconProps: {
-        iconName: isPublished ? "UnpublishContent" : "PublishContent",
+  const documentCardActions = useMemo(
+    () => [
+      {
+        iconProps: { iconName: "Edit" },
+        onClick: onHadleEdit,
+        ariaLabel: "edit event",
+        title: "Edit event",
       },
-      onClick: onClickPublishBtn,
-      ariaLabel: "publish event",
-      title: isPublished ? "Unpublish Event" : "Publish event",
-    },
-  ];
+      {
+        iconProps: { iconName: "Delete" },
+        onClick: onClickRemoveBtn,
+        ariaLabel: "move to archive",
+        title: "Move to archive",
+      },
+      {
+        iconProps: {
+          iconName: isPublished ? "UnpublishContent" : "PublishContent",
+        },
+        onClick: onClickPublishBtn,
+        ariaLabel: "publish event",
+        title: isPublished ? "Unpublish Event" : "Publish event",
+      },
+    ],
+    []
+  );
 
   const publishDialogProps = useMemo(() => {
     return {
@@ -198,7 +206,12 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       <Text className={styles.text}>
         {props.cardItem.locations.map((el) => el.city + " ")}
       </Text>
-      <NewEventForm isModal={isModal} hideModal={toggleModal} eventCard={true} cardItem={props.cardItem}/>
+      <NewEventForm
+        isModal={isModal}
+        hideModal={toggleModal}
+        eventCard={true}
+        cardItem={props.cardItem}
+      />
     </DocumentCard>
   );
 };
