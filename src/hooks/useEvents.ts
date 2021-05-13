@@ -1,7 +1,7 @@
-import axios from "axios";
+import axios from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 
-import { URL, useStore } from "./hooks";
+import { useStore } from "./hooks";
 import { IEvent } from "../models/IEvent";
 import { ID } from "../models/Store/IStore";
 
@@ -12,7 +12,7 @@ export const useEvents = () => {
 
   const fetchEvents = (page, size, mounted) => {
     axios
-      .get(`http://localhost:8081/api/events?page=${page}&size=${size}`)
+      .get(`/events?page=${page}&size=${size}`)
       .then((res) => {
         if (mounted) {
           dispatch({
@@ -26,7 +26,7 @@ export const useEvents = () => {
   const fetchPublishedEvents = (page, size, mounted) => {
     axios
       .get(
-        `http://localhost:8081/api/events/published?page=${page}&size=${size}`
+        `/events/published?page=${page}&size=${size}`
       )
       .then((res) => {
         if (mounted) {
@@ -51,7 +51,7 @@ export const useEvents = () => {
         payload: null,
       });
     } else {
-      axios.get(`${URL}/api/events/${id}`).then((res) => {
+      axios.get(`/events/${id}`).then((res) => {
         dispatch({
           type: ActionTypes.SELECT_EVENT,
           payload: res.data,
@@ -71,13 +71,13 @@ export const useEvents = () => {
       type: event.type[0],
     };
     axios
-      .post(`http://localhost:8081/api/events/create`, createEventForBackEnd)
+      .post(`/events/create`, createEventForBackEnd)
       .then((res) => res.data.id)
       .then((id) => {
         const formData = new FormData();
         formData.append("file", imageSrc, imageSrc.name);
         axios.post(
-          `http://localhost:8081/api/events/{id}/image/upload?id=${id}`,
+          `/events/{id}/image/upload?id=${id}`,
           formData
         );
       });
@@ -85,11 +85,11 @@ export const useEvents = () => {
 
   const loadImage = async (id: ID) => {
     const res = await axios.get(
-      `http://localhost:8081/api/events/${id}/image/exists`
+      `/events/${id}/image/exists`
     );
     if (res.data) {
       const img = await axios({
-        url: `http://localhost:8081/api/events/${id}/image/download`,
+        url: `/events/${id}/image/download`,
         method: "GET",
         responseType: "blob",
       });
@@ -98,7 +98,7 @@ export const useEvents = () => {
   };
 
   const replaceToArchive = (id: ID) => {
-    const s = `${URL}/api/events/${id}/archive`;
+    const s = `/events/${id}/archive`;
     axios
       .get(s)
       .then((res) => {
@@ -109,7 +109,7 @@ export const useEvents = () => {
 
   const publishEvent = (id: ID) => {
     axios
-      .get(`${URL}/api/events/${id}/publish`)
+      .get(`/events/${id}/publish`)
       .then((res) => {
         console.log(res.data);
       })
