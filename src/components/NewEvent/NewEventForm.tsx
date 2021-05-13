@@ -31,6 +31,7 @@ import { IOptionsEventFilter } from "../../models/Forms/IOptions";
 import { ILocationFromBackEnd } from "../../models/ILocation";
 import { IEvent } from "../../models/IEvent";
 import { ITech } from "../../models/IEvent";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 interface IModalProps {
   isModal: boolean;
@@ -64,6 +65,7 @@ export const NewEventForm: React.FC<
     techs: [],
   });
   const [country, setCountry] = useState<ILocationFromBackEnd>();
+  const isMountedRef = useIsMountedRef();
 
   useEffect(() => {
     Promise.all([fetchLocation(), fetchEventTypes(), fetchTechs()]).then(
@@ -73,7 +75,7 @@ export const NewEventForm: React.FC<
           eventTypes: res[1],
           techs: res[2],
         };
-        setOptions(options);
+        isMountedRef.current && setOptions(options);
       }
     );
   }, []);
