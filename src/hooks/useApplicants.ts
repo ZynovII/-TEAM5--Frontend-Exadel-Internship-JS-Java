@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
 import { useStore } from "./hooks";
