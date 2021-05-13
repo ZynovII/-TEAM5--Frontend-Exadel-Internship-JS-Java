@@ -11,6 +11,7 @@ import {
   PrimaryButton,
 } from "@fluentui/react";
 import { useOptions } from "../../hooks/useOptions";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -46,6 +47,8 @@ export const AllApplicantFilter: React.FC = () => {
     reValidateMode: "onSubmit",
     mode: "all",
   });
+
+  const isMountedRef = useIsMountedRef();
   const [options, setOptions] = useState({
     eventTypes: [],
     techs: [],
@@ -63,11 +66,13 @@ export const AllApplicantFilter: React.FC = () => {
       fetchTechnology(),
       fetchInterviewStatuses(),
     ]).then((res) => {
-      setOptions({
-        eventTypes: res[0],
-        techs: res[1],
-        interviewStatuses: res[2],
-      });
+      if (isMountedRef.current) {
+        setOptions({
+          eventTypes: res[0],
+          techs: res[1],
+          interviewStatuses: res[2],
+        });
+      }
     });
   }, []);
 
