@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Stack,
   ProgressIndicator,
@@ -14,6 +14,8 @@ import {
   InterviewStatus,
 } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/useApplicants";
+import { useAuth } from "../../hooks/useAuth";
+
 import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const desicion: IDropdownOption[] = [
@@ -32,7 +34,8 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
     mode: "all",
   });
   const { setStatus } = useApplicants();
-  const [statusAplicant, setStatusAplicant] = useState(candidat.status)
+  const { currentUser } = useAuth();
+  const [statusAplicant, setStatusAplicant] = useState(candidat.status);
   const interviewProcess = useMemo(() => {
     switch (candidat.interviewProcess) {
       case InterviewStatus.Registered:
@@ -47,13 +50,11 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
         return [0, 'Registered'];
     }
   }, [candidat.interviewProcess]);
-
   const textAlign = useMemo(() => {
     return interviewProcess[0] <= 0.2 ? { textAlign: 'left' } : { textAlign: 'right' }
   }, [interviewProcess[0]])
-  
+
   const onSave = () => {
-    
     handleSubmit((data) => {
     switch(data.status.join()) {
       case 'GREEN':  
@@ -141,8 +142,13 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
           errors={errors}
           options={desicion}
           style={{ width: "150px" }}
+          disabled= {currentUser.role !== "SUPERADMIN"}
         />
-        <DefaultButton text="Submit" onClick={() => onSave()} />
+        <DefaultButton 
+          text="Submit" 
+          onClick={() => onSave()} 
+          disabled={currentUser.role !== "SUPERADMIN"}
+        />
       </Stack>
     </Stack>
   );
