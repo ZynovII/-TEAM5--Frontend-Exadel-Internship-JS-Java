@@ -16,11 +16,16 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       return {
         ...state,
         isAuthenticated: true,
-        currentUserID: payload,
+        currentUser: payload,
         loading: false,
       };
     case ActionTypes.SIGN_OUT:
-      return { ...state, isAuthenticated: false, loading: false };
+      return {
+        ...state,
+        isAuthenticated: false,
+        currentUser: null,
+        loading: false,
+      };
     case ActionTypes.CREATE_EVENT:
       return { ...state, events: { ...state.events, [id]: payload } };
     case ActionTypes.UPDATE_EVENT:
