@@ -4,11 +4,15 @@ const instance = axios.create({
   baseURL: "http://localhost:8081/api",
 });
 
+const auth = () => {
+  if (localStorage.getItem("token")) {
+    return (instance.defaults.headers.common[
+      "Authorization"
+    ] = localStorage.getItem("token"));
+  }
+  return;
+};
 
-instance.defaults.headers.common["Authorization"] = localStorage.getItem(
-  "token"
-)
-  ? localStorage.getItem("token")
-  : "Unauthorizated";
+auth();
 
 export default instance;
