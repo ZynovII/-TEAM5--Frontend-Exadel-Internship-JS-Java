@@ -1,4 +1,4 @@
-import React, { useMemo, useState } from "react";
+import React, { useMemo, useState, useEffect } from "react";
 import {
   Stack,
   ProgressIndicator,
@@ -14,6 +14,7 @@ import {
   InterviewStatus,
 } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/useApplicants";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const desicion: IDropdownOption[] = [
   { key: AcceptStatus.Accepted, text: "Accept" },
@@ -21,6 +22,7 @@ const desicion: IDropdownOption[] = [
 ];
 
 export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
+  const isMountedRef = useIsMountedRef();
   const {
     handleSubmit,
     formState: { errors },
@@ -55,13 +57,28 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
     handleSubmit((data) => {
     switch(data.status.join()) {
       case 'GREEN':  
-        setStatus(`${candidat.id}/accept`, setStatusAplicant)  
+        setStatus(`${candidat.id}/accept`) 
+        .then((response) => {
+          if (isMountedRef.current) {
+            setStatusAplicant(response)
+          }
+        })
         return
       case 'RED':  
-        setStatus(`${candidat.id}/reject`, setStatusAplicant)
+        setStatus(`${candidat.id}/reject`)
+        .then((response) => {
+          if (isMountedRef.current) {
+            setStatusAplicant(response)
+          }
+        })
         return
       default:
-        setStatus(`${candidat.id}/accept`, setStatusAplicant)
+        setStatus(`${candidat.id}/accept`)
+        .then((response) => {
+          if (isMountedRef.current) {
+            setStatusAplicant(response)
+          }
+        })
       return
     }
   })();
