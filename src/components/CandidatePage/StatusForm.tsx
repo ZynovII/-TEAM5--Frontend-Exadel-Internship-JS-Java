@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Stack,
   ProgressIndicator,
@@ -13,6 +13,7 @@ import {
   IApplicant,
   InterviewStatus,
 } from "../../models/IApplicant";
+import { useApplicants } from "../../hooks/useApplicants";
 
 const desicion: IDropdownOption[] = [
   { key: AcceptStatus.Accepted, text: "Accept" },
@@ -28,7 +29,8 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
     reValidateMode: "onSubmit",
     mode: "all",
   });
-
+  const { setStatus } = useApplicants();
+  const [statusAplicant, setStatusAplicant] = useState(candidat.status)
   const interviewProcess = useMemo(() => {
     switch (candidat.interviewProcess) {
       case InterviewStatus.Registered:
@@ -49,7 +51,20 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
   }, [interviewProcess[0]])
   
   const onSave = () => {
-    handleSubmit((data) => console.log(data))();
+    
+    handleSubmit((data) => {
+    switch(data.status.join()) {
+      case 'GREEN':  
+        setStatus(`${candidat.id}/accept`, setStatusAplicant)  
+        return
+      case 'RED':  
+        setStatus(`${candidat.id}/reject`, setStatusAplicant)
+        return
+      default:
+        setStatus(`${candidat.id}/accept`, setStatusAplicant)
+      return
+    }
+  })();
   };
   return (
     <Stack
@@ -64,15 +79,15 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
         <h3
           style={{
             color:
-              (candidat.status === AcceptStatus.Accepted &&
+              (statusAplicant === AcceptStatus.Accepted &&
                 "#00cc00") ||
-              (candidat.status === AcceptStatus.Pending &&
+              (statusAplicant === AcceptStatus.Pending &&
                 "#DBDE36") ||
-              (candidat.status === AcceptStatus.Rejected &&
+              (statusAplicant === AcceptStatus.Rejected &&
                 "red"),
           }}
         >
-          {candidat.status}
+          {statusAplicant}
         </h3>
       </Stack>
       <Stack
@@ -103,7 +118,7 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
       >
         <ControlledDropdown
           control={control}
-          name={"acceptanceStatus"}
+          name={"status"}
           placeholder="Choose Status"
           defaultSelectedKey={""}
           errors={errors}

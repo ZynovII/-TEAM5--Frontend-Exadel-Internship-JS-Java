@@ -9,21 +9,11 @@ import {
   DocumentCardActions,
 } from "@fluentui/react";
 
-import {
-  AcceptStatus,
-  IApplicant,
-  InterviewStatus,
-  PreferredTime,
-} from "../../models/IApplicant";
 import { Registration } from "../Registration/Registration";
 import { StatusForm } from "./StatusForm";
 import { InfoForm } from "./InfoForm";
 import { InterviewForm } from "./InterwievForm";
 
-
-export interface ICandidatProps {
-  candidat: IApplicant;
-}
 interface RouteParams {
   id: string;
 }
@@ -31,17 +21,14 @@ interface RouteParams {
 export const CandidatePage: React.FC = () => {
   const [edit, setEdit] = useState<boolean>(false);
   const params = useParams<RouteParams>();
-  const {  selectedApplicant, selectApplicant } = useApplicants();
+  const { selectedApplicant, selectApplicant } = useApplicants();
   const { loading, showLoader } = useLoader();
   useEffect(() => {
-    console.log('use')
     showLoader()
     selectApplicant(params.id)
     return () => selectApplicant(null)
   }, [])
 
-  console.log(loading)
-  console.log(selectedApplicant)
 
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
@@ -70,7 +57,7 @@ export const CandidatePage: React.FC = () => {
         <h3>{selectedApplicant.eventName}</h3>
       </header>
       <div className={contentStyles.container}>
-      <StatusForm candidat={selectedApplicant} />
+        <StatusForm candidat={selectedApplicant} />
         <div >
           {edit ? (
             <Registration candidatePage={true} candidat={selectedApplicant} />
@@ -85,7 +72,6 @@ export const CandidatePage: React.FC = () => {
 };
 
 const contentStyles = mergeStyleSets({
-  
   container: {
     width: "auto",
     margin: "1em 2em",

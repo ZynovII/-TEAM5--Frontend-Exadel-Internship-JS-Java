@@ -74,11 +74,19 @@ export const useApplicants = () => {
       });
   };
 
+  const setStatus = (path, setStatus) => {
+      axios
+      .put(`${URL}/api/candidates/${path}`)
+      .then(({data}) => setStatus(data.status))
+      .catch(err => console.log(err))
+  };
+
   return {
     selectedApplicant: state.selectedApplicant,
     applicants: state.applicants,
     selectApplicant,
     fetchApplicants,
     createCandidate,
+    setStatus
   };
 };
