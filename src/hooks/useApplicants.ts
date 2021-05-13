@@ -6,14 +6,16 @@ import { URL, useStore } from "./hooks";
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
-  const fetchApplicants = () => {
+  const fetchApplicants = (mounted) => {
     axios
       .get(`${URL}/api/candidates`)
       .then((res) => {
-        dispatch({
-          type: ActionTypes.FETCH_APPLICANTS,
-          payload: res.data.content,
-        });
+        if (mounted) {
+          dispatch({
+            type: ActionTypes.FETCH_APPLICANTS,
+            payload: res.data.content,
+          });
+        }
       })
       .catch((err) => console.log(err));
     // fakeRequestApplicants.then((res) => {
