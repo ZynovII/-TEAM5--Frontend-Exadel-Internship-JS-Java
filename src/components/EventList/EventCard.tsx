@@ -77,7 +77,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
 
   useEffect(() => {
     loadImage(props.cardItem.id).then((res) => {
-      if (isMountedRef.current) {
+      if (isMountedRef.current && res) {
         setImageEvent(res);
       }
     });
