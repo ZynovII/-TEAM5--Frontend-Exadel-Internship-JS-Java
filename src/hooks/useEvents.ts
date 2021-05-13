@@ -13,7 +13,7 @@ export const useEvents = () => {
 
   const fetchEvents = (page, size) => {
     axios
-      .get(`http://localhost:8081/api/events?page=${page}&size=${size}`)
+      .get(`${URL}/api/events?page=${page}&size=${size}`)
       .then((res) => {
         dispatch({
           type: ActionTypes.FETCH_EVENTS,
@@ -30,7 +30,7 @@ export const useEvents = () => {
   };
   const fetchPublishedEvents = (page, size) => {
     axios
-      .get(`http://localhost:8081/api/events/published?page=${page}&size=${size}`)
+      .get(`${URL}/api/events/published?page=${page}&size=${size}`)
       .then((res) => {
         dispatch({
           type: ActionTypes.FETCH_PUBLISHED_EVENTS,
@@ -72,22 +72,22 @@ export const useEvents = () => {
       type: event.type[0],
     };
     axios
-      .post(`http://localhost:8081/api/events/create`, createEventForBackEnd)
+      .post(`${URL}/api/events/create`, createEventForBackEnd)
       .then((res) => res.data.id)
       .then((id) => {
         const formData = new FormData();
         formData.append("file", imageSrc, imageSrc.name);
         axios.post(
-          `http://localhost:8081/api/events/{id}/image/upload?id=${id}`,
+          `${URL}/api/events/${id}/image/upload`,
           formData
         );
       });
   };
 
   const loadImage = (id: string | number, setImageEvent) => {
-    axios.get(`http://localhost:8081/api/events/${id}/image/exists`).then((res) => {
+    axios.get(`${URL}/api/events/${id}/image/exists`).then((res) => {
       if (res.data) {
-        axios({ url: `http://localhost:8081/api/events/${id}/image/download`, method: 'GET', responseType: 'blob' }).then((res) => { setImageEvent(window.URL.createObjectURL(new Blob([res.data]))) })
+        axios({ url: `${URL}/api/events/${id}/image/download`, method: 'GET', responseType: 'blob' }).then((res) => { setImageEvent(window.URL.createObjectURL(new Blob([res.data]))) })
       }
 
     })
@@ -106,6 +106,14 @@ export const useEvents = () => {
     }).catch((err) => console.log(err));
   }
 
+  const isNameUniqe = async (value) => {
+    const { data } = await axios.get(
+      `${URL}/api/events/uniqueness/${value}`
+    );
+    const validateNameUniq = data || "This name is already used";
+    return validateNameUniq;
+  };
+
   return {
     selectedEvent: state.selectedEvent,
     events: state.events,
@@ -116,6 +124,7 @@ export const useEvents = () => {
     loadImage,
     fetchPublishedEvents,
     replaceToArchive,
-    publishEvent
+    publishEvent,
+    isNameUniqe
   };
 };

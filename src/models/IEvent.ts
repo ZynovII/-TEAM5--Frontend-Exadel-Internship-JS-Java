@@ -29,6 +29,7 @@ export interface IEvent {
 }
 
 export interface IEventForBackEnd {
+  country?: string[];
   cities: string[];
   description: string,
   endDate: Date,

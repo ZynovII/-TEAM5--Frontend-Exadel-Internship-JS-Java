@@ -66,11 +66,11 @@ export const useOptions = () => {
 
   const fetchTechs = async () => {
     const response = await axios.get(`${URL}/api/techs`);
-    const techsOptions: IDropdownOption[] = response.data.map((el) => ({
+    const techsNewEventOptions: IDropdownOption[] = response.data.map((el) => ({
       key: el,
       text: el,
     }));
-    return techsOptions;
+    return techsNewEventOptions;
   }
 
   return {
