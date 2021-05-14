@@ -25,7 +25,7 @@ import {
 import { IEventForBackEnd } from "../../models/IEvent";
 import { UploadImage } from "./UploadImage";
 import { useEvents } from "../../hooks/useEvents";
-import axios from "axios";
+import axios from "../../axios-api";
 import { useOptions } from "../../hooks/useOptions";
 import { IOptionsEventFilter } from "../../models/Forms/IOptions";
 import { ILocationFromBackEnd } from "../../models/ILocation";
@@ -106,7 +106,7 @@ export const NewEventForm: React.FC<
 
   const isNameUniqe = async (value) => {
     const { data } = await axios.get(
-      `http://localhost:8081/api/events/uniqueness/${value}`
+      `/events/uniqueness/${value}`
     );
     return data || "This name is already used";
   };

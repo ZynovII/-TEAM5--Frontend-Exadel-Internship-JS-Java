@@ -1,14 +1,14 @@
-import axios from "axios";
+import axios from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
-import { URL, useStore } from "./hooks";
+import { useStore } from "./hooks";
 
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
   const fetchApplicants = (mounted) => {
     axios
-      .get(`${URL}/api/candidates`)
+      .get(`/candidates`)
       .then((res) => {
         if (mounted) {
           dispatch({
@@ -38,7 +38,7 @@ export const useApplicants = () => {
         payload: null,
       });
     } else {
-      axios.get(`${URL}/api/candidates/${id}`).then((res) => {
+      axios.get(`/candidates/${id}`).then((res) => {
         dispatch({
           type: ActionTypes.SELECT_APPLICANT,
           payload: res.data,
@@ -64,21 +64,18 @@ export const useApplicants = () => {
       summary: candidat.summary,
     };
     axios
-      .post(`${URL}/api/candidates`, candidateForBackEnd)
+      .post(`/candidates`, candidateForBackEnd)
       .then((response) => response.data.id)
       .then((id) => {
         const formData = new FormData();
         formData.append("file", file, file.name);
-        axios.post(
-          `http://localhost:8081/api/candidates/${id}/cv/upload`,
-          formData
-        );
+        axios.post(`/candidates/${id}/cv/upload`, formData);
       });
   };
 
   const setStatus = async (path) => {
-    const response = await axios.put(`${URL}/api/candidates/${path}`)
-    return response.data.status
+    const response = await axios.put(`/candidates/${path}`);
+    return response.data.status;
   };
   const cvDownload = async (id, name, tech) => {
   const response = await  axios.get(`${URL}/api/candidates/${id}/cv/exists`)
@@ -112,6 +109,6 @@ export const useApplicants = () => {
     fetchApplicants,
     createCandidate,
     setStatus,
-    cvDownload
+    cvDownload,
   };
 };
