@@ -80,7 +80,7 @@ export const useApplicants = () => {
     const response = await axios.put(`${URL}/api/candidates/${path}`)
     return response.data.status
   };
-  const cvDownload = async (id, name) => {
+  const cvDownload = async (id, name, tech) => {
   const response = await  axios.get(`${URL}/api/candidates/${id}/cv/exists`)
       .then(res => { if (!res.data) {
           return true
@@ -95,7 +95,7 @@ export const useApplicants = () => {
             const link = document.createElement('a');
             const url = window.URL.createObjectURL(blob);
             link.href = url;
-            link.download = `${name}`;
+            link.download = `CV ${name} ${tech}`;
             document.body.appendChild(link);
             link.click();
             window.URL.revokeObjectURL(url);

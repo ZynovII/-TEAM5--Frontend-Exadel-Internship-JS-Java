@@ -13,7 +13,7 @@ export const InfoForm: React.FC<{ candidat: IApplicantDetailsFromBackEnd }> = ({
     false
   );
   const download = () => 
-    cvDownload(candidat.id, candidat.fullName)
+    cvDownload(candidat.id, candidat.fullName, candidat.primaryTech)
     .then((res) => {
     res && showModal()
     })

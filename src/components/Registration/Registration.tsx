@@ -52,7 +52,7 @@ export const Registration: React.FC<{
   });
   const [techsOptions, setTechsOptions] = useState<IDropdownOption[]>();
   const [country, setCountry] = useState<ILocationFromBackEnd>();
-
+console.log(props.candidat)
   useEffect(() => {
     Promise.all([
       fetchLocation(),
@@ -63,8 +63,11 @@ export const Registration: React.FC<{
         locations: res[0],
         preferredTimes: res[1],
       };
-      console.log(options);
       setOptions(options);
+       if (props.candidat) {
+        const country = options.locations.find((el) => el.name === props.candidat.country)
+        setCountry(country)
+       }
     });
   }, []);
 
@@ -80,6 +83,7 @@ export const Registration: React.FC<{
     () => country?.cities.map((el) => ({ key: el, text: el })),
     [country]
   );
+  
   useEffect(() => {
     if (props.techs) {
       setTechsOptions(
@@ -148,7 +152,6 @@ export const Registration: React.FC<{
   const onSave = () => {
     handleSubmit(
       (data) => {
-        //console.log(data);
         createCandidate(data, props.name, file);
         showModal();
       },
