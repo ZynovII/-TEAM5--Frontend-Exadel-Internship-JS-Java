@@ -52,7 +52,6 @@ export const Registration: React.FC<{
   });
   const [techsOptions, setTechsOptions] = useState<IDropdownOption[]>();
   const [country, setCountry] = useState<ILocationFromBackEnd>();
-console.log(props.candidat)
   useEffect(() => {
     Promise.all([
       fetchLocation(),
