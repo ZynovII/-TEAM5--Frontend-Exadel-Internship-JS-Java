@@ -80,6 +80,30 @@ export const useApplicants = () => {
     const response = await axios.put(`${URL}/api/candidates/${path}`)
     return response.data.status
   };
+  const cvDownload = async (id, name) => {
+  const response = await  axios.get(`${URL}/api/candidates/${id}/cv/exists`)
+      .then(res => { if (!res.data) {
+          return true
+        }
+         axios.create({
+          responseType: 'blob',
+          headers: {
+              'Content-Type': 'application/pdf',
+          },
+          }).get(`${URL}/api/candidates/${id}/cv/download`).then((res) => {
+            const blob = new Blob([res.data], { type:'application/pdf' })
+            const link = document.createElement('a');
+            const url = window.URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `${name}`;
+            document.body.appendChild(link);
+            link.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+          })  
+      })
+    return response
+  }
 
   return {
     selectedApplicant: state.selectedApplicant,
@@ -87,6 +111,7 @@ export const useApplicants = () => {
     selectApplicant,
     fetchApplicants,
     createCandidate,
-    setStatus
+    setStatus,
+    cvDownload
   };
 };

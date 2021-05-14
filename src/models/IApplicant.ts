@@ -51,6 +51,7 @@ export interface IApplicantDetailsFromBackEnd {
   interviews: IInterview[];
   preferredTime: PreferredTime;
   interviewProcess: InterviewStatus;
+  primaryTech?: string
 }
 export interface IApplicantShortFromBackEnd {
   id: ID;

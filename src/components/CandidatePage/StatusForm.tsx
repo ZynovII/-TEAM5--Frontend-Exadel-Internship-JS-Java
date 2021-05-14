@@ -10,7 +10,7 @@ import { useForm } from "react-hook-form";
 import { ControlledDropdown } from "../../hook-form/Controlled";
 import {
   AcceptStatus,
-  IApplicant,
+  IApplicantDetailsFromBackEnd,
   InterviewStatus,
 } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/useApplicants";
@@ -23,7 +23,7 @@ const desicion: IDropdownOption[] = [
   { key: AcceptStatus.Rejected, text: "Reject" },
 ];
 
-export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
+export const StatusForm: React.FC<{ candidat:IApplicantDetailsFromBackEnd  }> = ({candidat}) => {
   const isMountedRef = useIsMountedRef();
   const {
     handleSubmit,

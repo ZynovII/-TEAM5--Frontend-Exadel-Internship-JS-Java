@@ -16,7 +16,7 @@ import {
   IDropdownStyles,
   Checkbox,
 } from "@fluentui/react";
-import { IApplicant } from "../../models/IApplicant";
+import { IApplicant, IApplicantDetailsFromBackEnd } from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
 import { useApplicants } from "../../hooks/useApplicants";
@@ -41,7 +41,7 @@ const modalText =
 export const Registration: React.FC<{
   name?: string;
   candidatePage?: boolean;
-  candidat?: IApplicant;
+  candidat?: IApplicantDetailsFromBackEnd;
   techs?: ITech[];
 }> = (props) => {
   const { createCandidate } = useApplicants();
@@ -204,7 +204,7 @@ export const Registration: React.FC<{
             control={control}
             name={"phoneNumber"}
             errors={errors}
-            value={(props.candidatePage && props.candidat.phoneNumber) || ""}
+            value={(props.candidatePage && props.candidat.phone) || ""}
             rules={{
               pattern: {
                 value: registrationPattern.phoneNumber,
@@ -232,7 +232,7 @@ export const Registration: React.FC<{
             name={"technology"}
             placeholder="Technology"
             defaultSelectedKey={
-              (props.candidatePage && props.candidat.technology) || ""
+              (props.candidatePage && props.candidat.primaryTech) || ""
             }
             required
             rules={{ required: "This field is required" }}
