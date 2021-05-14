@@ -64,7 +64,7 @@ export const NewEventForm: React.FC<
     eventTypes: [],
     techsNewEvent: [],
   });
-  const [country, setCountry] = useState<ILocationFromBackEnd>();
+  const [country, setCountry] = useState([]);
   const isMountedRef = useIsMountedRef();
 
   useEffect(() => {
@@ -76,6 +76,9 @@ export const NewEventForm: React.FC<
           techsNewEvent: res[2],
         };
         isMountedRef.current && setOptions(options);
+        if (props.cardItem)
+     {const country = [...new Set(props.cardItem.locations.map((el) => el.country))]
+      setCountry(country)}
       }
     );
   }, []);
@@ -98,28 +101,11 @@ export const NewEventForm: React.FC<
     mode: "all",
   });
 
-  const propsCities: IDropdownOption[] = useMemo(() => {
-    const current = [];
-    if (props.cardItem)
-      [...new Set(props.cardItem.locations.map((el) => el.country))].forEach(
-        (el) => {
-          options.locations.find((elem) => {
-            elem.name === el;
-            current.push(elem.cities);
-          });
-        }
-      );
-    return [...new Set(current.flat())].map((el) => ({ key: el, text: el }));
-  }, [getValues("country"), props]);
-
   const cities: IDropdownOption[] = useMemo(() => {
     const current = [];
-    if (getValues("country"))
-      getValues("country").forEach((el) => {
-        current.push(options.locations.find((elem) => elem.name === el).cities);
-      });
+    if (country) country.forEach((elem)=>current.push(options.locations.find((opt)=>opt.name===elem).cities))
     return current.flat().map((el) => ({ key: el, text: el }));
-  }, [getValues("country")]);
+  }, [country]);
 
   const [imageSrc, setImageSrc] = useState<File>();
 
@@ -214,10 +200,11 @@ export const NewEventForm: React.FC<
               }
               options={countries}
               onChange={(_, data) => {
-                const curr = options.locations.find(
-                  (el) => el.name === data.key
-                );
-                setCountry(curr);
+                console.log(data)
+                  setCountry((prev)=>
+                    data.selected ? [...prev, data.key] : prev.filter(key => key !== data.key),
+                  );
+                // setCountry((prev)=>[...prev, data]);
               }}
               styles={textFieldStyles}
             />
@@ -233,7 +220,7 @@ export const NewEventForm: React.FC<
                 []
               }
               errors={errors}
-              options={props.cardItem ? propsCities : cities}
+              options={ cities}
               disabled={!props.cardItem && !country}
               styles={textFieldStyles}
             />

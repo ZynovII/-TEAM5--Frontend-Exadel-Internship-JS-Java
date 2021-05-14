@@ -18,7 +18,7 @@ export const DescriptionEventPage: React.FC<ICardItemProps> = (props) => {
       <div className={contentStyles.flexWrapper}>
         <div className={contentStyles.boxWrapper}>
           <h3 className={contentStyles.descHeader}>Technologies used</h3>
-          {props.cardItem?.techs.map((el) => {return <span className={contentStyles.techSpan}><i className="ms-Icon ms-Icon--Accept" aria-hidden="true"></i>{el.name + "  "}</span>})}
+          {props.cardItem?.techs.map((el) => {return <span className={contentStyles.techSpan} key={el.id}><i className="ms-Icon ms-Icon--Accept" aria-hidden="true"></i>{el.name + "  "}</span>})}
         </div>
         <div className={contentStyles.boxWrapper}>
           <h3 className={contentStyles.descHeader}>Start date</h3>
