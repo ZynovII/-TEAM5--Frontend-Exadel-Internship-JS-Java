@@ -25,12 +25,13 @@ import {
 import { IEventForBackEnd } from "../../models/IEvent";
 import { UploadImage } from "./UploadImage";
 import { useEvents } from "../../hooks/useEvents";
-import axios from "axios";
+import axios from "../../axios-api";
 import { useOptions } from "../../hooks/useOptions";
 import { IOptionsEventFilter } from "../../models/Forms/IOptions";
 import { ILocationFromBackEnd } from "../../models/ILocation";
 import { IEvent } from "../../models/IEvent";
 import { ITech } from "../../models/IEvent";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 interface IModalProps {
   isModal: boolean;
@@ -64,6 +65,7 @@ export const NewEventForm: React.FC<
     techsNewEvent: [],
   });
   const [country, setCountry] = useState<ILocationFromBackEnd>();
+  const isMountedRef = useIsMountedRef();
 
   useEffect(() => {
     Promise.all([fetchLocation(), fetchEventTypes(), fetchTechs()]).then(
@@ -73,8 +75,7 @@ export const NewEventForm: React.FC<
           eventTypes: res[1],
           techsNewEvent: res[2],
         };
-        console.log(options);
-        setOptions(options);
+        isMountedRef.current && setOptions(options);
       }
     );
   }, []);
@@ -125,7 +126,6 @@ export const NewEventForm: React.FC<
   const onSave = () => {
     handleSubmit(
       (data) => {
-        console.log(data);
         createEvent(data, imageSrc);
         hideModal();
       },

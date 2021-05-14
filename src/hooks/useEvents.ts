@@ -1,8 +1,7 @@
-import axios from "axios";
+import axios from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
-// import { fakeRequestEvents } from "../fakeDB/fakeRequest";
 
-import { URL, useStore } from "./hooks";
+import { useStore } from "./hooks";
 import { IEvent } from "../models/IEvent";
 import { ID } from "../models/Store/IStore";
 
@@ -11,31 +10,31 @@ import { IEventForBackEnd } from "../models/IEvent";
 export const useEvents = () => {
   const { state, dispatch } = useStore();
 
-  const fetchEvents = (page, size) => {
+  const fetchEvents = (page, size, mounted) => {
     axios
-      .get(`${URL}/api/events?page=${page}&size=${size}`)
+      .get(`/events?page=${page}&size=${size}`)
       .then((res) => {
-        dispatch({
-          type: ActionTypes.FETCH_EVENTS,
-          payload: res.data.content,
-        });
+        if (mounted) {
+          dispatch({
+            type: ActionTypes.FETCH_EVENTS,
+            payload: res.data.content,
+          });
+        }
       })
       .catch((err) => console.log(err));
-    // fakeRequestEvents.then((res) => {
-    //   dispatch({
-    //     type: ActionTypes.FETCH_EVENTS,
-    //     payload: JSON.parse(res),
-    //   });
-    // });
   };
-  const fetchPublishedEvents = (page, size) => {
+  const fetchPublishedEvents = (page, size, mounted) => {
     axios
-      .get(`${URL}/api/events/published?page=${page}&size=${size}`)
+      .get(
+        `/events/published?page=${page}&size=${size}`
+      )
       .then((res) => {
-        dispatch({
-          type: ActionTypes.FETCH_PUBLISHED_EVENTS,
-          payload: res.data.content,
-        });
+        if (mounted) {
+          dispatch({
+            type: ActionTypes.FETCH_PUBLISHED_EVENTS,
+            payload: res.data.content,
+          });
+        }
       })
       .catch((err) => console.log(err));
   };
@@ -52,7 +51,7 @@ export const useEvents = () => {
         payload: null,
       });
     } else {
-      axios.get(`${URL}/api/events/${id}`).then((res) => {
+      axios.get(`/events/${id}`).then((res) => {
         dispatch({
           type: ActionTypes.SELECT_EVENT,
           payload: res.data,
@@ -72,39 +71,50 @@ export const useEvents = () => {
       type: event.type[0],
     };
     axios
-      .post(`${URL}/api/events/create`, createEventForBackEnd)
+      .post(`/events/create`, createEventForBackEnd)
       .then((res) => res.data.id)
       .then((id) => {
         const formData = new FormData();
         formData.append("file", imageSrc, imageSrc.name);
         axios.post(
-          `${URL}/api/events/${id}/image/upload`,
+          `/events/{id}/image/upload?id=${id}`,
           formData
         );
       });
   };
 
-  const loadImage = (id: string | number, setImageEvent) => {
-    axios.get(`${URL}/api/events/${id}/image/exists`).then((res) => {
-      if (res.data) {
-        axios({ url: `${URL}/api/events/${id}/image/download`, method: 'GET', responseType: 'blob' }).then((res) => { setImageEvent(window.URL.createObjectURL(new Blob([res.data]))) })
-      }
-
-    })
-  }
+  const loadImage = async (id: ID) => {
+    const res = await axios.get(
+      `/events/${id}/image/exists`
+    );
+    if (res.data) {
+      const img = await axios({
+        url: `/events/${id}/image/download`,
+        method: "GET",
+        responseType: "blob",
+      });
+      return window.URL.createObjectURL(new Blob([img.data]));
+    }
+  };
 
   const replaceToArchive = (id: ID) => {
-    const s = `${URL}/api/events/${id}/archive`
-    axios.get(s).then((res) => {
-      console.log(res.data);
-    }).catch((err) => console.log(err));
-  }
+    const s = `/events/${id}/archive`;
+    axios
+      .get(s)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const publishEvent = (id: ID) => {
-    axios.get(`${URL}/api/events/${id}/publish`).then((res) => {
-      console.log(res.data);
-    }).catch((err) => console.log(err));
-  }
+    axios
+      .get(`/events/${id}/publish`)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
+  };
 
   const isNameUniqe = async (value) => {
     const { data } = await axios.get(

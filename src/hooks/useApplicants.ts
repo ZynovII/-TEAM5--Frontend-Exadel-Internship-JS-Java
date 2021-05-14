@@ -1,19 +1,21 @@
-import axios from "axios";
+import axios from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
-import { URL, useStore } from "./hooks";
+import { useStore } from "./hooks";
 
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
-  const fetchApplicants = () => {
+  const fetchApplicants = (mounted) => {
     axios
-      .get(`${URL}/api/candidates`)
+      .get(`/candidates`)
       .then((res) => {
-        dispatch({
-          type: ActionTypes.FETCH_APPLICANTS,
-          payload: res.data.content,
-        });
+        if (mounted) {
+          dispatch({
+            type: ActionTypes.FETCH_APPLICANTS,
+            payload: res.data.content,
+          });
+        }
       })
       .catch((err) => console.log(err));
     // fakeRequestApplicants.then((res) => {
@@ -36,7 +38,7 @@ export const useApplicants = () => {
         payload: null,
       });
     } else {
-      axios.get(`${URL}/api/candidates/${id}`).then((res) => {
+      axios.get(`/candidates/${id}`).then((res) => {
         dispatch({
           type: ActionTypes.SELECT_APPLICANT,
           payload: res.data,
@@ -62,17 +64,43 @@ export const useApplicants = () => {
       summary: candidat.summary,
     };
     axios
-      .post(`${URL}/api/candidates`, candidateForBackEnd)
+      .post(`/candidates`, candidateForBackEnd)
       .then((response) => response.data.id)
       .then((id) => {
         const formData = new FormData();
         formData.append("file", file, file.name);
-        axios.post(
-          `http://localhost:8081/api/candidates/${id}/cv/upload`,
-          formData
-        );
+        axios.post(`/candidates/${id}/cv/upload`, formData);
       });
   };
+
+  const setStatus = async (path) => {
+    const response = await axios.put(`/candidates/${path}`);
+    return response.data.status;
+  };
+  const cvDownload = async (id, name, tech) => {
+  const response = await  axios.get(`${URL}/api/candidates/${id}/cv/exists`)
+      .then(res => { if (!res.data) {
+          return true
+        }
+         axios.create({
+          responseType: 'blob',
+          headers: {
+              'Content-Type': 'application/pdf',
+          },
+          }).get(`${URL}/api/candidates/${id}/cv/download`).then((res) => {
+            const blob = new Blob([res.data], { type:'application/pdf' })
+            const link = document.createElement('a');
+            const url = window.URL.createObjectURL(blob);
+            link.href = url;
+            link.download = `CV ${name} ${tech}`;
+            document.body.appendChild(link);
+            link.click();
+            window.URL.revokeObjectURL(url);
+            document.body.removeChild(link);
+          })  
+      })
+    return response
+  }
 
   return {
     selectedApplicant: state.selectedApplicant,
@@ -80,5 +108,7 @@ export const useApplicants = () => {
     selectApplicant,
     fetchApplicants,
     createCandidate,
+    setStatus,
+    cvDownload,
   };
 };

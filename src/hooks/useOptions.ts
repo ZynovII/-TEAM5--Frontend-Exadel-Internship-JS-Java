@@ -1,5 +1,5 @@
 import { IDropdownOption, ITag } from "@fluentui/react";
-import axios from "axios";
+import axios from "../axios-api";
 import { ILocationFromBackEnd } from "../models/ILocation";
 import {
   acceptStatusReformer,
@@ -7,16 +7,15 @@ import {
   interviewStatusReformer,
   preferredTimeReformer,
 } from "../utils/stringReformers";
-import { URL } from "./hooks";
 
 export const useOptions = () => {
   const fetchLocation = async () => {
-    const response = await axios.get(`${URL}/api/locations/`);
+    const response = await axios.get(`/locations/`);
     const locationOptions: ILocationFromBackEnd[] = response.data;
     return locationOptions;
   };
   const fetchTechnology = async () => {
-    const response = await axios.get(`${URL}/api/techs`);
+    const response = await axios.get(`/techs`);
     const techOptions: ITag[] = response.data.map((el) => ({
       key: el.toLowerCase(),
       text: el,
@@ -26,7 +25,7 @@ export const useOptions = () => {
   };
   const fetchInterviewStatuses = async () => {
     const response = await axios.get(
-      `${URL}/api/candidates/interview-statuses`
+      `/candidates/interview-statuses`
     );
     const interviewStatusesOptions: IDropdownOption[] = response.data.map(
       (el) => ({
@@ -37,7 +36,7 @@ export const useOptions = () => {
     return interviewStatusesOptions;
   };
   const fetchStatuses = async () => {
-    const response = await axios.get(`${URL}/api/candidates/statuses`);
+    const response = await axios.get(`/candidates/statuses`);
     const statusesOptions: IDropdownOption[] = response.data.map((el) => ({
       key: el,
       text: acceptStatusReformer(el),
@@ -46,7 +45,7 @@ export const useOptions = () => {
     return statusesOptions;
   };
   const fetchPreferredTime = async () => {
-    const response = await axios.get(`${URL}/api/candidates/preferred-times`);
+    const response = await axios.get(`/candidates/preferred-times`);
     const preferredTimesOptions: IDropdownOption[] = response.data.map(
       (el) => ({
         key: el,
@@ -56,7 +55,7 @@ export const useOptions = () => {
     return preferredTimesOptions;
   };
   const fetchEventTypes = async () => {
-    const response = await axios.get(`${URL}/api/events/types`);
+    const response = await axios.get(`/events/types`);
     const eventTypesOptions: IDropdownOption[] = response.data.map((el) => ({
       key: el,
       text: eventTypeReformer(el),
@@ -65,7 +64,7 @@ export const useOptions = () => {
   };
 
   const fetchTechs = async () => {
-    const response = await axios.get(`${URL}/api/techs`);
+    const response = await axios.get(`/techs`);
     const techsNewEventOptions: IDropdownOption[] = response.data.map((el) => ({
       key: el,
       text: el,

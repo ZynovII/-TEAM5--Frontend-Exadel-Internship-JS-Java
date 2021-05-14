@@ -1,4 +1,4 @@
-import React, { useMemo } from "react";
+import React, { useMemo, useState } from "react";
 import {
   Stack,
   ProgressIndicator,
@@ -10,16 +10,21 @@ import { useForm } from "react-hook-form";
 import { ControlledDropdown } from "../../hook-form/Controlled";
 import {
   AcceptStatus,
-  IApplicant,
+  IApplicantDetailsFromBackEnd,
   InterviewStatus,
 } from "../../models/IApplicant";
+import { useApplicants } from "../../hooks/useApplicants";
+import { useAuth } from "../../hooks/useAuth";
+
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const desicion: IDropdownOption[] = [
   { key: AcceptStatus.Accepted, text: "Accept" },
   { key: AcceptStatus.Rejected, text: "Reject" },
 ];
 
-export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
+export const StatusForm: React.FC<{ candidat:IApplicantDetailsFromBackEnd  }> = ({candidat}) => {
+  const isMountedRef = useIsMountedRef();
   const {
     handleSubmit,
     formState: { errors },
@@ -28,7 +33,9 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
     reValidateMode: "onSubmit",
     mode: "all",
   });
-
+  const { setStatus } = useApplicants();
+  const { currentUser } = useAuth();
+  const [statusAplicant, setStatusAplicant] = useState(candidat.status);
   const interviewProcess = useMemo(() => {
     switch (candidat.interviewProcess) {
       case InterviewStatus.Registered:
@@ -43,13 +50,39 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
         return [0, 'Registered'];
     }
   }, [candidat.interviewProcess]);
-
   const textAlign = useMemo(() => {
     return interviewProcess[0] <= 0.2 ? { textAlign: 'left' } : { textAlign: 'right' }
   }, [interviewProcess[0]])
-  
+
   const onSave = () => {
-    handleSubmit((data) => console.log(data))();
+    handleSubmit((data) => {
+    switch(data.status.join()) {
+      case 'GREEN':  
+        setStatus(`${candidat.id}/accept`) 
+        .then((response) => {
+          if (isMountedRef.current) {
+            setStatusAplicant(response)
+          }
+        })
+        return
+      case 'RED':  
+        setStatus(`${candidat.id}/reject`)
+        .then((response) => {
+          if (isMountedRef.current) {
+            setStatusAplicant(response)
+          }
+        })
+        return
+      default:
+        setStatus(`${candidat.id}/accept`)
+        .then((response) => {
+          if (isMountedRef.current) {
+            setStatusAplicant(response)
+          }
+        })
+      return
+    }
+  })();
   };
   return (
     <Stack
@@ -64,15 +97,15 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
         <h3
           style={{
             color:
-              (candidat.status === AcceptStatus.Accepted &&
+              (statusAplicant === AcceptStatus.Accepted &&
                 "#00cc00") ||
-              (candidat.status === AcceptStatus.Pending &&
+              (statusAplicant === AcceptStatus.Pending &&
                 "#DBDE36") ||
-              (candidat.status === AcceptStatus.Rejected &&
+              (statusAplicant === AcceptStatus.Rejected &&
                 "red"),
           }}
         >
-          {candidat.status}
+          {statusAplicant}
         </h3>
       </Stack>
       <Stack
@@ -103,14 +136,19 @@ export const StatusForm: React.FC<{ candidat: IApplicant }> = ({candidat}) => {
       >
         <ControlledDropdown
           control={control}
-          name={"acceptanceStatus"}
+          name={"status"}
           placeholder="Choose Status"
           defaultSelectedKey={""}
           errors={errors}
           options={desicion}
           style={{ width: "150px" }}
+          disabled= {currentUser.role !== "SUPERADMIN"}
         />
-        <DefaultButton text="Submit" onClick={() => onSave()} />
+        <DefaultButton 
+          text="Submit" 
+          onClick={() => onSave()} 
+          disabled={currentUser.role !== "SUPERADMIN"}
+        />
       </Stack>
     </Stack>
   );

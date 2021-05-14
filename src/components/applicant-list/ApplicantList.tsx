@@ -18,6 +18,7 @@ import { useApplicants } from "../../hooks/useApplicants";
 import { useLoader } from "../../hooks/hooks";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
 import { acceptStatusReformer } from "../../utils/stringReformers";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
@@ -33,9 +34,10 @@ export const ApplicantList: React.FC = () => {
   const { applicants, fetchApplicants } = useApplicants();
   const { loading, showLoader } = useLoader();
   const history = useHistory();
+  const isMountedRef = useIsMountedRef();
   useEffect(() => {
     showLoader();
-    fetchApplicants();
+    fetchApplicants(isMountedRef.current);
   }, []);
 
   const applicantsList = useMemo(() => {
@@ -113,26 +115,29 @@ export const ApplicantList: React.FC = () => {
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <>
-        <AllApplicantFilter />
+      <AllApplicantFilter />
 
-        <div
-          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold", marginTop: "2rem" }}
-        >
-            <DetailsList
-              items={applicantsList}
-              columns={columns}
-              isHeaderVisible={true}
-              selectionMode={SelectionMode.multiple}
-              onItemInvoked={(item) =>{
-                history.push(`/admin/candidates/${item.id}`)
-                showLoader()
-              }
-              }
-              onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
-                <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
-              )}
-            />
-        </div>
+      <div
+        style={{
+          boxShadow: theme.effects.elevation16,
+          fontWeight: "bold",
+          marginTop: "2rem",
+        }}
+      >
+        <DetailsList
+          items={applicantsList}
+          columns={columns}
+          isHeaderVisible={true}
+          selectionMode={SelectionMode.multiple}
+          onItemInvoked={(item) => {
+            history.push(`/admin/candidates/${item.id}`);
+            showLoader();
+          }}
+          onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
+            <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
+          )}
+        />
+      </div>
     </>
   );
 };

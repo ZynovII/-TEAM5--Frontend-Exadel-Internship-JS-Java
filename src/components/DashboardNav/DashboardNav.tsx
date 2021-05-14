@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useMemo } from "react";
 import { useId, useBoolean } from "@fluentui/react-hooks";
 import {
   PrimaryButton,
@@ -18,8 +18,6 @@ import UserCircle from "../UserCircle/UserCircle";
 import { useAuth } from "../../hooks/useAuth";
 
 const cancelIcon: IIconProps = { iconName: "Cancel" };
-
-const Logo = require("../../assets/img/exadel-logo-dash.png");
 
 const Links = [
   {
@@ -101,10 +99,24 @@ export const DashboardNav = () => {
   const titleId = useId("signout");
   const history = useHistory();
   const clickHandler = () => history.push("/");
-  const { signOut } = useAuth();
+  const { signOut, currentUser } = useAuth();
   Links[0].links[4].onClick = (e) => {
     showModal();
   };
+
+  const initials = useMemo(
+    () =>
+      currentUser.fullName.split(" ")[0].split("")[0] +
+      currentUser.fullName.split(" ")[2].split("")[0],
+    [currentUser]
+  );
+  const name = useMemo(
+    () =>
+      currentUser.fullName.split(" ")[0] +
+      " " +
+      currentUser.fullName.split(" ")[2],
+    [currentUser]
+  );
   return (
     <div className="dash-nav">
       <Modal
@@ -142,10 +154,8 @@ export const DashboardNav = () => {
         </div>
       </Modal>
       <div style={headStyle} onClick={clickHandler}>
-        <UserCircle />
-        <h4 className="ms-hiddenLgDown ms-fontColor-themePrimary">
-          Ivan Ivanov
-        </h4>
+        <UserCircle initials={initials} />
+        <h4 className="ms-hiddenLgDown ms-fontColor-themePrimary">{name}</h4>
       </div>
       <Nav
         groups={Links}
@@ -165,12 +175,6 @@ const dashboardStyles = {
     overflowY: "auto",
     paddingTop: "5vh",
   },
-};
-
-const logoStyle = {
-  borderRadius: "50%",
-  boxShadow: Depths.depth8,
-  width: "4vw",
 };
 const headStyle = {
   padding: "10px 0",

@@ -1,7 +1,5 @@
 import React from "react";
 import { useId, useBoolean } from "@fluentui/react-hooks";
-import { useStore } from "../../hooks/hooks"
-import { ActionTypes } from "../../context/actionTypes"
 import {
   getTheme,
   mergeStyleSets,
@@ -10,24 +8,61 @@ import {
   Modal,
   IconButton,
   IIconProps,
-  TextField,
 } from "@fluentui/react/lib";
 
-import AuthBtn from './AuthBtn/AuthBtn';
+import AuthBtn from "./AuthBtn/AuthBtn";
+import { useForm } from "react-hook-form";
+import { ILogin } from "../../models/ILogin";
+import { useAuth } from "../../hooks/useAuth";
+import { ControlledTextField } from "../../hook-form/Controlled";
 
 const cancelIcon: IIconProps = { iconName: "Cancel" };
+const registrationPattern: {
+  email: RegExp;
+} = {
+  email: /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@([a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i,
+};
 
-const ButtonLog: React.FC<{ isLoggedIn: boolean, logout: any, userName: string }> = (props) => {
-  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean( false );
+const ButtonLog: React.FC<{
+  isLoggedIn: boolean;
+  userName: string;
+}> = (props) => {
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
+    false
+  );
   const titleId = useId("title");
-  const { dispatch } = useStore()
-	const logIn = () => {
-		dispatch( {type: ActionTypes.SIGN_IN} )
-    hideModal()
-	}
+  const { signIn, signOut } = useAuth();
+
+  const {
+    handleSubmit,
+    formState: { errors },
+    control,
+  } = useForm<ILogin>({
+    reValidateMode: "onSubmit",
+    mode: "all",
+  });
+  const onSave = () => {
+    handleSubmit(
+      (data) => {
+        console.log(data);
+        signIn(data);
+      },
+      (err) => {
+        console.log("ошибка заполнения");
+        console.log(err);
+      }
+    )();
+
+    hideModal();
+  };
   return (
     <div>
-      <AuthBtn isLoggedIn = {props.isLoggedIn} userName = {props.userName} logout = {props.logout} showModal = {showModal} />
+      <AuthBtn
+        isLoggedIn={props.isLoggedIn}
+        userName={props.userName}
+        logout={signOut}
+        showModal={showModal}
+      />
       <Modal
         titleAriaId={titleId}
         isOpen={isModalOpen}
@@ -45,14 +80,38 @@ const ButtonLog: React.FC<{ isLoggedIn: boolean, logout: any, userName: string }
           />
         </div>
         <div className={contentStyles.body}>
-          <TextField placeholder="Login" className={contentStyles.item} />
-          <TextField
+          <ControlledTextField
+            required
+            placeholder="Email"
+            control={control}
+            name={"email"}
+            errors={errors}
+            rules={{
+              pattern: {
+                value: registrationPattern.email,
+                message: "Invalid email",
+              },
+            }}
+            className={contentStyles.item}
+          />
+          <ControlledTextField
             placeholder="Password"
+            control={control}
+            errors={errors}
+            name={"password"}
+            value=""
             type="password"
+            rules={{
+              required: "This field is required",
+            }}
             canRevealPassword
             className={contentStyles.item}
           />
-          <PrimaryButton onClick={() => logIn()} text="Send" className="button" />
+          <PrimaryButton
+            onClick={() => onSave()}
+            text="Send"
+            className="button"
+          />
         </div>
       </Modal>
     </div>

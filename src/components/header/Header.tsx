@@ -2,18 +2,14 @@ import React from "react";
 import { useHistory } from "react-router";
 import { Stack } from "@fluentui/react/lib";
 
-import { useStore } from "../../hooks/hooks";
-import { ActionTypes } from "../../context/actionTypes";
 import HeaderNav from "./Navigation";
 import ButtonLog from "./ButtonLog";
+import { useAuth } from "../../hooks/useAuth";
 
 const logo = require("./../../assets/img/logo.svg");
 
 const Header: React.FC = () => {
-  const { state, dispatch } = useStore();
-  const logOut = () => {
-    dispatch({ type: ActionTypes.SIGN_OUT });
-  };
+  const { isAuth, currentUser } = useAuth();
   const history = useHistory();
 
   return (
@@ -28,12 +24,11 @@ const Header: React.FC = () => {
             onClick={() => history.push("/events")}
             alt="exadel"
           />
-          {state.isAuthenticated && <HeaderNav />}
+          {isAuth && <HeaderNav />}
         </div>
         <ButtonLog
-          isLoggedIn={state.isAuthenticated}
-          userName={"Admin"}
-          logout={logOut}
+          isLoggedIn={isAuth}
+          userName={isAuth && currentUser.fullName.split(" ")[0]}
         />{" "}
         {/*dinamic userName */}
       </Stack>

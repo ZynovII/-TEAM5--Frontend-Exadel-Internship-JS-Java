@@ -1,18 +1,19 @@
 import { IInterview } from "../IInterview";
-import { IApplicant, IApplicantShortFromBackEnd } from "../IApplicant";
+import { IApplicant, IApplicantShortFromBackEnd, IApplicantDetailsFromBackEnd } from "../IApplicant";
 import { IEvent } from "../IEvent";
+import { IUser } from "../IUser";
 
 export type ID = string | number;
 
 export interface IStore {
   loading: boolean;
   isAuthenticated: boolean;
-  currentUserID: number;
+  currentUser: IUser;
   events: { [eventId: string]: IEvent };
   publishedEvents: { [eventId: string]: IEvent };
   applicants: { [aplicantId: string]: IApplicantShortFromBackEnd };
   interviews: { [interviewId: string]: IInterview };
   selectedEvent: IEvent;
-  selectedApplicant: IApplicant;
+  selectedApplicant: IApplicantDetailsFromBackEnd;
   selectedInterview: IInterview;
 }
