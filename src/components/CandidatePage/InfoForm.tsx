@@ -1,45 +1,60 @@
 import React from "react";
 import { Stack, mergeStyleSets, DefaultButton } from "@fluentui/react";
-import { IApplicant } from "../../models/IApplicant";
+import { IApplicantDetailsFromBackEnd } from "../../models/IApplicant";
 import { preferredTimeReformer } from "../../utils/stringReformers";
+import { useApplicants } from "../../hooks/useApplicants";
+import ModalWindow from "../ModalWindow";
+import { useBoolean } from "@fluentui/react-hooks";
 
-
-export const InfoForm: React.FC<{ candidat: IApplicant }> = (props) => {
+const modalText = `There is no candidate’s CV`
+export const InfoForm: React.FC<{ candidat: IApplicantDetailsFromBackEnd }> = ({ candidat }) => {
+  const { cvDownload } = useApplicants();
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
+    false
+  );
+  const download = () => 
+    cvDownload(candidat.id, candidat.fullName, candidat.primaryTech)
+    .then((res) => {
+    res && showModal()
+    })
   return (
-    <div className={contentStyles.container}>
-      <Stack
-        className={contentStyles.formWrapper}
-        horizontal
-        tokens={{ childrenGap: "40px" }}
-      >
+    <>
+      <ModalWindow open={isModalOpen} text={modalText} hideModal={hideModal} />
+      <div className={contentStyles.container}>
         <Stack
-          tokens={{ childrenGap: "20px" }}
-          styles={{ root: { width: "50%" } }}
+          className={contentStyles.formWrapper}
+          horizontal
+          tokens={{ childrenGap: "40px" }}
         >
-          <p className={contentStyles.input}>{props.candidat.fullName}</p>
-          <p className={contentStyles.input}>{props.candidat.email}</p>
-          <p className={contentStyles.input}>{props.candidat.phoneNumber}</p>
-          <p className={contentStyles.input}>{props.candidat.skype}</p>
+          <Stack
+            tokens={{ childrenGap: "20px" }}
+            styles={{ root: { width: "50%" } }}
+          >
+            <p className={contentStyles.input}>{candidat.fullName}</p>
+            <p className={contentStyles.input}>{candidat.email}</p>
+            <p className={contentStyles.input}>{candidat.phone || 'Phone Number'}</p>
+            <p className={contentStyles.input}>{candidat.skype}</p>
+          </Stack>
+          <Stack
+            tokens={{ childrenGap: "20px" }}
+            styles={{ root: { width: "50%" } }}
+          >
+            <p className={contentStyles.input}>{candidat.primaryTech}</p>
+            <p className={contentStyles.input}>{candidat.country}</p>
+            <p className={contentStyles.input}>{candidat.city}</p>
+            <p className={contentStyles.input}>{preferredTimeReformer(candidat.preferredTime)}</p>
+          </Stack>
         </Stack>
-        <Stack
-          tokens={{ childrenGap: "20px" }}
-          styles={{ root: { width: "50%" } }}
+        <p
+          className={contentStyles.input}
+          style={{ margin: "20px 0", minHeight: "62px", maxHeight: "100%" }}
         >
-          <p className={contentStyles.input}>{props.candidat.technology}</p>
-          <p className={contentStyles.input}>{props.candidat.country}</p>
-          <p className={contentStyles.input}>{props.candidat.city}</p>
-          <p className={contentStyles.input}>{preferredTimeReformer(props.candidat.preferredTime)}</p>
-        </Stack>
-      </Stack>
-      <p
-        className={contentStyles.input}
-        style={{ margin: "20px 0", minHeight: "62px", maxHeight: "100%" }}
-      >
-        {props.candidat.summary}
-      </p>
+          {candidat.summary || 'Summary'}
+        </p>
 
-      <DefaultButton text="Download" />
-    </div>
+        <DefaultButton text="Download" onClick={download} />
+      </div>
+    </>
   );
 };
 
