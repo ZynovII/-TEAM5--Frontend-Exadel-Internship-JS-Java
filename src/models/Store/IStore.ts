@@ -16,4 +16,5 @@ export interface IStore {
   selectedEvent: IEvent;
   selectedApplicant: IApplicantDetailsFromBackEnd;
   selectedInterview: IInterview;
+  interviewers: any; // поправь
 }

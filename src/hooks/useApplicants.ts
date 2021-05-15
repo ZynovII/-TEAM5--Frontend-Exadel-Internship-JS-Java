@@ -1,4 +1,4 @@
-import axios from "../axios-api";
+import axios, { axiosBlob } from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
 import { useStore } from "./hooks";
@@ -77,17 +77,13 @@ export const useApplicants = () => {
     const response = await axios.put(`/candidates/${path}`);
     return response.data.status;
   };
+  
   const cvDownload = async (id, name, tech) => {
-  const response = await  axios.get(`${URL}/api/candidates/${id}/cv/exists`)
+  const response = await  axios.get(`/candidates/${id}/cv/exists`)
       .then(res => { if (!res.data) {
           return true
         }
-         axios.create({
-          responseType: 'blob',
-          headers: {
-              'Content-Type': 'application/pdf',
-          },
-          }).get(`${URL}/api/candidates/${id}/cv/download`).then((res) => {
+        axiosBlob.get(`/candidates/${id}/cv/download`).then((res) => {
             const blob = new Blob([res.data], { type:'application/pdf' })
             const link = document.createElement('a');
             const url = window.URL.createObjectURL(blob);
