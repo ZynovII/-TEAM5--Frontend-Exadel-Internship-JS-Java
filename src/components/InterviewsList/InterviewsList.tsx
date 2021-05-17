@@ -16,6 +16,8 @@ import {
 import { InterviewListFilter } from "./InterviwListFilter";
 import { useInterviews } from "../../hooks/useInterwievs";
 import { useLoader } from "../../hooks/hooks";
+import { useAuth } from "../../hooks/useAuth";
+import { dateReformer, timeReformer } from "../../utils/stringReformers";
 
 const theme = getTheme();
 
@@ -28,25 +30,25 @@ const hostStyles: Partial<ITooltipHostStyles> = {
 const InterviewList: React.FC = () => {
   const tooltipId = useId("tooltip");
   const history = useHistory();
+  const { currentUser } = useAuth();
 
   const { interviews, fetchInterviews } = useInterviews();
   const { loading, showLoader } = useLoader();
 
   useEffect(() => {
     showLoader();
-    fetchInterviews();
+    fetchInterviews(currentUser.id);
   }, []);
 
-  const applicantsList = useMemo(
+  const interviewsList = useMemo(
     () =>
       Object.keys(interviews).map((idx) => {
         return {
-          fullName: interviews[idx].fullName,
-          event: interviews[idx].event,
-          skill: interviews[idx].technology,
-          interviewStatus: interviews[idx].interviewStatus,
-          interviewDate: interviews[idx].interviewDate,
-          interviewTime: interviews[idx].interviewTime,
+          fullName: interviews[idx].candidate,
+          // skill: interviews[idx].technology,
+          // interviewStatus: interviews[idx].interviewStatus,
+          interviewDate: dateReformer(interviews[idx].startTime),
+          interviewTime: timeReformer(interviews[idx].startTime),
         };
       }),
     [interviews]
@@ -120,35 +122,41 @@ const InterviewList: React.FC = () => {
     ],
     []
   );
-  return loading ? (
-    <Spinner size={SpinnerSize.large} className="margin2em" />
-  ) : (
-    <>
-      <InterviewListFilter />
-          <div style={{ boxShadow: theme.effects.elevation16, marginTop: "2rem" }}>
-            <DetailsList
-              items={applicantsList}
-              columns={columns}
-              selectionMode={SelectionMode.multiple}
-              isHeaderVisible={true}
-              onItemInvoked={(item) =>
-                history.push(`/admin/interviews/${item.fullName}`)
-              }
-              onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
-                <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
-              )}
-              onRenderRow={(props, defaultRender) => (
-                <div>
-                  {defaultRender({
-                    ...props,
-                    styles: { root: { fontSize: 16 } },
-                  })}
-                </div>
-              )}
-            />
-          </div>
-    </>
-  );
+  if (loading) {
+    return <Spinner size={SpinnerSize.large} className="margin2em" />;
+  } else if (interviewsList.length === 0) {
+    return <h1 style={{ margin: "1rem" }}>No scheduled interviews yet</h1>;
+  } else {
+    return (
+      <>
+        <InterviewListFilter />
+        <div
+          style={{ boxShadow: theme.effects.elevation16, marginTop: "2rem" }}
+        >
+          <DetailsList
+            items={interviewsList}
+            columns={columns}
+            selectionMode={SelectionMode.multiple}
+            isHeaderVisible={true}
+            onItemInvoked={(item) =>
+              history.push(`/admin/interviews/${item.fullName}`)
+            }
+            onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
+              <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
+            )}
+            onRenderRow={(props, defaultRender) => (
+              <div>
+                {defaultRender({
+                  ...props,
+                  styles: { root: { fontSize: 16 } },
+                })}
+              </div>
+            )}
+          />
+        </div>
+      </>
+    );
+  }
 };
 
 export default InterviewList;

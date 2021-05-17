@@ -1,13 +1,15 @@
-import axios from "../axios-api";
+import axiosApi from "../axios-api";
+import axios from "axios";
 import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
 import { useStore } from "./hooks";
+import { Dispatch } from "react";
 
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
   const fetchApplicants = (mounted) => {
-    axios
+    axiosApi
       .get(`/candidates`)
       .then((res) => {
         if (mounted) {
@@ -18,12 +20,6 @@ export const useApplicants = () => {
         }
       })
       .catch((err) => console.log(err));
-    // fakeRequestApplicants.then((res) => {
-    //   dispatch({
-    //     type: ActionTypes.FETCH_APPLICANTS,
-    //     payload: JSON.parse(res),
-    //   });
-    // });
   };
 
   const selectApplicant = (id: string) => {
@@ -38,19 +34,23 @@ export const useApplicants = () => {
         payload: null,
       });
     } else {
-      axios.get(`/candidates/${id}`).then((res) => {
-        dispatch({
-          type: ActionTypes.SELECT_APPLICANT,
-          payload: res.data,
-        });
-      });
+      axiosApi
+        .get(`/candidates/${id}`)
+        .then((res) => {
+          dispatch({
+            type: ActionTypes.SELECT_APPLICANT,
+            payload: res.data,
+          });
+        })
+        .catch((err) => console.log(err));
     }
   };
 
   const createCandidate = (
     candidat: IApplicant,
     eventName: string,
-    file: File
+    file?: File,
+    cbOnLoad?: Dispatch<React.SetStateAction<string>>
   ) => {
     const candidateForBackEnd = {
       city: candidat.city[0],
@@ -63,33 +63,47 @@ export const useApplicants = () => {
       skype: candidat.skype,
       summary: candidat.summary,
     };
-    axios
+    axiosApi
       .post(`/candidates`, candidateForBackEnd)
       .then((response) => response.data.id)
       .then((id) => {
-        const formData = new FormData();
-        formData.append("file", file, file.name);
-        axios.post(`/candidates/${id}/cv/upload`, formData);
+        if (file) {
+          const formData = new FormData();
+          formData.append("file", file, file.name);
+          axiosApi.post(`/candidates/${id}/cv/upload`, formData);
+        }
+        cbOnLoad(
+          "Your application has been successfully sent. Our specialist will connect with you soon."
+        );
+      })
+      .catch((err) => {
+        cbOnLoad(err);
+        console.log(err);
       });
   };
 
   const setStatus = async (path) => {
-    const response = await axios.put(`/candidates/${path}`);
+    const response = await axiosApi.put(`/candidates/${path}`);
     return response.data.status;
   };
   const cvDownload = async (id, name, tech) => {
-  const response = await  axios.get(`${URL}/api/candidates/${id}/cv/exists`)
-      .then(res => { if (!res.data) {
-          return true
+    const response = await axiosApi
+      .get(`${URL}/api/candidates/${id}/cv/exists`)
+      .then((res) => {
+        if (!res.data) {
+          return true;
         }
-         axios.create({
-          responseType: 'blob',
-          headers: {
-              'Content-Type': 'application/pdf',
-          },
-          }).get(`${URL}/api/candidates/${id}/cv/download`).then((res) => {
-            const blob = new Blob([res.data], { type:'application/pdf' })
-            const link = document.createElement('a');
+        axios
+          .create({
+            responseType: "blob",
+            headers: {
+              "Content-Type": "application/pdf",
+            },
+          })
+          .get(`${URL}/api/candidates/${id}/cv/download`)
+          .then((res) => {
+            const blob = new Blob([res.data], { type: "application/pdf" });
+            const link = document.createElement("a");
             const url = window.URL.createObjectURL(blob);
             link.href = url;
             link.download = `CV ${name} ${tech}`;
@@ -97,10 +111,11 @@ export const useApplicants = () => {
             link.click();
             window.URL.revokeObjectURL(url);
             document.body.removeChild(link);
-          })  
+          });
       })
-    return response
-  }
+      .catch((err) => console.log(err));
+    return response;
+  };
 
   return {
     selectedApplicant: state.selectedApplicant,

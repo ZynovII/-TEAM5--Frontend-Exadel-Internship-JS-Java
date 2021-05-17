@@ -11,3 +11,9 @@ export interface IInterview {
   events: string;
   feedback: string;
 }
+export interface IInterviewFromBackEnd {
+  id: ID;
+  startTime: string;
+  candidate: string;
+  employee: string;
+}

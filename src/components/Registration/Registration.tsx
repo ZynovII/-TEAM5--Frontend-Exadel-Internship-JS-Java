@@ -16,7 +16,10 @@ import {
   IDropdownStyles,
   Checkbox,
 } from "@fluentui/react";
-import { IApplicant, IApplicantDetailsFromBackEnd } from "../../models/IApplicant";
+import {
+  IApplicant,
+  IApplicantDetailsFromBackEnd,
+} from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
 import { useApplicants } from "../../hooks/useApplicants";
@@ -35,15 +38,13 @@ const registrationPattern: {
   phoneNumber: /\W\d+/gi,
 };
 
-const modalText =
-  "Your application has been successfully sent. Our specialist will connect with you soon.";
-
 export const Registration: React.FC<{
   name?: string;
   candidatePage?: boolean;
   candidat?: IApplicantDetailsFromBackEnd;
   techs?: ITech[];
 }> = (props) => {
+  const [response, setResponse] = useState<string>("");
   const { createCandidate } = useApplicants();
   const { fetchLocation, fetchPreferredTime, fetchTechnology } = useOptions();
   const [options, setOptions] = useState<IOptionsRegistration>({
@@ -63,10 +64,12 @@ export const Registration: React.FC<{
         preferredTimes: res[1],
       };
       setOptions(options);
-       if (props.candidat) {
-        const country = options.locations.find((el) => el.name === props.candidat.country)
-        setCountry(country)
-       }
+      if (props.candidat) {
+        const country = options.locations.find(
+          (el) => el.name === props.candidat.country
+        );
+        setCountry(country);
+      }
     });
   }, []);
 
@@ -82,7 +85,7 @@ export const Registration: React.FC<{
     () => country?.cities.map((el) => ({ key: el, text: el })),
     [country]
   );
-  
+
   useEffect(() => {
     if (props.techs) {
       setTechsOptions(
@@ -151,7 +154,7 @@ export const Registration: React.FC<{
   const onSave = () => {
     handleSubmit(
       (data) => {
-        createCandidate(data, props.name, file);
+        createCandidate(data, props.name, file, setResponse);
         showModal();
       },
       (err) => {
@@ -163,7 +166,7 @@ export const Registration: React.FC<{
 
   return (
     <>
-      <ModalWindow open={isModalOpen} text={modalText} hideModal={hideModal} />
+      <ModalWindow open={isModalOpen} text={response} hideModal={hideModal} />
       <h2 style={{ margin: "2em 0 1em" }}>{props.name}</h2>
       <div className={contentStyles.mediaContainer}>
         <div className={contentStyles.mediaItem}>

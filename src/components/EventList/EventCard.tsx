@@ -1,4 +1,4 @@
-import React, { useMemo, useState, useEffect } from "react";
+import React, { useMemo, useState, useEffect, useCallback } from "react";
 import {
   DocumentCard,
   DocumentCardTitle,
@@ -21,8 +21,6 @@ import { NewEventForm } from "../NewEvent/NewEventForm";
 
 import { dateReformer } from "./../../utils/stringReformers";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
-
-const cardImage = require("./../../assets/img/card_img.jpg");
 
 const styles = mergeStyleSets({
   styleCard: {
@@ -90,11 +88,14 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     true
   );
   const [isPublished, setIspublished] = useState(false);
-  const onClickPublishBtn = (e) => {
-    isPublished ? setIspublished(false) : toggleHidePublishDialog();
-    e.stopPropagation();
-    e.preventDefault();
-  };
+  const onClickPublishBtn = useCallback(
+    (e) => {
+      isPublished ? setIspublished(false) : toggleHidePublishDialog();
+      e.stopPropagation();
+      e.preventDefault();
+    },
+    [isPublished]
+  );
 
   const onClickRemoveBtn = (e) => {
     toggleHideRemoveDialog();
@@ -141,7 +142,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         title: isPublished ? "Unpublish Event" : "Publish event",
       },
     ],
-    []
+    [isPublished, onClickPublishBtn]
   );
 
   const publishDialogProps = useMemo(() => {
