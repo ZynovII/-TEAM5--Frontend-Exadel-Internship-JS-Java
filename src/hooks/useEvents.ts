@@ -118,10 +118,9 @@ export const useEvents = () => {
 
   const isNameUniqe = async (value) => {
     const { data } = await axios.get(
-      `${URL}/api/events/uniqueness/${value}`
+      `/events/uniqueness/${value}`
     );
-    const validateNameUniq = data || "This name is already used";
-    return validateNameUniq;
+    return data || "This name is already used";
   };
 
   return {

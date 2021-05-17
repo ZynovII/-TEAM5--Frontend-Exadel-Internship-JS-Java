@@ -92,13 +92,11 @@ export const NewEventForm: React.FC<
     [options]
   );
   const {
-    getValues,
     handleSubmit,
     formState: { errors },
     control,
   } = useForm<IEventForBackEnd>({
     reValidateMode: "onSubmit",
-    mode: "all",
   });
 
   const cities: IDropdownOption[] = useMemo(() => {
