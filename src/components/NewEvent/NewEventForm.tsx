@@ -98,7 +98,6 @@ export const NewEventForm: React.FC<
     control,
   } = useForm<IEventForBackEnd>({
     reValidateMode: "onSubmit",
-    mode: "all",
   });
 
   const cities: IDropdownOption[] = useMemo(() => {
@@ -220,7 +219,7 @@ export const NewEventForm: React.FC<
                 []
               }
               errors={errors}
-              options={cities}
+              options={ cities}
               disabled={!props.cardItem && !country}
               styles={textFieldStyles}
             />
