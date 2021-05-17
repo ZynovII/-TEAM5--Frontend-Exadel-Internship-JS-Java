@@ -30,9 +30,6 @@ const Event: React.FC<IEventProps> = (props) => {
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <>
-      <h1 style={{ textAlign: "center", marginBottom: "1em" }}>
-        {selectedEvent.name}
-      </h1>
       <DescriptionEventPage cardItem={selectedEvent} />
       <Registration name={selectedEvent.name} techs={selectedEvent.techs} />
     </>

@@ -54,17 +54,17 @@ export const NewEventForm: React.FC<
   {
     eventCard: boolean;
     cardItem?: IEvent;
-    techs?: ITech[];
+    techsNewEvent?: ITech[];
   } & IModalProps
 > = ({ isModal, hideModal, ...props }) => {
-  const { createEvent } = useEvents();
+  const { createEvent, isNameUniqe } = useEvents();
   const { fetchLocation, fetchEventTypes, fetchTechs } = useOptions();
   const [options, setOptions] = useState<IOptionsEventFilter>({
     locations: [],
     eventTypes: [],
-    techs: [],
+    techsNewEvent: [],
   });
-  const [country, setCountry] = useState<ILocationFromBackEnd>();
+  const [country, setCountry] = useState([]);
   const isMountedRef = useIsMountedRef();
 
   useEffect(() => {
@@ -73,9 +73,12 @@ export const NewEventForm: React.FC<
         const options: IOptionsEventFilter = {
           locations: res[0],
           eventTypes: res[1],
-          techs: res[2],
+          techsNewEvent: res[2],
         };
         isMountedRef.current && setOptions(options);
+        if (props.cardItem)
+     {const country = [...new Set(props.cardItem.locations.map((el) => el.country))]
+      setCountry(country)}
       }
     );
   }, []);
@@ -88,12 +91,8 @@ export const NewEventForm: React.FC<
       })),
     [options]
   );
-  const cities: IDropdownOption[] = useMemo(
-    () => country?.cities.map((el) => ({ key: el, text: el })),
-    [country]
-  );
-
   const {
+    getValues,
     handleSubmit,
     formState: { errors },
     control,
@@ -102,14 +101,13 @@ export const NewEventForm: React.FC<
     mode: "all",
   });
 
-  const [imageSrc, setImageSrc] = useState<File>();
+  const cities: IDropdownOption[] = useMemo(() => {
+    const current = [];
+    if (country) country.forEach((elem)=>current.push(options.locations.find((opt)=>opt.name===elem).cities))
+    return current.flat().map((el) => ({ key: el, text: el }));
+  }, [country]);
 
-  const isNameUniqe = async (value) => {
-    const { data } = await axios.get(
-      `/events/uniqueness/${value}`
-    );
-    return data || "This name is already used";
-  };
+  const [imageSrc, setImageSrc] = useState<File>();
 
   const onSave = () => {
     handleSubmit(
@@ -183,12 +181,11 @@ export const NewEventForm: React.FC<
                 []
               }
               rules={{ required: "This field is required" }}
-              options={options.techs}
+              options={options.techsNewEvent}
               styles={textFieldStyles}
             />
 
             <ControlledDropdown
-              required
               control={control}
               name={"country"}
               multiSelect
@@ -201,13 +198,13 @@ export const NewEventForm: React.FC<
                 ]) ||
                 []
               }
-              rules={{ required: "This field is required" }}
               options={countries}
               onChange={(_, data) => {
-                const curr = options.locations.find(
-                  (el) => el.name === data.key
-                );
-                setCountry(curr);
+                console.log(data)
+                  setCountry((prev)=>
+                    data.selected ? [...prev, data.key] : prev.filter(key => key !== data.key),
+                  );
+                // setCountry((prev)=>[...prev, data]);
               }}
               styles={textFieldStyles}
             />
@@ -222,7 +219,6 @@ export const NewEventForm: React.FC<
                   props.cardItem.locations.map((el) => el.city)) ||
                 []
               }
-              rules={{ required: "This field is required" }}
               errors={errors}
               options={cities}
               disabled={!props.cardItem && !country}

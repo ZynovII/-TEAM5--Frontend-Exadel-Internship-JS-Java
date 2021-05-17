@@ -9,5 +9,5 @@ export interface IOptionsEventFilter {
   eventTypes: IDropdownOption[];
   locations: ILocationFromBackEnd[];
   techTags?: ITag[];
-  techs?:IDropdownOption[]
+  techsNewEvent?:IDropdownOption[]
 }
