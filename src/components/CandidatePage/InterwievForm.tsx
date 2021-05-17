@@ -79,7 +79,7 @@ export const InterviewForm: React.FC = () => {
   const onSend = () => {
     handleSubmit((data) => console.log(data))();
   };
-  const createInterviewers = (type) => {
+  const selectInterviewers = (type) => {
     const option = interviewers
     .filter((el) => el.name.includes(type))
     .shift()
@@ -109,7 +109,7 @@ export const InterviewForm: React.FC = () => {
             options={roles}
             onChange={(e, data) => {
               setDisabledInterviewer(false)
-              createInterviewers(data.key)
+              selectInterviewers(data.key)
             }}
           />
         </Stack>
