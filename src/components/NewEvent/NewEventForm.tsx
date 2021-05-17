@@ -220,7 +220,7 @@ export const NewEventForm: React.FC<
                 []
               }
               errors={errors}
-              options={ cities}
+              options={cities}
               disabled={!props.cardItem && !country}
               styles={textFieldStyles}
             />
