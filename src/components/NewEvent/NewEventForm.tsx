@@ -92,6 +92,7 @@ export const NewEventForm: React.FC<
     [options]
   );
   const {
+    getValues,
     handleSubmit,
     formState: { errors },
     control,
