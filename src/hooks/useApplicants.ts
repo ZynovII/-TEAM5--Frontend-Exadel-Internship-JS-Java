@@ -7,18 +7,18 @@ import { IApplicant } from "../models/IApplicant";
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
-  const fetchApplicants = (mounted: boolean) => {
-    axios
-      .get(`/candidates`)
-      .then((res) => {
-        if (mounted) {
-          dispatch({
-            type: ActionTypes.FETCH_APPLICANTS,
-            payload: res.data.content,
-          });
-        }
-      })
-      .catch((err) => console.log(err));
+  const fetchApplicants = async () => {
+    try {
+      const res = await axios.get(`/candidates`);
+      return () => {
+        dispatch({
+          type: ActionTypes.FETCH_APPLICANTS,
+          payload: res.data.content,
+        });
+      };
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const selectApplicant = (id: string) => {

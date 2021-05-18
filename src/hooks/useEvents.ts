@@ -10,33 +10,33 @@ import { IEventForBackEnd } from "../models/IEvent";
 export const useEvents = () => {
   const { state, dispatch } = useStore();
 
-  const fetchEvents = (page, size, mounted) => {
-    axios
-      .get(`/events?page=${page}&size=${size}`)
-      .then((res) => {
-        if (mounted) {
-          dispatch({
-            type: ActionTypes.FETCH_EVENTS,
-            payload: res.data.content,
-          });
-        }
-      })
-      .catch((err) => console.log(err));
+  const fetchEvents = async (page: number, size: number) => {
+    try {
+      const res = await axios.get(`/events?page=${page}&size=${size}`);
+      return () => {
+        dispatch({
+          type: ActionTypes.FETCH_EVENTS,
+          payload: res.data.content,
+        });
+      };
+    } catch (err) {
+      console.log(err);
+    }
   };
-  const fetchPublishedEvents = (page, size, mounted) => {
-    axios
-      .get(
+  const fetchPublishedEvents = async (page: number, size: number) => {
+    try {
+      const res = await axios.get(
         `/events/published?page=${page}&size=${size}`
-      )
-      .then((res) => {
-        if (mounted) {
-          dispatch({
-            type: ActionTypes.FETCH_PUBLISHED_EVENTS,
-            payload: res.data.content,
-          });
-        }
-      })
-      .catch((err) => console.log(err));
+      );
+      return () => {
+        dispatch({
+          type: ActionTypes.FETCH_PUBLISHED_EVENTS,
+          payload: res.data.content,
+        });
+      };
+    } catch (err) {
+      console.log(err);
+    }
   };
 
   const selectEvent = (id: ID) => {
@@ -76,17 +76,12 @@ export const useEvents = () => {
       .then((id) => {
         const formData = new FormData();
         formData.append("file", imageSrc, imageSrc.name);
-        axios.post(
-          `/events/{id}/image/upload?id=${id}`,
-          formData
-        );
+        axios.post(`/events/{id}/image/upload?id=${id}`, formData);
       });
   };
 
   const loadImage = async (id: ID) => {
-    const res = await axios.get(
-      `/events/${id}/image/exists`
-    );
+    const res = await axios.get(`/events/${id}/image/exists`);
     if (res.data) {
       const img = await axios({
         url: `/events/${id}/image/download`,
@@ -117,9 +112,7 @@ export const useEvents = () => {
   };
 
   const isNameUniqe = async (value) => {
-    const { data } = await axios.get(
-      `/events/uniqueness/${value}`
-    );
+    const { data } = await axios.get(`/events/uniqueness/${value}`);
     return data || "This name is already used";
   };
 
@@ -134,6 +127,6 @@ export const useEvents = () => {
     fetchPublishedEvents,
     replaceToArchive,
     publishEvent,
-    isNameUniqe
+    isNameUniqe,
   };
 };

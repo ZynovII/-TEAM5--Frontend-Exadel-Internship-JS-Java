@@ -37,7 +37,7 @@ export const ApplicantList: React.FC = () => {
   const isMountedRef = useIsMountedRef();
   useEffect(() => {
     showLoader();
-    fetchApplicants(isMountedRef.current);
+    fetchApplicants().then((cb) => isMountedRef.current && cb());
   }, []);
 
   const applicantsList = useMemo(() => {

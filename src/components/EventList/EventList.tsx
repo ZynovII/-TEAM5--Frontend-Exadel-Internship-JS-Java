@@ -24,8 +24,8 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
 
   const loadMore = (page: number, size: number, mounted: boolean) => {
     isAdminPage
-      ? fetchEvents(page, size, mounted)
-      : fetchPublishedEvents(page, EVENTS_SIZE, mounted);
+      ? fetchEvents(page, size).then((cb) => mounted && cb())
+      : fetchPublishedEvents(page, EVENTS_SIZE).then((cb) => mounted && cb());
     setPage((prev) => prev + 1);
   };
   useEffect(() => {
