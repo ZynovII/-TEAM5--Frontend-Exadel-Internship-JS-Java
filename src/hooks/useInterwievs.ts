@@ -1,13 +1,12 @@
-import axiosApi from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 import { ID } from "../models/Store/IStore";
 import { useStore } from "./hooks";
 import axios from "../axios-api";
+
 export const useInterviews = () => {
   const { state, dispatch } = useStore();
   const fetchInterviews = (employeeId: ID) => {
-    axiosApi.get(`/interviews/employee/${employeeId}`).then((res) => {
-      console.log("interview", employeeId, res.data.result);
+    axios.get(`/interviews/employee/${employeeId}`).then((res) => {
       dispatch({
         type: ActionTypes.FETCH_INTERVIEWS,
         payload: res.data.result,
