@@ -1,53 +1,59 @@
-import React, { useEffect, useState } from 'react'
-import {
-  Stack,
-  PrimaryButton,
-  mergeStyleSets,
-} from '@fluentui/react'
+import React, { useEffect, useState } from "react";
+import { Stack, PrimaryButton, mergeStyleSets } from "@fluentui/react";
 import { useForm } from "react-hook-form";
-import { ControlledDropdown, ControlledDatePicker } from '../../hook-form/Controlled'
-import { useInterviews } from '../../hooks/useInterwievs'
+import {
+  ControlledDropdown,
+  ControlledDatePicker,
+} from "../../hook-form/Controlled";
+import { useInterviews } from "../../hooks/useInterwievs";
+import { IApplicantDetailsFromBackEnd } from "../../models/IApplicant";
 
 const time = [
   {
-    key: 1,
+    key: "09:00-09:30",
     text: "09:00-09:30",
   },
   {
-    key: 2,
+    key: "10:00-10:30",
     text: "10:00-10:30",
   },
   {
-    key: 3,
+    key: "10:30-11:00",
     text: "10:30-11:00",
   },
   {
-    key: 4,
+    key: "11:00-11:30",
     text: "11:00-11:30",
   },
   {
-    key: 5,
+    key: "12:00-12:30",
     text: "12:00-12:30",
   },
   {
-    key: 6,
+    key: "13:00-13:30",
     text: "13:00-13:30",
   },
   {
-    key: 7,
+    key: "14:00-14:30",
     text: "14:00-14:30",
   },
   {
-    key: 8,
+    key: "15:00-15:30",
     text: "15:00-15:30",
   },
 ];
-export const InterviewForm: React.FC = () => {
-  const { getRoles, getInterviewers, interviewers } = useInterviews()
-  const [roles, setRoles] = useState()
-  const [interviewer, setInterviewer] = useState()
-  const [disabledInterviewer, setDisabledInterviewer] = useState<boolean>(true)
-
+export const InterviewForm: React.FC<{
+  candidat: IApplicantDetailsFromBackEnd;
+}> = ({ candidat }) => {
+  const {
+    getRoles,
+    getInterviewers,
+    interviewers,
+    createInterviews,
+  } = useInterviews();
+  const [roles, setRoles] = useState();
+  const [interviewer, setInterviewer] = useState();
+  const [disabledInterviewer, setDisabledInterviewer] = useState<boolean>(true);
 
   const {
     handleSubmit,
@@ -59,37 +65,41 @@ export const InterviewForm: React.FC = () => {
   });
 
   useEffect(() => {
-    getRoles()
-      .then((res) => setRoles(
-        res.slice(0, length - 1).map(el => {
+    getRoles().then((res) =>
+      setRoles(
+        res.slice(0, length - 1).map((el) => {
           switch (el) {
-            case 'ADMIN':
-              return ({ key: el, text: 'HR' })
-            case 'TECH':
-              return ({ key: el, text: 'TS' })
+            case "ADMIN":
+              return { key: el, text: "HR" };
+            case "TECH":
+              return { key: el, text: "TS" };
             default:
-              return ({ key: el, text: el })
+              return { key: el, text: el };
           }
         })
       )
-      )
-    getInterviewers()
-  }, [])
+    );
+    getInterviewers();
+  }, []);
 
-  const onSend = () => {
-    handleSubmit((data) => console.log(data))();
+  const onSend = (candidate) => {
+    handleSubmit((data) => {
+      const startTime = data.timeInterview.join().slice(0, 5);
+      const startDate = new Date(
+        data.dateInterview.toString().replace(/00:00/, startTime)
+      );
+      createInterviews(candidate, data.interviewer[0], startDate);
+    })();
   };
   const selectInterviewers = (type) => {
-    const option = interviewers
-    .filter((el) => el.name.includes(type))
-    .shift()
-    .employees
-    setInterviewer(option.map(el => ({key: el.id, text: el.fullName})))
-  }
+    const option = interviewers.filter((el) => el.name.includes(type)).shift()
+      .employees;
+    setInterviewer(option.map((el) => ({ key: el.id, text: el.fullName })));
+  };
 
   return (
     <div>
-      <h1 style={{ margin: '0.5em 0' }}>To set up iterview</h1>
+      <h1 style={{ margin: "0.5em 0" }}>To set up iterview</h1>
       <Stack
         className={contentStyles.formWrapper}
         horizontal
@@ -108,8 +118,8 @@ export const InterviewForm: React.FC = () => {
             errors={errors}
             options={roles}
             onChange={(e, data) => {
-              setDisabledInterviewer(false)
-              selectInterviewers(data.key)
+              setDisabledInterviewer(false);
+              selectInterviewers(data.key);
             }}
           />
         </Stack>
@@ -156,11 +166,14 @@ export const InterviewForm: React.FC = () => {
           />
         </Stack>
       </Stack>
-      <PrimaryButton text="Appoint" className="margin2em button_center button" onClick={onSend} />
+      <PrimaryButton
+        text="Appoint"
+        className="margin2em button_center button"
+        onClick={() => onSend(candidat.id)}
+      />
     </div>
-  )
-}
-
+  );
+};
 
 const contentStyles = mergeStyleSets({
   formWrapper: {
