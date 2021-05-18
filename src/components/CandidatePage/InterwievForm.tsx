@@ -1,22 +1,12 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import {
-  Stack, 
+  Stack,
   PrimaryButton,
-  mergeStyleSets
+  mergeStyleSets,
 } from '@fluentui/react'
 import { useForm } from "react-hook-form";
 import { ControlledDropdown, ControlledDatePicker } from '../../hook-form/Controlled'
-
-const options: { key: string; text: string }[] = [
-  { key: "Interview", text: "Interview" },
-  { key: "HR", text: "HR" },
-  { key: "TS", text: "TS" },
-];
-const Interviewer: { key: string; text: string }[] = [
-  { key: "Misha", text: "Misha" },
-  { key: "Petro", text: "Petro" },
-  { key: "Yan", text: "Yan" },
-];
+import { useInterviews } from '../../hooks/useInterwievs'
 
 const time = [
   {
@@ -53,6 +43,12 @@ const time = [
   },
 ];
 export const InterviewForm: React.FC = () => {
+  const { getRoles, getInterviewers, interviewers } = useInterviews()
+  const [roles, setRoles] = useState()
+  const [interviewer, setInterviewer] = useState()
+  const [disabledInterviewer, setDisabledInterviewer] = useState<boolean>(true)
+
+
   const {
     handleSubmit,
     formState: { errors },
@@ -62,9 +58,34 @@ export const InterviewForm: React.FC = () => {
     mode: "all",
   });
 
+  useEffect(() => {
+    getRoles()
+      .then((res) => setRoles(
+        res.slice(0, length - 1).map(el => {
+          switch (el) {
+            case 'ADMIN':
+              return ({ key: el, text: 'HR' })
+            case 'TECH':
+              return ({ key: el, text: 'TS' })
+            default:
+              return ({ key: el, text: el })
+          }
+        })
+      )
+      )
+    getInterviewers()
+  }, [])
+
   const onSend = () => {
     handleSubmit((data) => console.log(data))();
   };
+  const selectInterviewers = (type) => {
+    const option = interviewers
+    .filter((el) => el.name.includes(type))
+    .shift()
+    .employees
+    setInterviewer(option.map(el => ({key: el.id, text: el.fullName})))
+  }
 
   return (
     <div>
@@ -82,20 +103,39 @@ export const InterviewForm: React.FC = () => {
             control={control}
             label="Select type of interview"
             name={"typeInterview"}
-            placeholder="Select an option"
+            placeholder="Select type"
             defaultSelectedKey={""}
             errors={errors}
-            options={options}
+            options={roles}
+            onChange={(e, data) => {
+              setDisabledInterviewer(false)
+              selectInterviewers(data.key)
+            }}
           />
         </Stack>
         <Stack
           tokens={{ childrenGap: "0px" }}
           styles={{ root: { width: "520px" } }}
         >
+          <ControlledDropdown
+            control={control}
+            label="Select Interviewer"
+            name={"interviewer"}
+            placeholder="Select interviewer"
+            defaultSelectedKey={""}
+            errors={errors}
+            options={interviewer}
+            disabled={disabledInterviewer}
+          />
+        </Stack>
+        <Stack
+          tokens={{ childrenGap: "20px" }}
+          styles={{ root: { width: "520px" } }}
+        >
           <ControlledDatePicker
             control={control}
             name={"dateInterview"}
-            label="Choose date"
+            label="Select date"
             showMonthPickerAsOverlay={true}
             placeholder="Select a date..."
             ariaLabel="Select a date"
@@ -107,26 +147,12 @@ export const InterviewForm: React.FC = () => {
         >
           <ControlledDropdown
             control={control}
-            label="Chosen time"
+            label="Select time"
             name={"timeInterview"}
             placeholder="Select an option"
             defaultSelectedKey={""}
             errors={errors}
             options={time}
-          />
-        </Stack>
-        <Stack
-          tokens={{ childrenGap: "20px" }}
-          styles={{ root: { width: "520px" } }}
-        >
-          <ControlledDropdown
-            control={control}
-            label="Chosen Interviewer"
-            name={"interviewer"}
-            placeholder="Select an option"
-            defaultSelectedKey={""}
-            errors={errors}
-            options={Interviewer}
           />
         </Stack>
       </Stack>

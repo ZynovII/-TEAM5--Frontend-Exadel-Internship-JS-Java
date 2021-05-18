@@ -1,15 +1,14 @@
-import axiosApi from "../axios-api";
-import axios from "axios";
+import { useStore } from "./hooks";
+
+import axios, { axiosBlob } from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
-import { useStore } from "./hooks";
-import { Dispatch } from "react";
 
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
-  const fetchApplicants = (mounted) => {
-    axiosApi
+  const fetchApplicants = (mounted: boolean) => {
+    axios
       .get(`/candidates`)
       .then((res) => {
         if (mounted) {
@@ -34,7 +33,7 @@ export const useApplicants = () => {
         payload: null,
       });
     } else {
-      axiosApi
+      axios
         .get(`/candidates/${id}`)
         .then((res) => {
           dispatch({
@@ -63,11 +62,11 @@ export const useApplicants = () => {
       summary: candidat.summary,
     };
     try {
-      const res = await axiosApi.post(`/candidates`, candidateForBackEnd);
+      const res = await axios.post(`/candidates`, candidateForBackEnd);
       if (file) {
         const formData = new FormData();
         formData.append("file", file, file.name);
-        axiosApi.post(`/candidates/${res.data.id}/cv/upload`, formData);
+        axios.post(`/candidates/${res.data.id}/cv/upload`, formData);
       }
       return "Your application has been successfully sent. Our specialist will connect with you soon.";
     } catch (err) {
@@ -77,35 +76,28 @@ export const useApplicants = () => {
   };
 
   const setStatus = async (path) => {
-    const response = await axiosApi.put(`/candidates/${path}`);
+    const response = await axios.put(`/candidates/${path}`);
     return response.data.status;
   };
+
   const cvDownload = async (id, name, tech) => {
-    const response = await axiosApi
-      .get(`${URL}/api/candidates/${id}/cv/exists`)
+    const response = await axios
+      .get(`/candidates/${id}/cv/exists`)
       .then((res) => {
         if (!res.data) {
           return true;
         }
-        axios
-          .create({
-            responseType: "blob",
-            headers: {
-              "Content-Type": "application/pdf",
-            },
-          })
-          .get(`${URL}/api/candidates/${id}/cv/download`)
-          .then((res) => {
-            const blob = new Blob([res.data], { type: "application/pdf" });
-            const link = document.createElement("a");
-            const url = window.URL.createObjectURL(blob);
-            link.href = url;
-            link.download = `CV ${name} ${tech}`;
-            document.body.appendChild(link);
-            link.click();
-            window.URL.revokeObjectURL(url);
-            document.body.removeChild(link);
-          });
+        axiosBlob.get(`/candidates/${id}/cv/download`).then((res) => {
+          const blob = new Blob([res.data], { type: "application/pdf" });
+          const link = document.createElement("a");
+          const url = window.URL.createObjectURL(blob);
+          link.href = url;
+          link.download = `CV ${name} ${tech}`;
+          document.body.appendChild(link);
+          link.click();
+          window.URL.revokeObjectURL(url);
+          document.body.removeChild(link);
+        });
       })
       .catch((err) => console.log(err));
     return response;

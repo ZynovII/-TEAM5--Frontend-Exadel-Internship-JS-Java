@@ -105,7 +105,6 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
 
   const onHadleEdit = (e) => {
     setIsModal(true);
-    console.log(props.cardItem);
     e.stopPropagation();
     e.preventDefault();
   };

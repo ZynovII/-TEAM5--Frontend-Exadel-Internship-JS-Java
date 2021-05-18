@@ -116,6 +116,13 @@ export const useEvents = () => {
       .catch((err) => console.log(err));
   };
 
+  const isNameUniqe = async (value) => {
+    const { data } = await axios.get(
+      `/events/uniqueness/${value}`
+    );
+    return data || "This name is already used";
+  };
+
   return {
     selectedEvent: state.selectedEvent,
     events: state.events,
@@ -127,5 +134,6 @@ export const useEvents = () => {
     fetchPublishedEvents,
     replaceToArchive,
     publishEvent,
+    isNameUniqe
   };
 };

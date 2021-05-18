@@ -117,6 +117,11 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         ...state,
         selectedInterview: payload,
       };
+      case ActionTypes.FETCH_INTERVIEWERS:
+      return {
+        ...state,
+        interviewers: payload,
+      };
     default:
       return state;
   }
