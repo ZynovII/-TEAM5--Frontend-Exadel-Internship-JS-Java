@@ -7,7 +7,7 @@ export const useInterviews = () => {
   const { state, dispatch } = useStore();
   const fetchInterviews = (employeeId: ID) => {
     axiosApi.get(`/interviews/employee/${employeeId}`).then((res) => {
-      console.log("interview", res.data.result);
+      console.log("interview", employeeId, res.data.result);
       dispatch({
         type: ActionTypes.FETCH_INTERVIEWS,
         payload: res.data.result,

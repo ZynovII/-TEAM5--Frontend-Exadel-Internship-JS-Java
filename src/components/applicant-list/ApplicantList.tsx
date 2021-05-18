@@ -52,6 +52,8 @@ export const ApplicantList: React.FC = () => {
     });
   }, [applicants]);
 
+  console.log(applicantsList);
+
   const tooltipId = useId("tooltip");
   const columns: IColumn[] = useMemo(
     () => [

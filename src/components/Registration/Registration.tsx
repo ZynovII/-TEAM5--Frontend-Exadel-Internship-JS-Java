@@ -154,8 +154,10 @@ export const Registration: React.FC<{
   const onSave = () => {
     handleSubmit(
       (data) => {
-        createCandidate(data, props.name, file, setResponse);
-        showModal();
+        createCandidate(data, props.name, file).then((res) => {
+          setResponse(res);
+          showModal();
+        });
       },
       (err) => {
         console.log("ошибка заполнения");
@@ -267,7 +269,7 @@ export const Registration: React.FC<{
           <ControlledDropdown
             required
             control={control}
-            name={"city"}
+            name="city"
             placeholder="City"
             defaultSelectedKey={
               (props.candidatePage && props.candidat.city) || ""
@@ -296,7 +298,7 @@ export const Registration: React.FC<{
       <ControlledTextField
         placeholder="Summary"
         control={control}
-        name={"summary"}
+        name="summary"
         errors={errors}
         className={contentStyles.margin}
         multiline
@@ -306,7 +308,7 @@ export const Registration: React.FC<{
       />
       <ControlledInputUpload
         control={control}
-        name={"resumeLink"}
+        name="resumeLink"
         id={"cv"}
         className="input-file__input"
         onChange={(e) => uploadFile(e)}

@@ -46,11 +46,10 @@ export const useApplicants = () => {
     }
   };
 
-  const createCandidate = (
+  const createCandidate = async (
     candidat: IApplicant,
     eventName: string,
-    file?: File,
-    cbOnLoad?: Dispatch<React.SetStateAction<string>>
+    file?: File
   ) => {
     const candidateForBackEnd = {
       city: candidat.city[0],
@@ -63,23 +62,18 @@ export const useApplicants = () => {
       skype: candidat.skype,
       summary: candidat.summary,
     };
-    axiosApi
-      .post(`/candidates`, candidateForBackEnd)
-      .then((response) => response.data.id)
-      .then((id) => {
-        if (file) {
-          const formData = new FormData();
-          formData.append("file", file, file.name);
-          axiosApi.post(`/candidates/${id}/cv/upload`, formData);
-        }
-        cbOnLoad(
-          "Your application has been successfully sent. Our specialist will connect with you soon."
-        );
-      })
-      .catch((err) => {
-        cbOnLoad(err);
-        console.log(err);
-      });
+    try {
+      const res = await axiosApi.post(`/candidates`, candidateForBackEnd);
+      if (file) {
+        const formData = new FormData();
+        formData.append("file", file, file.name);
+        axiosApi.post(`/candidates/${res.data.id}/cv/upload`, formData);
+      }
+      return "Your application has been successfully sent. Our specialist will connect with you soon.";
+    } catch (err) {
+      console.log(err);
+      return err.message;
+    }
   };
 
   const setStatus = async (path) => {

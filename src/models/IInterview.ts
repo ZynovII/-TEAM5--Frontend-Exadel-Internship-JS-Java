@@ -1,3 +1,4 @@
+import { InterviewStatus } from "./IApplicant";
 import { UserRole } from "./IUser";
 import { ID } from "./Store/IStore";
 
@@ -12,8 +13,10 @@ export interface IInterview {
   feedback: string;
 }
 export interface IInterviewFromBackEnd {
-  id: ID;
-  startTime: string;
   candidate: string;
+  candidatePrimaryTech: string;
   employee: string;
+  idInterview: ID;
+  interviewProcess: InterviewStatus;
+  interviewTime: string;
 }

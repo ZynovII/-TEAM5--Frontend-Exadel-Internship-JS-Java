@@ -45,10 +45,10 @@ const InterviewList: React.FC = () => {
       Object.keys(interviews).map((idx) => {
         return {
           fullName: interviews[idx].candidate,
-          // skill: interviews[idx].technology,
-          // interviewStatus: interviews[idx].interviewStatus,
-          interviewDate: dateReformer(interviews[idx].startTime),
-          interviewTime: timeReformer(interviews[idx].startTime),
+          skill: interviews[idx].candidatePrimaryTech,
+          interviewStatus: interviews[idx].interviewProcess,
+          interviewDate: dateReformer(interviews[idx].interviewTime),
+          interviewTime: timeReformer(interviews[idx].interviewTime),
         };
       }),
     [interviews]
@@ -82,8 +82,8 @@ const InterviewList: React.FC = () => {
       },
       {
         key: "column4",
-        name: "event",
-        fieldName: "event",
+        name: "Skill",
+        fieldName: "skill",
         minWidth: 100,
         maxWidth: 250,
         isResizable: true,
