@@ -22,15 +22,19 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
   const { isAuth } = useAuth();
   const isMountedRef = useIsMountedRef();
 
-  const loadMore = (page: number, size: number, mounted: boolean) => {
+  const loadMore = (page: number, size: number) => {
     isAdminPage
-      ? fetchEvents(page, size).then((cb) => mounted && cb())
-      : fetchPublishedEvents(page, EVENTS_SIZE).then((cb) => mounted && cb());
+      ? fetchEvents(page, size).then((cb) => {
+          if (isMountedRef.current) cb();
+        })
+      : fetchPublishedEvents(page, EVENTS_SIZE).then((cb) => {
+          if (isMountedRef.current) cb();
+        });
     setPage((prev) => prev + 1);
   };
   useEffect(() => {
     showLoader();
-    loadMore(page, EVENTS_SIZE - 1, isMountedRef.current);
+    loadMore(page, EVENTS_SIZE - 1);
   }, []);
 
   return loading ? (
@@ -52,7 +56,7 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
         <PrimaryButton
           text="Load More"
           className="button"
-          onClick={() => loadMore(page, EVENTS_SIZE, isMountedRef.current)}
+          onClick={() => loadMore(page, EVENTS_SIZE)}
         />
       </div>
     </>
