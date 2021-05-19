@@ -16,7 +16,10 @@ import {
   IDropdownStyles,
   Checkbox,
 } from "@fluentui/react";
-import { IApplicant, IApplicantDetailsFromBackEnd } from "../../models/IApplicant";
+import {
+  IApplicant,
+  IApplicantDetailsFromBackEnd,
+} from "../../models/IApplicant";
 import { useBoolean } from "@fluentui/react-hooks";
 import ModalWindow from "../ModalWindow";
 import { useApplicants } from "../../hooks/useApplicants";
@@ -35,15 +38,13 @@ const registrationPattern: {
   phoneNumber: /\W\d+/gi,
 };
 
-const modalText =
-  "Your application has been successfully sent. Our specialist will connect with you soon.";
-
 export const Registration: React.FC<{
   name?: string;
   candidatePage?: boolean;
   candidat?: IApplicantDetailsFromBackEnd;
   techs?: ITech[];
 }> = (props) => {
+  const [response, setResponse] = useState<string>("");
   const { createCandidate } = useApplicants();
   const { fetchLocation, fetchPreferredTime, fetchTechnology } = useOptions();
   const [options, setOptions] = useState<IOptionsRegistration>({
@@ -63,10 +64,12 @@ export const Registration: React.FC<{
         preferredTimes: res[1],
       };
       setOptions(options);
-       if (props.candidat) {
-        const country = options.locations.find((el) => el.name === props.candidat.country)
-        setCountry(country)
-       }
+      if (props.candidat) {
+        const country = options.locations.find(
+          (el) => el.name === props.candidat.country
+        );
+        setCountry(country);
+      }
     });
   }, []);
 
@@ -82,7 +85,7 @@ export const Registration: React.FC<{
     () => country?.cities.map((el) => ({ key: el, text: el })),
     [country]
   );
-  
+
   useEffect(() => {
     if (props.techs) {
       setTechsOptions(
@@ -151,8 +154,10 @@ export const Registration: React.FC<{
   const onSave = () => {
     handleSubmit(
       (data) => {
-        createCandidate(data, props.name, file);
-        showModal();
+        createCandidate(data, props.name, file).then((res) => {
+          setResponse(res);
+          showModal();
+        });
       },
       (err) => {
         console.log("ошибка заполнения");
@@ -163,7 +168,7 @@ export const Registration: React.FC<{
 
   return (
     <>
-      <ModalWindow open={isModalOpen} text={modalText} hideModal={hideModal} />
+      <ModalWindow open={isModalOpen} text={response} hideModal={hideModal} />
       <h2 style={{ margin: "2em 0 1em" }}>{props.name}</h2>
       <div className={contentStyles.mediaContainer}>
         <div className={contentStyles.mediaItem}>
@@ -264,7 +269,7 @@ export const Registration: React.FC<{
           <ControlledDropdown
             required
             control={control}
-            name={"city"}
+            name="city"
             placeholder="City"
             defaultSelectedKey={
               (props.candidatePage && props.candidat.city) || ""
@@ -293,7 +298,7 @@ export const Registration: React.FC<{
       <ControlledTextField
         placeholder="Summary"
         control={control}
-        name={"summary"}
+        name="summary"
         errors={errors}
         className={contentStyles.margin}
         multiline
@@ -303,7 +308,7 @@ export const Registration: React.FC<{
       />
       <ControlledInputUpload
         control={control}
-        name={"resumeLink"}
+        name="resumeLink"
         id={"cv"}
         className="input-file__input"
         onChange={(e) => uploadFile(e)}

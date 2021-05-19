@@ -58,6 +58,12 @@ export const dateReformer = (str: string): string => {
 
   return new Date(str).toLocaleDateString("en-GB", options);
 };
+export const timeReformer = (str: string): string => {
+  return new Date(str).toLocaleTimeString("en-GB", {
+    hour: "numeric",
+    minute: "numeric",
+  });
+};
 
 export const eventTypeReformer = (str: string): string => {
   switch (str) {
