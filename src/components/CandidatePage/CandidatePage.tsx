@@ -65,7 +65,7 @@ export const CandidatePage: React.FC = () => {
             <InfoForm candidat={selectedApplicant} />
           )}
         </div>
-        <InterviewForm />
+        <InterviewForm candidat={selectedApplicant} />
       </div>
     </>
   );
