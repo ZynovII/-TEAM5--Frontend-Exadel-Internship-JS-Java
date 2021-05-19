@@ -106,8 +106,8 @@ export const DashboardNav = () => {
 
   const initials = useMemo(
     () =>
-      currentUser.fullName.split(" ")[0].split("")[0] +
-      currentUser.fullName.split(" ")[2].split("")[0],
+      currentUser.fullName.split(" ")[0].charAt(0) +
+      currentUser.fullName.split(" ")[2].charAt(0),
     [currentUser]
   );
   const name = useMemo(

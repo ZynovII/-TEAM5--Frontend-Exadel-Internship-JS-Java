@@ -23,10 +23,23 @@ export const useInterviews = () => {
     return response.data;
   };
 
-  const getInterviewers = async () => {
+  const getInterviewers = () => {
     axios.get("/employees/interviewers/list/").then((res) => {
       dispatch({ type: ActionTypes.FETCH_INTERVIEWERS, payload: res.data });
     });
+  };
+
+  const createInterviews = (
+    candidate: string,
+    employee: string,
+    startTime: Date
+  ) => {
+    const interview = {
+      candidate: candidate,
+      employee: employee,
+      startTime: startTime,
+    };
+    axios.post("/interviews/", interview).then((res) => console.log(res));
   };
 
   return {
@@ -37,5 +50,6 @@ export const useInterviews = () => {
     fetchInterviews,
     getRoles,
     getInterviewers,
+    createInterviews,
   };
 };
