@@ -71,7 +71,7 @@ export const useApplicants = () => {
       return "Your application has been successfully sent. Our specialist will connect with you soon.";
     } catch (err) {
       console.log(err);
-      return err.message;
+      return "Ooops! Something went wrong...";
     }
   };
 
