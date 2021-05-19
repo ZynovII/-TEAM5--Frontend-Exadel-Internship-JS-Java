@@ -2,7 +2,6 @@ import axios from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 
 import { useStore } from "./hooks";
-import { IEvent } from "../models/IEvent";
 import { ID } from "../models/Store/IStore";
 
 import { IEventForBackEnd } from "../models/IEvent";
@@ -90,6 +89,7 @@ export const useEvents = () => {
       });
       return window.URL.createObjectURL(new Blob([img.data]));
     }
+    return null;
   };
 
   const replaceToArchive = (id: ID) => {

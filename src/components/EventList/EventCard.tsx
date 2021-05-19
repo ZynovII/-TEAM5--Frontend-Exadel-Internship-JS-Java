@@ -10,9 +10,9 @@ import {
   FontIcon,
   DialogType,
 } from "@fluentui/react";
-
 import { useBoolean } from "@fluentui/react-hooks";
 import { useHistory } from "react-router";
+
 import { IEvent } from "../../models/IEvent";
 import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
@@ -21,6 +21,8 @@ import { NewEventForm } from "../NewEvent/NewEventForm";
 
 import { dateReformer } from "./../../utils/stringReformers";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
+
+import placeholder from "../../assets/img/placeholder.png";
 
 const styles = mergeStyleSets({
   styleCard: {
@@ -57,14 +59,12 @@ export interface ICardItemProps {
 }
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
+  const isMountedRef = useIsMountedRef();
   const [isModal, setIsModal] = useState(false);
-  const [imageEvent, setImageEvent] = useState(
-    "https://veraconsulting.it/wp-content/uploads/2014/04/placeholder.png"
-  );
+  const [imageEvent, setImageEvent] = useState(placeholder);
   const history = useHistory();
   const { loadImage, replaceToArchive, publishEvent } = useEvents();
   const { showLoader } = useLoader();
-  const isMountedRef = useIsMountedRef();
 
   const selectHandler = () => {
     showLoader();
