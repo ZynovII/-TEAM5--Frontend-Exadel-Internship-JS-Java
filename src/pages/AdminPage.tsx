@@ -8,6 +8,7 @@ import { DashboardNav } from "../components/DashboardNav/DashboardNav";
 import ApplicantList from "../components/applicant-list/ApplicantList";
 import InterviewList from "../components/InterviewsList/InterviewsList";
 import EventList from "../components/EventList/EventList";
+import { InterviewPage } from "../components/InterviewPage/InterviewPage";
 import { CandidatePage } from "../components/CandidatePage/CandidatePage";
 import { ArchiveEventList } from "../components/ArchivePage/ArchivePage";
 import ScrollBar from "../components/UI/Scrollbar/Scrollbar";
@@ -31,26 +32,15 @@ export const AdminPage = () => {
                   exact
                   component={ApplicantList}
                 />
-                <Route
-                  path="/admin/candidates/:id"
-                  component={CandidatePage}
-                />
+                <Route path="/admin/candidates/:id" component={CandidatePage} />
                 <Route
                   path="/admin/interviews"
                   exact
                   component={InterviewList}
                 />
-                <Route
-                  path="/admin/interviews/:name"
-                  component={CandidatePage}
-                />
-                <Route 
-                  path="/admin/archive" 
-                  component={ArchiveEventList} 
-                />
-                <Route 
-                  component={NotFound} 
-                />
+                <Route path="/admin/interviews/:id" component={InterviewPage} />
+                <Route path="/admin/archive" component={ArchiveEventList} />
+                <Route component={NotFound} />
               </Switch>
             </div>
           </ScrollBar>

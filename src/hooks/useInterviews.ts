@@ -7,6 +7,8 @@ export const useInterviews = () => {
   const { state, dispatch } = useStore();
   const fetchInterviews = (employeeId: ID) => {
     axios.get(`/interviews/employee/${employeeId}`).then((res) => {
+      console.log(res.data.result);
+
       dispatch({
         type: ActionTypes.FETCH_INTERVIEWS,
         payload: res.data.result,
@@ -14,8 +16,11 @@ export const useInterviews = () => {
     });
   };
 
-  const selectInterview = (id: number) => {
-    dispatch({ type: ActionTypes.SELECT_INTERVIEW, id });
+  const selectInterview = (id: ID) => {
+    // axios.get(`/interviews/${id}`).then((res) => {
+    // console.log(res);
+    dispatch({ type: ActionTypes.HIDE_LOADER });
+    // });
   };
 
   const getRoles = async () => {

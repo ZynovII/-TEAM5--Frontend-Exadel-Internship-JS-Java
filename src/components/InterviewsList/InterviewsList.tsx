@@ -13,8 +13,8 @@ import {
   SpinnerSize,
   Sticky,
 } from "@fluentui/react";
-import { InterviewListFilter } from "./InterviwListFilter";
-import { useInterviews } from "../../hooks/useInterwievs";
+import { InterviewListFilter } from "./InterviewListFilter";
+import { useInterviews } from "../../hooks/useInterviews";
 import { useLoader } from "../../hooks/hooks";
 import { useAuth } from "../../hooks/useAuth";
 import { dateReformer, timeReformer } from "../../utils/stringReformers";
@@ -44,6 +44,7 @@ const InterviewList: React.FC = () => {
     () =>
       Object.keys(interviews).map((idx) => {
         return {
+          id: interviews[idx].idInterview,
           fullName: interviews[idx].candidate,
           skill: interviews[idx].candidatePrimaryTech,
           interviewStatus: interviews[idx].interviewProcess,
@@ -104,7 +105,7 @@ const InterviewList: React.FC = () => {
         minWidth: 50,
         maxWidth: 50,
         isResizable: false,
-        onRender: () => (
+        onRender: (item) => (
           <TooltipHost
             content="Show more information"
             id={tooltipId}
@@ -113,7 +114,11 @@ const InterviewList: React.FC = () => {
           >
             <ActionButton
               iconProps={{ iconName: "D365TalentHRCore" }}
-              onClick={() => history.push(`/admin/interviews/${"unknow"}`)} // selected id from state
+              onClick={(e) => {
+                e.preventDefault();
+                showLoader();
+                history.push(`/admin/interviews/${item.id}`);
+              }}
               aria-describedby={tooltipId}
             ></ActionButton>
           </TooltipHost>
@@ -138,9 +143,10 @@ const InterviewList: React.FC = () => {
             columns={columns}
             selectionMode={SelectionMode.multiple}
             isHeaderVisible={true}
-            onItemInvoked={(item) =>
-              history.push(`/admin/interviews/${item.fullName}`)
-            }
+            onItemInvoked={(item) => {
+              showLoader();
+              history.push(`/admin/interviews/${item.id}`);
+            }}
             onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
               <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
             )}

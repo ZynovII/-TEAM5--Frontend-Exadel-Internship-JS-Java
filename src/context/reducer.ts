@@ -91,7 +91,7 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       } = (payload as IInterviewFromBackEnd[]).reduce(
         (acc, item) => ({
           ...acc,
-          [item.id]: item,
+          [item.idInterview]: item,
         }),
         {}
       );
@@ -116,11 +116,13 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       return {
         ...state,
         selectedInterview: payload,
+        loading: false,
       };
-      case ActionTypes.FETCH_INTERVIEWERS:
+    case ActionTypes.FETCH_INTERVIEWERS:
       return {
         ...state,
         interviewers: payload,
+        loading: false,
       };
     default:
       return state;
