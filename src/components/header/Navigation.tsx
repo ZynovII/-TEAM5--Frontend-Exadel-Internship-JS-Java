@@ -1,35 +1,31 @@
 import React, { useMemo } from "react";
-import { useHistory } from "react-router";
-
-import { CommandBar, ICommandBarItemProps } from "@fluentui/react/lib";
+import classes from "./Navigation.module.scss";
 
 const Navigation: React.FC = () => {
-  const history = useHistory();
-  const _items: ICommandBarItemProps[] = useMemo(() => {
-    return [
-      {
-        key: "candidates",
-        text: "Candidates",
-        style: { fontSize: "18px" },
-        onClick: () => history.push('/admin/candidates'),
-      },
-      {
-        key: "events",
-        text: "Events",
-        onClick: () => history.push('/admin/events'),
-        style: { fontSize: "18px" },
-      },
-      {
-        key: "interviewes",
-        text: "Interviewes",
-        onClick: () => history.push('/admin/interviews'),
-        style: { fontSize: "18px" },
-      },
-    ];
-  }, [])
-  
-  
-  return <CommandBar items={_items} className="ms-hiddenMdDown" style={{minWidth:'500px' }}/>;
+  const items = [
+    {
+      text: "Candidates",
+      to: "#/admin/candidates",
+    },
+    {
+      text: "Events",
+      to: "#/admin/events",
+    },
+    {
+      text: "Interviewes",
+      to: "#/admin/interviews",
+    },
+  ];
+
+  const listItems = items.map((el) => (
+    <li className={classes.Navigation__item} key={el.text}>
+      <a className={classes.Navigation__link} href={el.to} target="_blank">
+        {el.text}
+      </a>
+    </li>
+  ));
+
+  return <ul className={classes.Navigation}>{listItems}</ul>;
 };
 
 export default Navigation;

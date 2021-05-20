@@ -1,0 +1,18 @@
+.Navigation {
+  display: none;
+  @media (min-width: 46rem) {
+    display: flex;
+    width: 100%;
+    min-width: 500px;
+  }
+  &__link {
+    display: inline-block;
+    text-decoration: none;
+    padding: 1rem 2rem;
+    user-select: none;
+    &:hover, &:focus {
+      background-color: #f2f2f2;
+      color: #000;
+    }
+  }
+}
