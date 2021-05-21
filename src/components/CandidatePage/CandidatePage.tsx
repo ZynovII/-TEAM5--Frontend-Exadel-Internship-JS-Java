@@ -19,7 +19,6 @@ export const CandidatePage: React.FC = () => {
   useEffect(() => {
     showLoader();
     selectApplicant(params.id);
-    return () => selectApplicant(null);
   }, []);
 
   return loading ? (
