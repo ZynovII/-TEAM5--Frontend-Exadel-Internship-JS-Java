@@ -17,10 +17,9 @@ export const useInterviews = () => {
   };
 
   const selectInterview = (id: ID) => {
-    // axios.get(`/interviews/${id}`).then((res) => {
-    // console.log(res);
-    dispatch({ type: ActionTypes.HIDE_LOADER });
-    // });
+    axios.get(`/interviews/${id}`).then((res) => {
+      dispatch({ type: ActionTypes.SELECT_INTERVIEW, payload: res.data });
+    });
   };
 
   const getRoles = async () => {

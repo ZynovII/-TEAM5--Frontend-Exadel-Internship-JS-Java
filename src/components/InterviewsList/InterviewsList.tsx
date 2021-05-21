@@ -150,14 +150,12 @@ const InterviewList: React.FC = () => {
             onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
               <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
             )}
-            onRenderRow={(props, defaultRender) => (
-              <div>
-                {defaultRender({
-                  ...props,
-                  styles: { root: { fontSize: 16 } },
-                })}
-              </div>
-            )}
+            onRenderRow={(props, defaultRender) =>
+              defaultRender({
+                ...props,
+                styles: { root: { fontSize: 16 } },
+              })
+            }
           />
         </div>
       </>
