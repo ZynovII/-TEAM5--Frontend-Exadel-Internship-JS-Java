@@ -5,21 +5,21 @@ const Navigation: React.FC = () => {
   const items = [
     {
       text: "Candidates",
-      to: "#/admin/candidates",
+      to: "/candidates",
     },
     {
       text: "Events",
-      to: "#/admin/events",
+      to: "/events",
     },
     {
       text: "Interviewes",
-      to: "#/admin/interviews",
+      to: "/interviews",
     },
   ];
 
   const listItems = items.map((el) => (
     <li className={classes.Navigation__item} key={el.text}>
-      <a className={classes.Navigation__link} href={el.to} target="_blank">
+      <a className={classes.Navigation__link} href={'#/admin' + el.to}>
         {el.text}
       </a>
     </li>
@@ -28,4 +28,4 @@ const Navigation: React.FC = () => {
   return <ul className={classes.Navigation}>{listItems}</ul>;
 };
 
-export default Navigation;
+export default React.memo(Navigation);
