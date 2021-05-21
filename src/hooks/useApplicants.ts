@@ -8,9 +8,9 @@ import {interviewStatusReformer} from "../utils/stringReformers"
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
-  const fetchApplicants = async () => {
+  const fetchApplicants = async (page,size,) => {
     try {
-      const res = await axios.get(`/candidates`);
+      const res = await axios.get(`/candidates?page=${page}&size=${size}`);
       return () => {
         dispatch({
           type: ActionTypes.FETCH_APPLICANTS,
