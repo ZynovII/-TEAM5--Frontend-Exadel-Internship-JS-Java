@@ -11,6 +11,7 @@ import {
   PrimaryButton,
 } from "@fluentui/react";
 import { useOptions } from "../../hooks/useOptions";
+import {useApplicants} from "../../hooks/useApplicants"
 import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const stackStyles: IStackStyles = {
@@ -22,7 +23,7 @@ const stackStyles: IStackStyles = {
       flexWrap: "nowrap",
       margin: "0 auto",
       padding: "0",
-      maxWidth: "73%",
+      maxWidth: "83%",
     },
   },
 };
@@ -33,7 +34,7 @@ const dropdownStyles: Partial<IDropdownStyles> = {
     margin: "0 2px",
     "@media(min-width: 725px)": {
       margin: "0 0.2rem",
-      width: "20%",
+      width: "17%",
     },
   },
 };
@@ -43,46 +44,37 @@ export const AllApplicantFilter: React.FC = () => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<IFilterData>({
+  } = useForm({
     reValidateMode: "onSubmit",
     mode: "all",
   });
 
   const isMountedRef = useIsMountedRef();
   const [options, setOptions] = useState({
-    eventTypes: [],
-    techs: [],
-    interviewStatuses: [],
+    eventName: [],
+    primaryTech: [],
+    interviewProсcess: [],
+    countryName: [],
+    status: []
   });
-  const {
-    fetchEventTypes,
-    fetchInterviewStatuses,
-    fetchTechnology,
-  } = useOptions();
+ 
+const {getInfoForFilters, fetchFilteredApplicants,fetchApplicants} = useApplicants();
 
-  useEffect(() => {
-    Promise.all([
-      fetchEventTypes(),
-      fetchTechnology(),
-      fetchInterviewStatuses(),
-    ]).then((res) => {
-      if (isMountedRef.current) {
-        setOptions({
-          eventTypes: res[0],
-          techs: res[1],
-          interviewStatuses: res[2],
-        });
-      }
-    });
-  }, []);
+  useEffect(()=>{getInfoForFilters().then((res)=>{
+    setOptions({
+      eventName: res[0],
+      primaryTech: res[1],
+      interviewProсcess: res[3],
+      countryName: res[2],
+      status: res[4]
+    })
+  })},[])
+
 
   const onApplyFilter = () => {
     handleSubmit((data) => {
-      const dataSubmit = {
-        ...data,
-      };
-
-      console.log(dataSubmit);
+      fetchFilteredApplicants(0,10,isMountedRef.current, data)
+      
     })();
   };
 
@@ -91,27 +83,43 @@ export const AllApplicantFilter: React.FC = () => {
       {
         id: "123",
         key: "123",
-        name: "events",
-        label: "Event Type",
+        name: "eventName",
+        label: "Event Name",
         placeholder: "All events",
-        options: options.eventTypes,
+        options: options.eventName,
       },
       {
         id: "456",
         key: "456",
-        name: "skills",
-        label: "Main skill",
-        placeholder: "All skills",
-        options: options.techs,
+        name: "primaryTech",
+        label: "Primary Tech",
+        placeholder: "All techs",
+        options: options.primaryTech,
       },
       {
         id: "789",
         key: "789",
-        name: "wstatus",
-        label: "Status",
+        name: "interviewProсcess",
+        label: "Interview Proсcess",
         placeholder: "Waiting status",
-        options: options.interviewStatuses,
+        options: options.interviewProсcess,
       },
+      {
+        id: "78",
+        key: "78",
+        name: "countryName",
+        label: "Country",
+        placeholder: "All countries",
+        options: options.countryName,
+      },
+      {
+        id: "79",
+        key: "79",
+        name: "status",
+        label: "Status",
+        placeholder: "All",
+        options: options.status,
+      },  
     ];
   }, [options]);
 
@@ -133,6 +141,7 @@ export const AllApplicantFilter: React.FC = () => {
             placeholder={obj.placeholder}
             options={obj.options}
             errors={errors}
+            multiSelect
             styles={dropdownStyles}
           />
         ))}

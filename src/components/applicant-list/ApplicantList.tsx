@@ -35,10 +35,10 @@ export const ApplicantList: React.FC = () => {
   const { loading, showLoader } = useLoader();
   const history = useHistory();
   const isMountedRef = useIsMountedRef();
-  useEffect(() => {
-    showLoader();
-    fetchApplicants(isMountedRef.current);
-  }, []);
+  // useEffect(() => {
+  //   showLoader();
+  //   fetchApplicants(0,14,isMountedRef.current);
+  // }, []);
 
   const applicantsList = useMemo(() => {
     return Object.values(applicants).map((item) => {

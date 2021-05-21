@@ -1,16 +1,19 @@
 import axios, { axiosBlob } from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
+import {IDropdownOption} from "@fluentui/react"
 import { useStore } from "./hooks";
+import {interviewStatusReformer} from "../utils/stringReformers"
 
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
-  const fetchApplicants = (mounted) => {
+  const fetchApplicants = (page, size, mounted) => {
     axios
-      .get(`/candidates`)
+      .get(`/candidates?page=${page}&size=${size}`)
       .then((res) => {
         if (mounted) {
+          console.log("res",res)
           dispatch({
             type: ActionTypes.FETCH_APPLICANTS,
             payload: res.data.content,
@@ -98,6 +101,56 @@ export const useApplicants = () => {
     return response
   }
 
+  const getInfoForFilters = async () => {
+    const response = await axios.get(`/candidates/getInfoForFilter`);
+    const eventNameOptions: IDropdownOption[] = response.data.eventName.map((el) => ({
+      key: el.replace(/ /g,"%20").replace('&','%26'),
+      text: (el),
+    }));
+    const primaryTechOptions: IDropdownOption[] = response.data.primaryTech.map((el) => ({
+      key: el,
+      text: (el),
+    }));
+    const countryNameOptions: IDropdownOption[] = response.data.countryName.map((el) => ({
+      key: el,
+      text: (el),
+    }));
+    const interviewProccessOptions: IDropdownOption[] = response.data.interviewProccess.map((el) => ({
+      key: el,
+      text: interviewStatusReformer(el),
+    }));
+    const statusOptions: IDropdownOption[] = response.data.status.map((el) => ({
+      key: el,
+      text: (el),
+    }));
+   return [eventNameOptions, primaryTechOptions, countryNameOptions, interviewProccessOptions, statusOptions];
+  };
+
+  const fetchFilteredApplicants = (page,size, mounted, data ) => {
+    let allFetchstr = ""
+    if (data)  { let strCountryName= data.countryName?.map(el=>'countryName='+el).join("&")
+    let strEventName = data.eventName?.map(el=>'eventName='+el).join("&")
+    let strIntProcess = data.interviewProсcess?.map(el=>'interviewProccess='+el).join("&")
+    let strPrimaryTech = data.primaryTech?.map(el=>'primaryTech='+el).join("&")
+    let strStatus = data.status?.map(el=>'status='+el).join("&")
+     allFetchstr = [strCountryName,strEventName, strIntProcess, strPrimaryTech, strStatus].filter(Boolean).join("&")}
+    
+    console.log(allFetchstr)
+    axios
+      .get(`/candidates/getCandidatesWithFilter?${allFetchstr}`)
+      .then((res) => 
+        {if (mounted) {
+          console.log("gdf")
+          dispatch({
+            type: ActionTypes.FILTER_APPLICANTS,
+            payload: res.data.result.content,
+          });
+        }
+      }
+      )
+      .catch((err) => console.log(err));
+    }
+
   return {
     selectedApplicant: state.selectedApplicant,
     applicants: state.applicants,
@@ -106,5 +159,7 @@ export const useApplicants = () => {
     createCandidate,
     setStatus,
     cvDownload,
+    getInfoForFilters,
+    fetchFilteredApplicants
   };
 };
