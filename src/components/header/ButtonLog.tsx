@@ -17,9 +17,7 @@ import { useAuth } from "../../hooks/useAuth";
 import { ControlledTextField } from "../../hook-form/Controlled";
 
 const cancelIcon: IIconProps = { iconName: "Cancel" };
-const registrationPattern: {
-  email: RegExp;
-} = {
+const registrationPattern = {
   email: /^[-a-z0-9!#$%&'*+/=?^_`{|}~]+(\.[-a-z0-9!#$%&'*+/=?^_`{|}~]+)*@([a-z0-9]([-a-z0-9]{0,61}[a-z0-9])?\.)*(aero|arpa|asia|biz|cat|com|coop|edu|gov|info|int|jobs|mil|mobi|museum|name|net|org|pro|tel|travel|[a-z][a-z])$/i,
 };
 
@@ -44,7 +42,6 @@ const ButtonLog: React.FC<{
   const onSave = () => {
     handleSubmit(
       (data) => {
-        console.log(data);
         signIn(data);
       },
       (err) => {
@@ -107,11 +104,7 @@ const ButtonLog: React.FC<{
             canRevealPassword
             className={contentStyles.item}
           />
-          <PrimaryButton
-            onClick={() => onSave()}
-            text="Send"
-            className="button"
-          />
+          <PrimaryButton onClick={onSave} text="Send" className="button" />
         </div>
       </Modal>
     </div>

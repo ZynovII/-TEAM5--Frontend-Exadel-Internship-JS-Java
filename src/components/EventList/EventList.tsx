@@ -8,6 +8,8 @@ import { useEvents } from "../../hooks/useEvents";
 import { useAuth } from "../../hooks/useAuth";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
 
+const EVENTS_SIZE = 6;
+
 const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
   const {
     events,
@@ -16,20 +18,23 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
     fetchPublishedEvents,
   } = useEvents();
   const { loading, showLoader } = useLoader();
-  const [page, setPage] = useState(0);
+  const [page, setPage] = useState<number>(0);
   const { isAuth } = useAuth();
   const isMountedRef = useIsMountedRef();
 
-  const loadMore = (page, size, mounted) => {
+  const loadMore = (page: number, size: number) => {
     isAdminPage
-      ? fetchEvents(page, size, mounted)
-      : fetchPublishedEvents(page, 6, mounted);
-    setPage(page + 1);
+      ? fetchEvents(page, size).then((cb) => {
+          if (isMountedRef.current) cb();
+        })
+      : fetchPublishedEvents(page, EVENTS_SIZE).then((cb) => {
+          if (isMountedRef.current) cb();
+        });
+    setPage((prev) => prev + 1);
   };
-
   useEffect(() => {
     showLoader();
-    loadMore(page, 5, isMountedRef.current);
+    loadMore(page, EVENTS_SIZE - 1);
   }, []);
 
   return loading ? (
@@ -51,7 +56,7 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
         <PrimaryButton
           text="Load More"
           className="button"
-          onClick={() => loadMore(page, 6, true)}
+          onClick={() => loadMore(page, EVENTS_SIZE)}
         />
       </div>
     </>
