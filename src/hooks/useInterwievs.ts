@@ -42,6 +42,21 @@ export const useInterviews = () => {
     axios.post("/interviews/", interview).then((res) => console.log(res));
   };
 
+  const checkTimeSlot = async (id: string) => {
+    const response = await axios.get(`/timeslots/employee/${id}`)
+    return response.data
+  };
+
+  const createTimeSlot = (id: string, startTime: string, endTime: string) => {
+    const timeSlot = {
+      startTime: +startTime.slice(0, 2),
+      endTime: +endTime.slice(0, 2),
+    };
+    axios
+      .post(`timeslots/employee/${id}/add`, timeSlot)
+      .then((res) => console.log(res));
+  };
+
   return {
     selectedInterview: state.selectedInterview,
     interviews: state.interviews,
@@ -51,5 +66,7 @@ export const useInterviews = () => {
     getRoles,
     getInterviewers,
     createInterviews,
+    checkTimeSlot,
+    createTimeSlot,
   };
 };
