@@ -1,14 +1,14 @@
-import React from "react";
-import { useMemo } from "react";
-import { ControlledDropdown } from "../../hook-form/Controlled";
+import React, { useMemo } from "react";
 import { useForm } from "react-hook-form";
-import { IFilterDropdownItem, IFilterData } from "../Filter/Models";
 import {
   IStackStyles,
   IDropdownStyles,
   Stack,
   PrimaryButton,
 } from "@fluentui/react";
+
+import { IFilterDropdownItem, IFilterData } from "../Filter/Models";
+import { ControlledDropdown } from "../../hook-form/Controlled";
 
 const stackStyles: IStackStyles = {
   root: {

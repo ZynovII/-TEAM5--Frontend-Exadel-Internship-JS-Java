@@ -1,12 +1,9 @@
 import React, { useEffect, useMemo } from "react";
-import { useId } from "@fluentui/react-hooks";
 import { useHistory } from "react-router-dom";
 import {
   DetailsList,
   SelectionMode,
   IColumn,
-  TooltipHost,
-  ITooltipHostStyles,
   ActionButton,
   getTheme,
   Spinner,
@@ -25,14 +22,7 @@ import {
 
 const theme = getTheme();
 
-const calloutProps = { gapSpace: 0 };
-
-const hostStyles: Partial<ITooltipHostStyles> = {
-  root: { display: "inline-block" },
-};
-
 const InterviewList: React.FC = () => {
-  const tooltipId = useId("tooltip");
   const history = useHistory();
   const { currentUser } = useAuth();
 
