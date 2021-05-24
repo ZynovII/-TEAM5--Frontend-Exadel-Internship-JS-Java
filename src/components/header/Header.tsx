@@ -14,7 +14,7 @@ const Header: React.FC = () => {
 
   return (
     <header style={{ padding: "2em" }}>
-      <Stack horizontal horizontalAlign="space-between">
+      <Stack horizontal horizontalAlign="space-between" verticalAlign='center'>
         <div style={{ display: "flex", alignItems: "center", width: "550px" }}>
           <img
             src={logo.default}
