@@ -3,15 +3,14 @@ import { useMemo } from "react";
 
 import { ControlledDropdown } from "../../hook-form/Controlled";
 import { useForm } from "react-hook-form";
-import { IFilterDropdownItem, IFilterData } from "../Filter/Models";
+import { IFilterDropdownItem } from "../Filter/Models";
 import {
   IStackStyles,
   IDropdownStyles,
   Stack,
   PrimaryButton,
 } from "@fluentui/react";
-import { useOptions } from "../../hooks/useOptions";
-import {useApplicants} from "../../hooks/useApplicants"
+import { useApplicants } from "../../hooks/useApplicants";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const stackStyles: IStackStyles = {
@@ -55,26 +54,26 @@ export const AllApplicantFilter: React.FC = () => {
     primaryTech: [],
     interviewProсcess: [],
     countryName: [],
-    status: []
+    status: [],
   });
- 
-const {getInfoForFilters, fetchFilteredApplicants,fetchApplicants} = useApplicants();
 
-  useEffect(()=>{getInfoForFilters().then((res)=>{
-    setOptions({
-      eventName: res[0],
-      primaryTech: res[1],
-      interviewProсcess: res[3],
-      countryName: res[2],
-      status: res[4]
-    })
-  })},[])
+  const { getInfoForFilters, fetchFilteredApplicants } = useApplicants();
 
+  useEffect(() => {
+    getInfoForFilters().then((res) => {
+      setOptions({
+        eventName: res.eventName,
+        primaryTech: res.primaryTech,
+        interviewProсcess: res.interviewProccess,
+        countryName: res.countryName,
+        status: res.status,
+      });
+    });
+  }, []);
 
   const onApplyFilter = () => {
     handleSubmit((data) => {
-      fetchFilteredApplicants(0,10,isMountedRef.current, data)
-      
+      fetchFilteredApplicants(0, 10, isMountedRef.current, data);
     })();
   };
 
@@ -119,7 +118,7 @@ const {getInfoForFilters, fetchFilteredApplicants,fetchApplicants} = useApplican
         label: "Status",
         placeholder: "All",
         options: options.status,
-      },  
+      },
     ];
   }, [options]);
 

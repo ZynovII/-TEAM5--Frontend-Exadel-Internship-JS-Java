@@ -16,29 +16,31 @@ const styles = mergeStyleSets({
 const Scrollbar: React.FC<{ height: string }> = (props) => {
   const { loading, showLoader } = useLoader();
   const [currentPage, setCurrentPage] = useState(0);
-  const [fetching, setFetching] = useState(true);
   const { fetchApplicants } = useApplicants();
   const isMountedRef = useIsMountedRef();
   const url = useHistory();
 
   useEffect(() => {
-    if (fetching) {
-      if (url.location.pathname == "/admin/candidates") {
-        // showLoader();
-        fetchApplicants(currentPage, 14).then((cb) => {
-          if (isMountedRef.current) {
-            cb();
-          }
-          setCurrentPage((prevState) => prevState + 1);
-          setFetching(false);
-        });
-      }
+    if (url.location.pathname == "/admin/candidates") {
+      showLoader();
+      fetchApplicants(0, 14).then((cb) => {
+        if (isMountedRef.current) {
+          cb();
+        }
+        setCurrentPage(1);
+      });
     }
-  }, [fetching, url.location.pathname]);
+  }, [url.location]);
 
   const onScroll = (e) => {
     if (e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 1)
-      setFetching(true);
+      fetchApplicants(currentPage, 14).then((cb) => {
+        console.log(currentPage);
+        if (isMountedRef.current) {
+          cb();
+        }
+        setCurrentPage((prevState) => prevState + 1);
+      });
   };
 
   return (
