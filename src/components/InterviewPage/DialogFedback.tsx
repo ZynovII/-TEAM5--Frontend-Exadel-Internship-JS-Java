@@ -91,7 +91,6 @@ const contentStyles = mergeStyleSets({
     flex: "4 4 auto",
     overflowY: "hidden",
     textAlign: "center",
-    minHeight: 400,
   },
   item: {
     marginBottom: "10px",
