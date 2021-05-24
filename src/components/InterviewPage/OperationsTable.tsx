@@ -1,8 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { DetailsList, IColumn } from "@fluentui/react/lib";
 import { dateReformer, timeReformer } from "../../utils/stringReformers";
-import { useAuth } from "../../hooks/useAuth";
-import { DialogFeedback } from "./DialogFedback";
+import DialogFeedback from "./DialogFedback";
 import { IInterviewInCandite } from "../../models/IInterview";
 
 const columns: IColumn[] = [
@@ -50,30 +49,33 @@ const columns: IColumn[] = [
   },
 ];
 
-const OperationsTable: React.FC<{
+export interface IOperationTableProps {
   operations: IInterviewInCandite[];
   candidate: string;
-}> = (props) => {
-  const [isModalOpen, setIsModalOpen] = useState(false);
-  const [selectedFeedback, setSelectedFeedback] = useState(null);
-  const { currentUser } = useAuth();
+  currentUserName: string;
+  isModalOpen: boolean;
+  onSave(feedback: string): void;
+  hideModal(): void;
+  showModal(feedback: IInterviewInCandite): void;
+  selectedFeedback: string;
+}
 
-  const hideModal = () => setIsModalOpen(false);
-  const showModal = (feedback: IInterviewInCandite) => {
-    setSelectedFeedback(feedback);
-    setIsModalOpen(true);
-  };
-
-  const onSave = () => {
-    hideModal();
-  };
-
+const OperationsTable: React.FC<IOperationTableProps> = ({
+  operations,
+  candidate,
+  currentUserName,
+  isModalOpen,
+  onSave,
+  hideModal,
+  showModal,
+  selectedFeedback,
+}) => {
   return (
     <>
       <div data-is-scrollable={true}>
         <div>
           <DetailsList
-            items={props.operations}
+            items={operations}
             onRenderRow={(props, defaultRender) => {
               props.columns[props.columns.length - 1].onRender = (item) => (
                 <button onClick={() => showModal(item)} className="button">
@@ -82,7 +84,7 @@ const OperationsTable: React.FC<{
                   </span>
                 </button>
               );
-              if (props.item.interviewerName === currentUser.fullName) {
+              if (props.item.interviewerName === currentUserName) {
                 return defaultRender({
                   ...props,
                   styles: {
@@ -104,7 +106,7 @@ const OperationsTable: React.FC<{
       {selectedFeedback && (
         <DialogFeedback
           content={selectedFeedback}
-          candidate={props.candidate}
+          candidate={candidate}
           onSave={onSave}
           isModalOpen={isModalOpen}
           hideModal={hideModal}
@@ -114,4 +116,4 @@ const OperationsTable: React.FC<{
   );
 };
 
-export default OperationsTable;
+export default React.memo(OperationsTable);

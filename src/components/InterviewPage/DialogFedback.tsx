@@ -10,24 +10,23 @@ import {
   getTheme,
   mergeStyleSets,
 } from "@fluentui/react/lib";
-import { IInterviewInCandite } from "../../models/IInterview";
 
 export interface IDialogFeedbackProps {
-  content: IInterviewInCandite;
+  content: string;
   isModalOpen: boolean;
   hideModal(): void;
-  onSave(): void;
+  onSave(feedback: string): void;
   candidate: string;
 }
 
-export const DialogFeedback: React.FC<IDialogFeedbackProps> = ({
+const DialogFeedback: React.FC<IDialogFeedbackProps> = ({
   content,
   isModalOpen,
   hideModal,
   onSave,
   candidate,
 }) => {
-  const [feedback, setFeedback] = useState(content.feedback || "");
+  const [feedback, setFeedback] = useState(content || "");
 
   const onChangeHandler = (e, text: string) => {
     setFeedback(text);
@@ -56,7 +55,11 @@ export const DialogFeedback: React.FC<IDialogFeedbackProps> = ({
         />
       </div>
       <DialogFooter>
-        <PrimaryButton onClick={onSave} text="Send" className="button" />
+        <PrimaryButton
+          onClick={() => onSave(feedback)}
+          text="Send"
+          className="button"
+        />
         <DefaultButton onClick={hideModal} text="Don't send" />
       </DialogFooter>
     </Dialog>
@@ -96,3 +99,5 @@ const contentStyles = mergeStyleSets({
     marginBottom: "10px",
   },
 });
+
+export default React.memo(DialogFeedback);
