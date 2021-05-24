@@ -45,7 +45,7 @@ export const Registration: React.FC<{
   techs?: ITech[];
 }> = (props) => {
   const [response, setResponse] = useState<string>("");
-  const { createCandidate } = useApplicants();
+  const { createCandidate, editCandidate } = useApplicants();
   const { fetchLocation, fetchPreferredTime, fetchTechnology } = useOptions();
   const [options, setOptions] = useState<IOptionsRegistration>({
     locations: [],
@@ -154,10 +154,17 @@ export const Registration: React.FC<{
   const onSave = () => {
     handleSubmit(
       (data) => {
-        createCandidate(data, props.name, file).then((res) => {
-          setResponse(res);
-          showModal();
-        });
+        if (props.candidatePage) {
+          editCandidate(data, props.candidat.eventName, props.candidat.id).then((res) => {
+            setResponse(res);
+            showModal();
+          });
+        } else {
+          createCandidate(data, props.name, file).then((res) => {
+            setResponse(res);
+            showModal();
+          });
+        }
       },
       (err) => {
         console.log("ошибка заполнения");
@@ -314,10 +321,6 @@ export const Registration: React.FC<{
         onChange={(e) => uploadFile(e)}
         accept=".doc, .docx, .pdf"
       />
-      <label htmlFor="cv" className="input-file__label">
-        Upload CV
-      </label>
-      <span>{file && file.name}</span>
       {props.candidatePage ? (
         <>
           <PrimaryButton
@@ -328,6 +331,10 @@ export const Registration: React.FC<{
         </>
       ) : (
         <>
+          <label htmlFor="cv" className="input-file__label">
+            Upload CV
+          </label>
+          <span>{file && file.name}</span>
           <Text className={contentStyles.margin} nowrap block>
             * Fields marked with * are required
           </Text>

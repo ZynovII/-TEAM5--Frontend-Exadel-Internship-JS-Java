@@ -41,7 +41,7 @@ export const useInterviews = () => {
       employee: employee,
       startTime: startTime,
     };
-    axios.post("/interviews/", interview).then((res) => console.log(res));
+    axios.post("/interviews/", interview)
   };
 
   const checkTimeSlot = async (id: string) => {
@@ -56,7 +56,6 @@ export const useInterviews = () => {
     };
     axios
       .post(`timeslots/employee/${id}/add`, timeSlot)
-      .then((res) => console.log(res));
   };
 
   return {
