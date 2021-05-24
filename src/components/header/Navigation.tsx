@@ -1,4 +1,5 @@
 import React, { useMemo } from "react";
+import { Link } from "react-router-dom";
 import classes from "./Navigation.module.scss";
 
 const Navigation: React.FC = () => {
@@ -19,9 +20,9 @@ const Navigation: React.FC = () => {
 
   const listItems = items.map((el) => (
     <li className={classes.Navigation__item} key={el.text}>
-      <a className={classes.Navigation__link} href={'#/admin' + el.to}>
+      <Link className={classes.Navigation__link} to={"/admin" + el.to}>
         {el.text}
-      </a>
+      </Link>
     </li>
   ));
 
