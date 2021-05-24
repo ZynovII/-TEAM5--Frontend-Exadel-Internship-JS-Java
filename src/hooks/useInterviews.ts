@@ -7,8 +7,6 @@ export const useInterviews = () => {
   const { state, dispatch } = useStore();
   const fetchInterviews = (employeeId: ID) => {
     axios.get(`/interviews/employee/${employeeId}`).then((res) => {
-      console.log(res.data.result);
-
       dispatch({
         type: ActionTypes.FETCH_INTERVIEWS,
         payload: res.data.result,
