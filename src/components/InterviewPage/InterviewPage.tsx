@@ -50,7 +50,7 @@ export const InterviewPage: React.FC = () => {
           <InfoForm candidat={selectedInterview.candidate} />
         </div>
         <div>
-          <h1>Iterview</h1>
+          <h2>Interviews</h2>
           <Stack
             className={contentStyles.formWrapper}
             horizontal

@@ -101,13 +101,15 @@ const OperationsTable: React.FC<{
           />
         </div>
       </div>
-      <DialogFeedback
-        content={selectedFeedback}
-        candidate={props.candidate}
-        onSave={onSave}
-        isModalOpen={isModalOpen}
-        hideModal={hideModal}
-      />
+      {selectedFeedback && (
+        <DialogFeedback
+          content={selectedFeedback}
+          candidate={props.candidate}
+          onSave={onSave}
+          isModalOpen={isModalOpen}
+          hideModal={hideModal}
+        />
+      )}
     </>
   );
 };

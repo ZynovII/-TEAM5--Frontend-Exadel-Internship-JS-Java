@@ -27,7 +27,7 @@ export const DialogFeedback: React.FC<IDialogFeedbackProps> = ({
   onSave,
   candidate,
 }) => {
-  const [feedback, setFeedback] = useState(content.feedback);
+  const [feedback, setFeedback] = useState(content.feedback || "");
 
   const onChangeHandler = (e, text: string) => {
     setFeedback(text);
