@@ -1,4 +1,4 @@
-import { IInterview } from "./IInterview";
+import { IInterview, IInterviewInCandite } from "./IInterview";
 import { ID } from "./Store/IStore";
 
 export enum AcceptStatus {
@@ -48,10 +48,10 @@ export interface IApplicantDetailsFromBackEnd {
   fullName: string;
   eventName: string;
   status: AcceptStatus;
-  interviews: IInterview[];
+  interviews: IInterviewInCandite[];
   preferredTime: PreferredTime;
   interviewProcess: InterviewStatus;
-  primaryTech?: string
+  primaryTech?: string;
 }
 export interface IApplicantShortFromBackEnd {
   id: ID;

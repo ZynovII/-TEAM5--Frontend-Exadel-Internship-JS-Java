@@ -5,7 +5,7 @@ import {
   ControlledDropdown,
   ControlledDatePicker,
 } from "../../hook-form/Controlled";
-import { useInterviews } from "../../hooks/useInterwievs";
+import { useInterviews } from "../../hooks/useInterviews";
 import { IApplicantDetailsFromBackEnd } from "../../models/IApplicant";
 
 const time = [

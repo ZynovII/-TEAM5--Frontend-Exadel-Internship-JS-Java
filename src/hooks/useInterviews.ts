@@ -14,8 +14,10 @@ export const useInterviews = () => {
     });
   };
 
-  const selectInterview = (id: number) => {
-    dispatch({ type: ActionTypes.SELECT_INTERVIEW, id });
+  const selectInterview = (id: ID) => {
+    axios.get(`/interviews/${id}`).then((res) => {
+      dispatch({ type: ActionTypes.SELECT_INTERVIEW, payload: res.data });
+    });
   };
 
   const getRoles = async () => {

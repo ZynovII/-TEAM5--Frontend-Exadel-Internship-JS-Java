@@ -10,6 +10,7 @@ export const initialState: IStore = {
   loading: true,
   applicants: {},
   interviews: {},
+  interviewers: [],
   selectedEvent: null,
   selectedApplicant: null,
   selectedInterview: null,

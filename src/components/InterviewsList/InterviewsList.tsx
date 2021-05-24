@@ -1,34 +1,28 @@
 import React, { useEffect, useMemo } from "react";
-import { useId } from "@fluentui/react-hooks";
 import { useHistory } from "react-router-dom";
 import {
   DetailsList,
   SelectionMode,
   IColumn,
-  TooltipHost,
-  ITooltipHostStyles,
   ActionButton,
   getTheme,
   Spinner,
   SpinnerSize,
   Sticky,
 } from "@fluentui/react";
-import { InterviewListFilter } from "./InterviwListFilter";
-import { useInterviews } from "../../hooks/useInterwievs";
+import { InterviewListFilter } from "./InterviewListFilter";
+import { useInterviews } from "../../hooks/useInterviews";
 import { useLoader } from "../../hooks/hooks";
 import { useAuth } from "../../hooks/useAuth";
-import { dateReformer, timeReformer } from "../../utils/stringReformers";
+import {
+  dateReformer,
+  interviewStatusReformer,
+  timeReformer,
+} from "../../utils/stringReformers";
 
 const theme = getTheme();
 
-const calloutProps = { gapSpace: 0 };
-
-const hostStyles: Partial<ITooltipHostStyles> = {
-  root: { display: "inline-block" },
-};
-
 const InterviewList: React.FC = () => {
-  const tooltipId = useId("tooltip");
   const history = useHistory();
   const { currentUser } = useAuth();
 
@@ -44,9 +38,12 @@ const InterviewList: React.FC = () => {
     () =>
       Object.keys(interviews).map((idx) => {
         return {
+          id: interviews[idx].idInterview,
           fullName: interviews[idx].candidate,
           skill: interviews[idx].candidatePrimaryTech,
-          interviewStatus: interviews[idx].interviewProcess,
+          interviewStatus: interviewStatusReformer(
+            interviews[idx].interviewProcess
+          ),
           interviewDate: dateReformer(interviews[idx].interviewTime),
           interviewTime: timeReformer(interviews[idx].interviewTime),
         };
@@ -58,15 +55,15 @@ const InterviewList: React.FC = () => {
     () => [
       {
         key: "column1",
-        name: "interviewDate",
+        name: "Date",
         fieldName: "interviewDate",
         minWidth: 70,
-        maxWidth: 100,
+        maxWidth: 150,
         isResizable: true,
       },
       {
         key: "column2",
-        name: "interviewTime",
+        name: "Time",
         fieldName: "interviewTime",
         minWidth: 70,
         maxWidth: 100,
@@ -74,10 +71,10 @@ const InterviewList: React.FC = () => {
       },
       {
         key: "column3",
-        name: "fullName",
+        name: "Candidate",
         fieldName: "fullName",
         minWidth: 100,
-        maxWidth: 250,
+        maxWidth: 450,
         isResizable: true,
       },
       {
@@ -86,11 +83,10 @@ const InterviewList: React.FC = () => {
         fieldName: "skill",
         minWidth: 100,
         maxWidth: 250,
-        isResizable: true,
       },
       {
         key: "column5",
-        name: "interviewStatus",
+        name: "Interview Status",
         fieldName: "interviewStatus",
         minWidth: 100,
         maxWidth: 250,
@@ -102,21 +98,16 @@ const InterviewList: React.FC = () => {
         isIconOnly: true,
         fieldName: "",
         minWidth: 50,
-        maxWidth: 50,
         isResizable: false,
-        onRender: () => (
-          <TooltipHost
-            content="Show more information"
-            id={tooltipId}
-            calloutProps={calloutProps}
-            styles={hostStyles}
-          >
-            <ActionButton
-              iconProps={{ iconName: "D365TalentHRCore" }}
-              onClick={() => history.push(`/admin/interviews/${"unknow"}`)} // selected id from state
-              aria-describedby={tooltipId}
-            ></ActionButton>
-          </TooltipHost>
+        onRender: (item) => (
+          <ActionButton
+            iconProps={{ iconName: "D365TalentHRCore" }}
+            onClick={(e) => {
+              e.preventDefault();
+              showLoader();
+              history.push(`/admin/interviews/${item.id}`);
+            }}
+          ></ActionButton>
         ),
       },
     ],
@@ -136,22 +127,21 @@ const InterviewList: React.FC = () => {
           <DetailsList
             items={interviewsList}
             columns={columns}
-            selectionMode={SelectionMode.multiple}
+            selectionMode={SelectionMode.none}
             isHeaderVisible={true}
-            onItemInvoked={(item) =>
-              history.push(`/admin/interviews/${item.fullName}`)
-            }
+            onItemInvoked={(item) => {
+              showLoader();
+              history.push(`/admin/interviews/${item.id}`);
+            }}
             onRenderDetailsHeader={(detailsHeaderProps, defaultRender) => (
               <Sticky>{defaultRender(detailsHeaderProps)}</Sticky>
             )}
-            onRenderRow={(props, defaultRender) => (
-              <div>
-                {defaultRender({
-                  ...props,
-                  styles: { root: { fontSize: 16 } },
-                })}
-              </div>
-            )}
+            onRenderRow={(props, defaultRender) =>
+              defaultRender({
+                ...props,
+                styles: { root: { fontSize: 16 } },
+              })
+            }
           />
         </div>
       </>
