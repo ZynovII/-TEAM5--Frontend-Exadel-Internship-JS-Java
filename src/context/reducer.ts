@@ -22,6 +22,7 @@ export const reducer = (state: IStore, action: IAction): IStore => {
     case ActionTypes.SIGN_OUT:
       return {
         ...state,
+        interviews: {},
         isAuthenticated: false,
         currentUser: null,
         loading: false,
