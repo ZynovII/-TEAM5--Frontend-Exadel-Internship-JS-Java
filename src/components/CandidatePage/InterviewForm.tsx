@@ -105,7 +105,6 @@ export const InterviewForm: React.FC<{
     time.forEach((el) => {
       freeSlot.forEach((item) => {
         if (el.key.includes(item)) {
-          console.log(el);
           result.push({ ...el, disabled: true });
         }
       });
@@ -159,6 +158,8 @@ export const InterviewForm: React.FC<{
               setDisabledInterviewer(false);
               selectInterviewers(data.key);
             }}
+            required
+            rules={{required: "This field is required"}}
           />
         </Stack>
         <Stack
@@ -175,6 +176,8 @@ export const InterviewForm: React.FC<{
             options={interviewer}
             disabled={disabledInterviewer}
             onChange={(e, data) => freeTimeSlot(data.key)}
+            required
+            rules={{required: "This field is required"}}
           />
         </Stack>
         <Stack
@@ -202,6 +205,8 @@ export const InterviewForm: React.FC<{
             defaultSelectedKey={""}
             errors={errors}
             options={timeFilter}
+            required
+            rules={{required: "This field is required"}}
           />
         </Stack>
       </Stack>

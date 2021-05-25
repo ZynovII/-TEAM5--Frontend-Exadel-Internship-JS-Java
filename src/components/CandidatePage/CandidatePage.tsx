@@ -16,6 +16,7 @@ export const CandidatePage: React.FC = () => {
   const params = useParams<RouteParams>();
   const { selectedApplicant, selectApplicant } = useApplicants();
   const { loading, showLoader } = useLoader();
+
   useEffect(() => {
     showLoader();
     selectApplicant(params.id);
