@@ -71,6 +71,12 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         events: { ...state.events, ...newEvents },
         loading: false,
       };
+    
+    case ActionTypes.APPLY_FILTERS:
+      return {
+        ...state,
+        publishedEvents: {},
+      };
     case ActionTypes.FETCH_PUBLISHED_EVENTS:
       const newEvent: {
         [eventId: string]: IEvent;
