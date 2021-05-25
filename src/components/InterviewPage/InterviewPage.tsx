@@ -1,147 +1,102 @@
-import React, { useMemo } from "react";
+import React, { useEffect, useState } from "react";
 import {
-  TextField,
   Stack,
   mergeStyleSets,
-  Dropdown,
-  IDropdownOption,
-  ProgressIndicator,
-  getTheme,
+  Spinner,
+  SpinnerSize,
 } from "@fluentui/react/lib";
+import { useParams } from "react-router";
 
 import OperationsTable from "./OperationsTable";
-import { IApplicant } from "../../models/IApplicant";
+import { RouteParams } from "../Event";
+import { useInterviews } from "../../hooks/useInterviews";
+import { InfoForm } from "../CandidatePage/InfoForm";
+import { StatusForm } from "../CandidatePage/StatusForm";
+import { useLoader } from "../../hooks/hooks";
+import { useAuth } from "../../hooks/useAuth";
+import { IInterviewInCandite } from "../../models/IInterview";
 
-export interface IInterviewProps {
-  candidat: IApplicant;
-}
-const theme = getTheme();
+export const InterviewPage: React.FC = () => {
+  const [selectedFeedback, setSelectedFeedback] = useState<IInterviewInCandite>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { selectInterview, selectedInterview, editFeedback } = useInterviews();
+  const { loading, showLoader } = useLoader();
+  const { currentUser } = useAuth();
+  const params = useParams<RouteParams>();
 
-const options: object[] = [
-  { key: "Interview", text: "Interview" },
-  { key: "HR", text: "HR" },
-  { key: "TS", text: "TS" },
-];
+  const hideModal = () => {
+    setIsModalOpen(false);
+    setSelectedFeedback(null);
+  };
 
-const desicion: IDropdownOption[] = [
-  { key: "Accept", text: "Accept" },
-  { key: "Reject", text: "Reject" },
-];
+  const showModal = (feedback: IInterviewInCandite) => {
+    setSelectedFeedback(feedback);
+    setIsModalOpen(true);
+  };
 
-const filterDisplay = {
-  display: "flex",
-  justifyContent: "space-between",
-  //position: 'absolute',
-  marginTop: -21,
-  zIndex: 1,
-} as const;
-const operations = [
-  {
-    interviewer: "TS",
-    date: "18.03.2021",
-    time: "13:00-14:00",
-  },
-  {
-    interviewer: "HR",
-    date: "11.03.2021",
-    time: "14:00-14:30",
-  },
-];
+  const onSave = (feedback: string) => {
+    editFeedback(selectedFeedback.id, feedback).then((res) => {
+      setSelectedFeedback(null);
+      hideModal();
+      showLoader();
+      selectInterview(params.id);
+    });
+  };
 
-export const InterviewPage: React.FC<IInterviewProps> = (props) => {
-  return (
-    <div className={contentStyles.container}>
-      <div>
-        <h1>Welcome, {props.candidat.fullName}</h1>
-      </div>
-      <div>
-        <Stack
-          className={contentStyles.formWrapper}
-          horizontal
-          tokens={{ childrenGap: "40px" }}
+  useEffect(() => {
+    selectInterview(params.id);
+  }, []);
+
+  return loading ? (
+    <Spinner size={SpinnerSize.large} className="margin2em" />
+  ) : (
+    <>
+      <header>
+        <div
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            width: "20%",
+            alignItems: "flex-end",
+          }}
         >
-          <Stack
-            tokens={{ childrenGap: "10px" }}
-            styles={{ root: { width: "220px" } }}
-          >
-            <p>{props.candidat.acceptanceStatus}</p>
-          </Stack>
-          <Stack
-            tokens={{ childrenGap: "0px" }}
-            styles={{ root: { width: "520px" } }}
-          >
-            <div style={filterDisplay}>
-              <p>Registered</p>
-              <p>Waiting HR</p>
-              <p>Waiting TS</p>
-              <p>Waiting desicion</p>
-            </div>
-            <ProgressIndicator
-              barHeight={20}
-              percentComplete={0.4}
-              label={props.candidat.interviewStatus}
-              styles={{
-                itemName: { paddingLeft: 4 * 100 + "%" },
-              }}
-            />
-          </Stack>
-          <Stack
-            tokens={{ childrenGap: "20px" }}
-            styles={{ root: { width: "220px" } }}
-          >
-            <Dropdown
-              placeholder="Select a desition"
-              options={desicion}
-              styles={{ root: { width: "220px" } }}
-            />
-          </Stack>
-        </Stack>
-        <div style={{ boxShadow: theme.effects.elevation64, margin: "0 auto" }}>
-          <h1 style={{ paddingTop: "20px", marginLeft: "50px" }}>
-            Internship JS &amp; Java
-          </h1>
+          <h2>{selectedInterview.candidate.fullName}</h2>
+        </div>
+        <h3>{selectedInterview.event.name}</h3>
+      </header>
+      <main>
+        <StatusForm candidat={selectedInterview.candidate} />
+        <div>
+          <InfoForm candidat={selectedInterview.candidate} />
+        </div>
+        <div>
+          <h2>Interviews</h2>
           <Stack
             className={contentStyles.formWrapper}
             horizontal
             tokens={{ childrenGap: "40px" }}
-            styles={{ root: { marginLeft: "50px", marginTop: "9px" } }}
           >
             <Stack
-              tokens={{ childrenGap: "5px" }}
-              styles={{ root: { width: "450px" } }}
+              tokens={{ childrenGap: "20px" }}
+              styles={{ root: { width: "100%" } }}
             >
-              <p>{props.candidat.fullName}</p>
-              <p>{props.candidat.email}</p>
-              <p>{props.candidat.phoneNumber}</p>
-            </Stack>
-            <Stack
-              tokens={{ childrenGap: "5px" }}
-              styles={{ root: { width: "450px" } }}
-            >
-              <p>{props.candidat.country}</p>
-              <p>{props.candidat.city}</p>
-              <p>{props.candidat.technology}</p>
+              <OperationsTable
+                operations={selectedInterview.candidate.interviews}
+                candidate={selectedInterview.candidate.fullName}
+                currentUserName={currentUser.fullName}
+                isModalOpen={isModalOpen}
+                showModal={showModal}
+                hideModal={hideModal}
+                onSave={onSave}
+                selectedFeedback={selectedFeedback?.feedback}
+              />
             </Stack>
           </Stack>
         </div>
-      </div>
-
-      <div>
-        <h1>Iterview</h1>
-        <Stack
-          className={contentStyles.formWrapper}
-          horizontal
-          tokens={{ childrenGap: "40px" }}
-        >
-          <Stack
-            tokens={{ childrenGap: "20px" }}
-            styles={{ root: { width: "100%" } }}
-          >
-            <OperationsTable operations={operations} />
-          </Stack>
-        </Stack>
-      </div>
-    </div>
+      </main>
+    </>
   );
 };
 
@@ -150,10 +105,5 @@ const contentStyles = mergeStyleSets({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "stretch",
-  },
-
-  container: {
-    width: "73%",
-    margin: "2em auto",
   },
 });

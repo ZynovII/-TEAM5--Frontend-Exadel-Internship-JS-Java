@@ -1,16 +1,22 @@
-import { InterviewStatus } from "./IApplicant";
+import { IApplicantDetailsFromBackEnd, InterviewStatus } from "./IApplicant";
+import { IEvent } from "./IEvent";
 import { UserRole } from "./IUser";
 import { ID } from "./Store/IStore";
 
 export interface IInterview {
   id: ID;
   interviewDate: string;
-  interviewTime: any;
-  fullName: string;
-  interviewerID: string;
-  interviewerType: UserRole;
-  events: string;
+  interviewer: string;
+  candidate: IApplicantDetailsFromBackEnd;
+  event: IEvent;
   feedback: string;
+}
+export interface IInterviewInCandite {
+  id: ID;
+  feedback: string;
+  interviewerName: string;
+  startTime: string;
+  endTime: string;
 }
 export interface IInterviewFromBackEnd {
   candidate: string;

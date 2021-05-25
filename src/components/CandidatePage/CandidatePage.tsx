@@ -1,40 +1,32 @@
 import React, { useState, useEffect } from "react";
-import { useLoader } from "../../hooks/hooks";
-import { useApplicants } from "../../hooks/useApplicants";
 import { useParams } from "react-router";
 import { Spinner, SpinnerSize } from "@fluentui/react";
+import { mergeStyleSets, DocumentCardActions } from "@fluentui/react";
 
-import {
-  mergeStyleSets,
-  DocumentCardActions,
-} from "@fluentui/react";
-
+import { useLoader } from "../../hooks/hooks";
+import { useApplicants } from "../../hooks/useApplicants";
 import { Registration } from "../Registration/Registration";
 import { StatusForm } from "./StatusForm";
 import { InfoForm } from "./InfoForm";
-import { InterviewForm } from "./InterwievForm";
-
-interface RouteParams {
-  id: string;
-}
+import { InterviewForm } from "./InterviewForm";
+import { RouteParams } from "../Event";
 
 export const CandidatePage: React.FC = () => {
   const [edit, setEdit] = useState<boolean>(false);
   const params = useParams<RouteParams>();
   const { selectedApplicant, selectApplicant } = useApplicants();
   const { loading, showLoader } = useLoader();
-  useEffect(() => {
-    showLoader()
-    selectApplicant(params.id)
-    return () => selectApplicant(null)
-  }, [])
 
+  useEffect(() => {
+    showLoader();
+    selectApplicant(params.id);
+  }, []);
 
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <>
-      <header >
+      <header>
         <div
           style={{
             display: "flex",
@@ -58,7 +50,7 @@ export const CandidatePage: React.FC = () => {
       </header>
       <div className={contentStyles.container}>
         <StatusForm candidat={selectedApplicant} />
-        <div >
+        <div>
           {edit ? (
             <Registration candidatePage={true} candidat={selectedApplicant} />
           ) : (

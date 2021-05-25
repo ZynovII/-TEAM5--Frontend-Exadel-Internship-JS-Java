@@ -1,7 +1,8 @@
 import { ActionTypes } from "../../context/actionTypes";
+import { ID } from "./IStore";
 
 export interface IAction {
   type: ActionTypes;
-  id?: number;
+  id?: ID;
   payload?: any; // unknown type
 }

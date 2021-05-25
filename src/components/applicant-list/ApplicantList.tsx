@@ -11,9 +11,10 @@ import {
   Sticky,
 } from "@fluentui/react";
 import { useHistory } from "react-router";
+
 import { useId } from "@fluentui/react-hooks";
 
-import { AcceptStatus, IApplicant } from "../../models/IApplicant";
+import { IApplicant } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/useApplicants";
 import { useLoader } from "../../hooks/hooks";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
@@ -95,16 +96,21 @@ export const ApplicantList: React.FC = () => {
         minWidth: 50,
         maxWidth: 50,
         isResizable: false,
-        onRender: () => (
+        onRender: (item) => (
           <TooltipHost
             content="Show more information"
             id={tooltipId}
             calloutProps={calloutProps}
             styles={hostStyles}
           >
-            <a href="#" aria-describedby={tooltipId}>
-              <i className={`ms-Icon ms-Icon--More`} />
-            </a>
+            <i
+              className={`ms-Icon ms-Icon--More`}
+              onClick={() => {
+                history.push(`/admin/candidates/${item.id}`);
+                showLoader();
+              }}
+              style={{ cursor: "pointer" }}
+            />
           </TooltipHost>
         ),
       },

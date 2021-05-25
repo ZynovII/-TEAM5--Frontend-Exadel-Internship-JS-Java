@@ -7,6 +7,7 @@ import {
   DefaultButton,
 } from "@fluentui/react";
 import { useForm } from "react-hook-form";
+
 import { ControlledDropdown } from "../../hook-form/Controlled";
 import {
   AcceptStatus,
@@ -15,7 +16,6 @@ import {
 } from "../../models/IApplicant";
 import { useApplicants } from "../../hooks/useApplicants";
 import { useAuth } from "../../hooks/useAuth";
-
 import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const desicion: IDropdownOption[] = [
@@ -23,7 +23,9 @@ const desicion: IDropdownOption[] = [
   { key: AcceptStatus.Rejected, text: "Reject" },
 ];
 
-export const StatusForm: React.FC<{ candidat:IApplicantDetailsFromBackEnd  }> = ({candidat}) => {
+export const StatusForm: React.FC<{
+  candidat: IApplicantDetailsFromBackEnd;
+}> = ({ candidat }) => {
   const isMountedRef = useIsMountedRef();
   const {
     handleSubmit,
@@ -39,50 +41,49 @@ export const StatusForm: React.FC<{ candidat:IApplicantDetailsFromBackEnd  }> = 
   const interviewProcess = useMemo(() => {
     switch (candidat.interviewProcess) {
       case InterviewStatus.Registered:
-        return [0, 'Registered'];
+        return [0, "Registered"];
       case InterviewStatus.AwaitingHRInterview:
-        return [0.33, 'HR Interview'];
+        return [0.33, "HR Interview"];
       case InterviewStatus.AwaitingTSInterview:
-        return [0.66, 'TS Interview'];
+        return [0.66, "TS Interview"];
       case InterviewStatus.WaitingDecision:
-        return [1, 'Waiting Desicion'];
+        return [1, "Waiting Desicion"];
       default:
-        return [0, 'Registered'];
+        return [0, "Registered"];
     }
   }, [candidat.interviewProcess]);
   const textAlign = useMemo(() => {
-    return interviewProcess[0] <= 0.2 ? { textAlign: 'left' } : { textAlign: 'right' }
-  }, [interviewProcess[0]])
+    return interviewProcess[0] <= 0.2
+      ? { textAlign: "left" }
+      : { textAlign: "right" };
+  }, [interviewProcess[0]]);
 
   const onSave = () => {
     handleSubmit((data) => {
-    switch(data.status.join()) {
-      case 'GREEN':  
-        setStatus(`${candidat.id}/accept`) 
-        .then((response) => {
-          if (isMountedRef.current) {
-            setStatusAplicant(response)
-          }
-        })
-        return
-      case 'RED':  
-        setStatus(`${candidat.id}/reject`)
-        .then((response) => {
-          if (isMountedRef.current) {
-            setStatusAplicant(response)
-          }
-        })
-        return
-      default:
-        setStatus(`${candidat.id}/accept`)
-        .then((response) => {
-          if (isMountedRef.current) {
-            setStatusAplicant(response)
-          }
-        })
-      return
-    }
-  })();
+      switch (data.status.join()) {
+        case "GREEN":
+          setStatus(`${candidat.id}/accept`).then((response) => {
+            if (isMountedRef.current) {
+              setStatusAplicant(response);
+            }
+          });
+          return;
+        case "RED":
+          setStatus(`${candidat.id}/reject`).then((response) => {
+            if (isMountedRef.current) {
+              setStatusAplicant(response);
+            }
+          });
+          return;
+        default:
+          setStatus(`${candidat.id}/accept`).then((response) => {
+            if (isMountedRef.current) {
+              setStatusAplicant(response);
+            }
+          });
+          return;
+      }
+    })();
   };
   return (
     <Stack
@@ -97,12 +98,9 @@ export const StatusForm: React.FC<{ candidat:IApplicantDetailsFromBackEnd  }> = 
         <h3
           style={{
             color:
-              (statusAplicant === AcceptStatus.Accepted &&
-                "#00cc00") ||
-              (statusAplicant === AcceptStatus.Pending &&
-                "#DBDE36") ||
-              (statusAplicant === AcceptStatus.Rejected &&
-                "red"),
+              (statusAplicant === AcceptStatus.Accepted && "#00cc00") ||
+              (statusAplicant === AcceptStatus.Pending && "#DBDE36") ||
+              (statusAplicant === AcceptStatus.Rejected && "red"),
           }}
         >
           {statusAplicant}
@@ -118,9 +116,9 @@ export const StatusForm: React.FC<{ candidat:IApplicantDetailsFromBackEnd  }> = 
           label={interviewProcess[1]}
           styles={{
             itemName: {
-              minWidth: '18%',
-              width: +interviewProcess[0] * 100 + '%',
-              ...textAlign
+              minWidth: "18%",
+              width: +interviewProcess[0] * 100 + "%",
+              ...textAlign,
             },
           }}
         />
@@ -142,11 +140,11 @@ export const StatusForm: React.FC<{ candidat:IApplicantDetailsFromBackEnd  }> = 
           errors={errors}
           options={desicion}
           style={{ width: "150px" }}
-          disabled= {currentUser.role !== "SUPERADMIN"}
+          disabled={currentUser.role !== "SUPERADMIN"}
         />
-        <DefaultButton 
-          text="Submit" 
-          onClick={() => onSave()} 
+        <DefaultButton
+          text="Submit"
+          onClick={() => onSave()}
           disabled={currentUser.role !== "SUPERADMIN"}
         />
       </Stack>
@@ -159,6 +157,6 @@ const contentStyles = mergeStyleSets({
     display: "flex",
     justifyContent: "space-between",
     alignItems: "flex-end",
-    marginBottom: '1em'
+    marginBottom: "1em",
   },
 });

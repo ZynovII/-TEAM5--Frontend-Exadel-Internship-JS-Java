@@ -4,6 +4,7 @@ import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
 import { IDropdownOption } from "@fluentui/react"
 import { interviewStatusReformer } from "../utils/stringReformers"
+import { ID } from "../models/Store/IStore";
 
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
@@ -23,16 +24,11 @@ export const useApplicants = () => {
     }
   };
 
-  const selectApplicant = (id: string) => {
+  const selectApplicant = (id: ID) => {
     if (state.events[id]) {
       dispatch({
         type: ActionTypes.SELECT_APPLICANT,
         payload: state.applicants[id],
-      });
-    } else if (id === null) {
-      dispatch({
-        type: ActionTypes.SELECT_APPLICANT,
-        payload: null,
       });
     } else {
       axios
@@ -76,6 +72,31 @@ export const useApplicants = () => {
       return "Ooops! Something went wrong...";
     }
   };
+
+  const editCandidate = async (
+    candidate: IApplicant,
+    eventName: string,
+    id: ID,
+  ) => {
+    const candidateForBackEnd = {
+      city: candidate.city.toString(),
+      email: candidate.email,
+      event: eventName,
+      fullName: candidate.fullName,
+      phone: candidate.phoneNumber,
+      preferredTime: candidate.preferredTime.toString(),
+      primaryTech: candidate.technology.toString(),
+      skype: candidate.skype,
+      summary: candidate.summary,
+    };
+    try {
+      const res = await axios.put(`/candidates/${id}/edit`, candidateForBackEnd);
+      return "Your application has been successfully sent. Our specialist will connect with you soon.";
+    } catch (err) {
+      console.log(err);
+      return "Ooops! Something went wrong...";
+    }
+  }
 
   const setStatus = async (path) => {
     const response = await axios.put(`/candidates/${path}`);
@@ -167,6 +188,7 @@ export const useApplicants = () => {
     setStatus,
     cvDownload,
     getInfoForFilters,
-    fetchFilteredApplicants
+    fetchFilteredApplicants,
+    editCandidate,
   };
 };

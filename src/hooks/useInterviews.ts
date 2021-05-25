@@ -14,8 +14,10 @@ export const useInterviews = () => {
     });
   };
 
-  const selectInterview = (id: number) => {
-    dispatch({ type: ActionTypes.SELECT_INTERVIEW, id });
+  const selectInterview = (id: ID) => {
+    axios.get(`/interviews/${id}`).then((res) => {
+      dispatch({ type: ActionTypes.SELECT_INTERVIEW, payload: res.data });
+    });
   };
 
   const getRoles = async () => {
@@ -39,7 +41,26 @@ export const useInterviews = () => {
       employee: employee,
       startTime: startTime,
     };
-    axios.post("/interviews/", interview).then((res) => console.log(res));
+    axios.post("/interviews/", interview)
+  };
+
+  const checkTimeSlot = async (id: string) => {
+    const response = await axios.get(`/timeslots/employee/${id}`);
+    return response.data;
+  };
+
+  const createTimeSlot = (id: string, startTime: string, endTime: string) => {
+    const timeSlot = {
+      startTime: +startTime.slice(0, 2),
+      endTime: +endTime.slice(0, 2),
+    };
+    axios
+      .post(`timeslots/employee/${id}/add`, timeSlot)
+  };
+
+  const editFeedback = async (id: ID, feedback: string) => {
+    const res = await axios.put(`interviews/${id}/feedback/edit`, feedback);
+    return res.data;
   };
 
   return {
@@ -51,5 +72,8 @@ export const useInterviews = () => {
     getRoles,
     getInterviewers,
     createInterviews,
+    checkTimeSlot,
+    createTimeSlot,
+    editFeedback,
   };
 };
