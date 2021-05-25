@@ -1,27 +1,54 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Stack,
   mergeStyleSets,
   Spinner,
   SpinnerSize,
 } from "@fluentui/react/lib";
+import { useParams } from "react-router";
 
 import OperationsTable from "./OperationsTable";
-import { useParams } from "react-router";
 import { RouteParams } from "../Event";
 import { useInterviews } from "../../hooks/useInterviews";
 import { InfoForm } from "../CandidatePage/InfoForm";
 import { StatusForm } from "../CandidatePage/StatusForm";
 import { useLoader } from "../../hooks/hooks";
+import { useAuth } from "../../hooks/useAuth";
+import { IInterviewInCandite } from "../../models/IInterview";
 
 export const InterviewPage: React.FC = () => {
+  const [selectedFeedback, setSelectedFeedback] = useState<IInterviewInCandite>(
+    null
+  );
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const { selectInterview, selectedInterview, editFeedback } = useInterviews();
+  const { loading, showLoader } = useLoader();
+  const { currentUser } = useAuth();
   const params = useParams<RouteParams>();
-  const { selectInterview, selectedInterview } = useInterviews();
-  const { loading } = useLoader();
+
+  const hideModal = () => {
+    setIsModalOpen(false);
+    setSelectedFeedback(null);
+  };
+
+  const showModal = (feedback: IInterviewInCandite) => {
+    setSelectedFeedback(feedback);
+    setIsModalOpen(true);
+  };
+
+  const onSave = (feedback: string) => {
+    editFeedback(selectedFeedback.id, feedback).then((res) => {
+      setSelectedFeedback(null);
+      hideModal();
+      showLoader();
+      selectInterview(params.id);
+    });
+  };
 
   useEffect(() => {
     selectInterview(params.id);
   }, []);
+
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
@@ -58,6 +85,12 @@ export const InterviewPage: React.FC = () => {
               <OperationsTable
                 operations={selectedInterview.candidate.interviews}
                 candidate={selectedInterview.candidate.fullName}
+                currentUserName={currentUser.fullName}
+                isModalOpen={isModalOpen}
+                showModal={showModal}
+                hideModal={hideModal}
+                onSave={onSave}
+                selectedFeedback={selectedFeedback?.feedback}
               />
             </Stack>
           </Stack>
