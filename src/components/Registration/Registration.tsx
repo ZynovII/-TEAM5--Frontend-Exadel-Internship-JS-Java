@@ -45,7 +45,7 @@ export const Registration: React.FC<{
   techs?: ITech[];
 }> = (props) => {
   const [response, setResponse] = useState<string>("");
-  const { createCandidate, editCandidate } = useApplicants();
+  const { createCandidate, editCandidate, selectApplicant } = useApplicants();
   const { fetchLocation, fetchPreferredTime, fetchTechnology } = useOptions();
   const [options, setOptions] = useState<IOptionsRegistration>({
     locations: [],
@@ -156,6 +156,7 @@ export const Registration: React.FC<{
       (data) => {
         if (props.candidatePage) {
           editCandidate(data, props.candidat.eventName, props.candidat.id).then((res) => {
+            selectApplicant(props.candidat.id)
             setResponse(res);
             showModal();
           });

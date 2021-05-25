@@ -22,7 +22,7 @@ export const useApplicants = () => {
     }
   };
 
-  const selectApplicant = (id: string) => {
+  const selectApplicant = (id: ID) => {
     if (state.events[id]) {
       dispatch({
         type: ActionTypes.SELECT_APPLICANT,
