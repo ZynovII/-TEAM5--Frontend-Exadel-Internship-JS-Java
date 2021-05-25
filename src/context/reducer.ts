@@ -3,7 +3,7 @@ import { IAction } from "../models/Store/IAction";
 import { ActionTypes } from "./actionTypes";
 import { IEvent } from "../models/IEvent";
 import { IApplicant, IApplicantShortFromBackEnd } from "../models/IApplicant";
-import { IInterview, IInterviewFromBackEnd } from "../models/IInterview";
+import { IInterview } from "../models/IInterview";
 
 export const reducer = (state: IStore, action: IAction): IStore => {
   const { type, payload, id } = action;
@@ -22,7 +22,6 @@ export const reducer = (state: IStore, action: IAction): IStore => {
     case ActionTypes.SIGN_OUT:
       return {
         ...state,
-        interviews: {},
         isAuthenticated: false,
         currentUser: null,
         loading: false,
@@ -71,6 +70,13 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         events: { ...state.events, ...newEvents },
         loading: false,
       };
+
+    case ActionTypes.APPLY_FILTERS:
+      return {
+        ...state,
+        publishedEvents: {},
+      };
+
     case ActionTypes.FETCH_PUBLISHED_EVENTS:
       const newEvent: {
         [eventId: string]: IEvent;
@@ -88,11 +94,11 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       };
     case ActionTypes.FETCH_INTERVIEWS:
       const newInterviews: {
-        [interviewId: string]: IInterviewFromBackEnd;
-      } = (payload as IInterviewFromBackEnd[]).reduce(
+        [interviewId: string]: IInterview;
+      } = (payload as IInterview[]).reduce(
         (acc, item) => ({
           ...acc,
-          [item.idInterview]: item,
+          [item.id]: item,
         }),
         {}
       );
@@ -117,13 +123,6 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       return {
         ...state,
         selectedInterview: payload,
-        loading: false,
-      };
-    case ActionTypes.FETCH_INTERVIEWERS:
-      return {
-        ...state,
-        interviewers: payload,
-        loading: false,
       };
     default:
       return state;
