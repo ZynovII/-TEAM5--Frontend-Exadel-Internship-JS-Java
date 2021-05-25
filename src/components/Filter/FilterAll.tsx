@@ -101,12 +101,14 @@ export const AllFilters: React.FC = () => {
     handleSubmit((data) => {
       console.log(data);
       const filters = {
-        country: [data["country"]],
+        country: data["country"],
         status: [],
         tech: data["tagPicker"],
         type: data["eventType"],
       };
-      fetchPublishedEvents(0, 6, isMountedRef.current, filters);
+      fetchPublishedEvents(0, 6, filters).then((cb) => {
+        cb();
+      });
     })();
   };
   const filters: IFilterDropdownItem[] = useMemo(() => {
