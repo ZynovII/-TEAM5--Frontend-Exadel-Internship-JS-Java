@@ -19,6 +19,8 @@ import {
 } from "../../hook-form/Controlled";
 import { useOptions } from "../../hooks/useOptions";
 import { useLoader } from "../../hooks/hooks";
+import { useEvents } from "../../hooks/useEvents";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -68,6 +70,8 @@ export const AllFilters: React.FC = () => {
     eventTypes: [],
     techTags: [],
   });
+  const { fetchPublishedEvents } = useEvents();
+  const isMountedRef = useIsMountedRef();
   const [country, setCountry] = useState<ILocationFromBackEnd>();
   const { fetchEventTypes, fetchLocation, fetchTechnology } = useOptions();
   const {
@@ -96,6 +100,15 @@ export const AllFilters: React.FC = () => {
   const onApplyFilter = () => {
     handleSubmit((data) => {
       console.log(data);
+      const filters = {
+        country: data["country"],
+        status: [],
+        tech: data["tagPicker"],
+        type: data["eventType"],
+      };
+      fetchPublishedEvents(0, 6, filters).then((cb) => {
+        cb();
+      });
     })();
   };
   const filters: IFilterDropdownItem[] = useMemo(() => {
