@@ -2,7 +2,6 @@ import { useStore } from "./hooks";
 import axios, { axiosBlob } from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
-import { IDropdownOption } from "@fluentui/react"
 import { interviewStatusReformer } from "../utils/stringReformers"
 import { ID } from "../models/Store/IStore";
 
@@ -13,7 +12,6 @@ export const useApplicants = () => {
     try {
       const res = await axios.get(`/candidates?page=${page}&size=${size}`);
       return () => {
-        console.log(res.data.content)
         dispatch({
           type: ActionTypes.FETCH_APPLICANTS,
           payload: res.data.content,
@@ -128,31 +126,28 @@ export const useApplicants = () => {
 
   const getInfoForFilters = async () => {
     const response = await axios.get(`/candidates/getInfoForFilter`);
-    const eventNameOptions: IDropdownOption[] = response.data.eventName.map((el) => ({
-      key: el.replace(/ /g, "%20").replace('&', '%26'),
-      text: (el),
-    }));
-    const primaryTechOptions: IDropdownOption[] = response.data.primaryTech.map((el) => ({
-      key: el,
-      text: (el),
-    }));
-    const countryNameOptions: IDropdownOption[] = response.data.countryName.map((el) => ({
-      key: el,
-      text: (el),
-    }));
-    const interviewProccessOptions: IDropdownOption[] = response.data.interviewProccess.map((el) => ({
-      key: el,
-      text: interviewStatusReformer(el),
-    }));
-    const statusOptions: IDropdownOption[] = response.data.status.map((el) => ({
-      key: el,
-      text: (el),
-    }));
-    const filterOptions = { eventName: eventNameOptions, primaryTech: primaryTechOptions, interviewProccess: interviewProccessOptions, countryName: countryNameOptions, status: statusOptions }
+
+    const buildDropdownOptions = (data: string[]) => data.map((el) => ({ key: el, text: el }))
+
+    const filterOptions = {
+      eventName: response.data.eventName.map((el) => ({
+        key: el.replace(/ /g, "%20").replace('&', '%26'),
+        text: (el),
+      })),
+      primaryTech: buildDropdownOptions(response.data.primaryTech),
+      interviewProccess: response.data.interviewProccess.map((el) => ({
+        key: el,
+        text: interviewStatusReformer(el),
+      })),
+      countryName: buildDropdownOptions(response.data.countryName),
+      status: buildDropdownOptions(response.data.status)
+    }
+
     return filterOptions;
   };
 
   const fetchFilteredApplicants = (page, size, mounted, data) => {
+
     let allFetchstr = ""
     if (data) {
       let strCountryName = data.countryName?.map(el => 'countryName=' + el).join("&")
@@ -163,12 +158,10 @@ export const useApplicants = () => {
       allFetchstr = [strCountryName, strEventName, strIntProcess, strPrimaryTech, strStatus].filter(Boolean).join("&")
     }
 
-    console.log(allFetchstr)
     axios
-      .get(`/candidates/getCandidatesWithFilter?${allFetchstr}`)
+      .get(`/candidates/getCandidatesWithFilter?${allFetchstr&&(allFetchstr+"&")}page=${page}&size=${size}`)
       .then((res) => {
         if (mounted) {
-          console.log("gdf")
           dispatch({
             type: ActionTypes.FILTER_APPLICANTS,
             payload: res.data.result.content,

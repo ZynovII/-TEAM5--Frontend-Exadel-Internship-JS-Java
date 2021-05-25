@@ -3,7 +3,7 @@ import { mergeStyleSets } from "@fluentui/react";
 import { Scrollbars } from "react-custom-scrollbars";
 import { useApplicants } from "../../../hooks/useApplicants";
 import { useIsMountedRef } from "../../../hooks/useIsMounted";
-import { useHistory, useLocation } from "react-router-dom";
+import { useHistory} from "react-router-dom";
 import { useLoader } from "../../../hooks/hooks";
 
 const styles = mergeStyleSets({
@@ -35,7 +35,6 @@ const Scrollbar: React.FC<{ height: string }> = (props) => {
   const onScroll = (e) => {
     if (e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 1)
       fetchApplicants(currentPage, 14).then((cb) => {
-        console.log(currentPage);
         if (isMountedRef.current) {
           cb();
         }

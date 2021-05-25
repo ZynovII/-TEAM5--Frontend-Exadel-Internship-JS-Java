@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 import { ControlledDropdown } from "../../hook-form/Controlled";
 import { useForm } from "react-hook-form";
-import { IFilterDropdownItem } from "../Filter/Models";
+import { IFilterData, IFilterDropdownItem } from "../Filter/Models";
 import {
   IStackStyles,
   IDropdownStyles,
@@ -43,7 +43,7 @@ export const AllApplicantFilter: React.FC = () => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm({
+  } = useForm<IFilterData>({
     reValidateMode: "onSubmit",
     mode: "all",
   });
@@ -73,7 +73,7 @@ export const AllApplicantFilter: React.FC = () => {
 
   const onApplyFilter = () => {
     handleSubmit((data) => {
-      fetchFilteredApplicants(0, 10, isMountedRef.current, data);
+      fetchFilteredApplicants(0, 14, isMountedRef.current, data);
     })();
   };
 
