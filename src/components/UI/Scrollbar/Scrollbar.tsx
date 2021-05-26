@@ -5,6 +5,7 @@ import { useApplicants } from "../../../hooks/useApplicants";
 import { useIsMountedRef } from "../../../hooks/useIsMounted";
 import { useHistory} from "react-router-dom";
 import { useLoader } from "../../../hooks/hooks";
+import { useStore } from "../../../hooks/hooks";
 
 const styles = mergeStyleSets({
   Scrollbar: {
@@ -14,18 +15,22 @@ const styles = mergeStyleSets({
 });
 
 const Scrollbar: React.FC<{ height: string }> = (props) => {
+  const { state } = useStore();
   const { loading, showLoader } = useLoader();
   const [currentPage, setCurrentPage] = useState(0);
   const { fetchApplicants } = useApplicants();
   const isMountedRef = useIsMountedRef();
   const url = useHistory();
+  const [totalCount,setTotalCount]=useState(0)
 
   useEffect(() => {
     if (url.location.pathname == "/admin/candidates") {
       showLoader();
       fetchApplicants(0, 14).then((cb) => {
         if (isMountedRef.current) {
-          cb();
+          const total=cb();
+          setTotalCount(total)
+          console.log(totalCount)
         }
         setCurrentPage(1);
       });
@@ -33,10 +38,14 @@ const Scrollbar: React.FC<{ height: string }> = (props) => {
   }, [url.location]);
 
   const onScroll = (e) => {
-    if (e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 1)
+    if (e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 1 && Object.keys(state.applicants).length<totalCount)
       fetchApplicants(currentPage, 14).then((cb) => {
         if (isMountedRef.current) {
           cb();
+          const total=cb();
+          setTotalCount(total)
+          console.log(Object.keys(state.applicants).length)
+          console.log(totalCount)
         }
         setCurrentPage((prevState) => prevState + 1);
       });

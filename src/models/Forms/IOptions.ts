@@ -15,7 +15,7 @@ export interface IOptionsEventFilter {
 export interface IOptionsCandidatesFilter {
     eventName: IDropdownOption[],
     primaryTech: IDropdownOption[],
-    interviewProсcess: IDropdownOption[],
+    interviewProccess: IDropdownOption[],
     countryName: IDropdownOption[],
     status: IDropdownOption[],
 }

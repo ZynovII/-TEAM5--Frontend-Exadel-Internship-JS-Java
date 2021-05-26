@@ -4,6 +4,7 @@ import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
 import { interviewStatusReformer } from "../utils/stringReformers"
 import { ID } from "../models/Store/IStore";
+import { toDropdownOptions } from "../utils/toDropdownOptions";
 import {IOptionsCandidatesFilter} from "../models/Forms/IOptions"
 
 export const useApplicants = () => {
@@ -22,9 +23,7 @@ export const useApplicants = () => {
     try {
       const res = await axios.get(`/candidates/getCandidatesWithFilter?${allFetchstr&&(allFetchstr+"&")}page=${page}&size=${size}`);
       return () => {
-        console.log(data)
         if (data){
-          
           dispatch({
             type: ActionTypes.FILTER_APPLICANTS,
             payload: res.data.result.content,
@@ -36,7 +35,7 @@ export const useApplicants = () => {
             payload: res.data.result.content,
           });
         }
-        
+        return res.data.result.totalElements;
       };
     } catch (err) {
       console.log(err);
@@ -144,20 +143,18 @@ export const useApplicants = () => {
   const getInfoForFilters = async () => {
     const response = await axios.get(`/candidates/getInfoForFilter`);
 
-    const buildDropdownOptions = (data: string[]) => data.map((el) => ({ key: el, text: el }))
-
-    const filterOptions = {
+    const filterOptions:IOptionsCandidatesFilter = {
       eventName: response.data.eventName.map((el) => ({
         key: el.replace(/ /g, "%20").replace('&', '%26'),
         text: (el),
       })),
-      primaryTech: buildDropdownOptions(response.data.primaryTech),
-      interviewProccess: response.data.interviewProccess.map((el) => ({
-        key: el,
-        text: interviewStatusReformer(el),
-      })),
-      countryName: buildDropdownOptions(response.data.countryName),
-      status: buildDropdownOptions(response.data.status)
+      primaryTech: toDropdownOptions(response.data.primaryTech),
+      interviewProccess: toDropdownOptions (
+        response.data.interviewProccess,
+        interviewStatusReformer
+      ),
+      countryName: toDropdownOptions(response.data.countryName),
+      status: toDropdownOptions(response.data.status)
     }
 
     return filterOptions;

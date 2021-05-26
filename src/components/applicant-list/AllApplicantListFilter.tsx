@@ -50,7 +50,7 @@ export const AllApplicantFilter: React.FC = () => {
   const [options, setOptions] = useState({
     eventName: [],
     primaryTech: [],
-    interviewProсcess: [],
+    interviewProccess: [],
     countryName: [],
     status: [],
   });
@@ -59,14 +59,13 @@ export const AllApplicantFilter: React.FC = () => {
 
   useEffect(() => {
     getInfoForFilters().then((res) => {
-      console.log(res)
       setOptions(res);
     });
   }, []);
 
   const onApplyFilter = () => {
     handleSubmit((data) => {
-      fetchApplicants(0, 14, data).then((cb)=>cb());
+      fetchApplicants(0, 14, data).then((cb)=>{cb()});
     })();
   };
 
@@ -94,7 +93,7 @@ export const AllApplicantFilter: React.FC = () => {
         name: "interviewProсcess",
         label: "Interview Proсcess",
         placeholder: "Waiting status",
-        options: options.interviewProсcess,
+        options: options.interviewProccess,
       },
       {
         id: "78",
