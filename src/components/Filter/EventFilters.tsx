@@ -34,6 +34,8 @@ const stackStylesAdmin: IStackStyles = {
     display: "block",
     "@media(min-width: 725px)": {
       display: "flex",
+      marginBottom: "1rem",
+      justifyContent: "space-between",
       flexWrap: "nowrap",
       padding: "0",
     },

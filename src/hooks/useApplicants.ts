@@ -2,34 +2,53 @@ import { useStore } from "./hooks";
 import axios, { axiosBlob } from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
-import { interviewStatusReformer } from "../utils/stringReformers"
+import { interviewStatusReformer } from "../utils/stringReformers";
 import { ID } from "../models/Store/IStore";
 import { toDropdownOptions } from "../utils/toDropdownOptions";
-import {IOptionsCandidatesFilter} from "../models/Forms/IOptions"
+import { IOptionsCandidatesFilter } from "../models/Forms/IOptions";
 
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
-  const fetchApplicants = async (page, size,data?) => {
-    let allFetchstr = ""
+  const fetchApplicants = async (page, size, data?) => {
+    let allFetchstr = "";
     if (data) {
-      let strCountryName = data.countryName?.map(el => 'countryName=' + el).join("&")
-      let strEventName = data.eventName?.map(el => 'eventName=' + el).join("&")
-      let strIntProcess = data.interviewProсcess?.map(el => 'interviewProccess=' + el).join("&")
-      let strPrimaryTech = data.primaryTech?.map(el => 'primaryTech=' + el).join("&")
-      let strStatus = data.status?.map(el => 'status=' + el).join("&")
-      allFetchstr = [strCountryName, strEventName, strIntProcess, strPrimaryTech, strStatus].filter(Boolean).join("&")
+      let strCountryName = data.countryName
+        ?.map((el) => "countryName=" + el)
+        .join("&");
+      let strEventName = data.eventName
+        ?.map((el) => "eventName=" + el)
+        .join("&");
+      let strIntProcess = data.interviewProсcess
+        ?.map((el) => "interviewProccess=" + el)
+        .join("&");
+      let strPrimaryTech = data.primaryTech
+        ?.map((el) => "primaryTech=" + el)
+        .join("&");
+      let strStatus = data.status?.map((el) => "status=" + el).join("&");
+      allFetchstr = [
+        strCountryName,
+        strEventName,
+        strIntProcess,
+        strPrimaryTech,
+        strStatus,
+      ]
+        .filter(Boolean)
+        .join("&");
     }
     try {
-      const res = await axios.get(`/candidates/getCandidatesWithFilter?${allFetchstr&&(allFetchstr+"&")}page=${page}&size=${size}`);
+      const res = await axios.get(
+        `/candidates/getCandidatesWithFilter?${
+          allFetchstr && allFetchstr + "&"
+        }page=${page}&size=${size}`
+      );
       return () => {
-        if (data){
+        if (data) {
           dispatch({
-            type: ActionTypes.FILTER_APPLICANTS,
+            type: ActionTypes.FETCH_FILTERED_APPLICANTS,
             payload: res.data.result.content,
           });
-        }
-        else {
+        } else {
           dispatch({
             type: ActionTypes.FETCH_APPLICANTS,
             payload: res.data.result.content,
@@ -43,15 +62,15 @@ export const useApplicants = () => {
   };
 
   const selectApplicant = (id: ID) => {
-      axios
-        .get(`/candidates/${id}`)
-        .then((res) => {
-          dispatch({
-            type: ActionTypes.SELECT_APPLICANT,
-            payload: res.data,
-          });
-        })
-        .catch((err) => console.log(err));
+    axios
+      .get(`/candidates/${id}`)
+      .then((res) => {
+        dispatch({
+          type: ActionTypes.SELECT_APPLICANT,
+          payload: res.data,
+        });
+      })
+      .catch((err) => console.log(err));
   };
 
   const createCandidate = async (
@@ -87,7 +106,7 @@ export const useApplicants = () => {
   const editCandidate = async (
     candidate: IApplicant,
     eventName: string,
-    id: ID,
+    id: ID
   ) => {
     const candidateForBackEnd = {
       city: candidate.city.toString(),
@@ -101,13 +120,16 @@ export const useApplicants = () => {
       summary: candidate.summary,
     };
     try {
-      const res = await axios.put(`/candidates/${id}/edit`, candidateForBackEnd);
+      const res = await axios.put(
+        `/candidates/${id}/edit`,
+        candidateForBackEnd
+      );
       return "Your application has been successfully sent. Our specialist will connect with you soon.";
     } catch (err) {
       console.log(err);
       return "Ooops! Something went wrong...";
     }
-  }
+  };
 
   const setStatus = async (path) => {
     const response = await axios.put(`/candidates/${path}`);
@@ -143,20 +165,19 @@ export const useApplicants = () => {
   const getInfoForFilters = async () => {
     const response = await axios.get(`/candidates/getInfoForFilter`);
 
-    const filterOptions:IOptionsCandidatesFilter = {
+    const filterOptions: IOptionsCandidatesFilter = {
       eventName: toDropdownOptions(response.data.eventName),
       primaryTech: toDropdownOptions(response.data.primaryTech),
-      interviewProccess: toDropdownOptions (
+      interviewProccess: toDropdownOptions(
         response.data.interviewProccess,
         interviewStatusReformer
       ),
       countryName: toDropdownOptions(response.data.countryName),
-      status: toDropdownOptions(response.data.status)
-    }
+      status: toDropdownOptions(response.data.status),
+    };
 
     return filterOptions;
   };
-
 
   return {
     selectedApplicant: state.selectedApplicant,

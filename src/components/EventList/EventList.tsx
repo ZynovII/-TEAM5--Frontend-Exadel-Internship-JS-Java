@@ -76,7 +76,6 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
         options={options}
         fetchEvents={loadFiltered}
       />
-      <br />
       <section className="all-cards__wrapper">
         {isAdminPage && isAuth && <NewCardItem />}
         {Object.values(isAdminPage ? events : publishedEvents).map((item) => (
