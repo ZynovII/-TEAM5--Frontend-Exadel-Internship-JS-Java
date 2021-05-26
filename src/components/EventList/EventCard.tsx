@@ -13,7 +13,7 @@ import {
 import { useBoolean } from "@fluentui/react-hooks";
 import { useHistory } from "react-router";
 
-import { IEvent } from "../../models/IEvent";
+import { EventStatus, IEvent } from "../../models/IEvent";
 import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { PublishDialog } from "./PublishDialog";
@@ -87,15 +87,20 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   const [hideRemoveDialog, { toggle: toggleHideRemoveDialog }] = useBoolean(
     true
   );
-  const [isPublished, setIspublished] = useState(false);
+  const [isPublished, setIspublished] = useState(
+    props.cardItem.eventStatus === EventStatus.Published
+  );
   const onClickPublishBtn = useCallback(
     (e) => {
-      isPublished ? setIspublished(false) : toggleHidePublishDialog();
+      isPublished ? setIspublished(false) : unPublishHandler();
       e.stopPropagation();
       e.preventDefault();
     },
     [isPublished]
   );
+  const unPublishHandler = () => {
+    toggleHidePublishDialog();
+  };
 
   const onClickRemoveBtn = (e) => {
     toggleHideRemoveDialog();
@@ -155,7 +160,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         closeButtonAriaLabel: "Close",
         subText: "Are you sure you want to publish this event?",
       },
-      actionType: "publish",
+      actionType: "Publish",
     }),
     [hidePublishDialog]
   );
@@ -171,7 +176,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         closeButtonAriaLabel: "Close",
         subText: "Are you sure you want to remove this event?",
       },
-      actionType: "remove",
+      actionType: "Remove",
     }),
     [hideRemoveDialog]
   );
@@ -208,12 +213,14 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       <Text className={styles.text}>
         {props.cardItem.locations.map((el) => el.city + " ")}
       </Text>
-      <NewEventForm
-        isModal={isModal}
-        hideModal={toggleModal}
-        eventCard={true}
-        cardItem={props.cardItem}
-      />
+      {isModal && (
+        <NewEventForm
+          isModal={isModal}
+          hideModal={toggleModal}
+          eventCard={true}
+          cardItem={props.cardItem}
+        />
+      )}
     </DocumentCard>
   );
 };

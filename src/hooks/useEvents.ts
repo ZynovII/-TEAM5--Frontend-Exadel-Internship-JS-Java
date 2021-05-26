@@ -4,12 +4,19 @@ import { ActionTypes } from "../context/actionTypes";
 import { useStore } from "./hooks";
 import { ID } from "../models/Store/IStore";
 
-import { IEventForBackEnd } from "../models/IEvent";
+import { EventStatus, IEventForBackEnd } from "../models/IEvent";
+import { IFilterToRequest } from "../components/Filter/Models";
 
 export const useEvents = () => {
   const { state, dispatch } = useStore();
 
-  const fetchEvents = async (page: number, size: number, filters?) => {
+  const fetchEvents = async function (
+    page: number,
+    size: number,
+    filters?: IFilterToRequest,
+    eventStatus?: EventStatus
+  ) {
+    let requestString = "";
     if (filters) {
       const country =
         filters.country && filters.country.length
@@ -20,89 +27,39 @@ export const useEvents = () => {
           ? `status=${filters.status.join("&status=")}`
           : "";
       const tech =
-        filters.tech && filters.tech.length
-          ? `tech=${filters.tech.join("&tech=")}`
+        filters.tagPicker && filters.tagPicker.length
+          ? `tech=${filters.tagPicker.join("&tech=")}`
           : "";
-      const type = filters.type ? `type=${filters.type.join("&type=")}` : "";
+      const type = filters.eventType
+        ? `type=${filters.eventType.join("&type=")}`
+        : "";
 
-      const requestString = [country, status, tech, type]
+      requestString = [country, status, tech, type]
         .filter((item) => item)
         .join("&");
-      try {
-        const res = await axios.get(
-          `/events/getEventsWithFilter?${requestString}&page=${page}&size=${size}`
-        );
-        return () => {
-          dispatch({
-            type: ActionTypes.APPLY_FILTERS,
-          });
-          dispatch({
-            type: ActionTypes.FETCH_EVENTS,
-            payload: res.data.content,
-          });
-        };
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      try {
-        const res = await axios.get(`/events?page=${page}&size=${size}`);
-        return () => {
-          dispatch({
-            type: ActionTypes.FETCH_EVENTS,
-            payload: res.data.content,
-          });
-        };
-      } catch (err) {
-        console.log(err);
-      }
     }
-  };
-  const fetchPublishedEvents = async (page: number, size: number, filters?) => {
     try {
-      if (filters) {
-        console.log(filters, "filters");
-        const country = filters.country
-          ? `country=${filters.country.join("&country=")}`
-          : "";
-        const status =
-          filters.status && filters.status.length
-            ? `status=${filters.status.join("&status=")}`
-            : "";
-        const tech =
-          filters.tech && filters.tech.length
-            ? `tech=${filters.tech.join("&tech=")}`
-            : "";
-        const type = filters.type ? `type=${filters.type.join("&type=")}` : "";
-
-        const requestString = [country, status, tech, type]
-          .filter((item) => item)
-          .join("&");
-        console.log(requestString);
-
-        const res = await axios.get(
-          `/events/getEventsWithFilter?${requestString}&page=${page}&size=${size}`
-        );
-        return () => {
-          dispatch({
-            type: ActionTypes.APPLY_FILTERS,
-          });
-          dispatch({
-            type: ActionTypes.FETCH_PUBLISHED_EVENTS,
-            payload: res.data.result.content,
-          });
-        };
-      } else {
-        const res = await axios.get(
-          `/events/published?page=${page}&size=${size}`
-        );
-        return () => {
-          dispatch({
-            type: ActionTypes.FETCH_PUBLISHED_EVENTS,
-            payload: res.data.content,
-          });
-        };
-      }
+      const res = await axios.get(
+        `/events/getEventsWithFilter?${
+          eventStatus === EventStatus.Published
+            ? "status=" + EventStatus.Published + "&" + requestString
+            : requestString
+        }&page=${page}&size=${size}`
+      );
+      const actionType =
+        eventStatus === EventStatus.Published
+          ? requestString
+            ? ActionTypes.FETCH_FILTERED_PUBL_EVENTS
+            : ActionTypes.FETCH_PUBLISHED_EVENTS
+          : requestString
+          ? ActionTypes.FETCH_FILTERED_ALL_EVENTS
+          : ActionTypes.FETCH_EVENTS;
+      return () => {
+        dispatch({
+          type: actionType,
+          payload: res.data.result.content,
+        });
+      };
     } catch (err) {
       console.log(err);
     }
@@ -189,7 +146,6 @@ export const useEvents = () => {
     fetchEvents,
     createEvent,
     loadImage,
-    fetchPublishedEvents,
     replaceToArchive,
     publishEvent,
     isNameUniqe,

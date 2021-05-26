@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useMemo, useState } from "react";
+import React, { useMemo } from "react";
 import {
   Stack,
   PrimaryButton,
@@ -10,7 +10,7 @@ import {
 } from "@fluentui/react";
 import { useForm } from "react-hook-form";
 
-import { IFilterDropdownItem, IFilterData } from "./Models";
+import { IFilterDropdownItem, IFilterToRequest } from "./Models";
 import { IOptionsEventFilter } from "../../models/Forms/IOptions";
 import {
   ControlledDropdown,
@@ -68,7 +68,7 @@ const stackItemStyles: IStackItemStyles = {
 export interface IEventFilterProps {
   isAdminPage: boolean;
   options: IOptionsEventFilter;
-  fetchEvents(page: number, size: number, filters: any): Promise<() => void>;
+  fetchEvents(filters: IFilterToRequest): void;
 }
 
 const EventFilters: React.FC<IEventFilterProps> = ({
@@ -80,23 +80,14 @@ const EventFilters: React.FC<IEventFilterProps> = ({
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<IFilterData>({
+  } = useForm<IFilterToRequest>({
     reValidateMode: "onSubmit",
     mode: "all",
   });
 
   const onApplyFilter = () => {
-    handleSubmit((data) => {
-      console.log(data);
-      const filters = {
-        country: data["country"],
-        status: [],
-        tech: data["tagPicker"],
-        type: data["eventType"],
-      };
-      fetchEvents(0, 6, filters).then((cb) => {
-        cb();
-      });
+    handleSubmit((filters) => {
+      fetchEvents(filters);
     })();
   };
   const filters: IFilterDropdownItem[] = useMemo(() => {
@@ -115,10 +106,7 @@ const EventFilters: React.FC<IEventFilterProps> = ({
         name: "country",
         placeholder: "All",
         label: "Country",
-        options: options.locations.map((el) => ({
-          key: el.name,
-          text: el.name,
-        })),
+        options: options.locations,
       },
       {
         id: "2",
