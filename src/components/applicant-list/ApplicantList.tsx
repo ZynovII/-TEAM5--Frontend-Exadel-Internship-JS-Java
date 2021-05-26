@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useMemo } from "react";
 import {
   DetailsList,
   getTheme,
@@ -19,7 +19,6 @@ import { useApplicants } from "../../hooks/useApplicants";
 import { useLoader } from "../../hooks/hooks";
 import { AllApplicantFilter } from "./AllApplicantListFilter";
 import { acceptStatusReformer } from "../../utils/stringReformers";
-import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
@@ -32,16 +31,9 @@ export interface IApplicantList {
   items: IApplicant[];
 }
 export const ApplicantList: React.FC = () => {
-  const { applicants, fetchApplicants } = useApplicants();
+  const { applicants } = useApplicants();
   const { loading, showLoader } = useLoader();
   const history = useHistory();
-  const isMountedRef = useIsMountedRef();
-  useEffect(() => {
-    showLoader();
-    fetchApplicants().then((cb) => {
-      if (isMountedRef.current) cb();
-    });
-  }, []);
 
   const applicantsList = useMemo(() => {
     return Object.values(applicants).map((item) => {
@@ -136,7 +128,7 @@ export const ApplicantList: React.FC = () => {
           items={applicantsList}
           columns={columns}
           isHeaderVisible={true}
-          selectionMode={SelectionMode.multiple}
+          selectionMode={SelectionMode.none}
           onItemInvoked={(item) => {
             history.push(`/admin/candidates/${item.id}`);
             showLoader();
