@@ -30,8 +30,7 @@ const Scrollbar: React.FC<{ height: string }> = (props) => {
         if (isMountedRef.current) {
           const total=cb();
           setTotalCount(total)
-          console.log(totalCount)
-        }
+          }
         setCurrentPage(1);
       });
     }
