@@ -23,12 +23,6 @@ export const useApplicants = () => {
   };
 
   const selectApplicant = (id: ID) => {
-    if (state.events[id]) {
-      dispatch({
-        type: ActionTypes.SELECT_APPLICANT,
-        payload: state.applicants[id],
-      });
-    } else {
       axios
         .get(`/candidates/${id}`)
         .then((res) => {
@@ -38,7 +32,6 @@ export const useApplicants = () => {
           });
         })
         .catch((err) => console.log(err));
-    }
   };
 
   const createCandidate = async (
@@ -123,6 +116,9 @@ export const useApplicants = () => {
       .catch((err) => console.log(err));
     return response;
   };
+  const interviewsStatus = async (id: ID, status: string) => {
+    await axios.put(`/candidates/${id}/awaiting_${status}`);
+  };
 
   return {
     selectedApplicant: state.selectedApplicant,
@@ -133,5 +129,6 @@ export const useApplicants = () => {
     setStatus,
     cvDownload,
     editCandidate,
+    interviewsStatus,
   };
 };

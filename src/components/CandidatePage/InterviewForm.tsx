@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Stack, PrimaryButton, mergeStyleSets } from "@fluentui/react";
 import { useForm } from "react-hook-form";
 import {
@@ -6,6 +6,8 @@ import {
   ControlledDatePicker,
 } from "../../hook-form/Controlled";
 import { useInterviews } from "../../hooks/useInterviews";
+import { useApplicants } from "../../hooks/useApplicants";
+
 import { IApplicantDetailsFromBackEnd } from "../../models/IApplicant";
 
 const time = [
@@ -57,10 +59,13 @@ export const InterviewForm: React.FC<{
     checkTimeSlot,
     createTimeSlot,
   } = useInterviews();
+  const { interviewsStatus, selectApplicant } = useApplicants();
   const [roles, setRoles] = useState();
   const [interviewer, setInterviewer] = useState();
   const [disabledInterviewer, setDisabledInterviewer] = useState<boolean>(true);
   const [freeSlot, setFreeSlot] = useState([]);
+  const [resultOption, setResultOption] = useState([]);
+
 
 
   const {
@@ -100,34 +105,36 @@ export const InterviewForm: React.FC<{
     });
   };
 
-  const timeFilter = useMemo(() => {
-    const result = [];
-    time.forEach((el) => {
-      freeSlot.forEach((item) => {
-        if (el.key.includes(item)) {
-          result.push({ ...el, disabled: true });
-        }
-      });
-      if (!result.length || result[result.length - 1].key !== el.key) {
-        result.push(el);
-      }
-    });
-    return result;
+  useEffect(() => {
+    const result = time.map((el) => ({
+      ...el,
+      disabled: freeSlot.includes(el.key),
+    }));
+    setResultOption(result);
   }, [freeSlot]);
 
-  const onSend = (candidate) => {
+  const onSend =  (candidate) => {
+
     handleSubmit((data) => {
-      const timeString = data.timeInterview.join()
+      const timeString = data.timeInterview.join();
       const startTime = timeString.slice(0, 5);
       const endTime = timeString.slice(-5);
       const startDate = new Date(
         data.dateInterview.toString().replace(/00:00/, startTime)
       );
-      createInterviews(candidate, data.interviewer[0], startDate);
-      createTimeSlot(data.interviewer[0], startTime, endTime )
-      freeTimeSlot(data.interviewer[0])
+      createInterviews(candidate, data.interviewer[0], startDate)
+      createTimeSlot(data.interviewer[0], startTime, endTime).then(() => {
+        freeTimeSlot(data.interviewer[0]);
+        if (data.typeInterview.toString() === "ADMIN") {
+          interviewsStatus(candidate, "hr").then(() => selectApplicant(candidate));
+        }
+        if (data.typeInterview.toString() === "TECH") {
+          interviewsStatus(candidate, "tc").then(() => selectApplicant(candidate));
+        }
+      });
     })();
   };
+  
   const selectInterviewers = (type) => {
     const option = interviewers.filter((el) => el.name.includes(type)).shift()
       .employees;
@@ -204,7 +211,7 @@ export const InterviewForm: React.FC<{
             placeholder="Select an option"
             defaultSelectedKey={""}
             errors={errors}
-            options={timeFilter}
+            options={resultOption}
             required
             rules={{required: "This field is required"}}
           />
