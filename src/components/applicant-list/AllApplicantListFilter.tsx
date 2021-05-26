@@ -11,7 +11,6 @@ import {
   PrimaryButton,
 } from "@fluentui/react";
 import { useApplicants } from "../../hooks/useApplicants";
-import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -48,7 +47,6 @@ export const AllApplicantFilter: React.FC = () => {
     mode: "all",
   });
 
-  const isMountedRef = useIsMountedRef();
   const [options, setOptions] = useState({
     eventName: [],
     primaryTech: [],
@@ -57,23 +55,18 @@ export const AllApplicantFilter: React.FC = () => {
     status: [],
   });
 
-  const { getInfoForFilters, fetchFilteredApplicants } = useApplicants();
+  const { getInfoForFilters, fetchApplicants } = useApplicants();
 
   useEffect(() => {
     getInfoForFilters().then((res) => {
-      setOptions({
-        eventName: res.eventName,
-        primaryTech: res.primaryTech,
-        interviewProсcess: res.interviewProccess,
-        countryName: res.countryName,
-        status: res.status,
-      });
+      console.log(res)
+      setOptions(res);
     });
   }, []);
 
   const onApplyFilter = () => {
     handleSubmit((data) => {
-      fetchFilteredApplicants(0, 14, isMountedRef.current, data);
+      fetchApplicants(0, 14, data).then((cb)=>cb());
     })();
   };
 

@@ -11,3 +11,10 @@ export interface IOptionsEventFilter {
   techTags?: ITag[];
   techsNewEvent?:IDropdownOption[]
 }
+export interface IOptionsCandidatesFilter {
+    eventName: IDropdownOption[],
+    primaryTech: IDropdownOption[],
+    interviewProсcess: IDropdownOption[],
+    countryName: IDropdownOption[],
+    status: IDropdownOption[],
+}
