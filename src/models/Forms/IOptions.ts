@@ -9,7 +9,8 @@ export interface IOptionsEventFilter {
   eventTypes: IDropdownOption[];
   locations: ILocationFromBackEnd[];
   techTags?: ITag[];
-  techsNewEvent?:IDropdownOption[]
+  techsNewEvent?: IDropdownOption[];
+  statuses?: IDropdownOption[];
 }
 export interface IOptionsCandidatesFilter {
     eventName: IDropdownOption[],

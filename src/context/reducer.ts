@@ -3,7 +3,7 @@ import { IAction } from "../models/Store/IAction";
 import { ActionTypes } from "./actionTypes";
 import { IEvent } from "../models/IEvent";
 import { IApplicant, IApplicantShortFromBackEnd } from "../models/IApplicant";
-import { IInterview } from "../models/IInterview";
+import { IInterview, IInterviewFromBackEnd } from "../models/IInterview";
 
 export const reducer = (state: IStore, action: IAction): IStore => {
   const { type, payload, id } = action;
@@ -94,11 +94,11 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       };
     case ActionTypes.FETCH_INTERVIEWS:
       const newInterviews: {
-        [interviewId: string]: IInterview;
-      } = (payload as IInterview[]).reduce(
+        [interviewId: string]: IInterviewFromBackEnd;
+      } = (payload as IInterviewFromBackEnd[]).reduce(
         (acc, item) => ({
           ...acc,
-          [item.id]: item,
+          [item.idInterview]: item,
         }),
         {}
       );

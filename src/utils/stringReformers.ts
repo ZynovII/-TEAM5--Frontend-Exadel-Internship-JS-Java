@@ -3,7 +3,7 @@ import {
   InterviewStatus,
   PreferredTime,
 } from "../models/IApplicant";
-import { EventType } from "../models/IEvent";
+import { EventStatus, EventType } from "../models/IEvent";
 
 export const preferredTimeReformer = (str: string): string => {
   switch (str) {
@@ -73,6 +73,19 @@ export const eventTypeReformer = (str: string): string => {
       return "MeetUp";
     case EventType.Training:
       return "Training";
+    default:
+      return str;
+  }
+};
+
+export const eventStatusReformer = (str: string): string => {
+  switch (str) {
+    case EventStatus.Archived:
+      return "Archived";
+    case EventStatus.NotPublished:
+      return "Not Published";
+    case EventStatus.Published:
+      return "Published";
     default:
       return str;
   }
