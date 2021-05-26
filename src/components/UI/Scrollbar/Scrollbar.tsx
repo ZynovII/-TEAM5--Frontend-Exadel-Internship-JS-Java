@@ -43,9 +43,7 @@ const Scrollbar: React.FC<{ height: string }> = (props) => {
           cb();
           const total=cb();
           setTotalCount(total)
-          console.log(Object.keys(state.applicants).length)
-          console.log(totalCount)
-        }
+          }
         setCurrentPage((prevState) => prevState + 1);
       });
   };
