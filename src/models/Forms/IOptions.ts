@@ -12,3 +12,10 @@ export interface IOptionsEventFilter {
   techsNewEvent?: IDropdownOption[];
   statuses?: IDropdownOption[];
 }
+export interface IOptionsCandidatesFilter {
+    eventName: IDropdownOption[],
+    primaryTech: IDropdownOption[],
+    interviewProccess: IDropdownOption[],
+    countryName: IDropdownOption[],
+    status: IDropdownOption[],
+}

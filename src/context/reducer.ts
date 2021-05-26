@@ -40,6 +40,19 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         loading: false,
       };
 
+    case ActionTypes.FETCH_FILTERED_APPLICANTS:
+      const filteredApplicants: {
+        [aplicantId: string]: IApplicantShortFromBackEnd;
+      } = (payload as IApplicant[]).reduce(
+        (acc, item) => ({ ...acc, [item.id]: item }),
+        {}
+      );
+      return {
+        ...state,
+        applicants: filteredApplicants,
+        loading: false,
+      };
+
     case ActionTypes.FETCH_EVENTS:
       const newEvents: {
         [eventId: string]: IEvent;
