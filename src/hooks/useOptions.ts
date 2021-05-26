@@ -7,8 +7,15 @@ import {
   interviewStatusReformer,
   preferredTimeReformer,
 } from "../utils/stringReformers";
+import { toDropdownOptions } from "../utils/toDropdownOptions";
+import { toTagsOptions } from "../utils/toTagsOptions";
 
 export const useOptions = () => {
+  const fetchEventFilters = async () => {
+    const res = await axios.get("/events/getInfoForFilters");
+    return res.data;
+  };
+
   const fetchLocation = async () => {
     const response = await axios.get(`/locations/`);
     const locationOptions: ILocationFromBackEnd[] = response.data;
@@ -16,69 +23,59 @@ export const useOptions = () => {
   };
   const fetchTechnology = async () => {
     const response = await axios.get(`/techs`);
-    const techOptions: ITag[] = response.data.map((el) => ({
-      key: el.toLowerCase(),
-      text: el,
-      name: el,
-    }));
+    const techOptions: ITag[] = toTagsOptions(response.data);
     return techOptions;
   };
   const fetchInterviewStatuses = async () => {
-    const response = await axios.get(
-      `/candidates/interview-statuses`
-    );
-    const interviewStatusesOptions: IDropdownOption[] = response.data.map(
-      (el) => ({
-        key: el,
-        text: interviewStatusReformer(el),
-      })
+    const response = await axios.get(`/candidates/interview-statuses`);
+    const interviewStatusesOptions: IDropdownOption[] = toDropdownOptions(
+      response.data,
+      interviewStatusReformer
     );
     return interviewStatusesOptions;
   };
   const fetchStatuses = async () => {
     const response = await axios.get(`/candidates/statuses`);
-    const statusesOptions: IDropdownOption[] = response.data.map((el) => ({
-      key: el,
-      text: acceptStatusReformer(el),
-    }));
+    const statusesOptions: IDropdownOption[] = toDropdownOptions(
+      response.data,
+      acceptStatusReformer
+    );
     console.log("Status", statusesOptions);
     return statusesOptions;
   };
   const fetchPreferredTime = async () => {
     const response = await axios.get(`/candidates/preferred-times`);
-    const preferredTimesOptions: IDropdownOption[] = response.data.map(
-      (el) => ({
-        key: el,
-        text: preferredTimeReformer(el),
-      })
+    const preferredTimesOptions: IDropdownOption[] = toDropdownOptions(
+      response.data,
+      preferredTimeReformer
     );
     return preferredTimesOptions;
   };
   const fetchEventTypes = async () => {
     const response = await axios.get(`/events/types`);
-    const eventTypesOptions: IDropdownOption[] = response.data.map((el) => ({
-      key: el,
-      text: eventTypeReformer(el),
-    }));
+    const eventTypesOptions: IDropdownOption[] = toDropdownOptions(
+      response.data,
+      eventTypeReformer
+    );
     return eventTypesOptions;
   };
 
   const fetchTechs = async () => {
     const response = await axios.get(`/techs`);
-    const techsNewEventOptions: IDropdownOption[] = response.data.map((el) => ({
-      key: el,
-      text: el,
-    }));
+    const techsNewEventOptions: IDropdownOption[] = toDropdownOptions(
+      response.data
+    );
     return techsNewEventOptions;
-  }
+  };
 
   return {
+    fetchEventFilters,
     fetchTechnology,
     fetchEventTypes,
     fetchLocation,
     fetchInterviewStatuses,
     fetchStatuses,
     fetchPreferredTime,
-    fetchTechs
+    fetchTechs,
   };
 };

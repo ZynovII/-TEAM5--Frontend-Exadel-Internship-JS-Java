@@ -144,8 +144,8 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     [isPublished, onClickPublishBtn]
   );
 
-  const publishDialogProps = useMemo(() => {
-    return {
+  const publishDialogProps = useMemo(
+    () => ({
       hideDialog: hidePublishDialog,
       toggleHideDialog: toggleHidePublishDialog,
       apdateData: handlePublishBtn,
@@ -156,8 +156,9 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         subText: "Are you sure you want to publish this event?",
       },
       actionType: "publish",
-    };
-  }, [hidePublishDialog]);
+    }),
+    [hidePublishDialog]
+  );
 
   const removeDialogProps = useMemo(
     () => ({
@@ -177,25 +178,24 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
 
   return (
     <DocumentCard className={styles.styleCard} onClick={selectHandler}>
-      <div>
-        {props.isAdminPage && props.isLogged && (
+      {props.isAdminPage && props.isLogged && (
+        <div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <DocumentCardActions actions={documentCardActions} />
-            {isPublished ? (
+            {isPublished && (
               <FontIcon
                 aria-label="Accept"
                 iconName="Accept"
                 className={styles.acceptIcon}
                 title="Event is published"
               />
-            ) : null}
+            )}
           </div>
-        )}
-        <PublishDialog {...removeDialogProps} />
-        <PublishDialog {...publishDialogProps} />
-      </div>
+          <PublishDialog {...removeDialogProps} />
+          <PublishDialog {...publishDialogProps} />
+        </div>
+      )}
       <Image height="65%" imageFit={ImageFit.cover} src={imageEvent} />
-      {/* {imageEvent && <>PICTURE<Image src={imageEvent}/></>} */}
       <DocumentCardTitle
         className={styles.mainTytle}
         title={props.cardItem.name}

@@ -4,7 +4,6 @@ import { Spinner, SpinnerSize } from "@fluentui/react";
 
 import { useLoader } from "../hooks/hooks";
 import { useEvents } from "../hooks/useEvents";
-import { IEvent } from "../models/IEvent";
 
 import { DescriptionEventPage } from "./DescrioptionEventPage/DescriptionEvenPage";
 import { Registration } from "./Registration/Registration";
@@ -21,7 +20,6 @@ const Event: React.FC = () => {
   useEffect(() => {
     showLoader();
     selectEvent(params.id);
-    return () => selectEvent(null);
   }, []);
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />

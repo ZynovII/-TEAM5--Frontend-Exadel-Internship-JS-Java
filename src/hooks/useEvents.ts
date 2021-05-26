@@ -9,30 +9,100 @@ import { IEventForBackEnd } from "../models/IEvent";
 export const useEvents = () => {
   const { state, dispatch } = useStore();
 
-  const fetchEvents = async (page: number, size: number) => {
-    try {
-      const res = await axios.get(`/events?page=${page}&size=${size}`);
-      return () => {
-        dispatch({
-          type: ActionTypes.FETCH_EVENTS,
-          payload: res.data.content,
-        });
-      };
-    } catch (err) {
-      console.log(err);
+  const fetchEvents = async (page: number, size: number, filters?) => {
+    if (filters) {
+      const country =
+        filters.country && filters.country.length
+          ? `country=${filters.country.join("&country=")}`
+          : "";
+      const status =
+        filters.status && filters.status.length
+          ? `status=${filters.status.join("&status=")}`
+          : "";
+      const tech =
+        filters.tech && filters.tech.length
+          ? `tech=${filters.tech.join("&tech=")}`
+          : "";
+      const type = filters.type ? `type=${filters.type.join("&type=")}` : "";
+
+      const requestString = [country, status, tech, type]
+        .filter((item) => item)
+        .join("&");
+      try {
+        const res = await axios.get(
+          `/events/getEventsWithFilter?${requestString}&page=${page}&size=${size}`
+        );
+        return () => {
+          dispatch({
+            type: ActionTypes.APPLY_FILTERS,
+          });
+          dispatch({
+            type: ActionTypes.FETCH_EVENTS,
+            payload: res.data.content,
+          });
+        };
+      } catch (err) {
+        console.log(err);
+      }
+    } else {
+      try {
+        const res = await axios.get(`/events?page=${page}&size=${size}`);
+        return () => {
+          dispatch({
+            type: ActionTypes.FETCH_EVENTS,
+            payload: res.data.content,
+          });
+        };
+      } catch (err) {
+        console.log(err);
+      }
     }
   };
-  const fetchPublishedEvents = async (page: number, size: number) => {
+  const fetchPublishedEvents = async (page: number, size: number, filters?) => {
     try {
-      const res = await axios.get(
-        `/events/published?page=${page}&size=${size}`
-      );
-      return () => {
-        dispatch({
-          type: ActionTypes.FETCH_PUBLISHED_EVENTS,
-          payload: res.data.content,
-        });
-      };
+      if (filters) {
+        console.log(filters, "filters");
+        const country = filters.country
+          ? `country=${filters.country.join("&country=")}`
+          : "";
+        const status =
+          filters.status && filters.status.length
+            ? `status=${filters.status.join("&status=")}`
+            : "";
+        const tech =
+          filters.tech && filters.tech.length
+            ? `tech=${filters.tech.join("&tech=")}`
+            : "";
+        const type = filters.type ? `type=${filters.type.join("&type=")}` : "";
+
+        const requestString = [country, status, tech, type]
+          .filter((item) => item)
+          .join("&");
+        console.log(requestString);
+
+        const res = await axios.get(
+          `/events/getEventsWithFilter?${requestString}&page=${page}&size=${size}`
+        );
+        return () => {
+          dispatch({
+            type: ActionTypes.APPLY_FILTERS,
+          });
+          dispatch({
+            type: ActionTypes.FETCH_PUBLISHED_EVENTS,
+            payload: res.data.result.content,
+          });
+        };
+      } else {
+        const res = await axios.get(
+          `/events/published?page=${page}&size=${size}`
+        );
+        return () => {
+          dispatch({
+            type: ActionTypes.FETCH_PUBLISHED_EVENTS,
+            payload: res.data.content,
+          });
+        };
+      }
     } catch (err) {
       console.log(err);
     }
@@ -43,11 +113,6 @@ export const useEvents = () => {
       dispatch({
         type: ActionTypes.SELECT_EVENT,
         payload: state.events[id],
-      });
-    } else if (id === null) {
-      dispatch({
-        type: ActionTypes.SELECT_EVENT,
-        payload: null,
       });
     } else {
       axios.get(`/events/${id}`).then((res) => {
