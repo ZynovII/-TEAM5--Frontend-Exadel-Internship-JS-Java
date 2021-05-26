@@ -18,7 +18,6 @@ export const useAuth = () => {
         fullName: userFromBack.fullName,
         email: userFromBack.sub,
       };
-      localStorage.setItem("user", JSON.stringify(user));
       dispatch({
         type: ActionTypes.SIGN_IN,
         payload: user,
@@ -28,11 +27,12 @@ export const useAuth = () => {
 
   const signOut = () => {
     localStorage.removeItem("token");
-    localStorage.removeItem("user");
     dispatch({
       type: ActionTypes.SIGN_OUT,
     });
   };
+
+  const checkToken = () => {};
 
   return {
     isAuth: state.isAuthenticated,

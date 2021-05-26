@@ -26,23 +26,6 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         currentUser: null,
         loading: false,
       };
-    case ActionTypes.CREATE_EVENT:
-      return { ...state, events: { ...state.events, [id]: payload } };
-    case ActionTypes.UPDATE_EVENT:
-      return {
-        ...state,
-        events: { ...state.events, [id]: payload },
-      };
-    case ActionTypes.CREATE_APPLICANT:
-      return {
-        ...state,
-        applicants: { ...state.applicants, [id]: payload },
-      };
-    case ActionTypes.UPDATE_APPLICANT:
-      return {
-        ...state,
-        applicants: { ...state.applicants, [id]: payload },
-      };
     case ActionTypes.FETCH_APPLICANTS:
       const newApplicants: {
         [aplicantId: string]: IApplicantShortFromBackEnd;
@@ -124,7 +107,7 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         ...state,
         selectedInterview: payload,
       };
-      case ActionTypes.FILTER_APPLICANTS:
+    case ActionTypes.FETCH_FILTERED_APPLICANTS:
       const filteredApplicants: {
         [aplicantId: string]: IApplicantShortFromBackEnd;
       } = (payload as IApplicant[]).reduce(
@@ -133,11 +116,10 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       );
       return {
         ...state,
-        applicants: filteredApplicants ,
+        applicants: filteredApplicants,
         loading: false,
       };
     default:
       return state;
   }
-  
 };
