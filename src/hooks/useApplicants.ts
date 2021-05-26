@@ -144,10 +144,7 @@ export const useApplicants = () => {
     const response = await axios.get(`/candidates/getInfoForFilter`);
 
     const filterOptions:IOptionsCandidatesFilter = {
-      eventName: response.data.eventName.map((el) => ({
-        key: el.replace(/ /g, "%20").replace('&', '%26'),
-        text: (el),
-      })),
+      eventName: toDropdownOptions(response.data.eventName),
       primaryTech: toDropdownOptions(response.data.primaryTech),
       interviewProccess: toDropdownOptions (
         response.data.interviewProccess,
