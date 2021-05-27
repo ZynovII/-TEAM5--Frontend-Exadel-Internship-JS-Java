@@ -153,9 +153,8 @@ export const useEvents = () => {
   };
 
   const replaceToArchive = (id: ID) => {
-    const s = `/events/${id}/archive`;
     axios
-      .get(s)
+      .get(`/events/${id}/archive`)
       .then((res) => {
         console.log(res.data);
       })

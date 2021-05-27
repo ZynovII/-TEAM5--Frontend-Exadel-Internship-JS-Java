@@ -21,6 +21,8 @@ import { NewEventForm } from "../NewEvent/NewEventForm";
 
 import { dateReformer } from "./../../utils/stringReformers";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
+import { useAuth } from "../../hooks/useAuth";
+import { UserRole } from "../../models/IUser";
 
 import placeholder from "../../assets/img/placeholder.png";
 
@@ -64,6 +66,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   const [isModal, setIsModal] = useState(false);
   const [imageEvent, setImageEvent] = useState(placeholder);
   const history = useHistory();
+  const { currentUser } = useAuth();
   const {
     loadImage,
     replaceToArchive,
@@ -145,7 +148,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         ariaLabel: "move to archive",
         title: "Move to archive",
       },
-      {
+      currentUser.role === UserRole.SuperAdmin && {
         iconProps: {
           iconName: isPublished ? "UnpublishContent" : "PublishContent",
         },
@@ -194,7 +197,9 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       {props.isAdminPage && props.isLogged && (
         <div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <DocumentCardActions actions={documentCardActions} />
+            <DocumentCardActions
+              actions={documentCardActions.filter((el) => !!el)}
+            />
             {isPublished && (
               <FontIcon
                 aria-label="Accept"
