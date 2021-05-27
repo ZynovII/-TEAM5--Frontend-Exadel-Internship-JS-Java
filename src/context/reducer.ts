@@ -54,12 +54,38 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         loading: false,
       };
 
-    case ActionTypes.APPLY_FILTERS:
+    case ActionTypes.CLEAR_EVENTS:
+      return {
+        ...state,
+        events: {},
+      };
+    case ActionTypes.CLEAR_PUBLISHED_EVENTS:
       return {
         ...state,
         publishedEvents: {},
       };
+    case ActionTypes.CLEAR_ARCHIVED_EVENTS:
+      return {
+        ...state,
+        archivedEvents: {},
+      };
+    case ActionTypes.FETCH_ARCHIVED_EVENTS:{
+      const newEvents: {
+        [eventId: string]: IEvent;
+      } = (payload as IEvent[]).reduce(
+        (acc, item) => ({
+          ...acc,
+          [item.id]: item,
+        }),
+        {}
+      );
 
+      return{
+        ...state,
+        archivedEvents:{...state.archivedEvents,...newEvents},
+        loading: false,
+      }
+    }
     case ActionTypes.FETCH_PUBLISHED_EVENTS:
       const newEvent: {
         [eventId: string]: IEvent;

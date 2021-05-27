@@ -16,6 +16,7 @@ import {
   ControlledDropdown,
   ControlledTagPicker,
 } from "../../hook-form/Controlled";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -68,7 +69,12 @@ const stackItemStyles: IStackItemStyles = {
 export interface IEventFilterProps {
   isAdminPage: boolean;
   options: IOptionsEventFilter;
-  fetchEvents(page: number, size: number, filters: any): Promise<() => void>;
+  fetchEvents(
+    page: number,
+    size: number,
+    category: string,
+    filters: any
+  ): Promise<() => void>;
 }
 
 const EventFilters: React.FC<IEventFilterProps> = ({
@@ -84,18 +90,23 @@ const EventFilters: React.FC<IEventFilterProps> = ({
     reValidateMode: "onSubmit",
     mode: "all",
   });
-
+  const isMountedRef = useIsMountedRef();
   const onApplyFilter = () => {
     handleSubmit((data) => {
       console.log(data);
       const filters = {
         country: data["country"],
-        status: [],
+        status: [data["status"]],
         tech: data["tagPicker"],
         type: data["eventType"],
       };
-      fetchEvents(0, 6, filters).then((cb) => {
-        cb();
+      let eventsType = "all";
+      if (!isAdminPage) {
+        filters.status = [["PUBLISHED"]];
+        eventsType = "published";
+      }
+      fetchEvents(0, 6, eventsType, filters).then((cb) => {
+        if (isMountedRef.current) cb();
       });
     })();
   };
