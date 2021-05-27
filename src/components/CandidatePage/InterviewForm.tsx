@@ -167,7 +167,6 @@ export const InterviewForm: React.FC<{
     const option = interviewers
       .filter((el) => {
         if (type === "ADMIN") {
-          console.log(el.name.includes("ROLE_SUPERADMIN"));
           return el.name.includes(type) || el.name.includes("ROLE_SUPERADMIN");
         }
         return el.name.includes(type);
