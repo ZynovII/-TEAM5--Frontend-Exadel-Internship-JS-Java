@@ -26,7 +26,7 @@ import { IEventForBackEnd } from "../../models/IEvent";
 import { UploadImage } from "./UploadImage";
 import { useEvents } from "../../hooks/useEvents";
 import { useOptions } from "../../hooks/useOptions";
-import { IOptionsEventFilter } from "../../models/Forms/IOptions";
+import { IOptionsEventFilter, IOptionsNewEventDropdown } from "../../models/Forms/IOptions";
 import { IEvent } from "../../models/IEvent";
 import { ITech } from "../../models/IEvent";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
@@ -60,7 +60,7 @@ export const NewEventForm: React.FC<
 > = ({ isModal, hideModal,loadMore, ...props }) => {
   const { createEvent, isNameUniqe, updateEvent, fetchEvents } = useEvents();
   const { fetchLocation, fetchEventTypes, fetchTechs } = useOptions();
-  const [options, setOptions] = useState<IOptionsEventFilter>({
+  const [options, setOptions] = useState<IOptionsNewEventDropdown>({
     locations: [],
     eventTypes: [],
     techsNewEvent: [],
@@ -71,7 +71,7 @@ export const NewEventForm: React.FC<
   useEffect(() => {
     Promise.all([fetchLocation(), fetchEventTypes(), fetchTechs()]).then(
       (res) => {
-        const options: IOptionsEventFilter = {
+        const options: IOptionsNewEventDropdown = {
           locations: res[0],
           eventTypes: res[1],
           techsNewEvent: res[2],

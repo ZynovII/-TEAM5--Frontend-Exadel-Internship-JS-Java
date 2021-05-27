@@ -135,7 +135,6 @@ export const useEvents = () => {
         method: "GET",
         responseType: "blob",
       });
-      console.log(img)
       return img.data;
     }
     return null;

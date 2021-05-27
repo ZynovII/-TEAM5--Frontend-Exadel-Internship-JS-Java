@@ -84,8 +84,6 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     loadImage(props.cardItem.id).then((res) => {
       if (isMountedRef.current && res) {
         setImageEvent(window.URL.createObjectURL(new Blob([res])));
-        setUploadImageFile(new File([res], "name"));
-        console.log(uploadImageFile);
       }
     });
   }, []);
