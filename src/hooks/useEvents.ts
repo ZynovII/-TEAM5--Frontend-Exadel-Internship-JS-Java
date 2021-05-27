@@ -41,19 +41,25 @@ export const useEvents = () => {
     try {
       const res = await axios.get(
         `/events/getEventsWithFilter?&page=${page}&size=${size}${
-          eventStatus === EventStatus.Published
-            ? "&status=" + EventStatus.Published + requestString
-            : requestString
+          eventStatus ? "&status=" + eventStatus + requestString : requestString
         }`
       );
-      const actionType =
-        eventStatus === EventStatus.Published
-          ? requestString
-            ? ActionTypes.FETCH_FILTERED_PUBL_EVENTS
-            : ActionTypes.FETCH_PUBLISHED_EVENTS
-          : requestString
-          ? ActionTypes.FETCH_FILTERED_ALL_EVENTS
-          : ActionTypes.FETCH_EVENTS;
+
+      let actionType: ActionTypes;
+      switch (eventStatus) {
+        case EventStatus.Published:
+          requestString || filters
+            ? (actionType = ActionTypes.FETCH_FILTERED_PUBL_EVENTS)
+            : (actionType = ActionTypes.FETCH_PUBLISHED_EVENTS);
+          break;
+        case EventStatus.Archived:
+          actionType = ActionTypes.FETCH_ARCHIVED_EVENTS;
+          break;
+        default:
+          requestString || filters
+            ? (actionType = ActionTypes.FETCH_FILTERED_ALL_EVENTS)
+            : (actionType = ActionTypes.FETCH_EVENTS);
+      }
       return () => {
         dispatch({
           type: actionType,
@@ -133,6 +139,15 @@ export const useEvents = () => {
       .catch((err) => console.log(err));
   };
 
+  const unPublishvent = async (id: ID) => {
+    try {
+      const res = await axios.put(`/events/${id}/unpublish`);
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const isNameUniqe = async (value) => {
     const { data } = await axios.get(`/events/uniqueness/${value}`);
     return data || "This name is already used";
@@ -147,6 +162,7 @@ export const useEvents = () => {
     loadImage,
     replaceToArchive,
     publishEvent,
+    unPublishvent,
     isNameUniqe,
     fetchEvents,
     archivedEvents: state.archivedEvents,

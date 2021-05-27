@@ -36,7 +36,7 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
   const { isAuth } = useAuth();
   const isMountedRef = useIsMountedRef();
 
-  const loadMore = (page: number, size: number, filters?) => {
+  const loadMore = (page: number, size: number, filters?: IFilterToRequest) => {
     const args = isAdminPage
       ? [size, filters]
       : [EVENTS_SIZE, filters, EventStatus.Published];

@@ -63,7 +63,12 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   const [isModal, setIsModal] = useState(false);
   const [imageEvent, setImageEvent] = useState(placeholder);
   const history = useHistory();
-  const { loadImage, replaceToArchive, publishEvent } = useEvents();
+  const {
+    loadImage,
+    replaceToArchive,
+    publishEvent,
+    unPublishvent,
+  } = useEvents();
   const { showLoader } = useLoader();
 
   const selectHandler = () => {
@@ -92,14 +97,15 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   );
   const onClickPublishBtn = useCallback(
     (e) => {
-      isPublished ? setIspublished(false) : unPublishHandler();
+      isPublished ? unPublishHandler() : toggleHidePublishDialog();
       e.stopPropagation();
       e.preventDefault();
     },
     [isPublished]
   );
   const unPublishHandler = () => {
-    toggleHidePublishDialog();
+    console.log("ff");
+    unPublishvent(props.cardItem.id).then((res) => setIspublished(false));
   };
 
   const onClickRemoveBtn = (e) => {
