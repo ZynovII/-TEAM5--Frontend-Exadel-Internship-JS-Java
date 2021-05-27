@@ -5,7 +5,9 @@ import { tokenToUser } from "../utils/tokenToUser";
 
 export const initialState: IStore = {
   isAuthenticated: !!localStorage.getItem("token") || false,
-  currentUser: tokenToUser(localStorage.getItem("token")),
+  currentUser: !!localStorage.getItem("token")
+    ? tokenToUser(localStorage.getItem("token"))
+    : null,
   events: {},
   publishedEvents: {},
   archivedEvents: {},

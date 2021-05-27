@@ -42,15 +42,15 @@ const ButtonLog: React.FC<{
   const onSave = () => {
     handleSubmit(
       (data) => {
-        signIn(data);
+        signIn(data).then((res) => {
+          if (res === "Success!") hideModal();
+        });
       },
       (err) => {
         console.log("ошибка заполнения");
         console.log(err);
       }
     )();
-
-    hideModal();
   };
   return (
     <div>
