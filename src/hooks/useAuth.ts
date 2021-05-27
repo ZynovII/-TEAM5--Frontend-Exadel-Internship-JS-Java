@@ -32,8 +32,6 @@ export const useAuth = () => {
     });
   };
 
-  const checkToken = () => {};
-
   return {
     isAuth: state.isAuthenticated,
     currentUser: state.currentUser,
