@@ -106,6 +106,10 @@ export const useEvents = () => {
     axios
       .get(`/events/${id}/publish`)
       .then((res) => {
+        dispatch({
+          type: ActionTypes.PUBLISH_EVENT,
+          payload: res.data.content,
+        });
         console.log(res.data);
       })
       .catch((err) => console.log(err));

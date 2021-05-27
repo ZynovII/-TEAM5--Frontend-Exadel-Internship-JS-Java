@@ -122,6 +122,11 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         ...state,
         interviewers: payload,
       };
+    case ActionTypes.PUBLISH_EVENT:
+        return {
+          ...state,
+          events: { ...state.events, [id]: payload },
+      };
     default:
       return state;
   }

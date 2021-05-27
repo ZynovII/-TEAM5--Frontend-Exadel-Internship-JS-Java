@@ -7,6 +7,7 @@ import {
   DefaultButton,
 } from "@fluentui/react";
 import { useId } from "@fluentui/react-hooks";
+import { useEvents } from "../../hooks/useEvents";
 
 const dialogStyles = { main: { maxWidth: 500 } };
 const dialogContentProps = {
@@ -31,6 +32,7 @@ export const PublishDialog: React.FunctionComponent<IDialogProps> = ({
 }) => {
   const labelId: string = useId("dialogLabel");
   const subTextId: string = useId("subTextLabel");
+  const { publishEvent } = useEvents();
 
   const modalProps = React.useMemo(
     () => ({
@@ -54,7 +56,13 @@ export const PublishDialog: React.FunctionComponent<IDialogProps> = ({
           <PrimaryButton
             onClick={() => {
               if (apdateData) apdateData(true);
-              toggleHideDialog();
+              toggleHideDialog(
+                (data) => {
+                  publishEvent(data);
+                },
+                (err) => {
+                  console.log(err);
+                });
             }}
             text={actionType}
           />
