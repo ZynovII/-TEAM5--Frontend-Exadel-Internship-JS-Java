@@ -21,12 +21,7 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
     eventTypes: [],
     techTags: [],
   });
-  const {
-    events,
-    publishedEvents,
-    fetchEvents,
-    fetchPublishedEvents,
-  } = useEvents();
+  const { events, publishedEvents, fetchAnyEvents } = useEvents();
   const {
     fetchLocation,
     fetchEventTypes,
@@ -40,10 +35,10 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
 
   const loadMore = (page: number, size: number) => {
     isAdminPage
-      ? fetchEvents(page, size).then((cb) => {
+      ? fetchAnyEvents(page, size, "all").then((cb) => {
           if (isMountedRef.current) cb();
         })
-      : fetchPublishedEvents(page, EVENTS_SIZE).then((cb) => {
+      : fetchAnyEvents(page, EVENTS_SIZE, "published").then((cb) => {
           if (isMountedRef.current) cb();
         });
     setPage((prev) => prev + 1);
@@ -76,7 +71,7 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
       <EventFilters
         isAdminPage={isAdminPage}
         options={options}
-        fetchEvents={fetchPublishedEvents}
+        fetchEvents={fetchAnyEvents}
       />
       <br />
       <section className="all-cards__wrapper">

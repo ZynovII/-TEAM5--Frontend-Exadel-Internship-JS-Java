@@ -7,6 +7,7 @@ export const initialState: IStore = {
   currentUser: null,
   events: {},
   publishedEvents: {},
+  archivedEvents:{},
   loading: true,
   applicants: {},
   interviews: {},
