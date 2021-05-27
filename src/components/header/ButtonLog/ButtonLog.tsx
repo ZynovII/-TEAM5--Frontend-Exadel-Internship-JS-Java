@@ -45,15 +45,15 @@ const ButtonLog: React.FC<{
     e.preventDefault();
     handleSubmit(
       (data) => {
-        signIn(data);
+        signIn(data).then((res) => {
+          if (res === "Success!") hideModal();
+        });
       },
       (err) => {
         console.log("ошибка заполнения");
         console.log(err);
       }
     )();
-
-    hideModal();
   };
   return (
     <div>

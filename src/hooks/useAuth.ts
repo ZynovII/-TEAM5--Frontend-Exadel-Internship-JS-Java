@@ -7,14 +7,22 @@ import { useStore } from "./hooks";
 export const useAuth = () => {
   const { state, dispatch } = useStore();
 
-  const signIn = (data: ILogin) => {
-    axios.post(`/employees/auth`, data).then((res) => {
-      localStorage.setItem("token", res.data.token);
-      dispatch({
-        type: ActionTypes.SIGN_IN,
-        payload: tokenToUser(res.data.token),
-      });
-    });
+  const signIn = async (data: ILogin) => {
+    try {
+      const res = await axios.post(`/employees/auth`, data);
+      if (res.data.token !== null) {
+        localStorage.setItem("token", res.data.token);
+        dispatch({
+          type: ActionTypes.SIGN_IN,
+          payload: tokenToUser(res.data.token),
+        });
+        return "Success!";
+      } else {
+        throw new Error("Invalid credentials!");
+      }
+    } catch (err) {
+      alert(err);
+    }
   };
 
   const signOut = () => {

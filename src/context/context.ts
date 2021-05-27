@@ -3,11 +3,11 @@ import { IAction } from "../models/Store/IAction";
 import { IStore } from "../models/Store/IStore";
 import { tokenToUser } from "../utils/tokenToUser";
 
+const token = JSON.parse(localStorage.getItem("token"));
+
 export const initialState: IStore = {
-  isAuthenticated: !!localStorage.getItem("token") || false,
-  currentUser: !!localStorage.getItem("token")
-    ? tokenToUser(localStorage.getItem("token"))
-    : null,
+  isAuthenticated: !!token || false,
+  currentUser: !!token ? tokenToUser(token) : null,
   events: {},
   publishedEvents: {},
   archivedEvents: {},
