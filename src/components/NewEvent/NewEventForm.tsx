@@ -114,6 +114,7 @@ export const NewEventForm: React.FC<
         if (!props.cardItem) 
         createEvent(data, imageSrc);
         else {
+          console.log(data)
         updateEvent(data, props.cardItem.id,imageSrc).then(()=>{loadMore(0,EVENTS_SIZE-1)})}
         hideModal();
         setCountry([]);
@@ -247,7 +248,6 @@ export const NewEventForm: React.FC<
               allowTextInput={true}
               name={"startDate"}
               label="Start date"
-              // defaultValue={props.cardItem && props.cardItem.startDate}
               showMonthPickerAsOverlay={true}
               placeholder="Select a date..."
               ariaLabel="Select a date"
@@ -266,6 +266,7 @@ export const NewEventForm: React.FC<
               value={
                 (props.cardItem && new Date(props.cardItem.startDate)) || null
               }
+
             />
           </Stack>
         </Stack>

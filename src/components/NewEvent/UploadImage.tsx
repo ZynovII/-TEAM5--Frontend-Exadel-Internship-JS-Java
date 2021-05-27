@@ -51,11 +51,9 @@ export const UploadImage: React.FC<{ setImageSrc: Function, eventImage:string }>
   const [fileName, setFileName] = useState<string>("");
   const [isUploaded, setisUploaded] = useState<boolean>(false);
   const uploadFile = (event) => {
-    console.log(URL.createObjectURL(event.target.files[0]));
     setFileName(URL.createObjectURL(event.target.files[0]));
     setisUploaded(true);
     setImageSrc(event.target.files[0]);
-    console.log(event.target.files[0].name)
   };
 
   useEffect(()=>{
