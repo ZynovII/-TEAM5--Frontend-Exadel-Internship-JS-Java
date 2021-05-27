@@ -12,14 +12,10 @@ import { InterviewPage } from "../components/InterviewPage/InterviewPage";
 import { CandidatePage } from "../components/CandidatePage/CandidatePage";
 import { ArchiveEventList } from "../components/ArchivePage/ArchivePage";
 import ScrollBar from "../components/UI/Scrollbar/Scrollbar";
-import { useAuth } from "../hooks/useAuth";
 
 export const AdminPage = () => {
-  const { isAuth } = useAuth();
-
   return (
     <div className="admin-page ms-Grid" dir="ltr">
-      {isAuth ? null : <Redirect to="/events" />}
       <div className="ms-Grid-row">
         <div className="ms-Grid-col ms-sm2 ms-md1 ms-lg2 ms-depth-8">
           <DashboardNav />
