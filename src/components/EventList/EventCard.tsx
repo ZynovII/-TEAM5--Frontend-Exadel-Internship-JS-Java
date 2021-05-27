@@ -56,16 +56,21 @@ export interface ICardItemProps {
   cardItem: IEvent;
   isLogged: boolean;
   isAdminPage: boolean;
-  loadMore: (page:number,size:number)=>void
+  loadMore: (page: number, size: number) => void;
 }
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const isMountedRef = useIsMountedRef();
   const [isModal, setIsModal] = useState(false);
   const [imageEvent, setImageEvent] = useState(placeholder);
-  const [uploadImageFile, setUploadImageFile] = useState<File>()
+  const [uploadImageFile, setUploadImageFile] = useState<File>();
   const history = useHistory();
-  const { loadImage, replaceToArchive, publishEvent, unPublishvent, } = useEvents();
+  const {
+    loadImage,
+    replaceToArchive,
+    publishEvent,
+    unPublishvent,
+  } = useEvents();
   const { showLoader } = useLoader();
 
   const selectHandler = () => {
@@ -79,8 +84,8 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     loadImage(props.cardItem.id).then((res) => {
       if (isMountedRef.current && res) {
         setImageEvent(window.URL.createObjectURL(new Blob([res])));
-       setUploadImageFile(new File([res], "name"))
-       console.log(uploadImageFile)
+        setUploadImageFile(new File([res], "name"));
+        console.log(uploadImageFile);
       }
     });
   }, []);
@@ -91,7 +96,9 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   const [hideRemoveDialog, { toggle: toggleHideRemoveDialog }] = useBoolean(
     true
   );
-  const [isPublished, setIspublished] = useState(false);
+  const [isPublished, setIspublished] = useState(
+    props.cardItem.eventStatus === EventStatus.Published
+  );
   const onClickPublishBtn = useCallback(
     (e) => {
       isPublished ? unPublishHandler() : toggleHidePublishDialog();
