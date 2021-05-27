@@ -39,7 +39,6 @@ export const ArchiveEventList: React.FC = () => {
       if (isMountedRef.current) cb();
     });
   }, []);
-  console.log(archivedEvents);
 
   const eventList = useMemo(
     () =>
