@@ -46,7 +46,7 @@ const classNames = mergeStyleSets({
 });
 
 export const UploadImage: React.FC<{ setImageSrc: Function, eventImage:string }> = ({
-  setImageSrc
+  setImageSrc, eventImage
 }) => {
   const [fileName, setFileName] = useState<string>("");
   const [isUploaded, setisUploaded] = useState<boolean>(false);
@@ -58,7 +58,15 @@ export const UploadImage: React.FC<{ setImageSrc: Function, eventImage:string }>
     console.log(event.target.files[0].name)
   };
 
-   const { control } = useForm({
+  useEffect(()=>{
+    if (eventImage) {
+      setFileName(eventImage); 
+      setisUploaded(true);
+    }
+  },[])
+ 
+
+  const { control } = useForm({
     mode: "all",
   });
 

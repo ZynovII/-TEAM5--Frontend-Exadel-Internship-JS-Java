@@ -66,6 +66,7 @@ export const NewEventForm: React.FC<
     techsNewEvent: [],
   });
   const [country, setCountry] = useState([]);
+  const [imageSrc, setImageSrc] = useState<File>();
   const isMountedRef = useIsMountedRef();
 
   useEffect(() => {
@@ -93,7 +94,6 @@ export const NewEventForm: React.FC<
     [options]
   );
   const {
-    getValues,
     handleSubmit,
     formState: { errors },
     control,
@@ -106,8 +106,6 @@ export const NewEventForm: React.FC<
     if (country) country.forEach((elem)=>current.push(options.locations.find((opt)=>opt.name===elem).cities))
     return current.flat().map((el) => ({ key: el, text: el }));
   }, [country]);
-
-  const [imageSrc, setImageSrc] = useState<File>();
 
 
   const onSave = () => {
@@ -243,7 +241,7 @@ export const NewEventForm: React.FC<
             />
           </Stack>
           <Stack styles={{ root: { width: "40%" } }}>
-            <UploadImage setImageSrc={setImageSrc} eventImage={props.imageEvent}/>
+            <UploadImage setImageSrc={setImageSrc} eventImage={props.imageEvent} />
             <ControlledDatePicker
               control={control}
               allowTextInput={true}
