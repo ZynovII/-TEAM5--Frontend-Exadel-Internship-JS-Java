@@ -10,11 +10,13 @@ import {
   IIconProps,
 } from "@fluentui/react/lib";
 
-import AuthBtn from "./AuthBtn/AuthBtn";
+import AuthBtn from "../AuthBtn/AuthBtn";
 import { useForm } from "react-hook-form";
-import { ILogin } from "../../models/ILogin";
-import { useAuth } from "../../hooks/useAuth";
-import { ControlledTextField } from "../../hook-form/Controlled";
+import { ILogin } from "../../../models/ILogin";
+import { useAuth } from "../../../hooks/useAuth";
+import { ControlledTextField } from "../../../hook-form/Controlled";
+
+import classes from './ButtonLog.module.scss';
 
 const cancelIcon: IIconProps = { iconName: "Cancel" };
 const registrationPattern = {
@@ -39,7 +41,8 @@ const ButtonLog: React.FC<{
     reValidateMode: "onSubmit",
     mode: "all",
   });
-  const onSave = () => {
+  const onSave = (e) => {
+    e.preventDefault();
     handleSubmit(
       (data) => {
         signIn(data);
@@ -65,47 +68,50 @@ const ButtonLog: React.FC<{
         isOpen={isModalOpen}
         onDismiss={hideModal}
         isBlocking={false}
-        containerClassName={contentStyles.container}
       >
-        <div className={contentStyles.header}>
-          <span id={titleId}>Event Manager</span>
-          <IconButton
-            styles={iconButtonStyles}
-            iconProps={cancelIcon}
-            ariaLabel="Close modal"
-            onClick={hideModal}
-          />
-        </div>
-        <div className={contentStyles.body}>
-          <ControlledTextField
-            required
-            placeholder="Email"
-            control={control}
-            name={"email"}
-            errors={errors}
-            rules={{
-              pattern: {
-                value: registrationPattern.email,
-                message: "Invalid email",
-              },
-            }}
-            className={contentStyles.item}
-          />
-          <ControlledTextField
-            placeholder="Password"
-            control={control}
-            errors={errors}
-            name={"password"}
-            value=""
-            type="password"
-            rules={{
-              required: "This field is required",
-            }}
-            canRevealPassword
-            className={contentStyles.item}
-          />
-          <PrimaryButton onClick={onSave} text="Send" className="button" />
-        </div>
+        <form className={contentStyles.container} onSubmit={onSave}>
+          <div className={contentStyles.header}>
+            <span id={titleId}>Event Manager</span>
+            <IconButton
+              styles={iconButtonStyles}
+              iconProps={cancelIcon}
+              ariaLabel="Close modal"
+              onClick={hideModal}
+            />
+          </div>
+          <div className={contentStyles.body}>
+            <ControlledTextField
+              required
+              placeholder="Email"
+              control={control}
+              name={"email"}
+              errors={errors}
+              rules={{
+                pattern: {
+                  value: registrationPattern.email,
+                  message: "Invalid email",
+                },
+              }}
+              className={contentStyles.item}
+            />
+            <ControlledTextField
+              placeholder="Password"
+              control={control}
+              errors={errors}
+              name={"password"}
+              value=""
+              type="password"
+              rules={{
+                required: "This field is required",
+              }}
+              canRevealPassword
+              className={contentStyles.item}
+            />
+            <button className={classes.Button}>
+              <PrimaryButton text="Send" className="button" />
+            </button>
+          </div>
+        </form>
       </Modal>
     </div>
   );

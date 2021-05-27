@@ -2,8 +2,8 @@ import React from "react";
 import { useHistory } from "react-router";
 import { Stack } from "@fluentui/react/lib";
 
-import HeaderNav from "./Navigation";
-import ButtonLog from "./ButtonLog";
+import HeaderNav from "./Navigation/Navigation";
+import ButtonLog from "./ButtonLog/ButtonLog";
 import { useAuth } from "../../hooks/useAuth";
 
 const logo = require("./../../assets/img/logo.svg");

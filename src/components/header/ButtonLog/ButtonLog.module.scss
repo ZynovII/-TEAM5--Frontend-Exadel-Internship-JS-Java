@@ -1,0 +1,7 @@
+.Button {
+  border: 0;
+  &:focus,
+  &:hover {
+    outline: none;
+  }
+}
