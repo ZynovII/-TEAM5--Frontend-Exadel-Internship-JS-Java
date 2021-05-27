@@ -17,6 +17,7 @@ import { useEvents } from "../../hooks/useEvents";
 import ArchiveFilters from "./ArchiveFilters";
 import { useLoader } from "../../hooks/hooks";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
+import { EventStatus } from "../../models/IEvent";
 
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
@@ -29,18 +30,16 @@ export interface IApplicantList {
   items: IApplicant[];
 }
 export const ArchiveEventList: React.FC = () => {
-  const { events, fetchAnyEvents, archivedEvents } = useEvents();
+  const { fetchEvents, archivedEvents } = useEvents();
   const { loading, showLoader } = useLoader();
-  const history = useHistory();
   const isMountedRef = useIsMountedRef();
   useEffect(() => {
     showLoader();
-    fetchAnyEvents(0, 6, "archived").then((cb) => {
+    fetchEvents(0, 6, null, EventStatus.Archived).then((cb) => {
       if (isMountedRef.current) cb();
     });
   }, []);
-  console.log("Events", events);
-  console.log("archivedEvents", archivedEvents);
+
   const eventList = useMemo(
     () =>
       Object.values(archivedEvents).map((idx) => {

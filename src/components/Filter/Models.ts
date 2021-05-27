@@ -1,9 +1,8 @@
-import {
-  IDropdownOption,
-  ITag,
-} from "@fluentui/react/lib";
+import { IDropdownOption, ITag } from "@fluentui/react/lib";
+import { EventType } from "react-hook-form";
+import { EventStatus } from "../../models/IEvent";
 
-export interface IFilterDropdownItem{
+export interface IFilterDropdownItem {
   id: string;
   key: string;
   placeholder: string;
@@ -12,15 +11,9 @@ export interface IFilterDropdownItem{
   name: string;
 }
 
-export interface IFilterData{
-  tags: ITag[];
-  location: IDropdownOption;
-  type:IDropdownOption;
-  eventType:IDropdownOption;
-  events:IDropdownOption;
-  skills: IDropdownOption;
-  wstatus: IDropdownOption;
-  date: IDropdownOption;
-  time: IDropdownOption;
+export interface IFilterToRequest {
+  country: string[];
+  status: EventStatus[];
   tagPicker: string[];
+  eventType: EventType[];
 }
