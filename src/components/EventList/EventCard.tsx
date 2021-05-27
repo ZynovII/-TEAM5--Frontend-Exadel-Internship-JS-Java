@@ -13,7 +13,7 @@ import {
 import { useBoolean } from "@fluentui/react-hooks";
 import { useHistory } from "react-router";
 
-import { EventStatus, IEvent } from "../../models/IEvent";
+import { IEvent, EventStatus } from "../../models/IEvent";
 import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { PublishDialog } from "./PublishDialog";
@@ -56,12 +56,14 @@ export interface ICardItemProps {
   cardItem: IEvent;
   isLogged: boolean;
   isAdminPage: boolean;
+  loadMore: (page: number, size: number) => void;
 }
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const isMountedRef = useIsMountedRef();
   const [isModal, setIsModal] = useState(false);
   const [imageEvent, setImageEvent] = useState(placeholder);
+  const [uploadImageFile, setUploadImageFile] = useState<File>();
   const history = useHistory();
   const {
     loadImage,
@@ -81,7 +83,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   useEffect(() => {
     loadImage(props.cardItem.id).then((res) => {
       if (isMountedRef.current && res) {
-        setImageEvent(res);
+        setImageEvent(window.URL.createObjectURL(new Blob([res])));
       }
     });
   }, []);
@@ -103,6 +105,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
     },
     [isPublished]
   );
+
   const unPublishHandler = () => {
     console.log("ff");
     unPublishvent(props.cardItem.id).then((res) => setIspublished(false));
@@ -219,14 +222,14 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       <Text className={styles.text}>
         {props.cardItem.locations.map((el) => el.city + " ")}
       </Text>
-      {isModal && (
-        <NewEventForm
-          isModal={isModal}
-          hideModal={toggleModal}
-          eventCard={true}
-          cardItem={props.cardItem}
-        />
-      )}
+      <NewEventForm
+        isModal={isModal}
+        hideModal={toggleModal}
+        eventCard={true}
+        cardItem={props.cardItem}
+        imageEvent={imageEvent}
+        loadMore={props.loadMore}
+      />
     </DocumentCard>
   );
 };

@@ -5,6 +5,7 @@ export interface IOptionsRegistration {
   locations: ILocationFromBackEnd[];
   preferredTimes: IDropdownOption[];
 }
+
 export interface IOptionsEventFilter {
   eventTypes: IDropdownOption[];
   locations: IDropdownOption[];
@@ -12,6 +13,15 @@ export interface IOptionsEventFilter {
   techsNewEvent?: IDropdownOption[];
   statuses?: IDropdownOption[];
 }
+
+export interface IOptionsNewEventDropdown {
+  eventTypes: IDropdownOption[];
+  locations: ILocationFromBackEnd[];
+  techTags?: ITag[];
+  techsNewEvent?: IDropdownOption[];
+  statuses?: IDropdownOption[];
+}
+
 export interface IOptionsCandidatesFilter {
     eventName: IDropdownOption[],
     primaryTech: IDropdownOption[],

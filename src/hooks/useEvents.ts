@@ -89,7 +89,7 @@ export const useEvents = () => {
     }
   };
 
-  const createEvent = (event: IEventForBackEnd, imageSrc: File) => {
+  const createEvent = async (event: IEventForBackEnd, imageSrc: File) => {
     const createEventForBackEnd = {
       cities: event.cities,
       description: event.description,
@@ -99,13 +99,33 @@ export const useEvents = () => {
       techs: event.techs,
       type: event.type[0],
     };
-    axios
+   await axios
       .post(`/events/create`, createEventForBackEnd)
       .then((res) => res.data.id)
-      .then((id) => {
-        const formData = new FormData();
+      .then((id) => {if (imageSrc)
+        {const formData = new FormData();
         formData.append("file", imageSrc, imageSrc.name);
-        axios.post(`/events/{id}/image/upload?id=${id}`, formData);
+        axios.post(`/events/${id}/image/upload`, formData);}
+      });
+  };
+
+  const updateEvent = async (event: IEventForBackEnd, id: ID, imageSrc) => {
+    const updateEventForBackEnd = {
+      cities: event.cities,
+      description: event.description,
+      endDate: event.endDate,
+      name: event.name,
+      startDate: event.startDate,
+      techs: event.techs,
+      type: event.type,
+    };
+    await axios
+      .put(`/events/${id}/edit`, updateEventForBackEnd)
+      .then((res) => res.data.id)
+    .then((id) => {if (imageSrc){
+      const formData = new FormData();
+      formData.append("file", imageSrc, imageSrc.name);
+      axios.post(`/events/${id}/image/upload`, formData);}
       });
   };
 
@@ -117,7 +137,7 @@ export const useEvents = () => {
         method: "GET",
         responseType: "blob",
       });
-      return window.URL.createObjectURL(new Blob([img.data]));
+      return img.data;
     }
     return null;
   };
@@ -161,6 +181,7 @@ export const useEvents = () => {
     publishedEvents: state.publishedEvents,
     selectEvent,
     createEvent,
+    updateEvent,
     loadImage,
     replaceToArchive,
     publishEvent,

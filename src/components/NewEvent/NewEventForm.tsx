@@ -25,13 +25,12 @@ import {
 import { IEventForBackEnd } from "../../models/IEvent";
 import { UploadImage } from "./UploadImage";
 import { useEvents } from "../../hooks/useEvents";
-import axios from "../../axios-api";
 import { useOptions } from "../../hooks/useOptions";
-import { IOptionsEventFilter } from "../../models/Forms/IOptions";
-import { ILocationFromBackEnd } from "../../models/ILocation";
+import { IOptionsEventFilter, IOptionsNewEventDropdown } from "../../models/Forms/IOptions";
 import { IEvent } from "../../models/IEvent";
 import { ITech } from "../../models/IEvent";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
+import { EVENTS_SIZE } from "../EventList/EventList"
 
 interface IModalProps {
   isModal: boolean;
@@ -55,22 +54,25 @@ export const NewEventForm: React.FC<
     eventCard: boolean;
     cardItem?: IEvent;
     techsNewEvent?: ITech[];
+    imageEvent:string;
+    loadMore:(page:number,size:number)=>void
   } & IModalProps
-> = ({ isModal, hideModal, ...props }) => {
-  const { createEvent, isNameUniqe } = useEvents();
+> = ({ isModal, hideModal,loadMore, ...props }) => {
+  const { createEvent, isNameUniqe, updateEvent, fetchEvents } = useEvents();
   const { fetchLocation, fetchEventTypes, fetchTechs } = useOptions();
-  const [options, setOptions] = useState<IOptionsEventFilter>({
+  const [options, setOptions] = useState<IOptionsNewEventDropdown>({
     locations: [],
     eventTypes: [],
     techsNewEvent: [],
   });
   const [country, setCountry] = useState([]);
+  const [imageSrc, setImageSrc] = useState<File>();
   const isMountedRef = useIsMountedRef();
 
   useEffect(() => {
     Promise.all([fetchLocation(), fetchEventTypes(), fetchTechs()]).then(
       (res) => {
-        const options: IOptionsEventFilter = {
+        const options: IOptionsNewEventDropdown = {
           locations: res[0],
           eventTypes: res[1],
           techsNewEvent: res[2],
@@ -92,7 +94,6 @@ export const NewEventForm: React.FC<
     [options]
   );
   const {
-    getValues,
     handleSubmit,
     formState: { errors },
     control,
@@ -106,13 +107,18 @@ export const NewEventForm: React.FC<
     return current.flat().map((el) => ({ key: el, text: el }));
   }, [country]);
 
-  const [imageSrc, setImageSrc] = useState<File>();
 
   const onSave = () => {
     handleSubmit(
       (data) => {
+        if (!props.cardItem) 
         createEvent(data, imageSrc);
+        else {
+        updateEvent(data, props.cardItem.id,imageSrc).then(()=>{loadMore(0,EVENTS_SIZE-1)})}
         hideModal();
+        setCountry([]);
+        fetchEvents(0, 5).then((cb) => {
+            if (isMountedRef.current) cb();})
       },
       (err) => {
         console.log("ошибка заполнения");
@@ -137,7 +143,7 @@ export const NewEventForm: React.FC<
           styles={iconButtonStyles}
           iconProps={cancelIcon}
           ariaLabel="Close popup modal"
-          onClick={hideModal}
+          onClick={()=>{hideModal();setCountry([])}}
         />
       </div>
 
@@ -156,14 +162,14 @@ export const NewEventForm: React.FC<
               required={true}
               label="Event name"
               placeholder="Name"
-              defaultValue={props.cardItem && props.cardItem.name}
+              value={(props.cardItem && props.cardItem.name)||""}
               // onBlur={isNameUniqe}
               control={control}
               name={"name"}
               errors={errors}
               rules={{
                 required: "This field is required",
-                validate: isNameUniqe,
+                validate: (!props.cardItem)&&isNameUniqe,
               }}
               styles={textFieldStyles}
             />
@@ -175,11 +181,10 @@ export const NewEventForm: React.FC<
               label={"Technology"}
               errors={errors}
               placeholder="Technology"
+              
               defaultSelectedKeys={
-                (props.cardItem && props.cardItem.techs.map((el) => el.name)) ||
-                []
-              }
-              rules={{ required: "This field is required" }}
+                (props.cardItem && props.cardItem.techs.map((el) => el.name)) }
+              // rules={{ required: "This field is required" }}
               options={options.techsNewEvent}
               styles={textFieldStyles}
             />
@@ -199,7 +204,6 @@ export const NewEventForm: React.FC<
               }
               options={countries}
               onChange={(_, data) => {
-                console.log(data)
                   setCountry((prev)=>
                     data.selected ? [...prev, data.key] : prev.filter(key => key !== data.key),
                   );
@@ -237,12 +241,13 @@ export const NewEventForm: React.FC<
             />
           </Stack>
           <Stack styles={{ root: { width: "40%" } }}>
-            <UploadImage setImageSrc={setImageSrc} />
+            <UploadImage setImageSrc={setImageSrc} eventImage={props.imageEvent} />
             <ControlledDatePicker
               control={control}
               allowTextInput={true}
               name={"startDate"}
               label="Start date"
+              // defaultValue={props.cardItem && props.cardItem.startDate}
               showMonthPickerAsOverlay={true}
               placeholder="Select a date..."
               ariaLabel="Select a date"
@@ -268,7 +273,7 @@ export const NewEventForm: React.FC<
           placeholder="Summary"
           control={control}
           name={"description"}
-          defaultValue={props.cardItem && props.cardItem.description}
+          value={props.cardItem && props.cardItem.description||''}
           errors={errors}
           className={contentStyles.lab}
           multiline

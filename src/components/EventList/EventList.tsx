@@ -21,7 +21,7 @@ import { EventStatus } from "../../models/IEvent";
 import "./AllCards.scss";
 import { IFilterToRequest } from "../Filter/Models";
 
-const EVENTS_SIZE = 6;
+export const EVENTS_SIZE = 6;
 
 const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
   const [options, setOptions] = useState<IOptionsEventFilter>({
@@ -83,6 +83,7 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
             key={item.id}
             isLogged={isAuth}
             isAdminPage={isAdminPage}
+            loadMore={loadMore}
           />
         ))}
       </section>
