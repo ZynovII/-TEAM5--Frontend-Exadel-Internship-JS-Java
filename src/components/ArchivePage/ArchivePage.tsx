@@ -16,6 +16,7 @@ import { IApplicant } from "../../models/IApplicant";
 import { useEvents } from "../../hooks/useEvents";
 import ArchiveFilters from "./ArchiveFilters";
 import { useLoader } from "../../hooks/hooks";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
@@ -27,12 +28,15 @@ export interface IApplicantList {
   items: IApplicant[];
 }
 export const ArchiveEventList: React.FC = () => {
-  const { events, fetchEvents } = useEvents();
+  const { events, fetchAnyEvents, archivedEvents } = useEvents();
   const { loading, showLoader } = useLoader();
   const history = useHistory();
+  const isMountedRef = useIsMountedRef();
   useEffect(() => {
     showLoader();
-    fetchEvents(0, 0);
+    fetchAnyEvents(0, 6, "archived").then((cb) => {
+      if (isMountedRef.current) cb();
+    });
   }, []);
 
   const eventList = Object.keys(events).map((idx) => {
@@ -99,28 +103,31 @@ export const ArchiveEventList: React.FC = () => {
     <>
       <ArchiveFilters />
 
-        <div
-          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold", marginTop: "2rem" }}
-        >
+      <div
+        style={{
+          boxShadow: theme.effects.elevation16,
+          fontWeight: "bold",
+          marginTop: "2rem",
+        }}
+      >
+        <DetailsList
+          items={eventList}
+          columns={columns}
+          isHeaderVisible={true}
+          selectionMode={SelectionMode.multiple}
+          onRenderRow={(props, defaultRender) => (
+            <div>
+              {defaultRender({
+                ...props,
+                styles: { root: { fontSize: 16 } },
+              })}
+            </div>
+          )}
 
-            <DetailsList
-              items={eventList}
-              columns={columns}
-              isHeaderVisible={true}
-              selectionMode={SelectionMode.multiple}
-              onRenderRow={(props, defaultRender) => (
-                <div>
-                  {defaultRender({
-                    ...props,
-                    styles: { root: { fontSize: 16 } },
-                  })}
-                </div>
-              )}
-
-              // onItemInvoked={(item) =>
-              //   history.push(`/admin/candidates/${item.name}`)
-              // }
-            />
+          // onItemInvoked={(item) =>
+          //   history.push(`/admin/candidates/${item.name}`)
+          // }
+        />
       </div>
     </>
   );
