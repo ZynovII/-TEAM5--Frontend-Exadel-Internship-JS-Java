@@ -3,7 +3,7 @@ import { IAction } from "../models/Store/IAction";
 import { ActionTypes } from "./actionTypes";
 import { IEvent } from "../models/IEvent";
 import { IApplicant, IApplicantShortFromBackEnd } from "../models/IApplicant";
-import { IInterview, IInterviewFromBackEnd } from "../models/IInterview";
+import { IInterviewFromBackEnd } from "../models/IInterview";
 
 export const reducer = (state: IStore, action: IAction): IStore => {
   const { type, payload, id } = action;
@@ -26,6 +26,7 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         currentUser: null,
         loading: false,
       };
+
     case ActionTypes.FETCH_APPLICANTS:
       const newApplicants: {
         [aplicantId: string]: IApplicantShortFromBackEnd;
@@ -38,6 +39,20 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         applicants: { ...state.applicants, ...newApplicants },
         loading: false,
       };
+
+    case ActionTypes.FETCH_FILTERED_APPLICANTS:
+      const filteredApplicants: {
+        [aplicantId: string]: IApplicantShortFromBackEnd;
+      } = (payload as IApplicant[]).reduce(
+        (acc, item) => ({ ...acc, [item.id]: item }),
+        {}
+      );
+      return {
+        ...state,
+        applicants: filteredApplicants,
+        loading: false,
+      };
+
     case ActionTypes.FETCH_EVENTS:
       const newEvents: {
         [eventId: string]: IEvent;
@@ -54,23 +69,8 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         loading: false,
       };
 
-    case ActionTypes.CLEAR_EVENTS:
-      return {
-        ...state,
-        events: {},
-      };
-    case ActionTypes.CLEAR_PUBLISHED_EVENTS:
-      return {
-        ...state,
-        publishedEvents: {},
-      };
-    case ActionTypes.CLEAR_ARCHIVED_EVENTS:
-      return {
-        ...state,
-        archivedEvents: {},
-      };
-    case ActionTypes.FETCH_ARCHIVED_EVENTS:{
-      const newEvents: {
+    case ActionTypes.FETCH_FILTERED_ALL_EVENTS:
+      const newFilteredEvents: {
         [eventId: string]: IEvent;
       } = (payload as IEvent[]).reduce(
         (acc, item) => ({
@@ -79,13 +79,12 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         }),
         {}
       );
-
-      return{
+      return {
         ...state,
-        archivedEvents:{...state.archivedEvents,...newEvents},
+        events: newFilteredEvents,
         loading: false,
-      }
-    }
+      };
+
     case ActionTypes.FETCH_PUBLISHED_EVENTS:
       const newEvent: {
         [eventId: string]: IEvent;
@@ -101,6 +100,40 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         publishedEvents: { ...state.publishedEvents, ...newEvent },
         loading: false,
       };
+
+    case ActionTypes.FETCH_FILTERED_PUBL_EVENTS:
+      const newFilteredPublEvents: {
+        [eventId: string]: IEvent;
+      } = (payload as IEvent[]).reduce(
+        (acc, item) => ({
+          ...acc,
+          [item.id]: item,
+        }),
+        {}
+      );
+      return {
+        ...state,
+        publishedEvents: newFilteredPublEvents,
+        loading: false,
+      };
+
+    case ActionTypes.FETCH_ARCHIVED_EVENTS: {
+      const newEvents: {
+        [eventId: string]: IEvent;
+      } = (payload as IEvent[]).reduce(
+        (acc, item) => ({
+          ...acc,
+          [item.id]: item,
+        }),
+        {}
+      );
+      return {
+        ...state,
+        archivedEvents: { ...state.archivedEvents, ...newEvents },
+        loading: false,
+      };
+    }
+
     case ActionTypes.FETCH_INTERVIEWS:
       const newInterviews: {
         [interviewId: string]: IInterviewFromBackEnd;
@@ -127,29 +160,21 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         selectedEvent: payload,
         loading: false,
       };
+
     case ActionTypes.SELECT_APPLICANT:
       return {
         ...state,
         selectedApplicant: payload,
         loading: false,
       };
+
     case ActionTypes.SELECT_INTERVIEW:
       return {
         ...state,
         selectedInterview: payload,
-      };
-    case ActionTypes.FETCH_FILTERED_APPLICANTS:
-      const filteredApplicants: {
-        [aplicantId: string]: IApplicantShortFromBackEnd;
-      } = (payload as IApplicant[]).reduce(
-        (acc, item) => ({ ...acc, [item.id]: item }),
-        {}
-      );
-      return {
-        ...state,
-        applicants: filteredApplicants,
         loading: false,
       };
+
     default:
       return state;
   }

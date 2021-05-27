@@ -121,7 +121,7 @@ export const ApplicantList: React.FC = () => {
         style={{
           boxShadow: theme.effects.elevation16,
           fontWeight: "bold",
-          marginTop: "2rem",
+          marginTop: "1rem",
         }}
       >
         <DetailsList
