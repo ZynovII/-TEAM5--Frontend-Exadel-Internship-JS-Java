@@ -10,7 +10,6 @@ import {
   SpinnerSize,
   Sticky,
 } from "@fluentui/react";
-import { InterviewListFilter } from "./InterviewListFilter";
 import { useInterviews } from "../../hooks/useInterviews";
 import { useLoader } from "../../hooks/hooks";
 import { useAuth } from "../../hooks/useAuth";
@@ -120,7 +119,14 @@ const InterviewList: React.FC = () => {
   } else {
     return (
       <>
-        <InterviewListFilter />
+        <h2
+          style={{
+            color: "rgb(16 110 190)",
+            textAlign: "center",
+          }}
+        >
+          Your interviews, {currentUser.fullName}
+        </h2>
         <div
           style={{ boxShadow: theme.effects.elevation16, marginTop: "2rem" }}
         >
