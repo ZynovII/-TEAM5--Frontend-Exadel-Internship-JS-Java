@@ -78,6 +78,7 @@ export const AllApplicantFilter: React.FC = () => {
         label: "Event Name",
         placeholder: "All events",
         options: options.eventName,
+        multiSelect: true,
       },
       {
         id: "456",
@@ -86,6 +87,7 @@ export const AllApplicantFilter: React.FC = () => {
         label: "Primary Tech",
         placeholder: "All techs",
         options: options.primaryTech,
+        multiSelect: true,
       },
       {
         id: "789",
@@ -94,6 +96,7 @@ export const AllApplicantFilter: React.FC = () => {
         label: "Interview Proсcess",
         placeholder: "Waiting status",
         options: options.interviewProccess,
+        multiSelect: true,
       },
       {
         id: "78",
@@ -110,6 +113,7 @@ export const AllApplicantFilter: React.FC = () => {
         label: "Status",
         placeholder: "All",
         options: options.status,
+        multiSelect: true,
       },
     ];
   }, [options]);
@@ -121,7 +125,6 @@ export const AllApplicantFilter: React.FC = () => {
           {...obj}
           control={control}
           errors={errors}
-          multiSelect
           styles={dropdownStyles}
         />
       ))}
