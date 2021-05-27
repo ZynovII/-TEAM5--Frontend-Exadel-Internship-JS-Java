@@ -1,12 +1,16 @@
 import React, { createContext } from "react";
 import { IAction } from "../models/Store/IAction";
 import { IStore } from "../models/Store/IStore";
+import { tokenToUser } from "../utils/tokenToUser";
+
+const token = JSON.parse(localStorage.getItem("token"));
 
 export const initialState: IStore = {
-  isAuthenticated: localStorage.user ? true : false,
-  currentUser: localStorage.user ? JSON.parse(localStorage.user) : null,
+  isAuthenticated: !!token || false,
+  currentUser: !!token ? tokenToUser(token) : null,
   events: {},
   publishedEvents: {},
+  archivedEvents: {},
   loading: true,
   applicants: {},
   interviews: {},

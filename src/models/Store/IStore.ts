@@ -15,6 +15,7 @@ export interface IStore {
   currentUser: IUser;
   events: { [eventId: string]: IEvent };
   publishedEvents: { [eventId: string]: IEvent };
+  archivedEvents: { [eventId: string]: IEvent };
   applicants: { [aplicantId: string]: IApplicantShortFromBackEnd };
   interviews: { [interviewId: string]: IInterviewFromBackEnd };
   selectedEvent: IEvent;

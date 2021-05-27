@@ -3,7 +3,7 @@ import { useMemo } from "react";
 
 import { ControlledDropdown } from "../../hook-form/Controlled";
 import { useForm } from "react-hook-form";
-import { IFilterData, IFilterDropdownItem } from "../Filter/Models";
+import { IFilterDropdownItem } from "../Filter/Models";
 import {
   IStackStyles,
   IDropdownStyles,
@@ -14,14 +14,12 @@ import { useApplicants } from "../../hooks/useApplicants";
 
 const stackStyles: IStackStyles = {
   root: {
-    padding: "2rem",
     display: "block",
     "@media(min-width: 725px)": {
+      justifyContent: "space-between",
       display: "flex",
       flexWrap: "nowrap",
-      margin: "0 auto",
       padding: "0",
-      maxWidth: "83%",
     },
   },
 };
@@ -42,7 +40,7 @@ export const AllApplicantFilter: React.FC = () => {
     handleSubmit,
     formState: { errors },
     control,
-  } = useForm<IFilterData>({
+  } = useForm({
     reValidateMode: "onSubmit",
     mode: "all",
   });
@@ -65,7 +63,9 @@ export const AllApplicantFilter: React.FC = () => {
 
   const onApplyFilter = () => {
     handleSubmit((data) => {
-      fetchApplicants(0, 14, data).then((cb)=>{cb()});
+      fetchApplicants(0, 14, data).then((cb) => {
+        cb();
+      });
     })();
   };
 
@@ -115,35 +115,23 @@ export const AllApplicantFilter: React.FC = () => {
   }, [options]);
 
   return (
-    <div>
-      <Stack
-        styles={stackStyles}
-        horizontal
-        verticalAlign="end"
-        horizontalAlign="space-between"
-        wrap
-      >
-        {filters.map((obj: IFilterDropdownItem) => (
-          <ControlledDropdown
-            label={obj.label}
-            key={obj.key}
-            control={control}
-            name={obj.name}
-            placeholder={obj.placeholder}
-            options={obj.options}
-            errors={errors}
-            
-            styles={dropdownStyles}
-          />
-        ))}
-        <div className="filter-btn button_center">
-          <PrimaryButton
-            onClick={onApplyFilter}
-            text="Search"
-            className="button"
-          />
-        </div>
-      </Stack>
-    </div>
+    <Stack styles={stackStyles} horizontal verticalAlign="end">
+      {filters.map((obj: IFilterDropdownItem) => (
+        <ControlledDropdown
+          {...obj}
+          control={control}
+          errors={errors}
+          multiSelect
+          styles={dropdownStyles}
+        />
+      ))}
+      <div className="filter-btn button_center">
+        <PrimaryButton
+          onClick={onApplyFilter}
+          text="Search"
+          className="button"
+        />
+      </div>
+    </Stack>
   );
 };

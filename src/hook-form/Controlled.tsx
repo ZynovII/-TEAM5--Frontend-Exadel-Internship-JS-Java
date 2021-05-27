@@ -131,7 +131,7 @@ interface DatePicker {
   showMonthPickerAsOverlay?: boolean;
   placeholder: string;
   ariaLabel: string;
-  
+
 }
 const dayPickerStrings = {
   months: [
@@ -196,7 +196,8 @@ export const ControlledDatePicker: React.FC<HookFormProps & DatePicker & IDatePi
         <DatePicker
           {...props}
           strings={dayPickerStrings}
-          onSelectDate={(e) => onChange(e)}
+          onSelectDate={(e) => {onChange(e)
+            props.onChange(e)}}
           allowTextInput
         />
       )}

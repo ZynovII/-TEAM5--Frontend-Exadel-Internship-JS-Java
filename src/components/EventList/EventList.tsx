@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { CardItem } from "./EventCard";
 import { NewCardItem } from "../NewEvent/NewCardItem";
 import { PrimaryButton, Spinner, SpinnerSize } from "@fluentui/react";
-import "./AllCards.scss";
+
 import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { useAuth } from "../../hooks/useAuth";
@@ -11,7 +11,15 @@ import EventFilters from "../Filter/EventFilters";
 import { useOptions } from "../../hooks/useOptions";
 import { IOptionsEventFilter } from "../../models/Forms/IOptions";
 import { toDropdownOptions } from "../../utils/toDropdownOptions";
-import { eventStatusReformer } from "../../utils/stringReformers";
+import {
+  eventStatusReformer,
+  eventTypeReformer,
+} from "../../utils/stringReformers";
+import { toTagsOptions } from "../../utils/toTagsOptions";
+import { EventStatus } from "../../models/IEvent";
+
+import "./AllCards.scss";
+import { IFilterToRequest } from "../Filter/Models";
 
 export const EVENTS_SIZE = 6;
 
@@ -21,48 +29,37 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
     eventTypes: [],
     techTags: [],
   });
-  const {
-    events,
-    publishedEvents,
-    fetchEvents,
-    fetchPublishedEvents,
-  } = useEvents();
-  const {
-    fetchLocation,
-    fetchEventTypes,
-    fetchTechnology,
-    fetchEventFilters,
-  } = useOptions();
+  const { events, publishedEvents, fetchEvents } = useEvents();
+  const { fetchEventFilters } = useOptions();
   const { loading, showLoader } = useLoader();
   const [page, setPage] = useState<number>(0);
   const { isAuth } = useAuth();
   const isMountedRef = useIsMountedRef();
 
-  const loadMore = (page: number, size: number) => {
-    isAdminPage
-      ? fetchEvents(page, size).then((cb) => {
-          if (isMountedRef.current) cb();
-        })
-      : fetchPublishedEvents(page, EVENTS_SIZE).then((cb) => {
-          if (isMountedRef.current) cb();
-        });
+  const loadMore = (page: number, size: number, filters?: IFilterToRequest) => {
+    const args = isAdminPage
+      ? [size, filters]
+      : [EVENTS_SIZE, filters, EventStatus.Published];
+    fetchEvents(page, ...args).then((cb) => {
+      if (isMountedRef.current) cb();
+    });
+
     setPage((prev) => prev + 1);
+  };
+  const loadFiltered = (filters: IFilterToRequest) => {
+    setPage(0);
+    loadMore(0, EVENTS_SIZE - 1, filters);
   };
   useEffect(() => {
     showLoader();
-    Promise.all([
-      fetchEventTypes(),
-      fetchLocation(),
-      fetchTechnology(),
-      fetchEventFilters(),
-    ]).then((res) => {
+    fetchEventFilters().then((res) => {
       const options: IOptionsEventFilter = {
-        eventTypes: res[0],
-        locations: res[1],
-        techTags: res[2],
-        statuses: toDropdownOptions(res[3].status, eventStatusReformer),
+        eventTypes: toDropdownOptions(res.type, eventTypeReformer),
+        locations: toDropdownOptions(res.country),
+        techTags: toTagsOptions(res.tech),
+        statuses: toDropdownOptions(res.status, eventStatusReformer),
       };
-      if (isMountedRef) {
+      if (isMountedRef.current) {
         setOptions(options);
       }
     });
@@ -76,9 +73,8 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
       <EventFilters
         isAdminPage={isAdminPage}
         options={options}
-        fetchEvents={fetchPublishedEvents}
+        fetchEvents={loadFiltered}
       />
-      <br />
       <section className="all-cards__wrapper">
         {isAdminPage && isAuth && <NewCardItem />}
         {Object.values(isAdminPage ? events : publishedEvents).map((item) => (

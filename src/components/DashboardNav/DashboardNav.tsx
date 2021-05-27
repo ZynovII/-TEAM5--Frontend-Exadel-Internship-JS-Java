@@ -104,19 +104,26 @@ export const DashboardNav = () => {
     showModal();
   };
 
-  const initials = useMemo(
-    () =>
-      currentUser.fullName.split(" ")[0].charAt(0) +
-      currentUser.fullName.split(" ")[2].charAt(0),
-    [currentUser]
-  );
-  const name = useMemo(
-    () =>
-      currentUser.fullName.split(" ")[0] +
-      " " +
-      currentUser.fullName.split(" ")[2],
-    [currentUser]
-  );
+  let initials = null;
+  let name = null;
+
+  if (currentUser) {
+    initials = useMemo(
+      () =>
+        currentUser.fullName.split(" ")[0].charAt(0) +
+        currentUser.fullName.split(" ")[2].charAt(0),
+      [currentUser]
+    );
+
+    name = useMemo(
+      () =>
+        currentUser.fullName.split(" ")[0] +
+        " " +
+        currentUser.fullName.split(" ")[2],
+      [currentUser]
+    );
+  }
+
   return (
     <div className="dash-nav">
       <Modal

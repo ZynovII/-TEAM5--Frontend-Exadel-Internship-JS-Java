@@ -4,105 +4,68 @@ import { ActionTypes } from "../context/actionTypes";
 import { useStore } from "./hooks";
 import { ID } from "../models/Store/IStore";
 
-import { IEventForBackEnd } from "../models/IEvent";
+import { EventStatus, IEventForBackEnd } from "../models/IEvent";
+import { IFilterToRequest } from "../components/Filter/Models";
 
 export const useEvents = () => {
   const { state, dispatch } = useStore();
 
-  const fetchEvents = async (page: number, size: number, filters?) => {
+  const fetchEvents = async function (
+    page: number,
+    size: number,
+    filters?: IFilterToRequest,
+    eventStatus?: EventStatus
+  ) {
+    let requestString = "";
     if (filters) {
       const country =
-        filters.country && filters.country.length
-          ? `country=${filters.country.join("&country=")}`
+        filters.country?.toString() && filters.country.length
+          ? `&country=${filters.country.join("&country=")}`
           : "";
       const status =
-        filters.status && filters.status.length
-          ? `status=${filters.status.join("&status=")}`
+        filters.status?.toString() && filters.status.length
+          ? `&status=${filters.status.join("&status=")}`
           : "";
       const tech =
-        filters.tech && filters.tech.length
-          ? `tech=${filters.tech.join("&tech=")}`
+        filters.tagPicker?.toString() && filters.tagPicker.length
+          ? `&tech=${filters.tagPicker.join("&tech=")}`
           : "";
-      const type = filters.type ? `type=${filters.type.join("&type=")}` : "";
+      const type = filters.eventType?.toString()
+        ? `&type=${filters.eventType.join("&type=")}`
+        : "";
 
-      const requestString = [country, status, tech, type]
+      requestString = [country, status, tech, type]
         .filter((item) => item)
-        .join("&");
-      try {
-        const res = await axios.get(
-          `/events/getEventsWithFilter?${requestString}&page=${page}&size=${size}`
-        );
-        return () => {
-          dispatch({
-            type: ActionTypes.APPLY_FILTERS,
-          });
-          dispatch({
-            type: ActionTypes.FETCH_EVENTS,
-            payload: res.data.content,
-          });
-        };
-      } catch (err) {
-        console.log(err);
-      }
-    } else {
-      try {
-        const res = await axios.get(`/events?page=${page}&size=${size}`);
-        return () => {
-          dispatch({
-            type: ActionTypes.FETCH_EVENTS,
-            payload: res.data.content,
-          });
-        };
-      } catch (err) {
-        console.log(err);
-      }
+        .join("");
     }
-  };
-  const fetchPublishedEvents = async (page: number, size: number, filters?) => {
     try {
-      if (filters) {
-        console.log(filters, "filters");
-        const country = filters.country
-          ? `country=${filters.country.join("&country=")}`
-          : "";
-        const status =
-          filters.status && filters.status.length
-            ? `status=${filters.status.join("&status=")}`
-            : "";
-        const tech =
-          filters.tech && filters.tech.length
-            ? `tech=${filters.tech.join("&tech=")}`
-            : "";
-        const type = filters.type ? `type=${filters.type.join("&type=")}` : "";
+      const res = await axios.get(
+        `/events/getEventsWithFilter?&page=${page}&size=${size}${
+          eventStatus ? "&status=" + eventStatus + requestString : requestString
+        }`
+      );
 
-        const requestString = [country, status, tech, type]
-          .filter((item) => item)
-          .join("&");
-        console.log(requestString);
-
-        const res = await axios.get(
-          `/events/getEventsWithFilter?${requestString}&page=${page}&size=${size}`
-        );
-        return () => {
-          dispatch({
-            type: ActionTypes.APPLY_FILTERS,
-          });
-          dispatch({
-            type: ActionTypes.FETCH_PUBLISHED_EVENTS,
-            payload: res.data.result.content,
-          });
-        };
-      } else {
-        const res = await axios.get(
-          `/events/published?page=${page}&size=${size}`
-        );
-        return () => {
-          dispatch({
-            type: ActionTypes.FETCH_PUBLISHED_EVENTS,
-            payload: res.data.content,
-          });
-        };
+      let actionType: ActionTypes;
+      switch (eventStatus) {
+        case EventStatus.Published:
+          requestString || filters
+            ? (actionType = ActionTypes.FETCH_FILTERED_PUBL_EVENTS)
+            : (actionType = ActionTypes.FETCH_PUBLISHED_EVENTS);
+          break;
+        case EventStatus.Archived:
+          actionType = ActionTypes.FETCH_ARCHIVED_EVENTS;
+          break;
+        default:
+          requestString || filters
+            ? (actionType = ActionTypes.FETCH_FILTERED_ALL_EVENTS)
+            : (actionType = ActionTypes.FETCH_EVENTS);
       }
+      return () => {
+        dispatch({
+          type: actionType,
+          payload: res.data.result.content,
+        });
+      };
     } catch (err) {
       console.log(err);
     }
@@ -197,6 +160,15 @@ export const useEvents = () => {
       .catch((err) => console.log(err));
   };
 
+  const unPublishvent = async (id: ID) => {
+    try {
+      const res = await axios.put(`/events/${id}/unpublish`);
+      return res;
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
   const isNameUniqe = async (value) => {
     const { data } = await axios.get(`/events/uniqueness/${value}`);
     return data || "This name is already used";
@@ -207,13 +179,14 @@ export const useEvents = () => {
     events: state.events,
     publishedEvents: state.publishedEvents,
     selectEvent,
-    fetchEvents,
     createEvent,
     updateEvent,
     loadImage,
-    fetchPublishedEvents,
     replaceToArchive,
     publishEvent,
+    unPublishvent,
     isNameUniqe,
+    fetchEvents,
+    archivedEvents: state.archivedEvents,
   };
 };
