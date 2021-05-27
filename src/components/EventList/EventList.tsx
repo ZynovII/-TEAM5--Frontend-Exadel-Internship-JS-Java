@@ -32,23 +32,31 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
   const { events, publishedEvents, fetchEvents } = useEvents();
   const { fetchEventFilters } = useOptions();
   const { loading, showLoader } = useLoader();
-  const [page, setPage] = useState<number>(0);
+  const [statePage, setPage] = useState<number>(0);
+  const [totalElements, setTotalElements] = useState<number>(0);
+  const [stateFilters, setFilters] = useState<IFilterToRequest>();
   const { isAuth } = useAuth();
   const isMountedRef = useIsMountedRef();
 
-  const loadMore = (page: number, size: number, filters?: IFilterToRequest) => {
-    const args = isAdminPage
-      ? [size, filters]
-      : [EVENTS_SIZE, filters, EventStatus.Published];
-    fetchEvents(page, ...args).then((cb) => {
-      if (isMountedRef.current) cb();
-    });
-
-    setPage((prev) => prev + 1);
+  const loadMore = (page: number, filters?: IFilterToRequest) => {
+    if (page * EVENTS_SIZE <= totalElements) {
+      fetchEvents(
+        page,
+        EVENTS_SIZE,
+        stateFilters || filters,
+        !isAdminPage && EventStatus.Published
+      ).then((cb) => {
+        if (isMountedRef.current) {
+          setTotalElements(cb());
+        }
+      });
+      setPage((prev) => prev + 1);
+    }
   };
   const loadFiltered = (filters: IFilterToRequest) => {
     setPage(0);
-    loadMore(0, EVENTS_SIZE - 1, filters);
+    setFilters(filters);
+    loadMore(0, filters);
   };
   useEffect(() => {
     showLoader();
@@ -63,7 +71,7 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
         setOptions(options);
       }
     });
-    loadMore(page, EVENTS_SIZE - 1);
+    loadMore(statePage);
   }, []);
 
   return loading ? (
@@ -75,8 +83,8 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
         options={options}
         fetchEvents={loadFiltered}
       />
+      {isAdminPage && <NewCardItem />}
       <section className="all-cards__wrapper">
-        {isAdminPage && isAuth && <NewCardItem />}
         {Object.values(isAdminPage ? events : publishedEvents).map((item) => (
           <CardItem
             cardItem={item}
@@ -91,7 +99,8 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
         <PrimaryButton
           text="Load More"
           className="button"
-          onClick={() => loadMore(page, EVENTS_SIZE)}
+          disabled={!(statePage * EVENTS_SIZE <= totalElements)}
+          onClick={() => loadMore(statePage)}
         />
       </div>
     </>

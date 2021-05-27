@@ -12,19 +12,18 @@ const cardImage = require("./../../assets/img/plus.svg");
 const styles = {
   styleCard: {
     root: {
-      minWidth: "30%",
-      height: 345,
+      width: "100%",
+      maxWidth: "none",
+      height: 35,
       display: "flex",
       justifyContent: "center",
       alignItems: "center",
       marginBottom: "20px",
+      backgroundColor: "rgb( 190, 240, 190)",
       boxShadow: "0px 0px 36px -6px rgba(34, 60, 80, 0.1) inset",
-    },
-  },
-  mainTytle: {
-    root: {
-      height: "35px",
-      lineHeight: "35px",
+      ":hover": {
+        backgroundColor: "rgb( 200, 250, 200)",
+      },
     },
   },
   title: {
@@ -45,20 +44,8 @@ export const NewCardItem: React.FC = (props) => {
   return (
     <>
       <DocumentCard styles={styles.styleCard} onClick={() => setIsModal(true)}>
-        <div>
-          <Image
-            height="100%"
-            width="100%"
-            imageFit={ImageFit.cover}
-            src={cardImage.default}
-          />
-          <DocumentCardTitle
-            title="Add new event..."
-            showAsSecondaryTitle
-            styles={styles.title}
-          />
-        </div>
-        <NewEventForm isModal={isModal} hideModal={toggleModal} />
+        <DocumentCardTitle title="Add new event..." styles={styles.title} />
+        {isModal && <NewEventForm isModal={isModal} hideModal={toggleModal} />}
       </DocumentCard>
     </>
   );

@@ -24,16 +24,18 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
       rules={props.rules}
       defaultValue={props.value}
       render={({ field: { onChange, value, name: fieldName } }) => {
-				return (<TextField
-					{...props}
-					onChange={onChange}
-					value={value}
-					name={fieldName}
-					errorMessage={
-						props.errors[fieldName] && props.errors[fieldName].message
-					}
-				/>)
-			}}
+        return (
+          <TextField
+            {...props}
+            onChange={onChange}
+            value={value}
+            name={fieldName}
+            errorMessage={
+              props.errors[fieldName] && props.errors[fieldName].message
+            }
+          />
+        );
+      }}
     />
   );
 };
@@ -41,13 +43,13 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
 export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
   props
 ) => {
-  let dataMulti =[];
+  let dataMulti = [];
   return (
     <Controller
       name={props.name}
       control={props.control}
       rules={props.rules}
-      defaultValue={props.defaultSelectedKey||props.defaultSelectedKeys}
+      defaultValue={props.defaultSelectedKey || props.defaultSelectedKeys}
       render={({ field: { onChange, name: fieldName } }) => (
         <Dropdown
           {...props}
@@ -56,9 +58,11 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
               props.onChange && props.onChange(e, data);
             }
             if (props.multiSelect) {
-             if (props.defaultSelectedKeys) {dataMulti=[...dataMulti,...props.defaultSelectedKeys]}
+              if (props.defaultSelectedKeys) {
+                dataMulti = [...dataMulti, ...props.defaultSelectedKeys];
+              }
               if (data.selected) {
-                dataMulti= [...new Set([...dataMulti,data.key])];
+                dataMulti = [...new Set([...dataMulti, data.key])];
               } else {
                 dataMulti = dataMulti.filter((item) => item != data.key);
               }
@@ -131,7 +135,6 @@ interface DatePicker {
   showMonthPickerAsOverlay?: boolean;
   placeholder: string;
   ariaLabel: string;
-
 }
 const dayPickerStrings = {
   months: [
@@ -184,20 +187,22 @@ const dayPickerStrings = {
   monthPickerHeaderAriaLabel: "{0}, select to change the year",
   yearPickerHeaderAriaLabel: "{0}, select to change the month",
 };
-export const ControlledDatePicker: React.FC<HookFormProps & DatePicker & IDatePickerProps> = (
-  props
-) => {
+export const ControlledDatePicker: React.FC<
+  HookFormProps & DatePicker & IDatePickerProps
+> = (props) => {
   return (
     <Controller
       name={props.name}
-      defaultValue={props.value&&props.value}
+      defaultValue={props.value && props.value}
       control={props.control}
       render={({ field: { onChange } }) => (
         <DatePicker
           {...props}
           strings={dayPickerStrings}
-          onSelectDate={(e) => {onChange(e)
-            props.onChange(e)}}
+          onSelectDate={(e) => {
+            onChange(e);
+            props.onChange && props.onChange(e);
+          }}
           allowTextInput
         />
       )}

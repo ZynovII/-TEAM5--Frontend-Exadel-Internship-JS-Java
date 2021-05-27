@@ -97,13 +97,16 @@ export const StatusForm: React.FC<{
       >
         <h3
           style={{
+            fontSize: "25px",
             color:
               (statusAplicant === AcceptStatus.Accepted && "#00cc00") ||
-              (statusAplicant === AcceptStatus.Pending && "#DBDE36") ||
+              (statusAplicant === AcceptStatus.Pending && "#DBDE06") ||
               (statusAplicant === AcceptStatus.Rejected && "red"),
           }}
         >
-          {statusAplicant}
+          {(statusAplicant === AcceptStatus.Accepted && "Accepted") ||
+            (statusAplicant === AcceptStatus.Pending && "Pending") ||
+            (statusAplicant === AcceptStatus.Rejected && "Rejected")}
         </h3>
       </Stack>
       <Stack
