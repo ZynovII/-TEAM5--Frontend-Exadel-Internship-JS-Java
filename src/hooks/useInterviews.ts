@@ -41,25 +41,20 @@ export const useInterviews = () => {
       employee: employee,
       startTime: startTime,
     };
+   try {
     await axios.post("/interviews/", interview)
+    return "Your interview has been successfully create";
+  } catch (err) {
+    console.log(err);
+    return "Ooops! Something went wrong...";
+  }
   };
 
   const checkTimeSlot = async (id: string) => {
-    const response = await axios.get(`/timeslots/employee/${id}`);
+    const response = await axios.get(`/employees/${id}/interviews/time-list`);
     return response.data;
   };
 
-  const createTimeSlot = async (
-    id: string,
-    startTime: string,
-    endTime: string
-  ) => {
-    const timeSlot = {
-      startTime: +startTime.slice(0, 2),
-      endTime: +endTime.slice(0, 2),
-    };
-    await axios.post(`timeslots/employee/${id}/add`, timeSlot);
-  };
 
   const editFeedback = async (id: ID, feedback: string) => {
     const res = await axios.put(`interviews/${id}/feedback/edit`, feedback);
@@ -76,7 +71,6 @@ export const useInterviews = () => {
     getInterviewers,
     createInterviews,
     checkTimeSlot,
-    createTimeSlot,
     editFeedback,
   };
 };

@@ -1,5 +1,11 @@
 import React, { useEffect, useState } from "react";
-import { Stack, PrimaryButton, mergeStyleSets } from "@fluentui/react";
+import {
+  Stack,
+  PrimaryButton,
+  mergeStyleSets,
+  Spinner,
+  SpinnerSize,
+} from "@fluentui/react";
 import { useForm } from "react-hook-form";
 import {
   ControlledDropdown,
@@ -7,8 +13,11 @@ import {
 } from "../../hook-form/Controlled";
 import { useInterviews } from "../../hooks/useInterviews";
 import { useApplicants } from "../../hooks/useApplicants";
-
+import { dateReformer } from "../../utils/stringReformers";
 import { IApplicantDetailsFromBackEnd } from "../../models/IApplicant";
+import ModalWindow from "../ModalWindow";
+import { useBoolean } from "@fluentui/react-hooks";
+import { useLoader } from "../../hooks/hooks";
 
 const time = [
   {
@@ -57,16 +66,18 @@ export const InterviewForm: React.FC<{
     interviewers,
     createInterviews,
     checkTimeSlot,
-    createTimeSlot,
   } = useInterviews();
   const { interviewsStatus, selectApplicant } = useApplicants();
   const [roles, setRoles] = useState();
-  const [interviewer, setInterviewer] = useState();
+  const [interviewer, setInterviewer] = useState([]);
   const [disabledInterviewer, setDisabledInterviewer] = useState<boolean>(true);
   const [freeSlot, setFreeSlot] = useState([]);
+  const [fullFreeSlot, setFullFreeSlot] = useState([]);
+  const [isModalOpen, { setTrue: showModal, setFalse: hideModal }] = useBoolean(
+    false
+  );
   const [resultOption, setResultOption] = useState([]);
-
-
+  const [response, setResponse] = useState<string>("");
 
   const {
     handleSubmit,
@@ -76,8 +87,7 @@ export const InterviewForm: React.FC<{
     reValidateMode: "onSubmit",
     mode: "all",
   });
-
-  useEffect(() => {
+  const getRole = () => {
     getRoles().then((res) =>
       setRoles(
         res.slice(0, length - 1).map((el) => {
@@ -92,49 +102,66 @@ export const InterviewForm: React.FC<{
         })
       )
     );
+  };
+  useEffect(() => {
+    getRole();
     getInterviewers();
   }, []);
 
   const freeTimeSlot = (id) => {
     checkTimeSlot(id).then((res) => {
-      setFreeSlot(
-        res.map((item) => {
-          return `${item.startTime}:00-${item.endTime}:00`;
-        })
-      );
+      setFullFreeSlot(res);
     });
   };
-
+  const filterTime = (e) => {
+    const slot = fullFreeSlot
+      .map((item) => {
+        if (dateReformer(item).toString() === dateReformer(e).toString()) {
+          return `${new Date(item).getHours()}:00-${
+            new Date(item).getHours() + 1
+          }:00`;
+        } else {
+          return "";
+        }
+      })
+      .filter((item) => {
+        return item != "";
+      });
+    setFreeSlot(slot);
+  };
   useEffect(() => {
-    const result = time.map((el) => ({
-      ...el,
-      disabled: freeSlot.includes(el.key),
-    }));
+    const result = time.map((el) => {
+      return {
+        ...el,
+        disabled: freeSlot.includes(el.key),
+      };
+    });
     setResultOption(result);
   }, [freeSlot]);
 
-  const onSend =  (candidate) => {
-
+  const onSend = (candidate) => {
     handleSubmit((data) => {
       const timeString = data.timeInterview.join();
-      const startTime = timeString.slice(0, 5);
-      const endTime = timeString.slice(-5);
+      const startTime = +timeString.slice(0, 2) + 3 + ":00";
       const startDate = new Date(
         data.dateInterview.toString().replace(/00:00/, startTime)
       );
-      createInterviews(candidate, data.interviewer[0], startDate)
-      createTimeSlot(data.interviewer[0], startTime, endTime).then(() => {
-        freeTimeSlot(data.interviewer[0]);
-        if (data.typeInterview.toString() === "ADMIN") {
-          interviewsStatus(candidate, "hr").then(() => selectApplicant(candidate));
+      createInterviews(candidate, data.interviewer[0], startDate).then(
+        (res) => {
+          setResponse(res);
+          showModal();
+          const type = data.typeInterview.toString() === "ADMIN" ? "hr" : "tc";
+          interviewsStatus(candidate, type).then(() =>
+            selectApplicant(candidate)
+          );
+          getRole();
+          setDisabledInterviewer(true);
+          setInterviewer([]);
         }
-        if (data.typeInterview.toString() === "TECH") {
-          interviewsStatus(candidate, "tc").then(() => selectApplicant(candidate));
-        }
-      });
+      );
     })();
   };
-  
+
   const selectInterviewers = (type) => {
     const option = interviewers.filter((el) => el.name.includes(type)).shift()
       .employees;
@@ -142,87 +169,91 @@ export const InterviewForm: React.FC<{
   };
 
   return (
-    <div>
-      <h1 style={{ margin: "0.5em 0" }}>To set up iterview</h1>
-      <Stack
-        className={contentStyles.formWrapper}
-        horizontal
-        tokens={{ childrenGap: "40px" }}
-      >
+    <>
+      <ModalWindow open={isModalOpen} text={response} hideModal={hideModal} />
+      <div>
+        <h1 style={{ margin: "0.5em 0" }}>To set up iterview</h1>
         <Stack
+          className={contentStyles.formWrapper}
+          horizontal
           tokens={{ childrenGap: "40px" }}
-          styles={{ root: { width: "520px" } }}
         >
-          <ControlledDropdown
-            control={control}
-            label="Select type of interview"
-            name={"typeInterview"}
-            placeholder="Select type"
-            defaultSelectedKey={""}
-            errors={errors}
-            options={roles}
-            onChange={(e, data) => {
-              setDisabledInterviewer(false);
-              selectInterviewers(data.key);
-            }}
-            required
-            rules={{required: "This field is required"}}
-          />
+          <Stack
+            tokens={{ childrenGap: "40px" }}
+            styles={{ root: { width: "520px" } }}
+          >
+            <ControlledDropdown
+              control={control}
+              label="Select type of interview"
+              name={"typeInterview"}
+              placeholder="Select type"
+              defaultSelectedKey={""}
+              errors={errors}
+              options={roles}
+              onChange={(e, data) => {
+                setDisabledInterviewer(false);
+                selectInterviewers(data.key);
+              }}
+              required
+              rules={{ required: "This field is required" }}
+            />
+          </Stack>
+          <Stack
+            tokens={{ childrenGap: "0px" }}
+            styles={{ root: { width: "520px" } }}
+          >
+            <ControlledDropdown
+              control={control}
+              label="Select Interviewer"
+              name={"interviewer"}
+              placeholder="Select interviewer"
+              defaultSelectedKey={""}
+              errors={errors}
+              options={interviewer}
+              disabled={disabledInterviewer}
+              onChange={(e, data) => freeTimeSlot(data.key)}
+              required
+              rules={{ required: "This field is required" }}
+            />
+          </Stack>
+          <Stack
+            tokens={{ childrenGap: "20px" }}
+            styles={{ root: { width: "520px" } }}
+          >
+            <ControlledDatePicker
+              control={control}
+              name={"dateInterview"}
+              label="Select date"
+              showMonthPickerAsOverlay={true}
+              placeholder="Select a date..."
+              ariaLabel="Select a date"
+              onChange={(e) => filterTime(e)}
+            />
+          </Stack>
+          <Stack
+            tokens={{ childrenGap: "20px" }}
+            styles={{ root: { width: "520px" } }}
+          >
+            <ControlledDropdown
+              control={control}
+              label="Select time"
+              name={"timeInterview"}
+              placeholder="Select an option"
+              defaultSelectedKey={""}
+              errors={errors}
+              options={resultOption}
+              required
+              rules={{ required: "This field is required" }}
+            />
+          </Stack>
         </Stack>
-        <Stack
-          tokens={{ childrenGap: "0px" }}
-          styles={{ root: { width: "520px" } }}
-        >
-          <ControlledDropdown
-            control={control}
-            label="Select Interviewer"
-            name={"interviewer"}
-            placeholder="Select interviewer"
-            defaultSelectedKey={""}
-            errors={errors}
-            options={interviewer}
-            disabled={disabledInterviewer}
-            onChange={(e, data) => freeTimeSlot(data.key)}
-            required
-            rules={{required: "This field is required"}}
-          />
-        </Stack>
-        <Stack
-          tokens={{ childrenGap: "20px" }}
-          styles={{ root: { width: "520px" } }}
-        >
-          <ControlledDatePicker
-            control={control}
-            name={"dateInterview"}
-            label="Select date"
-            showMonthPickerAsOverlay={true}
-            placeholder="Select a date..."
-            ariaLabel="Select a date"
-          />
-        </Stack>
-        <Stack
-          tokens={{ childrenGap: "20px" }}
-          styles={{ root: { width: "520px" } }}
-        >
-          <ControlledDropdown
-            control={control}
-            label="Select time"
-            name={"timeInterview"}
-            placeholder="Select an option"
-            defaultSelectedKey={""}
-            errors={errors}
-            options={resultOption}
-            required
-            rules={{required: "This field is required"}}
-          />
-        </Stack>
-      </Stack>
-      <PrimaryButton
-        text="Appoint"
-        className="margin2em button_center button"
-        onClick={() => onSend(candidat.id)}
-      />
-    </div>
+        <PrimaryButton
+          text="Appoint"
+          className="margin2em button_center button"
+          onClick={() => onSend(candidat.id)}
+        />
+      </div>
+    </>
   );
 };
 

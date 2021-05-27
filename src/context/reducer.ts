@@ -149,7 +149,11 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         interviews: { ...state.interviews, ...newInterviews },
         loading: false,
       };
-
+    case ActionTypes.FETCH_INTERVIEWERS:
+      return {
+        ...state,
+        interviewers: payload,
+      };
     case ActionTypes.SELECT_EVENT:
       return {
         ...state,
