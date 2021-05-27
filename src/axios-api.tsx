@@ -1,4 +1,4 @@
-import axios from "axios";
+import axios, { AxiosRequestConfig } from "axios";
 
 const axiosApi = axios.create({
   baseURL: "http://localhost:8081/api",
@@ -13,10 +13,11 @@ export const axiosBlob = axios.create({
   },
 });
 
-if (localStorage.getItem("token")) {
-  axiosApi.defaults.headers.common["Authorization"] = localStorage.getItem(
-    "token"
-  );
-}
+const authInterceptor = (config: AxiosRequestConfig) => {
+  config.headers.authorization = `Bearer ${localStorage.getItem("token")}`;
+  return config;
+};
+
+axiosApi.interceptors.request.use(authInterceptor);
 
 export default axiosApi;

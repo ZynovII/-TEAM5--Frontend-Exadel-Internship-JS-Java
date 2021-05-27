@@ -3,8 +3,8 @@ import { IAction } from "../models/Store/IAction";
 import { IStore } from "../models/Store/IStore";
 
 export const initialState: IStore = {
-  isAuthenticated: localStorage.user ? true : false,
-  currentUser: localStorage.user ? JSON.parse(localStorage.user) : null,
+  isAuthenticated: false,
+  currentUser: null,
   events: {},
   publishedEvents: {},
   archivedEvents:{},
