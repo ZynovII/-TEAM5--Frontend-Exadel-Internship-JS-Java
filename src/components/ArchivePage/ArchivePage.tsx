@@ -18,6 +18,7 @@ import ArchiveFilters from "./ArchiveFilters";
 import { useLoader } from "../../hooks/hooks";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
 import { EventStatus } from "../../models/IEvent";
+import { eventTypeReformer } from "../../utils/stringReformers";
 
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
@@ -44,22 +45,21 @@ export const ArchiveEventList: React.FC = () => {
     () =>
       Object.values(archivedEvents).map((idx) => {
         return {
-          event: idx.type,
+          event: eventTypeReformer(idx.type),
           name: idx.name,
-          location: idx.locations.toString(),
+          location: [...new Set(idx.locations.map((el) => ` ${el.country} `))],
         };
       }),
     [archivedEvents]
   );
 
-  const tooltipId = useId("tooltip");
   const columns: IColumn[] = [
     {
       key: "column1",
       name: "Event type",
       fieldName: "event",
       minWidth: 100,
-      maxWidth: 300,
+      maxWidth: 200,
       isResizable: true,
     },
     {
@@ -67,7 +67,7 @@ export const ArchiveEventList: React.FC = () => {
       name: "Name",
       fieldName: "name",
       minWidth: 100,
-      maxWidth: 350,
+      maxWidth: 300,
       isResizable: true,
     },
     {
@@ -75,39 +75,14 @@ export const ArchiveEventList: React.FC = () => {
       name: "Location",
       fieldName: "location",
       minWidth: 100,
-      maxWidth: 300,
+      maxWidth: 600,
       isResizable: true,
-    },
-    {
-      key: "column5",
-      name: "More",
-      isIconOnly: true,
-      fieldName: "",
-      minWidth: 50,
-      maxWidth: 50,
-      isResizable: false,
-      onRender: () => (
-        <TooltipHost
-          content="Show more information"
-          id={tooltipId}
-          calloutProps={calloutProps}
-          styles={hostStyles}
-        >
-          <ActionButton
-            iconProps={{ iconName: "OpenFile" }}
-            // onClick={() => history.push(`/admin/interviews/${"unknow"}`)} // selected id from state
-            aria-describedby={tooltipId}
-          ></ActionButton>
-        </TooltipHost>
-      ),
     },
   ];
   return loading ? (
     <Spinner size={SpinnerSize.large} className="margin2em" />
   ) : (
     <>
-      <ArchiveFilters />
-
       <div
         style={{
           boxShadow: theme.effects.elevation16,
@@ -128,10 +103,6 @@ export const ArchiveEventList: React.FC = () => {
               })}
             </div>
           )}
-
-          // onItemInvoked={(item) =>
-          //   history.push(`/admin/candidates/${item.name}`)
-          // }
         />
       </div>
     </>

@@ -90,7 +90,7 @@ export const InterviewPage: React.FC = () => {
                 showModal={showModal}
                 hideModal={hideModal}
                 onSave={onSave}
-                selectedFeedback={selectedFeedback?.feedback}
+                selectedFeedback={selectedFeedback}
               />
             </Stack>
           </Stack>

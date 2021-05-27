@@ -21,6 +21,8 @@ import { NewEventForm } from "../NewEvent/NewEventForm";
 
 import { dateReformer } from "./../../utils/stringReformers";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
+import { useAuth } from "../../hooks/useAuth";
+import { UserRole } from "../../models/IUser";
 
 import placeholder from "../../assets/img/placeholder.png";
 
@@ -56,15 +58,15 @@ export interface ICardItemProps {
   cardItem: IEvent;
   isLogged: boolean;
   isAdminPage: boolean;
-  loadMore: (page: number, size: number) => void;
+  loadMore: (page: number) => void;
 }
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const isMountedRef = useIsMountedRef();
   const [isModal, setIsModal] = useState(false);
   const [imageEvent, setImageEvent] = useState(placeholder);
-  const [uploadImageFile, setUploadImageFile] = useState<File>();
   const history = useHistory();
+  const { currentUser } = useAuth();
   const {
     loadImage,
     replaceToArchive,
@@ -146,7 +148,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         ariaLabel: "move to archive",
         title: "Move to archive",
       },
-      {
+      currentUser.role === UserRole.SuperAdmin && {
         iconProps: {
           iconName: isPublished ? "UnpublishContent" : "PublishContent",
         },
@@ -195,7 +197,9 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       {props.isAdminPage && props.isLogged && (
         <div>
           <div style={{ display: "flex", justifyContent: "space-between" }}>
-            <DocumentCardActions actions={documentCardActions} />
+            <DocumentCardActions
+              actions={documentCardActions.filter((el) => !!el)}
+            />
             {isPublished && (
               <FontIcon
                 aria-label="Accept"
@@ -222,14 +226,16 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
       <Text className={styles.text}>
         {props.cardItem.locations.map((el) => el.city + " ")}
       </Text>
-      <NewEventForm
-        isModal={isModal}
-        hideModal={toggleModal}
-        eventCard={true}
-        cardItem={props.cardItem}
-        imageEvent={imageEvent}
-        loadMore={props.loadMore}
-      />
+      {isModal && (
+        <NewEventForm
+          isModal={isModal}
+          hideModal={toggleModal}
+          eventCard={true}
+          cardItem={props.cardItem}
+          imageEvent={imageEvent}
+          loadMore={props.loadMore}
+        />
+      )}
     </DocumentCard>
   );
 };

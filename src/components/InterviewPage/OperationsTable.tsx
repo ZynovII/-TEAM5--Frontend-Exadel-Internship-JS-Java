@@ -57,7 +57,7 @@ export interface IOperationTableProps {
   onSave(feedback: string): void;
   hideModal(): void;
   showModal(feedback: IInterviewInCandite): void;
-  selectedFeedback: string;
+  selectedFeedback: IInterviewInCandite;
 }
 
 const OperationsTable: React.FC<IOperationTableProps> = ({
@@ -77,7 +77,9 @@ const OperationsTable: React.FC<IOperationTableProps> = ({
           <DetailsList
             items={operations}
             onRenderRow={(props, defaultRender) => {
-              props.columns[props.columns.length - 1].onRender = (item) => (
+              props.columns[props.columns.length - 1].onRender = (
+                item: IInterviewInCandite
+              ) => (
                 <button onClick={() => showModal(item)} className="button">
                   <span className="ms-fontColor-white" style={{ padding: 5 }}>
                     Feedback
@@ -105,7 +107,7 @@ const OperationsTable: React.FC<IOperationTableProps> = ({
       </div>
       {selectedFeedback && (
         <DialogFeedback
-          content={selectedFeedback}
+          content={selectedFeedback.feedback}
           candidate={candidate}
           onSave={onSave}
           isModalOpen={isModalOpen}
