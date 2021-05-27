@@ -19,5 +19,15 @@ const authInterceptor = (config: AxiosRequestConfig) => {
 };
 
 axiosApi.interceptors.request.use(authInterceptor);
+axiosApi.interceptors.response.use(
+  (res) => res,
+  (err) => {
+    if (err.response.status) {
+      localStorage.removeItem("token");
+      window.location.assign("/");
+    }
+    return Promise.reject(err);
+  }
+);
 
 export default axiosApi;
