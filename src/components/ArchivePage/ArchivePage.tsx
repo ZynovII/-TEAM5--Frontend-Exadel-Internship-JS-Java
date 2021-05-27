@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   DetailsList,
   getTheme,
@@ -17,6 +17,7 @@ import { useEvents } from "../../hooks/useEvents";
 import ArchiveFilters from "./ArchiveFilters";
 import { useLoader } from "../../hooks/hooks";
 import { useIsMountedRef } from "../../hooks/useIsMounted";
+
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
@@ -38,14 +39,19 @@ export const ArchiveEventList: React.FC = () => {
       if (isMountedRef.current) cb();
     });
   }, []);
-
-  const eventList = Object.keys(events).map((idx) => {
-    return {
-      event: events[idx].type,
-      name: events[idx].name,
-      location: events[idx].city,
-    };
-  });
+  console.log("Events", events);
+  console.log("archivedEvents", archivedEvents);
+  const eventList = useMemo(
+    () =>
+      Object.values(archivedEvents).map((idx) => {
+        return {
+          event: idx.type,
+          name: idx.name,
+          location: idx.locations.toString(),
+        };
+      }),
+    [archivedEvents]
+  );
 
   const tooltipId = useId("tooltip");
   const columns: IColumn[] = [

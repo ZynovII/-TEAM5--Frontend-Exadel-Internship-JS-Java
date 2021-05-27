@@ -7,6 +7,7 @@ export const initialState: IStore = {
   currentUser: localStorage.user ? JSON.parse(localStorage.user) : null,
   events: {},
   publishedEvents: {},
+  archivedEvents:{},
   loading: true,
   applicants: {},
   interviews: {},

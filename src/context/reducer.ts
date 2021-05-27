@@ -99,7 +99,8 @@ export const reducer = (state: IStore, action: IAction): IStore => {
 
       return{
         ...state,
-        archivedEvents:{...state.archivedEvents,...newEvents}
+        archivedEvents:{...state.archivedEvents,...newEvents},
+        loading: false,
       }
     }
     case ActionTypes.FETCH_PUBLISHED_EVENTS:
