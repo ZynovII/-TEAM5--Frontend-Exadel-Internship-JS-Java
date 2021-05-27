@@ -132,7 +132,7 @@ export const AllApplicantFilter: React.FC = () => {
             placeholder={obj.placeholder}
             options={obj.options}
             errors={errors}
-            multiSelect
+            
             styles={dropdownStyles}
           />
         ))}

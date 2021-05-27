@@ -13,7 +13,7 @@ import { IOptionsEventFilter } from "../../models/Forms/IOptions";
 import { toDropdownOptions } from "../../utils/toDropdownOptions";
 import { eventStatusReformer } from "../../utils/stringReformers";
 
-const EVENTS_SIZE = 6;
+export const EVENTS_SIZE = 6;
 
 const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
   const [options, setOptions] = useState<IOptionsEventFilter>({
@@ -87,6 +87,7 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
             key={item.id}
             isLogged={isAuth}
             isAdminPage={isAdminPage}
+            loadMore={loadMore}
           />
         ))}
       </section>

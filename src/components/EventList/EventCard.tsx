@@ -56,12 +56,14 @@ export interface ICardItemProps {
   cardItem: IEvent;
   isLogged: boolean;
   isAdminPage: boolean;
+  loadMore: (page:number,size:number)=>void
 }
 
 export const CardItem: React.FC<ICardItemProps> = (props) => {
   const isMountedRef = useIsMountedRef();
   const [isModal, setIsModal] = useState(false);
   const [imageEvent, setImageEvent] = useState(placeholder);
+  const [uploadImageFile, setUploadImageFile] = useState<File>()
   const history = useHistory();
   const { loadImage, replaceToArchive, publishEvent } = useEvents();
   const { showLoader } = useLoader();
@@ -76,7 +78,9 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   useEffect(() => {
     loadImage(props.cardItem.id).then((res) => {
       if (isMountedRef.current && res) {
-        setImageEvent(res);
+        setImageEvent(window.URL.createObjectURL(new Blob([res])));
+       setUploadImageFile(new File([res], "name"))
+       console.log(uploadImageFile)
       }
     });
   }, []);
@@ -213,6 +217,8 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         hideModal={toggleModal}
         eventCard={true}
         cardItem={props.cardItem}
+        imageEvent={imageEvent}
+        loadMore={props.loadMore}
       />
     </DocumentCard>
   );

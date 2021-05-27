@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { ControlledInputUpload } from "../../hook-form/Controlled";
 import { useForm } from "react-hook-form";
 import {
@@ -45,8 +45,8 @@ const classNames = mergeStyleSets({
   },
 });
 
-export const UploadImage: React.FC<{ setImageSrc: Function }> = ({
-  setImageSrc,
+export const UploadImage: React.FC<{ setImageSrc: Function, eventImage:string }> = ({
+  setImageSrc, eventImage
 }) => {
   const [fileName, setFileName] = useState<string>("");
   const [isUploaded, setisUploaded] = useState<boolean>(false);
@@ -55,7 +55,18 @@ export const UploadImage: React.FC<{ setImageSrc: Function }> = ({
     setFileName(URL.createObjectURL(event.target.files[0]));
     setisUploaded(true);
     setImageSrc(event.target.files[0]);
+    console.log(event.target.files[0].name)
   };
+
+  useEffect(()=>{
+    if (eventImage) {
+      setFileName(eventImage); 
+      setisUploaded(true);
+     
+    }
+    
+  },[])
+ 
 
   const { control } = useForm({
     mode: "all",

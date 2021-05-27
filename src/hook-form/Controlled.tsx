@@ -41,13 +41,13 @@ export const ControlledTextField: React.FC<HookFormProps & ITextFieldProps> = (
 export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
   props
 ) => {
-  let dataMulti = useMemo(() => [], []);
+  let dataMulti =[];
   return (
     <Controller
       name={props.name}
       control={props.control}
       rules={props.rules}
-      defaultValue={props.defaultSelectedKey}
+      defaultValue={props.defaultSelectedKey||props.defaultSelectedKeys}
       render={({ field: { onChange, name: fieldName } }) => (
         <Dropdown
           {...props}
@@ -56,8 +56,9 @@ export const ControlledDropdown: React.FC<HookFormProps & IDropdownProps> = (
               props.onChange && props.onChange(e, data);
             }
             if (props.multiSelect) {
+             if (props.defaultSelectedKeys) {dataMulti=[...dataMulti,...props.defaultSelectedKeys]}
               if (data.selected) {
-                dataMulti.push(data.key);
+                dataMulti= [...new Set([...dataMulti,data.key])];
               } else {
                 dataMulti = dataMulti.filter((item) => item != data.key);
               }
@@ -189,6 +190,7 @@ export const ControlledDatePicker: React.FC<HookFormProps & DatePicker & IDatePi
   return (
     <Controller
       name={props.name}
+      defaultValue={props.value&&props.value}
       control={props.control}
       render={({ field: { onChange } }) => (
         <DatePicker
