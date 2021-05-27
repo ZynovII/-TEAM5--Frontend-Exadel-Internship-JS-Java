@@ -47,9 +47,8 @@ const EventList: React.FC<{ isAdminPage: boolean }> = ({ isAdminPage }) => {
     setPage((prev) => prev + 1);
   };
   const loadFiltered = (filters: IFilterToRequest) => {
-    const newPage = page === 0 ? page : 0;
     setPage(0);
-    loadMore(newPage, EVENTS_SIZE, filters);
+    loadMore(0, EVENTS_SIZE - 1, filters);
   };
   useEffect(() => {
     showLoader();

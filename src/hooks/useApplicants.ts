@@ -38,9 +38,9 @@ export const useApplicants = () => {
     }
     try {
       const res = await axios.get(
-        `/candidates/getCandidatesWithFilter?${
-          allFetchstr && allFetchstr + "&"
-        }page=${page}&size=${size}`
+        `/candidates/getCandidatesWithFilter?page=${page}&size=${size}${
+          allFetchstr && "&" + allFetchstr
+        }`
       );
       return () => {
         if (data) {

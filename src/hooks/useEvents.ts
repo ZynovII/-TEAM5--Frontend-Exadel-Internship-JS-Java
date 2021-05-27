@@ -19,32 +19,32 @@ export const useEvents = () => {
     let requestString = "";
     if (filters) {
       const country =
-        filters.country && filters.country.length
-          ? `country=${filters.country.join("&country=")}`
+        filters.country?.toString() && filters.country.length
+          ? `&country=${filters.country.join("&country=")}`
           : "";
       const status =
-        filters.status && filters.status.length
-          ? `status=${filters.status.join("&status=")}`
+        filters.status?.toString() && filters.status.length
+          ? `&status=${filters.status.join("&status=")}`
           : "";
       const tech =
-        filters.tagPicker && filters.tagPicker.length
-          ? `tech=${filters.tagPicker.join("&tech=")}`
+        filters.tagPicker?.toString() && filters.tagPicker.length
+          ? `&tech=${filters.tagPicker.join("&tech=")}`
           : "";
-      const type = filters.eventType
-        ? `type=${filters.eventType.join("&type=")}`
+      const type = filters.eventType?.toString()
+        ? `&type=${filters.eventType.join("&type=")}`
         : "";
 
       requestString = [country, status, tech, type]
         .filter((item) => item)
-        .join("&");
+        .join("");
     }
     try {
       const res = await axios.get(
-        `/events/getEventsWithFilter?${
+        `/events/getEventsWithFilter?&page=${page}&size=${size}${
           eventStatus === EventStatus.Published
-            ? "status=" + EventStatus.Published + "&" + requestString
+            ? "&status=" + EventStatus.Published + requestString
             : requestString
-        }&page=${page}&size=${size}`
+        }`
       );
       const actionType =
         eventStatus === EventStatus.Published
