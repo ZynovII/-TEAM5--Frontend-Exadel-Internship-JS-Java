@@ -13,7 +13,7 @@ import {
 import { useBoolean } from "@fluentui/react-hooks";
 import { useHistory } from "react-router";
 
-import { IEvent } from "../../models/IEvent";
+import { IEvent, EventStatus } from "../../models/IEvent";
 import { useLoader } from "../../hooks/hooks";
 import { useEvents } from "../../hooks/useEvents";
 import { PublishDialog } from "./PublishDialog";
@@ -65,7 +65,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   const [imageEvent, setImageEvent] = useState(placeholder);
   const [uploadImageFile, setUploadImageFile] = useState<File>()
   const history = useHistory();
-  const { loadImage, replaceToArchive, publishEvent } = useEvents();
+  const { loadImage, replaceToArchive, publishEvent, unPublishvent, } = useEvents();
   const { showLoader } = useLoader();
 
   const selectHandler = () => {
@@ -94,12 +94,17 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
   const [isPublished, setIspublished] = useState(false);
   const onClickPublishBtn = useCallback(
     (e) => {
-      isPublished ? setIspublished(false) : toggleHidePublishDialog();
+      isPublished ? unPublishHandler() : toggleHidePublishDialog();
       e.stopPropagation();
       e.preventDefault();
     },
     [isPublished]
   );
+
+  const unPublishHandler = () => {
+    console.log("ff");
+    unPublishvent(props.cardItem.id).then((res) => setIspublished(false));
+  };
 
   const onClickRemoveBtn = (e) => {
     toggleHideRemoveDialog();
@@ -159,7 +164,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         closeButtonAriaLabel: "Close",
         subText: "Are you sure you want to publish this event?",
       },
-      actionType: "publish",
+      actionType: "Publish",
     }),
     [hidePublishDialog]
   );
@@ -175,7 +180,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         closeButtonAriaLabel: "Close",
         subText: "Are you sure you want to remove this event?",
       },
-      actionType: "remove",
+      actionType: "Remove",
     }),
     [hideRemoveDialog]
   );
