@@ -28,16 +28,18 @@ export const useEvents = () => {
           : "";
       const tech =
         filters.tagPicker?.toString() && filters.tagPicker.length
-          ? `&tech=${filters.tagPicker.join("&tech=")}`
+          ? `&tech=${filters.tagPicker.map(item => 
+            item.split(" ").map(word => word[0].toUpperCase()+word.substring(1)).join(" "))
+            .join("&tech=")}`
           : "";
       const type = filters.eventType?.toString()
         ? `&type=${filters.eventType.join("&type=")}`
         : "";
-
       requestString = [country, status, tech, type]
         .filter((item) => item)
         .join("");
     }
+    
     try {
       const res = await axios.get(
         `/events/getEventsWithFilter?&page=${page}&size=${size}${
