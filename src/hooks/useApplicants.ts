@@ -1,21 +1,41 @@
 import { useStore } from "./hooks";
-
 import axios, { axiosBlob } from "../axios-api";
 import { ActionTypes } from "../context/actionTypes";
 import { IApplicant } from "../models/IApplicant";
+import { interviewStatusReformer } from "../utils/stringReformers"
 import { ID } from "../models/Store/IStore";
+import { toDropdownOptions } from "../utils/toDropdownOptions";
+import {IOptionsCandidatesFilter} from "../models/Forms/IOptions"
 
 export const useApplicants = () => {
   const { state, dispatch } = useStore();
 
-  const fetchApplicants = async () => {
+  const fetchApplicants = async (page, size,data?) => {
+    let allFetchstr = ""
+    if (data) {
+      let strCountryName = data.countryName?.map(el => 'countryName=' + el).join("&")
+      let strEventName = data.eventName?.map(el => 'eventName=' + el).join("&")
+      let strIntProcess = data.interviewProсcess?.map(el => 'interviewProccess=' + el).join("&")
+      let strPrimaryTech = data.primaryTech?.map(el => 'primaryTech=' + el).join("&")
+      let strStatus = data.status?.map(el => 'status=' + el).join("&")
+      allFetchstr = [strCountryName, strEventName, strIntProcess, strPrimaryTech, strStatus].filter(Boolean).join("&")
+    }
     try {
-      const res = await axios.get(`/candidates`);
+      const res = await axios.get(`/candidates/getCandidatesWithFilter?${allFetchstr&&(allFetchstr+"&")}page=${page}&size=${size}`);
       return () => {
-        dispatch({
-          type: ActionTypes.FETCH_APPLICANTS,
-          payload: res.data.content,
-        });
+        if (data){
+          dispatch({
+            type: ActionTypes.FILTER_APPLICANTS,
+            payload: res.data.result.content,
+          });
+        }
+        else {
+          dispatch({
+            type: ActionTypes.FETCH_APPLICANTS,
+            payload: res.data.result.content,
+          });
+        }
+        return res.data.result.totalElements;
       };
     } catch (err) {
       console.log(err);
@@ -120,6 +140,24 @@ export const useApplicants = () => {
     await axios.put(`/candidates/${id}/awaiting_${status}`);
   };
 
+  const getInfoForFilters = async () => {
+    const response = await axios.get(`/candidates/getInfoForFilter`);
+
+    const filterOptions:IOptionsCandidatesFilter = {
+      eventName: toDropdownOptions(response.data.eventName),
+      primaryTech: toDropdownOptions(response.data.primaryTech),
+      interviewProccess: toDropdownOptions (
+        response.data.interviewProccess,
+        interviewStatusReformer
+      ),
+      countryName: toDropdownOptions(response.data.countryName),
+      status: toDropdownOptions(response.data.status)
+    }
+
+    return filterOptions;
+  };
+
+
   return {
     selectedApplicant: state.selectedApplicant,
     applicants: state.applicants,
@@ -128,6 +166,7 @@ export const useApplicants = () => {
     createCandidate,
     setStatus,
     cvDownload,
+    getInfoForFilters,
     editCandidate,
     interviewsStatus,
   };
