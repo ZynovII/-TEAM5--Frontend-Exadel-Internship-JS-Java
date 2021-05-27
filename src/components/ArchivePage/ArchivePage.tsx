@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useMemo } from "react";
 import {
   DetailsList,
   getTheme,
@@ -16,6 +16,8 @@ import { IApplicant } from "../../models/IApplicant";
 import { useEvents } from "../../hooks/useEvents";
 import ArchiveFilters from "./ArchiveFilters";
 import { useLoader } from "../../hooks/hooks";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
+
 const theme = getTheme();
 const calloutProps = { gapSpace: 0 };
 const hostStyles: Partial<ITooltipHostStyles> = {
@@ -27,21 +29,29 @@ export interface IApplicantList {
   items: IApplicant[];
 }
 export const ArchiveEventList: React.FC = () => {
-  const { events, fetchEvents } = useEvents();
+  const { events, fetchAnyEvents, archivedEvents } = useEvents();
   const { loading, showLoader } = useLoader();
   const history = useHistory();
+  const isMountedRef = useIsMountedRef();
   useEffect(() => {
     showLoader();
-    fetchEvents(0, 0);
+    fetchAnyEvents(0, 6, "archived").then((cb) => {
+      if (isMountedRef.current) cb();
+    });
   }, []);
-
-  const eventList = Object.keys(events).map((idx) => {
-    return {
-      event: events[idx].type,
-      name: events[idx].name,
-      location: events[idx].city,
-    };
-  });
+  console.log("Events", events);
+  console.log("archivedEvents", archivedEvents);
+  const eventList = useMemo(
+    () =>
+      Object.values(archivedEvents).map((idx) => {
+        return {
+          event: idx.type,
+          name: idx.name,
+          location: idx.locations.toString(),
+        };
+      }),
+    [archivedEvents]
+  );
 
   const tooltipId = useId("tooltip");
   const columns: IColumn[] = [
@@ -99,28 +109,31 @@ export const ArchiveEventList: React.FC = () => {
     <>
       <ArchiveFilters />
 
-        <div
-          style={{ boxShadow: theme.effects.elevation16, fontWeight: "bold", marginTop: "2rem" }}
-        >
+      <div
+        style={{
+          boxShadow: theme.effects.elevation16,
+          fontWeight: "bold",
+          marginTop: "2rem",
+        }}
+      >
+        <DetailsList
+          items={eventList}
+          columns={columns}
+          isHeaderVisible={true}
+          selectionMode={SelectionMode.multiple}
+          onRenderRow={(props, defaultRender) => (
+            <div>
+              {defaultRender({
+                ...props,
+                styles: { root: { fontSize: 16 } },
+              })}
+            </div>
+          )}
 
-            <DetailsList
-              items={eventList}
-              columns={columns}
-              isHeaderVisible={true}
-              selectionMode={SelectionMode.multiple}
-              onRenderRow={(props, defaultRender) => (
-                <div>
-                  {defaultRender({
-                    ...props,
-                    styles: { root: { fontSize: 16 } },
-                  })}
-                </div>
-              )}
-
-              // onItemInvoked={(item) =>
-              //   history.push(`/admin/candidates/${item.name}`)
-              // }
-            />
+          // onItemInvoked={(item) =>
+          //   history.push(`/admin/candidates/${item.name}`)
+          // }
+        />
       </div>
     </>
   );

@@ -85,6 +85,22 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         loading: false,
       };
 
+    case ActionTypes.FETCH_PUBLISHED_EVENTS:
+      const newEvent: {
+        [eventId: string]: IEvent;
+      } = (payload as IEvent[]).reduce(
+        (acc, item) => ({
+          ...acc,
+          [item.id]: item,
+        }),
+        {}
+      );
+      return {
+        ...state,
+        publishedEvents: { ...state.publishedEvents, ...newEvent },
+        loading: false,
+      };
+
     case ActionTypes.FETCH_FILTERED_PUBL_EVENTS:
       const newFilteredPublEvents: {
         [eventId: string]: IEvent;
@@ -101,8 +117,8 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         loading: false,
       };
 
-    case ActionTypes.FETCH_PUBLISHED_EVENTS:
-      const newEvent: {
+    case ActionTypes.FETCH_ARCHIVED_EVENTS: {
+      const newEvents: {
         [eventId: string]: IEvent;
       } = (payload as IEvent[]).reduce(
         (acc, item) => ({
@@ -113,9 +129,10 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       );
       return {
         ...state,
-        publishedEvents: { ...state.publishedEvents, ...newEvent },
+        archivedEvents: { ...state.archivedEvents, ...newEvents },
         loading: false,
       };
+    }
 
     case ActionTypes.FETCH_INTERVIEWS:
       const newInterviews: {
@@ -151,6 +168,7 @@ export const reducer = (state: IStore, action: IAction): IStore => {
       return {
         ...state,
         selectedInterview: payload,
+        loading: false,
       };
 
     default:

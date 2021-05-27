@@ -143,11 +143,12 @@ export const useEvents = () => {
     events: state.events,
     publishedEvents: state.publishedEvents,
     selectEvent,
-    fetchEvents,
     createEvent,
     loadImage,
     replaceToArchive,
     publishEvent,
     isNameUniqe,
+    fetchEvents,
+    archivedEvents: state.archivedEvents,
   };
 };

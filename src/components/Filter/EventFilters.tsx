@@ -16,6 +16,7 @@ import {
   ControlledDropdown,
   ControlledTagPicker,
 } from "../../hook-form/Controlled";
+import { useIsMountedRef } from "../../hooks/useIsMounted";
 
 const stackStyles: IStackStyles = {
   root: {
@@ -86,7 +87,6 @@ const EventFilters: React.FC<IEventFilterProps> = ({
     reValidateMode: "onSubmit",
     mode: "all",
   });
-
   const onApplyFilter = () => {
     handleSubmit((filters) => {
       fetchEvents(filters);
