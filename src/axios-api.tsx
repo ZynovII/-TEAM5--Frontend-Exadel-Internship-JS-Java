@@ -22,7 +22,7 @@ axiosApi.interceptors.request.use(authInterceptor);
 axiosApi.interceptors.response.use(
   (res) => res,
   (err) => {
-    if (err.response.status) {
+    if (err.response.status == 403) {
       localStorage.removeItem("token");
       window.location.assign("/");
     }
