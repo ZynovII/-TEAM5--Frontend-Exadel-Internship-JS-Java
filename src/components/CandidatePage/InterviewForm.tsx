@@ -157,14 +157,24 @@ export const InterviewForm: React.FC<{
           getRole();
           setDisabledInterviewer(true);
           setInterviewer([]);
+          setFreeSlot([]);
         }
       );
     })();
   };
 
   const selectInterviewers = (type) => {
-    const option = interviewers.filter((el) => el.name.includes(type)).shift()
-      .employees;
+    const option = interviewers
+      .filter((el) => {
+        if (type === "ADMIN") {
+          return el.name.includes(type) || el.name.includes("ROLE_SUPERADMIN");
+        }
+        return el.name.includes(type);
+      })
+      .map((item) => {
+        return item.employees;
+      })
+      .flat(1);
     setInterviewer(option.map((el) => ({ key: el.id, text: el.fullName })));
   };
 
