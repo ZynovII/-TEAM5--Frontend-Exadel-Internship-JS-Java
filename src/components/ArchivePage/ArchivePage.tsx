@@ -53,7 +53,6 @@ export const ArchiveEventList: React.FC = () => {
     [archivedEvents]
   );
 
-  console.log(eventList);
   const columns: IColumn[] = [
     {
       key: "column1",
