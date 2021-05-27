@@ -28,9 +28,14 @@ export const useEvents = () => {
           : "";
       const tech =
         filters.tagPicker?.toString() && filters.tagPicker.length
-          ? `&tech=${filters.tagPicker.map(item => 
-            item.split(" ").map(word => word[0].toUpperCase()+word.substring(1)).join(" "))
-            .join("&tech=")}`
+          ? `&tech=${filters.tagPicker
+              .map((item) =>
+                item
+                  .split(" ")
+                  .map((word) => word[0].toUpperCase() + word.substring(1))
+                  .join(" ")
+              )
+              .join("&tech=")}`
           : "";
       const type = filters.eventType?.toString()
         ? `&type=${filters.eventType.join("&type=")}`
@@ -39,7 +44,7 @@ export const useEvents = () => {
         .filter((item) => item)
         .join("");
     }
-    
+
     try {
       const res = await axios.get(
         `/events/getEventsWithFilter?&page=${page}&size=${size}${
@@ -67,6 +72,7 @@ export const useEvents = () => {
           type: actionType,
           payload: res.data.result.content,
         });
+        return res.data.result.totalElements;
       };
     } catch (err) {
       console.log(err);
@@ -99,13 +105,15 @@ export const useEvents = () => {
       techs: event.techs,
       type: event.type[0],
     };
-   await axios
+    await axios
       .post(`/events/create`, createEventForBackEnd)
       .then((res) => res.data.id)
-      .then((id) => {if (imageSrc)
-        {const formData = new FormData();
-        formData.append("file", imageSrc, imageSrc.name);
-        axios.post(`/events/${id}/image/upload`, formData);}
+      .then((id) => {
+        if (imageSrc) {
+          const formData = new FormData();
+          formData.append("file", imageSrc, imageSrc.name);
+          axios.post(`/events/${id}/image/upload`, formData);
+        }
       });
   };
 
@@ -122,10 +130,12 @@ export const useEvents = () => {
     await axios
       .put(`/events/${id}/edit`, updateEventForBackEnd)
       .then((res) => res.data.id)
-    .then((id) => {if (imageSrc){
-      const formData = new FormData();
-      formData.append("file", imageSrc, imageSrc.name);
-      axios.post(`/events/${id}/image/upload`, formData);}
+      .then((id) => {
+        if (imageSrc) {
+          const formData = new FormData();
+          formData.append("file", imageSrc, imageSrc.name);
+          axios.post(`/events/${id}/image/upload`, formData);
+        }
       });
   };
 
