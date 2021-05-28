@@ -148,7 +148,7 @@ export const CardItem: React.FC<ICardItemProps> = (props) => {
         ariaLabel: "move to archive",
         title: "Move to archive",
       },
-      currentUser.role === UserRole.SuperAdmin && {
+      currentUser?.role === UserRole.SuperAdmin && {
         iconProps: {
           iconName: isPublished ? "UnpublishContent" : "PublishContent",
         },
