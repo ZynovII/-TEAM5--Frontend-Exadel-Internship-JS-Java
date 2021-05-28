@@ -163,7 +163,6 @@ export const NewEventForm: React.FC<
           className={contentStyles.formWrapper}
           horizontal
           tokens={{ childrenGap: "40px" }}
-          // styles={{ root: { width: "100%" } }}
         >
           <Stack
             tokens={{ childrenGap: "10px" }}
@@ -174,7 +173,6 @@ export const NewEventForm: React.FC<
               label="Event name"
               placeholder="Name"
               value={(props.cardItem && props.cardItem.name) || ""}
-              // onBlur={isNameUniqe}
               control={control}
               name={"name"}
               errors={errors}
@@ -195,7 +193,7 @@ export const NewEventForm: React.FC<
               defaultSelectedKeys={
                 props.cardItem && props.cardItem.techs.map((el) => el.name)
               }
-              // rules={{ required: "This field is required" }}
+              rules={{ required: "This field is required" }}
               options={options.techsNewEvent}
               styles={textFieldStyles}
             />
@@ -213,6 +211,7 @@ export const NewEventForm: React.FC<
                 ]) ||
                 []
               }
+              rules={{ required: "This field is required" }}
               options={countries}
               onChange={(_, data) => {
                 setCountry((prev) =>
@@ -220,7 +219,6 @@ export const NewEventForm: React.FC<
                     ? [...prev, data.key]
                     : prev.filter((key) => key !== data.key)
                 );
-                // setCountry((prev)=>[...prev, data]);
               }}
               styles={textFieldStyles}
             />
@@ -235,6 +233,7 @@ export const NewEventForm: React.FC<
                   props.cardItem.locations.map((el) => el.city)) ||
                 []
               }
+              rules={{ required: "This field is required" }}
               errors={errors}
               options={cities}
               disabled={!props.cardItem && !country}
