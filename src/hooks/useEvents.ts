@@ -129,14 +129,22 @@ export const useEvents = () => {
     };
     await axios
       .put(`/events/${id}/edit`, updateEventForBackEnd)
-      .then((res) => res.data.id)
-      .then((id) => {
+      .then(({ data }) => data)
+      .then((event) => {
         if (imageSrc) {
           const formData = new FormData();
           formData.append("file", imageSrc, imageSrc.name);
-          axios.post(`/events/${id}/image/upload`, formData);
+          axios.post(`/events/${event.id}/image/upload`, formData);
         }
-      });
+        return event;
+      })
+      .then((event) =>
+        dispatch({
+          type: ActionTypes.UPDATE_EVENT,
+          payload: event,
+          id: event.id,
+        })
+      );
   };
 
   const loadImage = async (id: ID) => {

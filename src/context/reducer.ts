@@ -174,6 +174,11 @@ export const reducer = (state: IStore, action: IAction): IStore => {
         selectedInterview: payload,
         loading: false,
       };
+    case ActionTypes.UPDATE_EVENT:
+      return {
+        ...state,
+        events: { ...state.events, [id]: payload },
+      };
 
     default:
       return state;
