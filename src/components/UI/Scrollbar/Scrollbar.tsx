@@ -26,7 +26,7 @@ const Scrollbar: React.FC<{ height: string }> = (props) => {
   useEffect(() => {
     if (url.location.pathname == "/admin/candidates") {
       showLoader();
-      fetchApplicants(0, 14).then((cb) => {
+      fetchApplicants(0, 30).then((cb) => {
         if (isMountedRef.current) {
           const total=cb();
           setTotalCount(total)
@@ -38,7 +38,7 @@ const Scrollbar: React.FC<{ height: string }> = (props) => {
 
   const onScroll = (e) => {
     if (e.target.scrollHeight - (e.target.scrollTop + window.innerHeight) < 1 && Object.keys(state.applicants).length<totalCount)
-      fetchApplicants(currentPage, 14).then((cb) => {
+      fetchApplicants(currentPage, 30).then((cb) => {
         if (isMountedRef.current) {
           cb();
           const total=cb();
