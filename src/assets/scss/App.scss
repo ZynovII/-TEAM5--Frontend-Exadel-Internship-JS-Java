@@ -1,12 +1,104 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700;900&display=swap");
+
 $bg-color: yellow;
 $border-color: red;
 
-body {
-  font-family: helvetica, arial, sans-serif;
-  padding: 2em;
-  border: 5px solid $border-color;
+ul {
+  list-style-type: none;
+}
 
-  p {
-    background-color: $bg-color;
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+html {
+  margin-right: calc(-1 * (100vw - 100%));
+  overflow-x: hidden;
+  height: 100%;
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  height: 100%;
+  color: #525252;
+  #root {
+    height: 100%;
+    .title {
+      margin: 2em auto;
+    }
   }
+}
+
+.adjustment {
+  &-wrapper {
+    min-height: 100%;
+    display: grid;
+    grid-template-rows: auto 1fr auto;
+    grid-template-columns: 100%;
+  }
+}
+
+.input-file {
+  position: relative;
+  margin: 10px;
+
+  &__input {
+    overflow: hidden;
+    position: absolute;
+    clip: rect(0 0 0 0);
+    opacity: 0;
+  }
+
+  &__label {
+    cursor: pointer;
+    display: inline-block;
+    border: 1px solid rgb(138, 136, 134);
+    padding: 10px;
+    margin: 0 10px 10px 0;
+    transition: background-color 0.2s;
+
+    .form-item__input:focus + &,
+    &:hover {
+      background-color: #f2f2f2;
+    }
+  }
+}
+
+.button {
+  background-color: rgb(3, 144, 222);
+  border-radius: 2px;
+}
+
+.button:hover {
+  background-color: rgb(2, 118, 180);
+}
+
+.button_center {
+  display: flex;
+  justify-content: center;
+  &.filter-btn {
+    margin: 1rem auto 0;
+    @media (min-width: 725px) {
+      margin: 0;
+    }
+  }
+}
+
+.margin2em {
+  margin: 2em auto;
+}
+
+.ms-SelectionZone {
+  & .ms-BasePicker-text.text-89 {
+    min-width: 0;
+  }
+  & .ms-BasePicker-text.text-133 {
+    min-width: 0;
+  }
+}
+
+.pd-0 {
+  padding: 0;
 }
